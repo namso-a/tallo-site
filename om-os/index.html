@@ -25,13 +25,13 @@
   .knap:hover { background: #1b39a8; transform: translateY(-1px); }
   nav .knap { height: 40px; padding: 0 18px; font-size: 14px; }
   .mono { font-family: "Geist Mono", monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); }
-  main { padding: 72px 0 96px; }
-  .os { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: start; }
-  h1 { font-size: clamp(36px, 4.4vw, 56px); letter-spacing: -.035em; line-height: 1.05; margin: 14px 0 28px; font-weight: 600; }
-  .tekst p { font-size: 18px; margin: 0 0 16px; max-width: 34em; }
+  main { padding: 56px 0 40px; }
+  .os { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px; align-items: start; }
+  h1 { font-size: clamp(34px, 3.6vw, 48px); letter-spacing: -.035em; line-height: 1.05; margin: 14px 0 28px; font-weight: 600; }
+  .tekst p { font-size: 18px; margin: 0 0 14px; max-width: 36em; }
   .tekst p.stille { color: var(--daempet); }
   .tekst .knap { margin-top: 20px; }
-  .fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: min(100%, 460px); justify-self: end; }
   .fotos > div:nth-child(2) { margin-top: 36px; }
   .foto { aspect-ratio: 4 / 5; border-radius: var(--r); background: #dfe3ea; display: grid; place-items: end start; padding: 16px; position: relative; overflow: hidden; }
   .foto::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,.35) 14px 15px); }
@@ -39,10 +39,11 @@
   .navnekort { margin-top: 10px; }
   .navnekort b { display: block; font-weight: 600; }
   .navnekort span { font-size: 14px; color: var(--daempet); }
-  .bund { margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--lineal); color: var(--daempet); font-size: 14px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .bund { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--lineal); color: var(--daempet); font-size: 14px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   @media (max-width: 900px) {
     .os { grid-template-columns: minmax(0, 1fr); gap: 40px; }
     .fotos > div:nth-child(2) { margin-top: 0; }
+    .fotos { justify-self: start; }
     nav .tilbage { display: none; }
     main { padding-top: 48px; }
   }
