@@ -656,13 +656,13 @@
         </div>
         <div class="plads">Pladsholder til Cal.com på Mohammeds kalender. Tiderne er ikke rigtige.</div>
       </div>
-      <form class="skriv rejs" action="mailto:kontakt@tallo.dk" method="post" enctype="text/plain">
+      <form class="skriv rejs" data-u="kontakt" data-d="tallo.dk" action="#" method="post" enctype="text/plain">
         <span class="mono" style="color:var(--daempet)">Vil du hellere skrive?</span>
         <label>Navn<input name="navn" type="text"></label>
         <label>Mail<input name="mail" type="email"></label>
         <label>Besked<textarea name="besked"></textarea></label>
         <button class="knap" type="submit">Send <span class="pil">→</span></button>
-        <p class="mail">Eller skriv direkte: <a href="mailto:kontakt@tallo.dk">kontakt@tallo.dk</a></p>
+        <p class="mail">Eller skriv direkte: <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
       </form>
     </div>
   </div>
@@ -674,7 +674,7 @@
       <div>
         <span class="logo">tallo</span>
         <p>Othman Ajjawi og Mohammed Chahrour.</p>
-        <p><a href="mailto:kontakt@tallo.dk">kontakt@tallo.dk</a></p>
+        <p><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
         <p>CVR <span class="kommer">kommer</span></p>
       </div>
       <div>
@@ -901,5 +901,6 @@
   gsap.from(".kaempe", { yPercent: 35, ease: "none", scrollTrigger: { trigger: "footer", start: "top bottom", end: "bottom bottom", scrub: true } });
 })();
 </script>
+<script src="js/mail.js"></script>
 </body>
 </html>
