@@ -191,7 +191,10 @@
   .din-del { background: #fff; color: var(--blaek); border: 1.5px solid var(--blaek); border-radius: var(--r); padding: 32px; display: flex; flex-direction: column; }
   .din-del .mono { color: var(--daempet); }
   .din-del .stor { font-size: clamp(28px, 2.6vw, 36px); font-weight: 600; letter-spacing: -.025em; line-height: 1.1; margin-top: 10px; }
-  .din-del .lille { margin-top: 14px; padding-top: 0; font-size: 15px; line-height: 1.5; color: var(--daempet); }
+  .din-liste { list-style: none; margin: 14px 0 0; padding: 0; }
+  .din-liste li { display: flex; gap: 12px; align-items: baseline; padding: 12px 0; border-bottom: 1px dashed #d9d9d2; font-size: 18px; }
+  .din-liste li:last-child { border-bottom: 0; }
+  .din-liste li::before { content: "✓"; color: var(--blaek); font-weight: 600; }
   .vores-del { background: var(--nat-2); border: 1px solid var(--lineal); border-radius: var(--r); padding: 28px 32px 12px; }
   .vores-del .mono { color: var(--nat-daempet); display: block; margin-bottom: 6px; }
   .vores-del ul { list-style: none; margin: 0; padding: 0; }
@@ -230,25 +233,19 @@
   .tilkoeb .mono { color: var(--daempet); display: block; margin-bottom: 6px; }
   .tilkoeb .l { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--lineal); font-size: 16px; }
   .tilkoeb .l span:last-child { font-weight: 500; text-align: right; }
+  .ubegraenset { font-size: clamp(22px, 2vw, 26px); font-weight: 600; letter-spacing: -.015em; color: var(--blaa); margin-bottom: 12px; }
   .pris-grid .med { margin-top: 22px; color: var(--daempet); font-size: 15px; max-width: 40em; }
 
   /* 04 Samtalen: kalender og formular */
   .hoved .om-link { margin-top: 12px; font-size: 16px; }
   .om-link a { color: var(--blaa); font-weight: 500; }
-  .kontakt { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 20px; }
+  .kontakt { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .kontakt .skriv { max-width: 680px; }
   .kalender, .skriv { background: #fff; border-radius: var(--r); border: 1px solid #dcd8ef; padding: 26px; }
   .kalender { display: flex; flex-direction: column; }
-  .booking .stor { font-size: 22px; letter-spacing: -.01em; margin-top: 16px; }
-  .booking p + p { margin-top: 8px; color: var(--daempet); font-size: 15px; max-width: 30em; }
-  .booking .knapper { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
-  .cal-pladsholder { margin-top: 24px; flex: 1; min-height: 300px; border: 1.5px dashed #c9c2ea; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-  .cal-pladsholder .skitse { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; opacity: .55; }
-  .cal-pladsholder .skitse span { text-align: center; font-family: "Geist Mono", monospace; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); padding-bottom: 4px; }
-  .cal-pladsholder .skitse i { aspect-ratio: 1; border-radius: 8px; background: var(--flade); }
-  .cal-pladsholder .skitse i:nth-child(n+23):nth-child(-n+25), .cal-pladsholder .skitse i:nth-child(n+30):nth-child(-n+31) { background: var(--blaa-svag); }
-  .cal-pladsholder .maerkat { align-self: flex-start; margin-top: auto; padding: 3px 9px; border: 1px dashed var(--daempet); border-radius: 6px; font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); }
-  .cal-ramme { margin-top: 18px; min-height: 480px; border-radius: 12px; }
-  .kontakt.cal-aaben { grid-template-columns: minmax(0, 1fr); }
+  .cal-ramme { margin-top: 14px; min-height: 560px; border-radius: 12px; }
+  .cal-venter { padding: 48px 0; color: var(--daempet); }
+  .cal-venter a { color: var(--blaa); font-weight: 500; }
   .faelde { position: absolute; left: -9999px; }
   .formular-status { margin-top: 14px; font-size: 14px; min-height: 1.2em; }
   .formular-status.ok { color: var(--groen); }
@@ -256,7 +253,8 @@
   .skriv label { display: block; font-size: 13px; font-weight: 500; margin-top: 16px; }
   .skriv input, .skriv textarea { width: 100%; margin-top: 6px; padding: 10px 12px; border: 1px solid var(--lineal); border-radius: 10px; font: inherit; font-size: 15px; background: #fff; }
   .skriv textarea { min-height: 120px; resize: vertical; }
-  .skriv .knap { margin-top: 20px; }
+  .skriv .h-captcha { margin-top: 18px; min-height: 78px; }
+  .skriv .knap { margin-top: 16px; }
   .skriv .mail { margin-top: 18px; font-size: 14px; color: var(--daempet); }
   .skriv .mail a { color: var(--blaa); font-weight: 500; }
 
@@ -284,7 +282,7 @@
     .skaerm { transform: none; }
     .toast { right: 0; top: -22px; }
     .spor { display: none; }
-    .kontakt.cal-aaben .kalender { padding: 16px 10px; }
+    .kalender { padding: 16px 10px; }
     .cal-ramme { max-height: 680px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .din-del, .vores-del { padding: 24px; }
     .foerste { margin-top: 56px; }
@@ -307,7 +305,7 @@
       <li><a href="#pris">Prisen</a></li>
       <li><a href="om-os/">Om os</a></li>
     </ul>
-    <a class="knap lys" href="#book">Bliv fri for bogføring</a>
+    <a class="knap lys" href="#book" data-book>Bliv fri for bogføring</a>
   </div>
 </nav>
 
@@ -330,9 +328,9 @@
   <div class="skal">
     <div class="tekst">
       <h1>Aldrig mere bogføring.<br><em>1.500 kr. om måneden.</em></h1>
-      <p class="manchet">Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem, indberetter momsen og sender dig hver måned, hvad du har tjent.</p>
+      <p class="manchet">Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem, indberetter momsen og sender dig hver måned, hvad du har tjent. Ubegrænset antal fakturaer.</p>
       <div class="handling">
-        <a class="knap" href="#book">Bliv fri for bogføring <span class="pil">→</span></a>
+        <a class="knap" href="#book" data-book>Bliv fri for bogføring <span class="pil">→</span></a>
         <a class="knap stille" href="#arbejde">Sådan foregår det</a>
       </div>
       <p class="lille-under">20 minutters snak med Mohammed. Gratis.</p>
@@ -400,7 +398,7 @@
           <div class="ettal"><b class="tal">1.500 kr.</b><span>om måneden. <u>Altid.</u></span></div>
         </div>
         <h3>Du kender altid prisen</h3>
-        <p>1.500 kr. hver måned, også når du har travlt.</p>
+        <p>1.500 kr. om måneden, uanset hvor mange fakturaer du har.</p>
       </article>
     </div>
   </div>
@@ -427,12 +425,15 @@
       <div class="din-del rejs">
         <span class="mono">Din del</span>
         <p class="stor">Næsten ingenting.</p>
-        <p class="lille">Regninger og fakturaer kommer ind af sig selv. Skriver vi med et spørgsmål, svarer du. Har du en kvittering fra en butik, tager du et billede af den.</p>
+        <ul class="din-liste">
+          <li>Scan dine bilag</li>
+          <li>Svar, når vi skriver</li>
+        </ul>
       </div>
       <div class="vores-del rejs">
         <span class="mono">Vores del</span>
         <ul>
-          <li>Vi bogfører hver regning, faktura og kvittering</li>
+          <li>Vi bogfører alle dine fakturaer og kvitteringer, uanset hvor mange</li>
           <li>Vi tjekker hver uge, at banken passer</li>
           <li>Vi indberetter momsen og sender dig beløbet</li>
           <li>Vi sender dig hver måned, hvad du har tjent</li>
@@ -447,7 +448,7 @@
     <div class="trin-wrap">
       <div class="spor"><div class="fyld"></div></div>
       <div class="trin">
-        <div><span class="n">1</span><h3>Opret Dinero</h3><p>Regnskabsprogrammet, vi bruger.</p></div>
+        <div><span class="n">1</span><h3>Tilknyt dit regnskabsprogram</h3><p>Dinero eller e-conomic. Har du ikke et, anbefaler vi Dinero.</p></div>
         <div><span class="n">2</span><h3>Kobl banken til</h3><p>Med dit eget MitID.</p></div>
         <div><span class="n">3</span><h3>Giv os adgang</h3><p>Så bogfører vi fra dag ét.</p></div>
       </div>
@@ -466,11 +467,12 @@
     <div class="pris-grid">
       <div class="rejs">
         <div class="beloeb"><span class="tal" data-til="1500">1.500</span><small>kr. om måneden plus moms. <b class="altid">Altid.</b></small></div>
-        <a class="knap handling" href="#book">Bliv fri for bogføring <span class="pil">→</span></a>
+        <a class="knap handling" href="#book" data-book>Bliv fri for bogføring <span class="pil">→</span></a>
       </div>
       <div class="rejs">
+        <p class="ubegraenset">Ubegrænset antal fakturaer og kvitteringer.</p>
         <ul>
-          <li>Alt bogført, uanset hvor mange bilag</li>
+          <li>Alt bogført for dig</li>
           <li>Momsen indberettet til tiden</li>
           <li>Dit resultat hver måned</li>
           <li>Årsregnskab og selvangivelse</li>
@@ -480,7 +482,7 @@
           <div class="l"><span>Løn, lønsystemet er med</span><span>250 kr. om måneden + 50 kr. pr. lønseddel</span></div>
           <div class="l"><span>Årsrapport, hvis du har ApS</span><span>4.000 kr. om året</span></div>
         </div>
-        <p class="med">Alle priser er plus moms. Dinero-abonnementet betaler du selv.</p>
+        <p class="med">Alle priser er plus moms. Regnskabsprogrammet betaler du selv.</p>
       </div>
     </div>
   </div>
@@ -492,24 +494,14 @@
     <header class="hoved rejs">
       <span class="etiket"><b>04</b> Samtalen</span>
       <h2>Bliv fri for bogføring</h2>
-      <p>Book 20 minutter med Mohammed i telefonen eller på video. Du fortæller, hvad din virksomhed laver, og hvordan du bogfører i dag. Mohammed fortæller, hvad der skal til for at give det til os, og hvornår vi kan starte. Det er gratis, og du binder dig ikke.</p>
+      <p>20 minutter med Mohammed i telefonen eller på video. Gratis, og du binder dig ikke.</p>
       <p class="om-link"><a href="om-os/">Hvem er Mohammed og Othman? Læs om os <span class="pil">→</span></a></p>
     </header>
     <div class="kontakt">
       <div class="kalender rejs">
         <span class="mono" style="color:var(--daempet)">Vælg en tid</span>
-        <div class="booking" data-booking>
-          <p class="stor">Vælg en tid, der passer dig.</p>
-          <p>Kalenderen åbner, når du klikker.</p>
-          <div class="knapper">
-            <button class="knap" type="button" data-cal-aaben hidden>Vis ledige tider <span class="pil">→</span></button>
-          </div>
-        </div>
-        <div class="cal-pladsholder" data-cal-pladsholder aria-hidden="true">
-          <div class="skitse"><span>Ma</span><span>Ti</span><span>On</span><span>To</span><span>Fr</span><span>Lø</span><span>Sø</span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          <span class="maerkat">Pladsholder · Kalenderen kommer her</span>
-        </div>
-        <div class="cal-ramme" data-cal-ramme hidden></div>
+        <div class="cal-ramme" data-cal-ramme><p class="cal-venter">Kalenderen hentes …</p></div>
+        <noscript><p class="cal-venter"><a href="https://cal.com/tallo/m%C3%B8de">Book en tid hos Cal.com</a></p></noscript>
       </div>
       <form class="skriv rejs" data-formular action="https://api.web3forms.com/submit" method="post">
         <span class="mono" style="color:var(--daempet)">Eller skriv til os</span>
@@ -518,6 +510,7 @@
         <label>Navn<input name="name" type="text" autocomplete="name" required></label>
         <label>Mail<input name="email" type="email" autocomplete="email" required></label>
         <label>Besked<textarea name="message" required></textarea></label>
+        <div class="h-captcha" data-captcha="true" data-sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2"></div>
         <button class="knap" type="submit">Send <span class="pil">→</span></button>
         <p class="formular-status" role="status" aria-live="polite"></p>
         <p class="mail">Eller skriv direkte: <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
@@ -610,22 +603,44 @@
 
 
 
-  /* Booking: Cal.com hentes foerst ved klik, saa deres script og cookies ikke rammer alle besoegende.
-     Saet linket her, naar Chahrour har oprettet eventet, fx "chahrour/20min". */
+  /* Booking: Cal.com. Scriptet hentes, naar siden er i ro, saa vinduet aabner med det samme ved klik paa
+     "Bliv fri for bogfoering". Den indlejrede kalender i 04 starter, naar sektionen naermer sig skaermen.
+     Sproget foelger den besoegendes browser; det kan Cal.com ikke tvinges til. */
   const CAL_LINK = "tallo/møde";
-  const calKnap = document.querySelector("[data-cal-aaben]");
-  if (CAL_LINK && calKnap) {
-    calKnap.hidden = false;
-    document.querySelector("[data-cal-pladsholder]").hidden = true;
-    calKnap.addEventListener("click", () => {
-      document.querySelector("[data-booking]").hidden = true;
-      document.querySelector("[data-cal-ramme]").hidden = false;
-      document.querySelector(".kontakt").classList.add("cal-aaben"); /* fuld bredde: tiderne staar ved siden af kalenderen, ikke under */
-      (function (C, A, L) { const p = (a, ar) => { a.q.push(ar); }; const d = C.document; C.Cal = C.Cal || function () { const cal = C.Cal; const ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const ns = ar[1]; api.q = api.q || []; if (typeof ns === "string") { cal.ns[ns] = cal.ns[ns] || api; p(cal.ns[ns], ar); p(cal, ["initNamespace", ns]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
-      Cal("init", { origin: "https://cal.com" });
-      Cal("inline", { elementOrSelector: "[data-cal-ramme]", calLink: CAL_LINK, config: { layout: "month_view" } });
-      Cal("ui", { hideEventTypeDetails: true, layout: "month_view" });
-    }, { once: true });
+  const CAL_CONFIG = { layout: "month_view", theme: "light" };
+  const CAL_UI = { theme: "light", layout: "month_view", cssVarsPerTheme: { light: { "cal-brand": "#4b3aa6" }, dark: { "cal-brand": "#4b3aa6" } } };
+  let calHentet = false;
+  const hentCal = () => {
+    if (calHentet) return;
+    calHentet = true;
+    (function (C, A, L) { const p = (a, ar) => { a.q.push(ar); }; const d = C.document; C.Cal = C.Cal || function () { const cal = C.Cal; const ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const ns = ar[1]; api.q = api.q || []; if (typeof ns === "string") { cal.ns[ns] = cal.ns[ns] || api; p(cal.ns[ns], ar); p(cal, ["initNamespace", ns]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init", { origin: "https://cal.com" });
+    Cal("ui", CAL_UI);
+  };
+  if (CAL_LINK) {
+    const iRo = window.requestIdleCallback || ((f) => setTimeout(f, 1200));
+    if (document.readyState === "complete") iRo(hentCal); else addEventListener("load", () => iRo(hentCal));
+    /* Capture-fase: skal fange klikket foer den bloede scrolls anker-haandtering paa samme link */
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest("[data-book]")) return;
+      e.preventDefault();
+      e.stopPropagation();
+      hentCal();
+      Cal("modal", { calLink: CAL_LINK, config: CAL_CONFIG });
+      Cal("ui", CAL_UI);
+    }, true);
+    const ramme = document.querySelector("[data-cal-ramme]");
+    if (ramme) {
+      const obs = new IntersectionObserver((poster) => {
+        if (!poster.some((p) => p.isIntersecting)) return;
+        obs.disconnect();
+        hentCal();
+        ramme.textContent = "";
+        Cal("inline", { elementOrSelector: "[data-cal-ramme]", calLink: CAL_LINK, config: CAL_CONFIG });
+        Cal("ui", CAL_UI);
+      }, { rootMargin: "1000px 0px" });
+      obs.observe(ramme);
+    }
   }
 
   /* Formular: Web3Forms. Noeglen er offentlig af design; den kan kun sende til vores egen kontaktadresse.
@@ -634,14 +649,31 @@
   const form = document.querySelector("[data-formular]");
   if (form) {
     const status = form.querySelector(".formular-status");
+    /* Spam: faelden (botcheck), et tidstjek og hCaptcha. hCaptcha hentes foerst, naar man begynder at skrive. */
+    let foersteFokus = 0;
+    form.addEventListener("focusin", () => {
+      if (foersteFokus) return;
+      foersteFokus = Date.now();
+      const s = document.createElement("script");
+      s.src = "https://web3forms.com/client/script.js";
+      s.async = true;
+      document.head.appendChild(s);
+    });
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const felt = (navn) => form.elements.namedItem(navn);
       if (felt("botcheck").checked) return;
+      if (!foersteFokus || Date.now() - foersteFokus < 4000) return; /* robotter udfylder paa under 4 s */
       const adr = "kontakt" + "@" + "tallo.dk";
       if (!WEB3FORMS_KEY) {
         const krop = felt("message").value + "\n\n" + felt("name").value + "\n" + felt("email").value;
         location.href = "mailto:" + adr + "?subject=" + encodeURIComponent("Henvendelse fra tallo.dk") + "&body=" + encodeURIComponent(krop);
+        return;
+      }
+      const captcha = felt("h-captcha-response");
+      if (!captcha || !captcha.value) {
+        status.className = "formular-status fejl";
+        status.textContent = "Sæt flueben i 'Jeg er et menneske' først.";
         return;
       }
       const knap = form.querySelector('button[type="submit"]');
@@ -655,6 +687,7 @@
         const json = await svar.json();
         if (!json.success) throw new Error(json.message || "fejl");
         form.reset();
+        if (window.hcaptcha) window.hcaptcha.reset();
         status.className = "formular-status ok";
         status.textContent = "Tak. Vi svarer inden for en arbejdsdag.";
       } catch (fejl) {
