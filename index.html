@@ -6,11 +6,11 @@
 <title>Tallo: aldrig mere bogføring</title>
 <style>@font-face{font-family:"Geist";src:url("fonts/geist.woff2") format("woff2");font-weight:100 900;font-display:swap}@font-face{font-family:"Geist Mono";src:url("fonts/geist-mono.woff2") format("woff2");font-weight:100 900;font-display:swap}</style>
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="Du tager et billede af kvitteringen. Vi bogfører den, indberetter momsen og laver årsregnskabet. 1.500 kr. om måneden for små virksomheder.">
+<meta name="description" content="Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem, indberetter momsen og laver årsregnskabet. 1.500 kr. om måneden for små virksomheder.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Tallo: aldrig mere bogføring">
-<meta property="og:description" content="Du tager et billede af kvitteringen. Vi bogfører den, indberetter momsen og laver årsregnskabet. 1.500 kr. om måneden.">
+<meta property="og:description" content="Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem, indberetter momsen og laver årsregnskabet. 1.500 kr. om måneden.">
 <meta property="og:image" content="https://tallo.dk/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -188,12 +188,11 @@
   .ettal span { display: block; margin-top: 6px; font-size: 13px; color: var(--daempet); }
 
   /* 02 Arbejdet: din del er lille, vores del er stor */
-  .delene { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; align-items: stretch; }
+  .delene { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 20px; align-items: stretch; }
   .din-del { background: #fff; color: var(--blaek); border-radius: var(--r); padding: 32px; display: flex; flex-direction: column; }
-  .din-del .ikon { width: 44px; height: 44px; border-radius: 12px; background: var(--roed-svag); color: var(--roed); display: grid; place-items: center; margin-bottom: 28px; }
   .din-del .mono { color: var(--daempet); }
   .din-del .stor { font-size: clamp(28px, 2.6vw, 36px); font-weight: 600; letter-spacing: -.025em; line-height: 1.1; margin-top: 10px; }
-  .din-del .lille { margin-top: auto; padding-top: 28px; font-size: 15px; color: var(--daempet); }
+  .din-del .lille { margin-top: 14px; padding-top: 0; font-size: 15px; line-height: 1.5; color: var(--daempet); }
   .vores-del { background: var(--nat-2); border: 1px solid var(--nat-streg); border-radius: var(--r); padding: 28px 32px 12px; }
   .vores-del .mono { color: var(--nat-daempet); display: block; margin-bottom: 6px; }
   .vores-del ul { list-style: none; margin: 0; padding: 0; }
@@ -329,7 +328,7 @@
   <div class="skal">
     <div class="tekst">
       <h1>Aldrig mere bogføring.<br><em>1.500 kr. om måneden.</em></h1>
-      <p class="manchet">Du tager et billede af kvitteringen. Vi bogfører den, indberetter momsen og sender dig hver måned, hvad du har tjent.</p>
+      <p class="manchet">Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem, indberetter momsen og sender dig hver måned, hvad du har tjent.</p>
       <div class="handling">
         <a class="knap" href="#book">Bliv fri for bogføring <span class="pil">→</span></a>
         <a class="knap stille" href="#arbejde">Sådan foregår det</a>
@@ -351,7 +350,7 @@
         </div>
         <div class="bund"><span>Du tjente i marts</span><b class="tal">31.640 kr.</b></div>
       </div>
-      <div class="toast"><div class="ikon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></svg></div><div><b>Ny kvittering</b><span>Candy People, fra din telefon</span></div></div>
+      <div class="toast"><div class="ikon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h5l1.5 2.5h5L16 13h5"/><path d="M5.5 5h13L21 13v6H3v-6z"/></svg></div><div><b>Ny regning</b><span>Candy People, kom ind af sig selv</span></div></div>
     </div>
   </div>
 </header>
@@ -420,19 +419,18 @@
     <header class="hoved rejs">
       <span class="etiket"><b>02</b> Arbejdet</span>
       <h2>Sådan foregår det</h2>
-      <p>Din del tager ti sekunder. Vores del er hele regnskabet.</p>
+      <p>Din del er næsten ingenting. Vores del er hele regnskabet.</p>
     </header>
     <div class="delene">
       <div class="din-del rejs">
-        <div class="ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></svg></div>
         <span class="mono">Din del</span>
-        <p class="stor">Tag et billede af kvitteringen.</p>
-        <p class="lille">Skriver vi med et spørgsmål, svarer du. Det er det.</p>
+        <p class="stor">Næsten ingenting.</p>
+        <p class="lille">Regninger og fakturaer kommer ind af sig selv. Skriver vi med et spørgsmål, svarer du. Har du en kvittering fra en butik, tager du et billede af den.</p>
       </div>
       <div class="vores-del rejs">
         <span class="mono">Vores del</span>
         <ul>
-          <li>Vi bogfører hver kvittering og regning</li>
+          <li>Vi bogfører hver regning, faktura og kvittering</li>
           <li>Vi tjekker hver uge, at banken passer</li>
           <li>Vi indberetter momsen og sender dig beløbet</li>
           <li>Vi sender dig hver måned, hvad du har tjent</li>
@@ -452,7 +450,7 @@
         <div><span class="n">3</span><h3>Giv os adgang</h3><p>Så bogfører vi fra dag ét.</p></div>
       </div>
     </div>
-    <p class="arbejde-note">Et program læser dine kvitteringer, og Othman tjekker hver post, før den bogføres.</p>
+    <p class="arbejde-note">Et program læser dine bilag, og Othman tjekker hver post, før den bogføres.</p>
   </div>
 </section>
 
