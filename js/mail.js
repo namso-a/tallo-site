@@ -4,7 +4,7 @@
   document.querySelectorAll("[data-u]").forEach((el) => {
     const adr = el.dataset.u + "@" + el.dataset.d;
     if (el.tagName === "FORM") { el.action = "mailto:" + adr; return; }
-    if (el.tagName === "A") el.href = "mailto:" + adr;
-    el.textContent = adr;
+    if (el.tagName === "A") el.href = "mailto:" + adr + (el.dataset.emne ? "?subject=" + encodeURIComponent(el.dataset.emne) : "");
+    if (!el.dataset.emne) el.textContent = adr;
   });
 })();
