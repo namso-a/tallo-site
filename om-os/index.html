@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Om os: Tallo</title>
+<meta name="description" content="Tallo er Othman Ajjawi og Mohammed Chahrour. Othman bogfører og holder øje med dine tal. Mohammed er den, du taler med.">
+<style>@font-face{font-family:"Geist";src:url("../fonts/geist.woff2") format("woff2");font-weight:100 900;font-display:swap}@font-face{font-family:"Geist Mono";src:url("../fonts/geist-mono.woff2") format("woff2");font-weight:100 900;font-display:swap}</style>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+<style>
+  :root { --lys: #fff; --flade: #f3f4f7; --blaek: #101219; --daempet: #5b6070; --lineal: #e3e6ec; --blaa: #2447cc; --blaa-svag: #e8edff; --nat: #0f1424; --r: 18px; --skygge-dyb: 0 30px 60px -30px rgba(16,18,25,.35); }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; font-family: "Geist", system-ui, sans-serif; color: var(--blaek); background: var(--lys); -webkit-font-smoothing: antialiased; line-height: 1.55; }
+  a { color: var(--blaa); }
+  nav { position: sticky; top: 0; background: rgba(255,255,255,.9); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--lineal); z-index: 5; }
+  nav .skal { display: flex; justify-content: space-between; align-items: center; gap: 16px; height: 64px; }
+  nav .logo { font-weight: 700; letter-spacing: -.03em; font-size: 20px; color: var(--blaek); text-decoration: none; }
+  nav .hoejre { display: flex; align-items: center; gap: 24px; }
+  nav .tilbage { font-size: 14px; color: var(--daempet); text-decoration: none; }
+  nav .tilbage:hover { color: var(--blaek); }
+  .skal { width: min(1160px, calc(100% - 64px)); margin-inline: auto; }
+  .knap { display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 22px; border-radius: 999px; background: var(--blaa); color: #fff; font-weight: 500; font-size: 15px; text-decoration: none; white-space: nowrap; transition: transform .18s ease-out, background .18s; }
+  .knap:hover { background: #1b39a8; transform: translateY(-1px); }
+  nav .knap { height: 40px; padding: 0 18px; font-size: 14px; }
+  .mono { font-family: "Geist Mono", monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); }
+  main { padding: 72px 0 96px; }
+  .os { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: start; }
+  h1 { font-size: clamp(36px, 4.4vw, 56px); letter-spacing: -.035em; line-height: 1.05; margin: 14px 0 28px; font-weight: 600; }
+  .tekst p { font-size: 18px; margin: 0 0 16px; max-width: 34em; }
+  .tekst p.stille { color: var(--daempet); }
+  .tekst .knap { margin-top: 20px; }
+  .fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .fotos > div:nth-child(2) { margin-top: 36px; }
+  .foto { aspect-ratio: 4 / 5; border-radius: var(--r); background: #dfe3ea; display: grid; place-items: end start; padding: 16px; position: relative; overflow: hidden; }
+  .foto::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,.35) 14px 15px); }
+  .foto span { position: relative; font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); }
+  .navnekort { margin-top: 10px; }
+  .navnekort b { display: block; font-weight: 600; }
+  .navnekort span { font-size: 14px; color: var(--daempet); }
+  .bund { margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--lineal); color: var(--daempet); font-size: 14px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  @media (max-width: 900px) {
+    .os { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .fotos > div:nth-child(2) { margin-top: 0; }
+    nav .tilbage { display: none; }
+    main { padding-top: 48px; }
+  }
+</style>
+</head>
+<body>
+<nav><div class="skal"><a class="logo" href="../">tallo</a><div class="hoejre"><a class="tilbage" href="../">Tilbage til forsiden</a><a class="knap" href="../#book">Bliv fri for bogføring</a></div></div></nav>
+
+<main class="skal">
+  <div class="os">
+    <div class="tekst">
+      <span class="mono">Om Tallo</span>
+      <h1>Tallo er Othman og Mohammed.</h1>
+      <p>Othman er kandidat i erhvervsøkonomi og arbejder til daglig med regnskaber og økonomital. Han gennemgår dine bilag, holder øje med dine tal og skriver til dig, hvis noget skal afklares.</p>
+      <p>Mohammed er kandidat i jura. Han tager den første snak med dig, sørger for aftalerne og er den, du ringer til, når du har et spørgsmål.</p>
+      <p class="stille">Vi er kun to, og det er med vilje. Du taler med de samme mennesker hver gang, og vi kender din virksomhed.</p>
+      <a class="knap" href="../#book">Bliv fri for bogføring <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="fotos">
+      <div><div class="foto"><span>Foto: Othman Ajjawi</span></div><div class="navnekort"><b>Othman Ajjawi</b><span>Holder styr på dine tal</span></div></div>
+      <div><div class="foto"><span>Foto: Mohammed Chahrour</span></div><div class="navnekort"><b>Mohammed Chahrour</b><span>Den du taler med</span></div></div>
+    </div>
+  </div>
+
+  <div class="bund"><span>Tallo v/ Othman Ajjawi · CVR kommer</span><span><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></span></div>
+</main>
+<script src="../js/mail.js"></script>
+</body>
+</html>
