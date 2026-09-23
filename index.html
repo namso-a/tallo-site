@@ -282,6 +282,12 @@
   .booking .knapper { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
   .knap.stille-lys { background: transparent; color: var(--blaa); border: 1px solid #c9d4f4; }
   .knap.stille-lys:hover { background: var(--blaa-svag); transform: none; }
+  .cal-pladsholder { margin-top: 24px; flex: 1; min-height: 300px; border: 1.5px dashed #b9c5ee; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .cal-pladsholder .skitse { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; opacity: .55; }
+  .cal-pladsholder .skitse span { text-align: center; font-family: "Geist Mono", monospace; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); padding-bottom: 4px; }
+  .cal-pladsholder .skitse i { aspect-ratio: 1; border-radius: 8px; background: var(--flade); }
+  .cal-pladsholder .skitse i:nth-child(n+23):nth-child(-n+25), .cal-pladsholder .skitse i:nth-child(n+30):nth-child(-n+31) { background: var(--blaa-svag); }
+  .cal-pladsholder .maerkat { align-self: flex-start; margin-top: auto; padding: 3px 9px; border: 1px dashed var(--daempet); border-radius: 6px; font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); }
   .cal-ramme { margin-top: 18px; min-height: 560px; border-radius: 12px; overflow: auto; }
   .faelde { position: absolute; left: -9999px; }
   .formular-status { margin-top: 14px; font-size: 14px; min-height: 1.2em; }
@@ -585,6 +591,10 @@
             <a class="knap stille-lys" data-u="kontakt" data-d="tallo.dk" data-emne="Book 20 minutter med Chahrour" href="#">Book på mail</a>
           </div>
         </div>
+        <div class="cal-pladsholder" data-cal-pladsholder aria-hidden="true">
+          <div class="skitse"><span>Ma</span><span>Ti</span><span>On</span><span>To</span><span>Fr</span><span>Lø</span><span>Sø</span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="maerkat">Pladsholder · Kalenderen fra Cal.com kommer her</span>
+        </div>
         <div class="cal-ramme" data-cal-ramme hidden></div>
       </div>
       <form class="skriv rejs" data-formular action="https://api.web3forms.com/submit" method="post">
@@ -692,6 +702,7 @@
   const calKnap = document.querySelector("[data-cal-aaben]");
   if (CAL_LINK && calKnap) {
     calKnap.hidden = false;
+    document.querySelector("[data-cal-pladsholder]").hidden = true;
     calKnap.addEventListener("click", () => {
       document.querySelector("[data-booking]").hidden = true;
       document.querySelector("[data-cal-ramme]").hidden = false;
