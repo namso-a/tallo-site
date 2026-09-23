@@ -248,7 +248,8 @@
   .cal-pladsholder .skitse i { aspect-ratio: 1; border-radius: 8px; background: var(--flade); }
   .cal-pladsholder .skitse i:nth-child(n+23):nth-child(-n+25), .cal-pladsholder .skitse i:nth-child(n+30):nth-child(-n+31) { background: var(--blaa-svag); }
   .cal-pladsholder .maerkat { align-self: flex-start; margin-top: auto; padding: 3px 9px; border: 1px dashed var(--daempet); border-radius: 6px; font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); }
-  .cal-ramme { margin-top: 18px; min-height: 560px; border-radius: 12px; overflow: auto; }
+  .cal-ramme { margin-top: 18px; min-height: 480px; border-radius: 12px; }
+  .kontakt.cal-aaben { grid-template-columns: minmax(0, 1fr); }
   .faelde { position: absolute; left: -9999px; }
   .formular-status { margin-top: 14px; font-size: 14px; min-height: 1.2em; }
   .formular-status.ok { color: var(--groen); }
@@ -284,6 +285,8 @@
     .skaerm { transform: none; }
     .toast { right: 0; top: -22px; }
     .spor { display: none; }
+    .kontakt.cal-aaben .kalender { padding: 16px 10px; }
+    .cal-ramme { max-height: 680px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .din-del, .vores-del { padding: 24px; }
     .foerste { margin-top: 56px; }
     .pris-grid ul { grid-template-columns: minmax(0, 1fr); }
@@ -610,7 +613,7 @@
 
   /* Booking: Cal.com hentes foerst ved klik, saa deres script og cookies ikke rammer alle besoegende.
      Saet linket her, naar Chahrour har oprettet eventet, fx "chahrour/20min". */
-  const CAL_LINK = "";
+  const CAL_LINK = "tallo/møde";
   const calKnap = document.querySelector("[data-cal-aaben]");
   if (CAL_LINK && calKnap) {
     calKnap.hidden = false;
@@ -618,9 +621,11 @@
     calKnap.addEventListener("click", () => {
       document.querySelector("[data-booking]").hidden = true;
       document.querySelector("[data-cal-ramme]").hidden = false;
+      document.querySelector(".kontakt").classList.add("cal-aaben"); /* fuld bredde: tiderne staar ved siden af kalenderen, ikke under */
       (function (C, A, L) { const p = (a, ar) => { a.q.push(ar); }; const d = C.document; C.Cal = C.Cal || function () { const cal = C.Cal; const ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const ns = ar[1]; api.q = api.q || []; if (typeof ns === "string") { cal.ns[ns] = cal.ns[ns] || api; p(cal.ns[ns], ar); p(cal, ["initNamespace", ns]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
       Cal("init", { origin: "https://cal.com" });
       Cal("inline", { elementOrSelector: "[data-cal-ramme]", calLink: CAL_LINK, config: { layout: "month_view" } });
+      Cal("ui", { hideEventTypeDetails: true, layout: "month_view" });
     }, { once: true });
   }
 
