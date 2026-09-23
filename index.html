@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tallo: vi klarer regnskabet for din virksomhed</title>
+<title>Tallo: aldrig mere bogføring</title>
 <style>@font-face{font-family:"Geist";src:url("fonts/geist.woff2") format("woff2");font-weight:100 900;font-display:swap}@font-face{font-family:"Geist Mono";src:url("fonts/geist-mono.woff2") format("woff2");font-weight:100 900;font-display:swap}</style>
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="Du sender os dine bilag. Vi klarer regnskabet. Bogføring, moms og årsregnskab for små virksomheder til 1.500 kr. om måneden.">
+<meta name="description" content="Du tager et billede af kvitteringen. Vi bogfører den, indberetter momsen og laver årsregnskabet. 1.500 kr. om måneden for små virksomheder.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Tallo: vi klarer regnskabet for din virksomhed">
-<meta property="og:description" content="Du sender os dine bilag. Vi klarer regnskabet. 1.500 kr. om måneden, det samme hver måned.">
+<meta property="og:title" content="Tallo: aldrig mere bogføring">
+<meta property="og:description" content="Du tager et billede af kvitteringen. Vi bogfører den, indberetter momsen og laver årsregnskabet. 1.500 kr. om måneden.">
 <meta property="og:image" content="https://tallo.dk/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -79,7 +79,7 @@
   .tal-flade { position: relative; }
   .tal-flade > .hero, .tal-flade > .skal { position: relative; z-index: 1; }
   .tal-bag { position: absolute; right: 4%; top: -20px; bottom: 0; z-index: 0; pointer-events: none; font-family: "Geist Mono", monospace; font-size: 64px; line-height: 1.25; color: #fff; opacity: .045; text-align: right; white-space: pre; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 80%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 80%, transparent); }
-  #igang .tal-bag { top: 0; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 42%, transparent 66%); mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 42%, transparent 66%); }
+  #arbejde .tal-bag { top: 0; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 42%, transparent 66%); mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 42%, transparent 66%); }
 
   /* Nav: fast, gennemsigtig paa moerkt, hvid naar man er vaek fra toppen */
   nav { position: fixed; top: 0; left: 0; right: 0; z-index: 20; color: #fff; transition: background .25s, color .25s, box-shadow .25s; }
@@ -101,7 +101,7 @@
   .hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1; background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(143,176,255,.14), transparent 60%); opacity: 0; transition: opacity .4s; }
   .hero.lys::before { opacity: 1; }
   .hero .skal { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 56px; align-items: center; position: relative; z-index: 2; }
-  .hero h1 { font-size: clamp(38px, 3.9vw, 58px); color: #fff; }
+  .hero h1 { font-size: clamp(38px, 3.9vw, 53px); color: #fff; }
   .hero h1 em { font-style: normal; color: var(--blaa-lys); }
   .hero .manchet { margin-top: 24px; font-size: 19px; color: var(--nat-daempet); max-width: 28em; }
   .hero .lille-under { margin-top: 14px; font-size: 14px; color: var(--nat-daempet); }
@@ -187,25 +187,25 @@
   .ettal b { display: block; font-size: 38px; font-weight: 600; letter-spacing: -.04em; line-height: 1; }
   .ettal span { display: block; margin-top: 6px; font-size: 13px; color: var(--daempet); }
 
-  /* 02 Arbejdet: hvem goer hvad, hvornaar */
-  .forloeb { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 40px; align-items: start; }
-  .oversigt { background: #fff; border: 1px solid var(--lineal); border-radius: var(--r); box-shadow: var(--skygge); padding: 6px 28px 4px; }
-  .oversigt table { width: 100%; border-collapse: collapse; }
-  .oversigt th { text-align: left; font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--daempet); font-weight: 500; padding: 16px 20px 12px 0; }
-  .oversigt td { padding: 16px 20px 16px 0; border-top: 1px solid var(--lineal); vertical-align: top; font-size: 16px; line-height: 1.4; }
-  .oversigt td:first-child { font-weight: 600; width: 24%; }
-  .oversigt td.du { color: var(--blaa); font-weight: 500; width: 30%; }
-  .oversigt td.du.intet { color: var(--daempet); font-weight: 400; }
-  .oversigt td:last-child { padding-right: 0; }
-  .fra-os .mono { color: var(--daempet); display: block; margin-bottom: 16px; }
-  .boble-linje { text-align: right; margin-top: 12px; }
-  .boble { display: inline-block; text-align: left; background: var(--nat); color: #fff; padding: 10px 14px; border-radius: 14px 14px 4px 14px; font-size: 13.5px; line-height: 1.45; box-shadow: var(--skygge-dyb); transform-origin: bottom right; }
-  .boble small { display: block; font-size: 11px; color: var(--nat-daempet); margin-bottom: 2px; }
-  .forloeb-note { margin-top: 28px; font-size: 14px; color: var(--daempet); max-width: 44em; }
+  /* 02 Arbejdet: din del er lille, vores del er stor */
+  .delene { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; align-items: stretch; }
+  .din-del { background: #fff; color: var(--blaek); border-radius: var(--r); padding: 32px; display: flex; flex-direction: column; }
+  .din-del .ikon { width: 44px; height: 44px; border-radius: 12px; background: var(--roed-svag); color: var(--roed); display: grid; place-items: center; margin-bottom: 28px; }
+  .din-del .mono { color: var(--daempet); }
+  .din-del .stor { font-size: clamp(28px, 2.6vw, 36px); font-weight: 600; letter-spacing: -.025em; line-height: 1.1; margin-top: 10px; }
+  .din-del .lille { margin-top: auto; padding-top: 28px; font-size: 15px; color: var(--daempet); }
+  .vores-del { background: var(--nat-2); border: 1px solid var(--nat-streg); border-radius: var(--r); padding: 28px 32px 12px; }
+  .vores-del .mono { color: var(--nat-daempet); display: block; margin-bottom: 6px; }
+  .vores-del ul { list-style: none; margin: 0; padding: 0; }
+  .vores-del li { display: flex; gap: 12px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--nat-streg); font-size: 18px; color: #fff; }
+  .vores-del li:last-child { border-bottom: 0; }
+  .vores-del li::before { content: "✓"; color: var(--blaa-lys); font-weight: 600; }
+  .foerste { margin-top: 80px; margin-bottom: 28px; }
+  .foerste .mono { color: var(--blaa-lys); display: block; margin-bottom: 8px; }
+  .foerste p { color: var(--nat-daempet); font-size: 17px; }
+  .arbejde-note { margin-top: 56px; font-size: 14px; color: var(--nat-daempet); }
 
-  /* 03 Start: linjen og opkaldet */
-  .start-top { margin-bottom: 56px; }
-  .start-top .hoved { margin-bottom: 0; }
+  /* 02 Foerste gang: linjen og trinene */
   .trin-wrap { position: relative; padding-top: 14px; }
   .spor { position: absolute; left: 0; right: 0; top: 27px; height: 2px; background: var(--nat-streg); }
   .spor .fyld { position: absolute; inset: 0; background: var(--blaa-lys); transform-origin: left center; }
@@ -233,34 +233,10 @@
   .tilkoeb .l { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--lineal); font-size: 16px; }
   .tilkoeb .l span:last-child { font-weight: 500; text-align: right; }
   .pris-grid .med { margin-top: 22px; color: var(--daempet); font-size: 15px; max-width: 40em; }
-  .bon { margin-top: 28px; background: #fff; border: 1px solid var(--lineal); border-radius: 4px; padding: 18px 20px 16px; font-family: "Geist Mono", monospace; font-size: 12.5px; letter-spacing: .02em; position: relative; box-shadow: var(--skygge); max-width: 34em; }
-  .bon::before, .bon::after { content: ""; position: absolute; left: 0; right: 0; height: 6px; background: radial-gradient(circle at 6px 0, transparent 5px, #fff 5.5px) 0 0 / 12px 6px repeat-x; }
-  .bon::before { top: -6px; }
-  .bon::after { bottom: -6px; transform: scaleY(-1); }
-  .bon .l { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; border-bottom: 1px dashed var(--lineal); }
-  .bon .l span:last-child { text-align: right; white-space: nowrap; }
-  .bon .l.her { border-bottom: 0; border-top: 2px solid var(--blaek); margin-top: 4px; padding-top: 10px; font-weight: 500; color: var(--blaa); }
-  .bon .l.her span:first-child { color: var(--blaek); }
-  .faelde { margin-top: 14px; font-size: 14px; color: var(--daempet); max-width: 38em; }
 
-  /* 05 Os */
-  .os { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: center; }
-  .fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; perspective: 900px; }
-  .fotos > div:nth-child(2) { margin-top: 36px; }
-  .foto { aspect-ratio: 4 / 5; border-radius: var(--r); background: #dfe3ea; display: grid; place-items: end start; padding: 16px; position: relative; overflow: hidden; transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; transform-style: preserve-3d; }
-  .foto:hover { transform: translateY(-6px) rotateX(4deg) rotateY(-5deg); box-shadow: var(--skygge-dyb); }
-  .foto::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,.35) 14px 15px); }
-  .foto span { position: relative; font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); }
-  .navnekort { margin-top: 10px; }
-  .navnekort b { display: block; font-weight: 600; }
-  .navnekort span { font-size: 14px; color: var(--daempet); }
-  .os .tekst p { font-size: 17px; max-width: 34em; }
-  .os .tekst p:first-child { font-size: 26px; font-weight: 600; letter-spacing: -.02em; }
-  .os .tekst p + p { margin-top: 14px; }
-  .os .tekst p:last-child { color: var(--daempet); }
-  .os .partner { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--lineal); font-size: 14px; color: var(--daempet); }
-
-  /* 06 Samtalen: indvendinger, kalender-mock og formular */
+  /* 04 Samtalen: kalender og formular */
+  .hoved .om-link { margin-top: 12px; font-size: 16px; }
+  .om-link a { color: var(--blaa); font-weight: 500; }
   .kontakt { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 20px; }
   .kalender, .skriv { background: #fff; border-radius: var(--r); border: 1px solid #d5ddf5; padding: 26px; }
   .kalender { display: flex; flex-direction: column; }
@@ -299,7 +275,7 @@
   footer .kaempe { font-size: clamp(150px, 35vw, 500px); font-weight: 700; letter-spacing: -.05em; line-height: .75; color: #fff; margin-top: 40px; margin-bottom: -.13em; white-space: nowrap; position: relative; }
 
   @media (max-width: 900px) {
-    .hero .skal, .pris-grid, .os, .kontakt, .forloeb, .start-top, footer .spalter { grid-template-columns: minmax(0, 1fr); }
+    .hero .skal, .pris-grid, .kontakt, .delene, footer .spalter { grid-template-columns: minmax(0, 1fr); }
       .tal-bag { display: none; } /* paa mobil ligger tallene under overskriften; det stoejer */
     .uge-kort, .trin { grid-template-columns: 1fr; }
     .uge-kort article.bred { grid-column: auto; grid-template-columns: minmax(0, 1fr); }
@@ -309,20 +285,12 @@
     .skaerm { transform: none; }
     .toast { right: 0; top: -22px; }
     .spor { display: none; }
-    .oversigt { padding: 4px 18px; }
-    .oversigt thead { display: none; }
-    .oversigt tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 16px; padding: 14px 0; border-top: 1px solid var(--lineal); }
-    .oversigt tbody tr:first-child { border-top: 0; }
-    .oversigt td { border: 0; padding: 0; width: auto !important; font-size: 15px; }
-    .oversigt td:first-child { grid-column: 1 / -1; font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--daempet); font-weight: 500; }
-    .oversigt td:nth-child(2)::before, .oversigt td:nth-child(3)::before { display: block; font-family: "Geist Mono", monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--daempet); font-weight: 500; }
-    .oversigt td:nth-child(2)::before { content: "Du"; }
-    .oversigt td:nth-child(3)::before { content: "Vi"; }
+    .din-del, .vores-del { padding: 24px; }
+    .foerste { margin-top: 56px; }
     .pris-grid ul { grid-template-columns: minmax(0, 1fr); }
     .tilkoeb .l { flex-direction: column; gap: 2px; }
     .tilkoeb .l span:last-child { text-align: left; }
     .trin > div { padding: 14px 0; }
-    .fotos > div:nth-child(2) { margin-top: 0; }
     nav ul { display: none; }
     footer .kaempe { font-size: 40vw; }
   }
@@ -336,9 +304,9 @@
     <ul>
       <li><a href="#arbejde">Sådan foregår det</a></li>
       <li><a href="#pris">Prisen</a></li>
-      <li><a href="#hvem">Hvem vi er</a></li>
+      <li><a href="om-os/">Om os</a></li>
     </ul>
-    <a class="knap lys" href="#book">Book en snak</a>
+    <a class="knap lys" href="#book">Bliv fri for bogføring</a>
   </div>
 </nav>
 
@@ -360,13 +328,13 @@
 <header class="hero">
   <div class="skal">
     <div class="tekst">
-      <h1>Du tager billedet.<br><em>Vi klarer regnskabet.</em></h1>
-      <p class="manchet">Vi bogfører dine kvitteringer, klarer momsen og fortæller dig hver måned, hvordan det går. 1.500 kr. om måneden, uanset hvor meget der er.</p>
+      <h1>Aldrig mere bogføring.<br><em>1.500 kr. om måneden.</em></h1>
+      <p class="manchet">Du tager et billede af kvitteringen. Vi bogfører den, indberetter momsen og sender dig hver måned, hvad du har tjent.</p>
       <div class="handling">
-        <a class="knap" href="#book">Book en snak med Mohammed <span class="pil">→</span></a>
+        <a class="knap" href="#book">Bliv fri for bogføring <span class="pil">→</span></a>
         <a class="knap stille" href="#arbejde">Sådan foregår det</a>
       </div>
-      <p class="lille-under">20 minutter, gratis og uforpligtende.</p>
+      <p class="lille-under">20 minutters snak med Mohammed. Gratis.</p>
     </div>
     <div class="scene" aria-hidden="true">
       <div class="skaerm">
@@ -394,7 +362,7 @@
     <header class="hoved rejs">
       <span class="etiket"><b>01</b> Hverdagen</span>
       <h2>Det skal du aldrig mere</h2>
-      <p>Papirarbejdet er vores. Du passer din virksomhed.</p>
+      <p>Vi bogfører, indberetter og holder øje med dine tal. Du passer din virksomhed.</p>
     </header>
     <div class="uge-kort">
       <article class="rejs moerk" data-mini="kalender">
@@ -431,45 +399,13 @@
           <div class="ettal"><b class="tal">1.500 kr.</b><span>om måneden. <u>Altid.</u></span></div>
         </div>
         <h3>Du kender altid prisen</h3>
-        <p>Også når du har travlt.</p>
+        <p>1.500 kr. hver måned, også når du har travlt.</p>
       </article>
     </div>
   </div>
 </section>
 
-<section class="afsnit" id="arbejde">
-  <div class="skal">
-    <header class="hoved rejs">
-      <span class="etiket"><b>02</b> Arbejdet</span>
-      <h2>Sådan foregår det</h2>
-      <p>Du gør tre ting: tager billeder af dine kvitteringer, svarer, når vi spørger, og betaler momsen. Resten klarer vi.</p>
-    </header>
-    <div class="forloeb">
-      <div class="oversigt rejs">
-        <table>
-          <thead><tr><th>Hvornår</th><th>Du</th><th>Vi</th></tr></thead>
-          <tbody>
-            <tr><td>Når du køber noget</td><td class="du">Tager et billede af kvitteringen</td><td>Får den med det samme</td></tr>
-            <tr><td>Hver dag</td><td class="du intet">Ingenting</td><td>Ser dine betalinger, fordi banken er koblet til</td></tr>
-            <tr><td>Hver uge</td><td class="du">Svarer, hvis vi spørger</td><td>Bogfører alt og tjekker, at det passer med banken</td></tr>
-            <tr><td>Hver måned</td><td class="du">Læser vores besked</td><td>Fortæller dig, hvad du har tjent, og om noget ser forkert ud</td></tr>
-            <tr><td>Hvert kvartal</td><td class="du">Betaler momsen</td><td>Indberetter den og siger, hvad du skal betale og hvornår</td></tr>
-            <tr><td>Hvert år</td><td class="du intet">Ingenting</td><td>Laver årsregnskab og selvangivelse</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="fra-os rejs">
-        <span class="mono">Sådan lyder det fra os</span>
-        <div class="boble-linje"><div class="boble"><small>Othman fra Tallo, fredag 09:12</small>Hej. Du har købt for 2.499 kr. i Elgiganten. Er det til brug i butikken, eller skal det sælges videre?</div></div>
-        <div class="boble-linje"><div class="boble"><small>Othman fra Tallo, 4. april</small>Marts er gjort op. Du tjente 31.640 kr., lidt mere end i februar.</div></div>
-        <div class="boble-linje"><div class="boble"><small>Othman fra Tallo, 20. maj</small>Momsen for 1. kvartal er indberettet. Du skal betale 15.231 kr. senest 1. juni.</div></div>
-      </div>
-    </div>
-    <p class="forloeb-note">Et program læser dine kvitteringer, og Othman tjekker hver post, før den bogføres. Eksemplerne er opdigtede.</p>
-  </div>
-</section>
-
-<section class="afsnit nat tal-flade" id="igang">
+<section class="afsnit nat tal-flade" id="arbejde">
   <div class="tal-bag" aria-hidden="true">17.270,00
 41.900,00
 31.640,00
@@ -481,35 +417,56 @@
 1.905,75
 148.220,00</div>
   <div class="skal">
-    <div class="start-top">
-      <header class="hoved rejs">
-        <span class="etiket"><b>03</b> Start</span>
-        <h2>Sådan kommer du i gang</h2>
-        <p>Vi hjælper dig i gang. Du gør tre ting, én gang, og så rører du det aldrig igen. Går noget i stå, ringer vi og klarer det sammen med dig.</p>
-      </header>
+    <header class="hoved rejs">
+      <span class="etiket"><b>02</b> Arbejdet</span>
+      <h2>Sådan foregår det</h2>
+      <p>Din del tager ti sekunder. Vores del er hele regnskabet.</p>
+    </header>
+    <div class="delene">
+      <div class="din-del rejs">
+        <div class="ikon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></svg></div>
+        <span class="mono">Din del</span>
+        <p class="stor">Tag et billede af kvitteringen.</p>
+        <p class="lille">Skriver vi med et spørgsmål, svarer du. Det er det.</p>
+      </div>
+      <div class="vores-del rejs">
+        <span class="mono">Vores del</span>
+        <ul>
+          <li>Vi bogfører hver kvittering og regning</li>
+          <li>Vi tjekker hver uge, at banken passer</li>
+          <li>Vi indberetter momsen og sender dig beløbet</li>
+          <li>Vi sender dig hver måned, hvad du har tjent</li>
+          <li>Vi laver årsregnskab og selvangivelse</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foerste rejs">
+      <span class="mono">Første gang</span>
+      <p>Én gang. Vi guider dig igennem, og går det i stå, ringer vi.</p>
     </div>
     <div class="trin-wrap">
       <div class="spor"><div class="fyld"></div></div>
       <div class="trin">
-        <div><span class="n">1</span><h3>Opret Dinero</h3><p>Regnskabsprogrammet, vi arbejder i. Vi viser dig, hvor du skal trykke.</p></div>
-        <div><span class="n">2</span><h3>Kobl din bank til</h3><p>Med dit eget MitID. Så kommer dine betalinger ind af sig selv.</p></div>
-        <div><span class="n">3</span><h3>Giv os adgang</h3><p>Ét klik. Herfra klarer vi resten.</p></div>
+        <div><span class="n">1</span><h3>Opret Dinero</h3><p>Regnskabsprogrammet, vi bruger.</p></div>
+        <div><span class="n">2</span><h3>Kobl banken til</h3><p>Med dit eget MitID.</p></div>
+        <div><span class="n">3</span><h3>Giv os adgang</h3><p>Så bogfører vi fra dag ét.</p></div>
       </div>
     </div>
+    <p class="arbejde-note">Et program læser dine kvitteringer, og Othman tjekker hver post, før den bogføres.</p>
   </div>
 </section>
 
 <section class="afsnit" id="pris">
   <div class="skal">
     <header class="hoved rejs">
-      <span class="etiket"><b>04</b> Prisen</span>
+      <span class="etiket"><b>03</b> Prisen</span>
       <h2>Hvad det koster</h2>
       <p>Det samme hver måned. Ingen binding.</p>
     </header>
     <div class="pris-grid">
       <div class="rejs">
         <div class="beloeb"><span class="tal" data-til="1500">1.500</span><small>kr. om måneden plus moms. <b class="altid">Altid.</b></small></div>
-        <a class="knap handling" href="#book">Book en snak med Mohammed <span class="pil">→</span></a>
+        <a class="knap handling" href="#book">Bliv fri for bogføring <span class="pil">→</span></a>
       </div>
       <div class="rejs">
         <ul>
@@ -529,33 +486,14 @@
   </div>
 </section>
 
-<section class="afsnit flade" id="hvem">
-  <div class="skal">
-    <header class="hoved rejs">
-      <span class="etiket"><b>05</b> Os</span>
-      <h2>Hvem vi er</h2>
-    </header>
-    <div class="os">
-      <div class="fotos">
-        <div class="rejs"><div class="foto"><span>Foto: Othman Ajjawi</span></div><div class="navnekort"><b>Othman Ajjawi</b><span>Holder styr på dine tal</span></div></div>
-        <div class="rejs"><div class="foto"><span>Foto: Mohammed Chahrour</span></div><div class="navnekort"><b>Mohammed Chahrour</b><span>Den du taler med</span></div></div>
-      </div>
-      <div class="tekst rejs">
-        <p>Tallo er Othman og Mohammed.</p>
-        <p>Othman er kandidat i erhvervsøkonomi og arbejder til daglig med regnskaber og økonomital. Han gennemgår dine bilag, holder øje med dine tal og skriver til dig, hvis noget skal afklares.</p>
-        <p>Mohammed er kandidat i jura. Han tager den første snak med dig, sørger for aftalerne og er den, du ringer til, når du har et spørgsmål.</p>
-        <p>Vi er kun to, og det er med vilje. Du taler med de samme mennesker hver gang, og vi kender din virksomhed.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="afsnit blaa-svag" id="book">
   <div class="skal">
     <header class="hoved rejs">
-      <span class="etiket"><b>06</b> Samtalen</span>
-      <h2>Book en snak med Mohammed</h2>
-      <p>20 minutter i telefonen eller på video. Du fortæller om din virksomhed, og Mohammed fortæller, hvad vi kan gøre for dig. Det er gratis, og du forpligter dig ikke til noget.</p>
+      <span class="etiket"><b>04</b> Samtalen</span>
+      <h2>Bliv fri for bogføring</h2>
+      <p>Book 20 minutter med Mohammed i telefonen eller på video. Du fortæller, hvad din virksomhed laver, og hvordan du bogfører i dag. Mohammed fortæller, hvad der skal til for at give det til os, og hvornår vi kan starte. Det er gratis, og du binder dig ikke.</p>
+      <p class="om-link"><a href="om-os/">Hvem er Mohammed og Othman? Læs om os <span class="pil">→</span></a></p>
     </header>
     <div class="kontakt">
       <div class="kalender rejs">
@@ -593,7 +531,7 @@
     <div class="spalter">
       <div>
         <span class="logo">tallo</span>
-        <p>Othman Ajjawi og Mohammed Chahrour.</p>
+        <p><a href="om-os/">Othman Ajjawi og Mohammed Chahrour</a></p>
         <p><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
         <p>CVR <span class="kommer">kommer</span></p>
       </div>
@@ -789,14 +727,7 @@
     });
   });
 
-  /* 02: beskederne kommer ind en ad gangen */
-  const bobler = gsap.utils.toArray(".fra-os .boble");
-  gsap.set(bobler, { scale: 0.9, opacity: 0, y: 8 });
-  ScrollTrigger.create({ trigger: ".fra-os", start: "top 75%", once: true, onEnter: () => {
-    gsap.to(bobler, { scale: 1, opacity: 1, y: 0, duration: 0.4, stagger: 0.3, delay: 0.2, ease: "back.out(1.6)" });
-  } });
-
-  /* 03: linjen tegner sig med scroll og er faerdig, mens trinene staar midt paa skaermen */
+  /* 02 Foerste gang: linjen tegner sig med scroll og er faerdig, mens trinene staar midt paa skaermen */
   const fyld = document.querySelector(".spor .fyld");
   const trin = gsap.utils.toArray(".trin > div");
   gsap.fromTo(fyld, { scaleX: 0 }, {
