@@ -20,27 +20,30 @@
 
 <style>
   :root {
+    /* Stempelblæk (valgt af Othman 23. sep 2026): hvidt kvitteringspapir, sort tekst, violet stempelfarve.
+       "nat"-navnene er fra den mørke version; de er nu de rolige papirflader. */
     --lys: #ffffff;
-    --flade: #f3f4f7;
-    --blaek: #101219;
-    --daempet: #5b6070;
-    --lineal: #e3e6ec;
-    --blaa: #2447cc;
-    --blaa-lys: #8fb0ff;
-    --blaa-svag: #e8edff;
-    --nat: #0f1424;
-    --nat-2: #171d31;
-    --nat-tekst: #eef0f6;
-    --nat-daempet: #9aa3bd;
-    --nat-streg: rgba(255,255,255,.09);
+    --flade: #f6f6f3;
+    --blaek: #141414;
+    --daempet: #5f5f5b;
+    --lineal: #e2e2dd;
+    --perfor: #cfcfc8;
+    --blaa: #4b3aa6;
+    --blaa-lys: #4b3aa6;
+    --blaa-svag: #f0eef8;
+    --nat: #f6f6f3;
+    --nat-2: #ffffff;
+    --nat-tekst: #141414;
+    --nat-daempet: #5f5f5b;
+    --nat-streg: #e2e2dd;
     --roed: #d1341c;
     --roed-svag: #ffe9e4;
-    --roed-nat: #ff8a76;
+    --roed-nat: #d1341c;
     --groen: #1d8a4e;
-    --groen-nat: #4fd68f;
+    --groen-nat: #1d8a4e;
     --r: 18px;
-    --skygge: 0 1px 2px rgba(16,18,25,.05), 0 12px 32px -12px rgba(16,18,25,.18);
-    --skygge-dyb: 0 1px 2px rgba(16,18,25,.06), 0 28px 56px -20px rgba(16,18,25,.3);
+    --skygge: 0 1px 0 #e2e2dd;
+    --skygge-dyb: 0 1px 0 #e2e2dd, 0 18px 40px -24px rgba(20,20,20,.25);
     --luft: clamp(88px, 10vw, 128px);
     --nav: 72px;
   }
@@ -58,13 +61,13 @@
   p { margin: 0; }
   section[id] { scroll-margin-top: var(--nav); }
   .knap { display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 22px; border-radius: 999px; background: var(--blaa); color: #fff; font-weight: 500; font-size: 15px; transition: transform .18s ease-out, background .18s; white-space: nowrap; }
-  .knap:hover { background: #1b39a8; transform: translateY(-1px); }
+  .knap:hover { background: #3a2c88; transform: translateY(-1px); }
   .knap .pil { display: inline-block; transition: transform .2s cubic-bezier(.2,.7,.2,1); }
   .knap:hover .pil { transform: translateX(4px); }
   .knap.stille { background: transparent; color: inherit; border: 1px solid currentColor; opacity: .85; }
-  .knap.stille:hover { opacity: 1; transform: none; background: rgba(255,255,255,.06); }
-  .knap.lys { background: #fff; color: var(--nat); }
-  .knap.lys:hover { background: var(--blaa-svag); }
+  .knap.stille:hover { opacity: 1; transform: none; background: rgba(20,20,20,.04); }
+  .knap.lys { background: var(--blaek); color: #fff; }
+  .knap.lys:hover { background: var(--blaa); }
 
   /* Afsløring ved scroll */
   .js .rejs { opacity: 0; transform: translateY(16px); }
@@ -78,11 +81,11 @@
   /* Tal i baggrunden paa de moerke flader: bogfoeringens eget materiale. Valgt af Othman 22. sep. */
   .tal-flade { position: relative; }
   .tal-flade > .hero, .tal-flade > .skal { position: relative; z-index: 1; }
-  .tal-bag { position: absolute; right: 4%; top: -20px; bottom: 0; z-index: 0; pointer-events: none; font-family: "Geist Mono", monospace; font-size: 64px; line-height: 1.25; color: #fff; opacity: .045; text-align: right; white-space: pre; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 80%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 80%, transparent); }
+  .tal-bag { position: absolute; right: 4%; top: -20px; bottom: 0; z-index: 0; pointer-events: none; font-family: "Geist Mono", monospace; font-size: 64px; line-height: 1.25; color: var(--blaek); opacity: .04; text-align: right; white-space: pre; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 80%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 80%, transparent); }
   #arbejde .tal-bag { top: 0; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 42%, transparent 66%); mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 42%, transparent 66%); }
 
   /* Nav: fast, gennemsigtig paa moerkt, hvid naar man er vaek fra toppen */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 20; color: #fff; transition: background .25s, color .25s, box-shadow .25s; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 20; color: var(--blaek); transition: background .25s, color .25s, box-shadow .25s; }
   nav .skal { display: flex; align-items: center; justify-content: space-between; height: var(--nav); }
   nav .logo { font-weight: 700; letter-spacing: -.03em; font-size: 21px; }
   nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: 14px; opacity: .7; }
@@ -90,44 +93,40 @@
   nav .knap { height: 40px; padding: 0 18px; font-size: 14px; }
   nav.klaebet { background: rgba(255,255,255,.86); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--blaek); box-shadow: 0 1px 0 var(--lineal); }
   nav.klaebet .knap.lys { background: var(--blaek); color: #fff; }
-  nav.klaebet.over-nat { background: rgba(15,20,36,.78); color: #fff; box-shadow: 0 1px 0 var(--nat-streg); }
-  nav.klaebet.over-nat .knap.lys { background: #fff; color: var(--nat); }
-  .hero-wrap { background: var(--nat); padding-top: var(--nav); }
+  nav.klaebet.over-nat { background: rgba(246,246,243,.94); color: var(--blaek); box-shadow: 0 1px 0 var(--lineal); }
+  nav.klaebet.over-nat .knap.lys { background: var(--blaek); color: #fff; }
+  .hero-wrap { background: var(--nat); padding-top: var(--nav); border-bottom: 1px dashed var(--perfor); }
 
   /* Hero */
   .hero { color: var(--nat-tekst); padding: 64px 0 0; position: relative; }
   .hero .tekst { padding-bottom: 56px; }
-  .hero::after { content: ""; position: absolute; right: 0; top: -20%; width: 55%; height: 130%; background: radial-gradient(ellipse at center, rgba(143,176,255,.12), transparent 62%); pointer-events: none; }
-  .hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1; background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(143,176,255,.14), transparent 60%); opacity: 0; transition: opacity .4s; }
-  .hero.lys::before { opacity: 1; }
   .hero .skal { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 56px; align-items: center; position: relative; z-index: 2; }
-  .hero h1 { font-size: clamp(38px, 3.9vw, 53px); color: #fff; }
+  .hero h1 { font-size: clamp(38px, 3.9vw, 53px); color: var(--blaek); }
   .hero h1 em { font-style: normal; color: var(--blaa-lys); }
   .hero .manchet { margin-top: 24px; font-size: 19px; color: var(--nat-daempet); max-width: 28em; }
   .hero .lille-under { margin-top: 14px; font-size: 14px; color: var(--nat-daempet); }
   .hero .handling { margin-top: 34px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 
   .scene { position: relative; perspective: 1400px; z-index: 3; align-self: end; margin-bottom: -60px; }
-  .skaerm { position: relative; background: var(--nat-2); border: 1px solid var(--nat-streg); border-radius: 18px; box-shadow: 0 50px 90px -30px rgba(0,0,0,.65); overflow: hidden; font-size: 13px; transform: rotate(-1.5deg); transform-style: preserve-3d; will-change: transform; }
-  .skaerm::before { content: ""; position: absolute; left: 8%; right: 8%; top: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent); z-index: 1; }
+  .skaerm { position: relative; background: #fff; border: 1px solid var(--lineal); border-radius: 18px; box-shadow: 0 1px 0 var(--lineal), 0 30px 60px -34px rgba(20,20,20,.35); overflow: hidden; font-size: 13px; transform: rotate(-1.5deg); transform-style: preserve-3d; will-change: transform; }
   .skaerm .bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--nat-streg); color: var(--nat-daempet); }
-  .skaerm .bar i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.14); display: inline-block; }
+  .skaerm .bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--lineal); display: inline-block; }
   .skaerm .bar span { margin-left: 8px; font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
   .skaerm .krop { padding: 18px 18px 8px; }
   .skaerm .h { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
-  .skaerm .h b { font-size: 16px; color: #fff; }
-  .status { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: rgba(143,176,255,.14); color: var(--blaa-lys); font-size: 11px; font-weight: 500; }
+  .skaerm .h b { font-size: 16px; color: var(--blaek); }
+  .status { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: var(--blaa-svag); color: var(--blaa); font-size: 11px; font-weight: 500; }
   .skaerm table { width: 100%; border-collapse: collapse; }
-  .skaerm td { padding: 10px 0; border-top: 1px solid var(--nat-streg); color: #d9deea; vertical-align: middle; }
+  .skaerm td { padding: 10px 0; border-top: 1px dashed #d9d9d2; color: #2b2b28; vertical-align: middle; }
   .skaerm td:first-child { color: var(--nat-daempet); width: 52px; font-family: "Geist Mono", monospace; font-size: 11px; }
-  .skaerm td:last-child { text-align: right; color: #fff; white-space: nowrap; }
+  .skaerm td:last-child { text-align: right; color: var(--blaek); white-space: nowrap; }
   .skaerm td small { display: block; color: var(--nat-daempet); font-size: 12px; }
   .skaerm tr.aaben td:nth-child(2), .skaerm tr.aaben td small { color: var(--roed-nat); }
   .skaerm tr.ny td { border-top: 0; }
-  .skaerm .pille { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; padding: 2px 8px; border-radius: 999px; background: rgba(79,214,143,.14); color: var(--groen-nat); font-size: 11px; font-weight: 500; }
+  .skaerm .pille { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; padding: 2px 8px; border-radius: 999px; background: #e6f3eb; color: var(--groen-nat); font-size: 11px; font-weight: 500; }
   .skaerm .pille::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--groen-nat); }
-  .skaerm .bund { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: rgba(0,0,0,.22); color: var(--nat-daempet); }
-  .skaerm .bund b { color: #fff; font-size: 15px; }
+  .skaerm .bund { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--flade); border-top: 1px dashed #d9d9d2; color: var(--nat-daempet); }
+  .skaerm .bund b { color: var(--blaek); font-size: 15px; }
   .toast { position: absolute; right: -16px; top: -30px; background: #fff; color: var(--blaek); border-radius: 14px; padding: 14px 16px; box-shadow: 0 20px 40px -20px rgba(0,0,0,.6); font-size: 13px; display: flex; gap: 10px; align-items: center; transform: rotate(2deg); z-index: 2; }
   .toast .ikon { width: 34px; height: 34px; border-radius: 9px; background: var(--roed-svag); color: var(--roed); display: grid; place-items: center; font-weight: 600; font-size: 12px; }
   .toast b { display: block; font-weight: 600; }
@@ -136,7 +135,7 @@
   /* Afsnit: samme skelet hver gang */
   .afsnit { padding: var(--luft) 0; }
   .afsnit.flade { background: var(--flade); }
-  .afsnit.nat { background: var(--nat); color: var(--nat-tekst); }
+  .afsnit.nat { background: var(--nat); color: var(--nat-tekst); border-top: 1px dashed var(--perfor); border-bottom: 1px dashed var(--perfor); }
   .afsnit.blaa-svag { background: var(--blaa-svag); }
   .hoved { max-width: 44em; margin-bottom: 48px; }
   .etiket { display: inline-flex; align-items: center; gap: 12px; font-family: "Geist Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--daempet); margin-bottom: 18px; }
@@ -146,7 +145,7 @@
   .js .rejs.inde .etiket::before { transform: scaleX(1); }
   .nat .etiket { color: var(--nat-daempet); }
   .nat .etiket b { color: var(--blaa-lys); }
-  .nat h2 { color: #fff; }
+  .nat h2 { color: var(--blaek); }
   .hoved p { margin-top: 14px; font-size: 19px; color: var(--daempet); max-width: 34em; }
   .nat .hoved p { color: var(--nat-daempet); }
 
@@ -156,22 +155,22 @@
   @media (max-width: 1100px) { .uge-kort { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .uge-kort article { background: #fff; border: 1px solid var(--lineal); border-radius: var(--r); padding: 18px 20px 24px; display: flex; flex-direction: column; transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s; }
   .uge-kort article:hover { transform: translateY(-6px); box-shadow: var(--skygge-dyb); }
-  .uge-kort article.moerk { background: var(--nat); color: var(--nat-tekst); border-color: var(--nat); }
+  .uge-kort article.moerk { background: #fff; color: var(--blaek); border-color: var(--lineal); }
   .uge-kort article.bred { grid-column: span 2; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px; align-items: center; padding: 28px 32px; }
   .uge-kort article.bred .mini { height: 100%; min-height: 200px; margin: 0; }
   .uge-kort article h3 { font-size: 21px; letter-spacing: -.02em; }
-  .uge-kort article.moerk h3 { color: #fff; }
+  .uge-kort article.moerk h3 { color: var(--blaek); }
   .tag { display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 6px; font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; background: var(--blaa-svag); color: var(--blaa); align-self: flex-start; }
-  .uge-kort article.moerk .tag { background: rgba(143,176,255,.14); color: var(--blaa-lys); }
+  .uge-kort article.moerk .tag { background: var(--blaa-svag); color: var(--blaa); }
   .uge-kort article p { font-size: 15px; line-height: 1.45; margin-top: 6px; color: var(--daempet); }
   .uge-kort article.moerk p { color: var(--nat-daempet); }
   .uge-kort article.bred p { margin-top: 12px; font-size: 18px; color: var(--nat-daempet); }
   .uge-kort article p em { font-style: normal; color: var(--blaa); }
   .uge-kort article.moerk p em { color: var(--blaa-lys); }
   .mini { height: 110px; margin-bottom: 18px; border-radius: 12px; background: var(--flade); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 18px; }
-  .uge-kort article.moerk .mini { background: var(--nat-2); }
+  .uge-kort article.moerk .mini { background: var(--flade); }
   /* mini 2: kalendercelle */
-  .celle { width: min(200px, 100%); border: 1px solid var(--nat-streg); border-radius: 10px; padding: 12px 14px; background: rgba(255,255,255,.03); position: relative; color: var(--nat-tekst); }
+  .celle { width: min(200px, 100%); border: 1px solid var(--lineal); border-radius: 10px; padding: 12px 14px; background: #fff; position: relative; color: var(--nat-tekst); }
   .celle .dag { font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--nat-daempet); }
   .celle .hvad { font-size: 15px; font-weight: 500; margin-top: 4px; }
   .celle .hvad small { display: block; font-size: 12px; color: var(--nat-daempet); font-weight: 400; }
@@ -189,14 +188,14 @@
 
   /* 02 Arbejdet: din del er lille, vores del er stor */
   .delene { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 20px; align-items: stretch; }
-  .din-del { background: #fff; color: var(--blaek); border-radius: var(--r); padding: 32px; display: flex; flex-direction: column; }
+  .din-del { background: #fff; color: var(--blaek); border: 1.5px solid var(--blaek); border-radius: var(--r); padding: 32px; display: flex; flex-direction: column; }
   .din-del .mono { color: var(--daempet); }
   .din-del .stor { font-size: clamp(28px, 2.6vw, 36px); font-weight: 600; letter-spacing: -.025em; line-height: 1.1; margin-top: 10px; }
   .din-del .lille { margin-top: 14px; padding-top: 0; font-size: 15px; line-height: 1.5; color: var(--daempet); }
-  .vores-del { background: var(--nat-2); border: 1px solid var(--nat-streg); border-radius: var(--r); padding: 28px 32px 12px; }
+  .vores-del { background: var(--nat-2); border: 1px solid var(--lineal); border-radius: var(--r); padding: 28px 32px 12px; }
   .vores-del .mono { color: var(--nat-daempet); display: block; margin-bottom: 6px; }
   .vores-del ul { list-style: none; margin: 0; padding: 0; }
-  .vores-del li { display: flex; gap: 12px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--nat-streg); font-size: 18px; color: #fff; }
+  .vores-del li { display: flex; gap: 12px; align-items: baseline; padding: 14px 0; border-bottom: 1px dashed #d9d9d2; font-size: 18px; color: var(--blaek); }
   .vores-del li:last-child { border-bottom: 0; }
   .vores-del li::before { content: "✓"; color: var(--blaa-lys); font-weight: 600; }
   .foerste { margin-top: 80px; margin-bottom: 28px; }
@@ -212,7 +211,7 @@
   .trin > div { padding-right: 24px; }
   .trin .n { width: 28px; height: 28px; border-radius: 50%; background: var(--nat); border: 2px solid var(--nat-streg); color: var(--nat-daempet); display: grid; place-items: center; font-family: "Geist Mono", monospace; font-size: 12px; transition: background .3s, color .3s, border-color .3s, transform .3s; position: relative; z-index: 1; }
   .trin > div.naaet .n { background: var(--blaa-lys); border-color: var(--blaa-lys); color: var(--nat); transform: scale(1.1); }
-  .trin h3 { font-size: 22px; margin-top: 26px; color: #fff; opacity: .55; transition: opacity .3s; }
+  .trin h3 { font-size: 22px; margin-top: 26px; color: var(--blaek); opacity: .55; transition: opacity .3s; }
   .trin > div.naaet h3 { opacity: 1; }
   .trin p { margin-top: 8px; color: var(--nat-daempet); font-size: 15px; }
 
@@ -237,12 +236,12 @@
   .hoved .om-link { margin-top: 12px; font-size: 16px; }
   .om-link a { color: var(--blaa); font-weight: 500; }
   .kontakt { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 20px; }
-  .kalender, .skriv { background: #fff; border-radius: var(--r); border: 1px solid #d5ddf5; padding: 26px; }
+  .kalender, .skriv { background: #fff; border-radius: var(--r); border: 1px solid #dcd8ef; padding: 26px; }
   .kalender { display: flex; flex-direction: column; }
   .booking .stor { font-size: 22px; letter-spacing: -.01em; margin-top: 16px; }
   .booking p + p { margin-top: 8px; color: var(--daempet); font-size: 15px; max-width: 30em; }
   .booking .knapper { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
-  .cal-pladsholder { margin-top: 24px; flex: 1; min-height: 300px; border: 1.5px dashed #b9c5ee; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .cal-pladsholder { margin-top: 24px; flex: 1; min-height: 300px; border: 1.5px dashed #c9c2ea; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
   .cal-pladsholder .skitse { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; opacity: .55; }
   .cal-pladsholder .skitse span { text-align: center; font-family: "Geist Mono", monospace; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); padding-bottom: 4px; }
   .cal-pladsholder .skitse i { aspect-ratio: 1; border-radius: 8px; background: var(--flade); }
@@ -262,17 +261,17 @@
   .skriv .mail a { color: var(--blaa); font-weight: 500; }
 
   /* Footer */
-  footer { background: var(--nat); color: var(--nat-daempet); padding: 48px 0 0; overflow: hidden; }
+  footer { background: var(--nat); color: var(--nat-daempet); padding: 48px 0 0; overflow: hidden; border-top: 1px dashed var(--perfor); }
   footer .spalter { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 3fr); gap: 40px; padding: 8px 0 44px; border-bottom: 1px solid var(--nat-streg); font-size: 14px; }
   footer .spalter .mono { display: block; color: var(--nat-daempet); margin-bottom: 14px; }
-  footer .spalter p { color: #c6cde0; max-width: 30em; }
+  footer .spalter p { color: #3a3a37; max-width: 30em; }
   footer .spalter p + p { margin-top: 10px; }
-  footer .spalter ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; color: #c6cde0; }
-  footer .spalter a:hover { color: #fff; }
-  footer .spalter .logo { font-weight: 700; letter-spacing: -.03em; font-size: 20px; color: #fff; display: block; margin-bottom: 12px; }
-  .skriv .kommer { border-color: #b9c5ee; color: var(--daempet); }
+  footer .spalter ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; color: #3a3a37; }
+  footer .spalter a:hover { color: var(--blaa); }
+  footer .spalter .logo { font-weight: 700; letter-spacing: -.03em; font-size: 20px; color: var(--blaek); display: block; margin-bottom: 12px; }
+  .skriv .kommer { border-color: #c9c2ea; color: var(--daempet); }
   .kommer { display: inline-block; margin-left: 8px; padding: 1px 7px; border: 1px dashed var(--nat-daempet); border-radius: 6px; font-family: "Geist Mono", monospace; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--nat-daempet); vertical-align: middle; }
-  footer .kaempe { font-size: clamp(150px, 35vw, 500px); font-weight: 700; letter-spacing: -.05em; line-height: .75; color: #fff; margin-top: 40px; margin-bottom: -.13em; white-space: nowrap; position: relative; }
+  footer .kaempe { font-size: clamp(150px, 35vw, 500px); font-weight: 700; letter-spacing: -.05em; line-height: .75; color: var(--blaa); margin-top: 40px; margin-bottom: -.13em; white-space: nowrap; position: relative; }
 
   @media (max-width: 900px) {
     .hero .skal, .pris-grid, .kontakt, .delene, footer .spalter { grid-template-columns: minmax(0, 1fr); }
@@ -700,15 +699,12 @@
     const ry = gsap.quickTo(skaerm, "rotationY", { duration: 0.6, ease: "power2.out" });
     hero.addEventListener("pointermove", (e) => {
       const r = hero.getBoundingClientRect();
-      hero.style.setProperty("--mx", `${e.clientX - r.left}px`);
-      hero.style.setProperty("--my", `${e.clientY - r.top}px`);
-      hero.classList.add("lys");
       if (tl.isActive()) return;
       const px = (e.clientX - r.left) / r.width - 0.5;
       const py = (e.clientY - r.top) / r.height - 0.5;
       ry(px * 6); rx(-py * 4);
     });
-    hero.addEventListener("pointerleave", () => { hero.classList.remove("lys"); ry(0); rx(0); });
+    hero.addEventListener("pointerleave", () => { ry(0); rx(0); });
   }
   /* Skaermen glider op og vipper let, naar man scroller vaek */
   if (bred) gsap.to(scene, { y: -40, rotationX: 3, transformPerspective: 1400, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true } });
