@@ -280,8 +280,6 @@
   .booking .stor { font-size: 22px; letter-spacing: -.01em; margin-top: 16px; }
   .booking p + p { margin-top: 8px; color: var(--daempet); font-size: 15px; max-width: 30em; }
   .booking .knapper { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
-  .knap.stille-lys { background: transparent; color: var(--blaa); border: 1px solid #c9d4f4; }
-  .knap.stille-lys:hover { background: var(--blaa-svag); transform: none; }
   .cal-pladsholder { margin-top: 24px; flex: 1; min-height: 300px; border: 1.5px dashed #b9c5ee; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
   .cal-pladsholder .skitse { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; opacity: .55; }
   .cal-pladsholder .skitse span { text-align: center; font-family: "Geist Mono", monospace; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); padding-bottom: 4px; }
@@ -588,7 +586,6 @@
           <p>Du vælger selv tiden i Mohammeds kalender. Den hentes fra Cal.com, først når du klikker.</p>
           <div class="knapper">
             <button class="knap" type="button" data-cal-aaben hidden>Vis ledige tider <span class="pil">→</span></button>
-            <a class="knap stille-lys" data-u="kontakt" data-d="tallo.dk" data-emne="Book 20 minutter med Chahrour" href="#">Book på mail</a>
           </div>
         </div>
         <div class="cal-pladsholder" data-cal-pladsholder aria-hidden="true">
