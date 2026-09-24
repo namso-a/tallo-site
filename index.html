@@ -239,8 +239,9 @@
   /* 04 Samtalen: kalender og formular */
   .hoved .om-link { margin-top: 12px; font-size: 16px; }
   .om-link a { color: var(--blaa); font-weight: 500; }
-  .kontakt { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
-  .kontakt .skriv { max-width: 680px; }
+  .kontakt { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: stretch; }
+  .kontakt .kalender { padding: 18px 12px 12px; }
+  @media (max-width: 1180px) { .kontakt { grid-template-columns: minmax(0, 1fr); } .kontakt .skriv { max-width: 680px; } }
   .kalender, .skriv { background: #fff; border-radius: var(--r); border: 1px solid #dcd8ef; padding: 26px; }
   .kalender { display: flex; flex-direction: column; }
   .cal-ramme { margin-top: 14px; min-height: 560px; border-radius: 12px; }
@@ -253,8 +254,7 @@
   .skriv label { display: block; font-size: 13px; font-weight: 500; margin-top: 16px; }
   .skriv input, .skriv textarea { width: 100%; margin-top: 6px; padding: 10px 12px; border: 1px solid var(--lineal); border-radius: 10px; font: inherit; font-size: 15px; background: #fff; }
   .skriv textarea { min-height: 120px; resize: vertical; }
-  .skriv .h-captcha { margin-top: 18px; min-height: 78px; }
-  .skriv .knap { margin-top: 16px; }
+  .skriv .knap { margin-top: 20px; }
   .skriv .mail { margin-top: 18px; font-size: 14px; color: var(--daempet); }
   .skriv .mail a { color: var(--blaa); font-weight: 500; }
 
@@ -448,7 +448,7 @@
     <div class="trin-wrap">
       <div class="spor"><div class="fyld"></div></div>
       <div class="trin">
-        <div><span class="n">1</span><h3>Tilknyt dit regnskabsprogram</h3><p>Dinero eller e-conomic. Har du ikke et, anbefaler vi Dinero.</p></div>
+        <div><span class="n">1</span><h3>Tilknyt dit regnskabsprogram</h3><p>Dinero eller e-conomic.</p></div>
         <div><span class="n">2</span><h3>Kobl banken til</h3><p>Med dit eget MitID.</p></div>
         <div><span class="n">3</span><h3>Giv os adgang</h3><p>Så bogfører vi fra dag ét.</p></div>
       </div>
@@ -510,7 +510,6 @@
         <label>Navn<input name="name" type="text" autocomplete="name" required></label>
         <label>Mail<input name="email" type="email" autocomplete="email" required></label>
         <label>Besked<textarea name="message" required></textarea></label>
-        <div class="h-captcha" data-captcha="true" data-sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2"></div>
         <button class="knap" type="submit">Send <span class="pil">→</span></button>
         <p class="formular-status" role="status" aria-live="polite"></p>
         <p class="mail">Eller skriv direkte: <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
@@ -608,7 +607,7 @@
      Sproget foelger den besoegendes browser; det kan Cal.com ikke tvinges til. */
   const CAL_LINK = "tallo/møde";
   const CAL_CONFIG = { layout: "month_view", theme: "light" };
-  const CAL_UI = { theme: "light", layout: "month_view", cssVarsPerTheme: { light: { "cal-brand": "#4b3aa6" }, dark: { "cal-brand": "#4b3aa6" } } };
+  const CAL_UI = { hideEventTypeDetails: true, theme: "light", layout: "month_view", cssVarsPerTheme: { light: { "cal-brand": "#4b3aa6" }, dark: { "cal-brand": "#4b3aa6" } } };
   let calHentet = false;
   const hentCal = () => {
     if (calHentet) return;
@@ -649,16 +648,9 @@
   const form = document.querySelector("[data-formular]");
   if (form) {
     const status = form.querySelector(".formular-status");
-    /* Spam: faelden (botcheck), et tidstjek og hCaptcha. hCaptcha hentes foerst, naar man begynder at skrive. */
+    /* Spam: en usynlig faelde (botcheck) og et tidstjek. Web3Forms filtrerer desuden spam paa serveren. */
     let foersteFokus = 0;
-    form.addEventListener("focusin", () => {
-      if (foersteFokus) return;
-      foersteFokus = Date.now();
-      const s = document.createElement("script");
-      s.src = "https://web3forms.com/client/script.js";
-      s.async = true;
-      document.head.appendChild(s);
-    });
+    form.addEventListener("focusin", () => { if (!foersteFokus) foersteFokus = Date.now(); });
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const felt = (navn) => form.elements.namedItem(navn);
@@ -668,12 +660,6 @@
       if (!WEB3FORMS_KEY) {
         const krop = felt("message").value + "\n\n" + felt("name").value + "\n" + felt("email").value;
         location.href = "mailto:" + adr + "?subject=" + encodeURIComponent("Henvendelse fra tallo.dk") + "&body=" + encodeURIComponent(krop);
-        return;
-      }
-      const captcha = felt("h-captcha-response");
-      if (!captcha || !captcha.value) {
-        status.className = "formular-status fejl";
-        status.textContent = "Sæt flueben i 'Jeg er et menneske' først.";
         return;
       }
       const knap = form.querySelector('button[type="submit"]');
@@ -687,7 +673,6 @@
         const json = await svar.json();
         if (!json.success) throw new Error(json.message || "fejl");
         form.reset();
-        if (window.hcaptcha) window.hcaptcha.reset();
         status.className = "formular-status ok";
         status.textContent = "Tak. Vi svarer inden for en arbejdsdag.";
       } catch (fejl) {
