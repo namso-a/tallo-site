@@ -355,7 +355,7 @@
         <a class="knap" href="#book" data-book>Bliv fri for bogføring <span class="pil">→</span></a>
         <a class="knap stille" href="#arbejde">Sådan foregår det</a>
       </div>
-      <p class="lille-under">20 minutters snak med Mohammed. Gratis.</p>
+      <p class="lille-under">30 minutters snak med Mohammed. Gratis.</p>
     </div>
     <div class="scene" aria-hidden="true">
       <div class="skaerm">
@@ -545,7 +545,7 @@
     <header class="hoved rejs">
       <span class="etiket"><b>04</b> Samtalen</span>
       <h2>Bliv fri for bogføring</h2>
-      <p>20 minutter med Mohammed i telefonen eller på video. Gratis, og du binder dig ikke.</p>
+      <p>30 minutter med Mohammed i telefonen eller på video. Gratis, og du binder dig ikke.</p>
       <p class="om-link"><a href="om-os/">Hvem er Mohammed og Othman? Læs om os <span class="pil">→</span></a></p>
     </header>
     <div class="kontakt">
@@ -655,8 +655,9 @@
 
 
 
-  /* Booking: Cal.com. Scriptet hentes, naar siden er i ro, saa vinduet aabner med det samme ved klik paa
-     "Bliv fri for bogfoering". Den indlejrede kalender i 04 starter, naar sektionen naermer sig skaermen.
+  /* Booking: Cal.com. Scriptet hentes foerst ved hensigt (peg, fokus eller beroering paa en bookingknap), saa
+     vinduet aabner hurtigt ved klik, og besoegende, der aldrig booker, faar ingen cookies fra Cal.com.
+     Den indlejrede kalender i 04 starter, naar sektionen naermer sig skaermen.
      Sproget foelger den besoegendes browser; det kan Cal.com ikke tvinges til. */
   const CAL_LINK = "tallo/møde";
   const CAL_CONFIG = { layout: "month_view", theme: "light" };
@@ -670,8 +671,9 @@
     Cal("ui", CAL_UI);
   };
   if (CAL_LINK) {
-    const iRo = window.requestIdleCallback || ((f) => setTimeout(f, 1200));
-    if (document.readyState === "complete") iRo(hentCal); else addEventListener("load", () => iRo(hentCal));
+    ["pointerover", "focusin", "touchstart"].forEach((ev) => document.addEventListener(ev, (e) => {
+      if (e.target.closest && e.target.closest("[data-book]")) hentCal();
+    }, { passive: true }));
     /* Capture-fase: skal fange klikket foer den bloede scrolls anker-haandtering paa samme link */
     document.addEventListener("click", (e) => {
       if (!e.target.closest("[data-book]")) return;
