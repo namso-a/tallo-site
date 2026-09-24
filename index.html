@@ -150,7 +150,14 @@
   .nat .hoved p { color: var(--nat-daempet); }
 
   /* 01 Hverdagen */
-  #uge { padding-top: calc(var(--luft) + 60px); }
+  /* Fotostriben: lige under toppen, på samme flade som 01. Toppens skærm hænger 60 px ned i den. */
+  .stribe { background: var(--flade); padding: calc(var(--luft) + 60px) 0 0; }
+  .stribe-tekst { font-size: clamp(26px, 2.6vw, 34px); font-weight: 600; letter-spacing: -.02em; line-height: 1.2; margin-bottom: 28px; max-width: 22em; }
+  .fotorad { display: grid; grid-template-columns: 5fr 4fr 5fr; gap: 16px; align-items: end; }
+  .fotorad img { display: block; width: 100%; height: auto; object-fit: cover; border-radius: var(--r); }
+  .fotorad img:nth-child(1), .fotorad img:nth-child(3) { aspect-ratio: 4 / 5; }
+  .fotorad img:nth-child(2) { aspect-ratio: 3 / 4; }
+  #uge { padding-top: var(--luft); }
   .uge-kort { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
   @media (max-width: 1100px) { .uge-kort { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .uge-kort article { background: #fff; border: 1px solid var(--lineal); border-radius: var(--r); padding: 18px 20px 24px; display: flex; flex-direction: column; transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s; }
@@ -282,6 +289,8 @@
     .skaerm { transform: none; }
     .toast { right: 0; top: -22px; }
     .spor { display: none; }
+    .fotorad { grid-template-columns: 1fr 1fr; }
+    .fotorad img:nth-child(3) { grid-column: 1 / -1; aspect-ratio: 3 / 2; }
     .kalender { padding: 16px 10px; }
     .cal-ramme { max-height: 680px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .din-del, .vores-del { padding: 24px; }
@@ -355,6 +364,20 @@
   </div>
 </header>
 </div>
+
+<!-- Fotos: Unsplash-licens (fri kommerciel brug, kreditering ikke påkrævet).
+     butik: Anastasiya D (Pn-HiVIe4M8), vaerksted: Darren Richardson (iY0GFYADmU0), varevogn: Polina Kuzovkova (zxsh85YyplA).
+     Skiftes til egne fotos af rigtige kunder, når de findes. -->
+<section class="stribe" aria-label="Små virksomheder">
+  <div class="skal">
+    <p class="stribe-tekst rejs">Til dig, der hellere vil passe din forretning end dine papirer.</p>
+    <div class="fotorad">
+      <img class="rejs" src="billeder/butik.webp" width="840" height="1050" loading="lazy" decoding="async" alt="En butik på en gade i København">
+      <img class="rejs" src="billeder/vaerksted.webp" width="900" height="1350" loading="lazy" decoding="async" alt="Ejeren af et bilværksted smiler i sit værksted">
+      <img class="rejs" src="billeder/varevogn.webp" width="900" height="597" loading="lazy" decoding="async" alt="En vognmand smiler fra førerhuset i sin varevogn">
+    </div>
+  </div>
+</section>
 
 <section class="afsnit flade" id="uge">
   <div class="skal">
