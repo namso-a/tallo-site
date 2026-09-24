@@ -1,0 +1,5 @@
+# Fandt du et sikkerhedshul på tallo.dk? Skriv til os via formularen, så svarer vi inden for en arbejdsdag.
+Contact: https://tallo.dk/#book
+Expires: 2027-09-24T00:00:00.000Z
+Preferred-Languages: da, en
+Canonical: https://tallo.dk/.well-known/security.txt
