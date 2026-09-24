@@ -100,7 +100,7 @@
   nav.klaebet .knap.lys { background: var(--blaek); color: #fff; }
   nav.klaebet.over-nat { background: rgba(246,246,243,.94); color: var(--blaek); box-shadow: 0 1px 0 var(--lineal); }
   nav.klaebet.over-nat .knap.lys { background: var(--blaek); color: #fff; }
-  .hero-wrap { background: var(--nat); padding-top: var(--nav); border-bottom: 1px dashed var(--perfor); }
+  .hero-wrap { background: var(--nat); padding-top: var(--nav); }
 
   /* Hero */
   .hero { color: var(--nat-tekst); padding: 64px 0 0; position: relative; }
@@ -140,7 +140,7 @@
   /* Afsnit: samme skelet hver gang */
   .afsnit { padding: var(--luft) 0; }
   .afsnit.flade { background: var(--flade); }
-  .afsnit.nat { background: var(--nat); color: var(--nat-tekst); border-top: 1px dashed var(--perfor); border-bottom: 1px dashed var(--perfor); }
+  .afsnit.nat { background: var(--nat); color: var(--nat-tekst); }
   .afsnit.blaa-svag { background: var(--blaa-svag); }
   .hoved { max-width: 44em; margin-bottom: 48px; }
   .etiket { display: inline-flex; align-items: center; gap: 12px; font-family: "Geist Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--daempet); margin-bottom: 18px; }
@@ -156,14 +156,19 @@
 
   /* 01 Hverdagen */
   /* Fotostriben: lige under toppen, på samme flade som 01. Toppens skærm hænger 60 px ned i den. */
-  .stribe { background: var(--lys); padding: calc(var(--luft) + 60px) 0 0; }
-  .stribe-tekst { font-size: clamp(26px, 2.6vw, 34px); font-weight: 600; letter-spacing: -.02em; line-height: 1.2; margin-bottom: 28px; max-width: 22em; }
+  .stribe { background: var(--lys); padding: 72px 0 0; }
+  .stribe-tekst { font-size: clamp(26px, 2.6vw, 34px); font-weight: 600; letter-spacing: -.02em; line-height: 1.2; margin-bottom: 28px; }
+  @media (min-width: 901px) { .stribe-tekst { white-space: nowrap; } }
   .fotorad { display: grid; grid-template-columns: 5fr 4fr 5fr; gap: 16px; align-items: end; }
-  .fotorad img { display: block; width: 100%; height: auto; object-fit: cover; border-radius: var(--r); }
+  .fotorad { margin-bottom: -180px; } /* fotoene haenger ned i 01, som skaermen haenger ned i striben */
+  .fotorad img { display: block; width: 100%; height: auto; object-fit: cover; border-radius: var(--r); position: relative; z-index: 2; }
   .fotorad img:nth-child(1) { aspect-ratio: 4 / 5; }
   .fotorad img:nth-child(2) { aspect-ratio: 3 / 4; }
   .fotorad img:nth-child(3) { aspect-ratio: 4 / 3; }
-  #uge { padding-top: var(--luft); }
+  #uge { padding-top: calc(var(--luft) + 180px); }
+
+  /* Overgange: ark oven paa ark. Hver sektion efter striben ligger som et papirark oven paa den forrige (valgt 24. sep 2026). */
+  #uge, #arbejde, #pris, #book, footer { position: relative; margin-top: -28px; border-radius: 28px 28px 0 0; box-shadow: 0 -1px 0 var(--lineal), 0 -14px 30px -24px rgba(20,20,20,.18); }
   .uge-kort { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
   @media (max-width: 1100px) { .uge-kort { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .uge-kort article { background: #fff; border: 1px solid var(--lineal); border-radius: var(--r); padding: 18px 20px 24px; display: flex; flex-direction: column; transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s; }
@@ -272,7 +277,7 @@
   .skriv .mail a { color: var(--blaa); font-weight: 500; }
 
   /* Footer */
-  footer { background: var(--nat); color: var(--nat-daempet); padding: 48px 0 0; overflow: hidden; border-top: 1px dashed var(--perfor); }
+  footer { background: var(--nat); color: var(--nat-daempet); padding: 48px 0 0; overflow: hidden; }
   footer .spalter { position: relative; display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 3fr); gap: 40px; padding: 8px 0 44px; border-bottom: 1px solid var(--nat-streg); font-size: 14px; }
   footer .spalter .mono { display: block; color: var(--nat-daempet); margin-bottom: 14px; }
   footer .spalter p { color: #3a3a37; max-width: 30em; }
@@ -295,7 +300,9 @@
     .skaerm { transform: none; }
     .toast { right: 0; top: -22px; }
     .spor { display: none; }
-    .fotorad { grid-template-columns: 1fr 1fr; }
+    .fotorad { grid-template-columns: 1fr 1fr; margin-bottom: -80px; }
+    .stribe { padding-top: 48px; }
+    #uge { padding-top: calc(var(--luft) + 80px); }
     .fotorad img:nth-child(3) { grid-column: 1 / -1; aspect-ratio: 3 / 2; }
     .kalender { padding: 16px 10px; }
     .cal-ramme { max-height: 680px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
