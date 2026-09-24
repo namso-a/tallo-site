@@ -82,19 +82,21 @@
   .tal-flade { position: relative; }
   .tal-flade > .hero, .tal-flade > .skal { position: relative; z-index: 1; }
   .tal-bag { position: absolute; right: 4%; top: -20px; bottom: 0; z-index: 0; pointer-events: none; font-family: "Geist Mono", monospace; font-size: 64px; line-height: 1.25; color: var(--blaek); opacity: .04; text-align: right; white-space: pre; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 80%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 80%, transparent); }
-  /* Tallene staar paa skift: top hoejre, 01 venstre, 02 hoejre, 03 hoejre (venstre har det store 1.500), footer venstre */
+  /* Tallene staar paa skift: top hoejre, fotos venstre, 02 hoejre, 03 hoejre, footer venstre */
   .tal-bag.venstre { right: auto; left: 4%; text-align: left; }
   .tal-bag.oeverst { top: 0; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 38%, transparent 62%); mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 38%, transparent 62%); }
   .tal-bag.kort { top: 0; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 22%, transparent 38%); mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 22%, transparent 38%); }
   footer .tal-bag { top: 0; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 45%, transparent 70%); mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 45%, transparent 70%); }
   #arbejde .tal-bag { top: 0; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 42%, transparent 66%); mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 42%, transparent 66%); }
 
-  /* Nav: fast, gennemsigtig paa moerkt, hvid naar man er vaek fra toppen */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 20; color: var(--blaek); transition: background .25s, color .25s, box-shadow .25s; }
+  /* Nav: papirflade og bundlinje fra start (valgt 24. sep 2026), hvid naar man er vaek fra toppen */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 20; color: var(--blaek); background: rgba(246,246,243,.94); box-shadow: 0 1px 0 var(--lineal); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: background .25s, color .25s, box-shadow .25s; }
   nav .skal { display: flex; align-items: center; justify-content: space-between; height: var(--nav); }
   nav .logo { font-weight: 700; letter-spacing: -.03em; font-size: 21px; }
-  nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: 14px; opacity: .7; }
-  nav ul a:hover { opacity: 1; }
+  nav ul { display: flex; gap: 32px; list-style: none; margin: 0; padding: 0; font-size: 15px; font-weight: 500; }
+  nav ul a { position: relative; }
+  nav ul a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; background: var(--blaa); transform: scaleX(0); transform-origin: left; transition: transform .2s ease-out; }
+  nav ul a:hover::after { transform: scaleX(1); }
   nav .knap { height: 40px; padding: 0 18px; font-size: 14px; }
   nav.klaebet { background: rgba(255,255,255,.86); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--blaek); box-shadow: 0 1px 0 var(--lineal); }
   nav.klaebet.over-nat { background: rgba(246,246,243,.94); color: var(--blaek); box-shadow: 0 1px 0 var(--lineal); }
@@ -145,42 +147,34 @@
   .hoved p { margin-top: 14px; font-size: 19px; color: var(--daempet); max-width: 34em; }
   .nat .hoved p { color: var(--nat-daempet); }
 
-  /* 01 Hverdagen */
-  /* Fotostriben: lige under toppen, på samme flade som 01. Toppens skærm hænger 60 px ned i den. */
-  .stribe { background: var(--lys); padding: 112px 0 0; }
-  .stribe-tekst { font-size: clamp(26px, 2.6vw, 34px); font-weight: 600; letter-spacing: -.02em; line-height: 1.2; margin-bottom: 28px; }
+  /* Fotos + fordele (valgt 24. sep 2026 i mockup: tre fotos med maerkater). Toppens skaerm haenger 60 px ned i striben. */
+  .stribe { background: var(--blaa-svag); padding: 112px 0 calc(var(--luft) + 24px); }
+  .stribe-tekst { font-size: clamp(26px, 2.6vw, 34px); font-weight: 600; letter-spacing: -.02em; line-height: 1.2; margin-bottom: 40px; }
   @media (min-width: 901px) { .stribe-tekst { white-space: nowrap; } }
-  .fotorad { display: grid; grid-template-columns: 5fr 4fr 5fr; gap: 16px; align-items: end; }
-  .fotorad { margin-bottom: -180px; } /* fotoene haenger ned i 01, som skaermen haenger ned i striben */
-  .fotorad img { display: block; width: 100%; height: auto; object-fit: cover; border-radius: var(--r); position: relative; z-index: 2; }
-  .fotorad img:nth-child(1) { aspect-ratio: 4 / 5; }
-  .fotorad img:nth-child(2) { aspect-ratio: 3 / 4; }
-  .fotorad img:nth-child(3) { aspect-ratio: 4 / 3; }
-  #uge { padding-top: calc(var(--luft) + 180px); }
+  .fotorad { display: grid; grid-template-columns: 5fr 4fr 5fr; gap: 16px; align-items: end; padding-bottom: 72px; }
+  .fotorad figure { position: relative; margin: 0; }
+  .fotorad img { display: block; width: 100%; height: auto; object-fit: cover; border-radius: var(--r); }
+  .fotorad figure:nth-child(1) img { aspect-ratio: 4 / 5; }
+  .fotorad figure:nth-child(2) img { aspect-ratio: 3 / 4; }
+  .fotorad figure:nth-child(3) img { aspect-ratio: 4 / 3; }
+  .maerkat { position: absolute; right: -14px; bottom: -72px; z-index: 2; width: 240px; background: #fff; border-radius: 14px; padding: 12px 14px 14px; box-shadow: 0 22px 40px -22px rgba(20,20,20,.45), 0 1px 0 var(--lineal); transform: rotate(2deg); }
+  .fotorad figure:nth-child(2) .maerkat { transform: rotate(-1.5deg); }
+  .maerkat .mini { height: 84px; margin-bottom: 10px; overflow: visible; }
+  .maerkat h3 { font-size: 16px; letter-spacing: -.02em; line-height: 1.2; }
+  /* maerkat 2: bunken af fakturaer, der aldrig koster mere */
+  .bunke { position: relative; width: 170px; height: 70px; }
+  .bunke span { position: absolute; left: 38px; top: 4px; width: 88px; height: 60px; padding: 6px 8px; background: #fff linear-gradient(transparent 22px, var(--lineal) 22px 23px, transparent 23px 31px, var(--lineal) 31px 32px, transparent 32px 40px, var(--lineal) 40px 41px, transparent 41px) no-repeat; border: 1px solid var(--lineal); border-radius: 6px; font-family: "Geist Mono", monospace; font-size: 9px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); }
+  .bunke span:nth-child(1) { transform: translateX(-26px) rotate(-9deg); }
+  .bunke span:nth-child(2) { transform: rotate(-1deg); }
+  .bunke span:nth-child(3) { transform: translateX(26px) rotate(8deg); }
+  .bunke b { position: absolute; right: -4px; bottom: -2px; padding: 3px 9px; border-radius: 999px; background: var(--blaa); color: #fff; font-size: 11px; font-weight: 600; }
 
   /* Overgange: ark oven paa ark. Hver sektion efter toppen ligger som et papirark oven paa den forrige (valgt 24. sep 2026).
      Hvert ark skal have sin egen baggrund, ellers skinner den forrige sektion igennem hjoernerne. */
   #pris { background: var(--lys); }
-  .stribe, #uge, #arbejde, #pris, #book, footer { position: relative; margin-top: -28px; border-radius: 28px 28px 0 0; box-shadow: 0 -1px 0 var(--lineal), 0 -14px 30px -24px rgba(20,20,20,.18); }
-  .uge-kort { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-  @media (max-width: 1100px) { .uge-kort { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .uge-kort article { background: #fff; border: 1px solid var(--lineal); border-radius: var(--r); padding: 18px 20px 24px; display: flex; flex-direction: column; transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s; }
-  .uge-kort article:hover { transform: translateY(-6px); box-shadow: var(--skygge-dyb); }
-  .uge-kort article.moerk { background: #fff; color: var(--blaek); border-color: var(--lineal); }
-  .uge-kort article.bred { grid-column: span 2; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px; align-items: center; padding: 28px 32px; }
-  .uge-kort article.bred .mini { height: 100%; min-height: 200px; margin: 0; }
-  .uge-kort article h3 { font-size: 21px; letter-spacing: -.02em; }
-  .uge-kort article.moerk h3 { color: var(--blaek); }
-  .tag { display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 6px; font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; background: var(--blaa-svag); color: var(--blaa); align-self: flex-start; }
-  .uge-kort article.moerk .tag { background: var(--blaa-svag); color: var(--blaa); }
-  .uge-kort article p { font-size: 15px; line-height: 1.45; margin-top: 6px; color: var(--daempet); }
-  .uge-kort article.moerk p { color: var(--nat-daempet); }
-  .uge-kort article.bred p { margin-top: 12px; font-size: 18px; color: var(--nat-daempet); }
-  .uge-kort article p em { font-style: normal; color: var(--blaa); }
-  .uge-kort article.moerk p em { color: var(--blaa-lys); }
+  .stribe, #arbejde, #pris, #book, footer { position: relative; margin-top: -28px; border-radius: 28px 28px 0 0; box-shadow: 0 -1px 0 var(--lineal), 0 -14px 30px -24px rgba(20,20,20,.18); }
   .mini { height: 110px; margin-bottom: 18px; border-radius: 12px; background: var(--flade); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 18px; }
-  .uge-kort article.moerk .mini { background: var(--flade); }
-  /* mini 2: kalendercelle */
+  /* Smaa grafikker: kalendercelle, soejler */
   .celle { width: min(200px, 100%); border: 1px solid var(--lineal); border-radius: 10px; padding: 12px 14px; background: #fff; position: relative; color: var(--nat-tekst); }
   .celle .dag { font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--nat-daempet); }
   .celle .hvad { font-size: 15px; font-weight: 500; margin-top: 4px; }
@@ -191,37 +185,32 @@
   .celle.lys .dag { color: var(--daempet); }
   .celle.lys .hvad small { color: var(--daempet); }
   .celle .flueben { position: absolute; top: -10px; right: -10px; width: 28px; height: 28px; border-radius: 50%; background: var(--groen); color: #fff; display: grid; place-items: center; font-size: 15px; font-weight: 700; }
-  .ettal u { text-decoration-color: var(--blaa); text-decoration-thickness: 2px; text-underline-offset: 3px; }
-  /* mini 3: maanedens overblik, uden beloeb (et beloeb er for lidt for nogen og for meget for andre) */
+  /* Maanedens overblik uden beloeb (et beloeb er for lidt for nogen og for meget for andre) */
   .soejler { display: flex; align-items: flex-end; gap: 14px; height: 80px; }
   .soejler > div { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 56px; }
   .soejler i { display: block; width: 26px; height: var(--h); background: var(--lineal); border-radius: 6px 6px 2px 2px; }
   .soejler .plus i { background: var(--blaa); }
   .soejler span { font-size: 11px; color: var(--daempet); }
-  /* mini 4: prisen */
-  .ettal { text-align: center; }
-  .ettal b { display: block; font-size: 38px; font-weight: 600; letter-spacing: -.04em; line-height: 1; }
-  .ettal span { display: block; margin-top: 6px; font-size: 13px; color: var(--daempet); }
 
-  /* 02 Arbejdet: din del er lille, vores del er stor */
-  .delene { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 20px; align-items: stretch; }
-  .din-del { background: #fff; color: var(--blaek); border: 1.5px solid var(--blaek); border-radius: var(--r); padding: 32px; display: flex; flex-direction: column; }
-  .din-del .mono { color: var(--daempet); }
-  .din-del .stor { font-size: clamp(28px, 2.6vw, 36px); font-weight: 600; letter-spacing: -.025em; line-height: 1.1; margin-top: 10px; }
-  .din-liste { list-style: none; margin: 14px 0 0; padding: 0; }
-  .din-liste li { display: flex; gap: 12px; align-items: baseline; padding: 12px 0; border-bottom: 1px dashed #d9d9d2; font-size: 18px; }
-  .din-liste li:last-child { border-bottom: 0; }
-  .din-liste li::before { content: "✓"; color: var(--blaek); font-weight: 600; }
-  .vores-del { background: var(--nat-2); border: 1px solid var(--lineal); border-radius: var(--r); padding: 28px 32px 12px; }
-  .vores-del .mono { color: var(--nat-daempet); display: block; margin-bottom: 6px; }
-  .vores-del ul { list-style: none; margin: 0; padding: 0; }
-  .vores-del li { display: flex; gap: 12px; align-items: baseline; padding: 14px 0; border-bottom: 1px dashed #d9d9d2; font-size: 18px; color: var(--blaek); }
-  .vores-del li:last-child { border-bottom: 0; }
-  .vores-del li::before { content: "✓"; color: var(--blaa-lys); font-weight: 600; }
-  .ai-linje { margin: 4px 0 16px; padding: 14px 16px; border-radius: 12px; background: var(--blaa-svag); color: var(--blaek); font-size: 16px; font-weight: 500; }
+  /* 02 Arbejdet: trinene, saa T-kontoen. Venstre side har én linje, resten staar tomt (valgt 24. sep 2026) */
+  .tkonto { margin-top: 72px; background: #fff; border: 1px solid var(--lineal); border-radius: var(--r); padding: 30px 36px 18px; }
+  .tk-top, .tk-r { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .tk-top { border-bottom: 2px solid var(--blaek); }
+  .tk-top span { font-size: 30px; font-weight: 600; letter-spacing: -.02em; padding: 0 28px 12px 0; }
+  .tk-top span:last-child { padding-left: 28px; }
+  .tk-r { position: relative; z-index: 0; }
+  .tk-r > * { padding: 14px 28px 14px 0; border-bottom: 1px dashed #d9d9d2; font-size: 17px; min-height: 56px; display: flex; gap: 10px; align-items: baseline; }
+  .tk-r > :first-child { border-right: 2px solid var(--blaek); }
+  .tk-r > :last-child { padding-left: 28px; padding-right: 0; }
+  .tk-r:last-child > * { border-bottom: 0; }
+  .tk-r .du { font-size: 19px; font-weight: 500; }
+  .tk-r .du::before { content: "✓"; color: var(--blaek); font-weight: 600; }
+  .tk-r .vi::before { content: "✓"; color: var(--blaa); font-weight: 600; }
+  .tk-r .vi.ai { position: relative; font-weight: 500; }
+  .tk-r .vi.ai::after { content: ""; position: absolute; inset: 6px -10px 6px 16px; background: var(--blaa-svag); border-radius: 10px; z-index: -1; }
 
   /* 02 Foerste gang: linjen og trinene */
-  .trin-wrap { position: relative; padding-top: 14px; margin-top: 80px; }
+  .trin-wrap { position: relative; padding-top: 14px; }
   .spor { position: absolute; left: 0; right: 0; top: 27px; height: 2px; background: var(--nat-streg); }
   .spor .fyld { position: absolute; inset: 0; background: var(--blaa-lys); transform-origin: left center; }
   .trin { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; position: relative; }
@@ -291,24 +280,29 @@
   footer .kaempe { font-size: clamp(150px, 35vw, 500px); font-weight: 700; letter-spacing: -.05em; line-height: .75; color: var(--blaa); margin-top: 40px; margin-bottom: -.13em; white-space: nowrap; position: relative; }
 
   @media (max-width: 900px) {
-    .hero .skal, .pris-grid, .kontakt, .delene, footer .spalter { grid-template-columns: minmax(0, 1fr); }
+    .hero .skal, .pris-grid, .kontakt, footer .spalter { grid-template-columns: minmax(0, 1fr); }
       .tal-bag { display: none; } /* paa mobil ligger tallene under overskriften; det stoejer */
-    .uge-kort, .trin { grid-template-columns: 1fr; }
-    .uge-kort article.bred { grid-column: auto; grid-template-columns: minmax(0, 1fr); }
-    .uge-kort article.bred .mini { min-height: 150px; }
+    .trin { grid-template-columns: 1fr; }
     .hero { padding-bottom: 40px; }
     .scene { margin-top: 40px; margin-bottom: -60px; }
     .skaerm { transform: none; }
     .toast { right: 0; top: -22px; }
     .spor { display: none; }
-    .fotorad { grid-template-columns: 1fr 1fr; margin-bottom: -80px; }
+    .fotorad { grid-template-columns: 1fr 1fr; gap: 20px 12px; padding-bottom: 0; }
     .stribe { padding-top: 96px; }
-    #uge { padding-top: calc(var(--luft) + 80px); }
-    .fotorad img:nth-child(3) { grid-column: 1 / -1; aspect-ratio: 3 / 2; }
+    .fotorad figure:nth-child(3) { grid-column: 1 / -1; }
+    .fotorad figure:nth-child(3) img { aspect-ratio: 3 / 2; }
+    .maerkat { position: relative; right: auto; bottom: auto; width: auto; margin: -28px 8px 0; padding: 10px 12px; }
+    .maerkat .mini { display: none; }
+    .maerkat h3 { font-size: 14px; }
     .kalender { padding: 16px 10px; }
     .cal-ramme { max-height: 680px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-    .din-del, .vores-del { padding: 24px; }
-    .trin-wrap { margin-top: 48px; }
+    .tkonto { margin-top: 48px; padding: 20px 16px 8px; }
+    .tk-top, .tk-r { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+    .tk-top span { font-size: 22px; padding-right: 12px; }
+    .tk-top span:last-child, .tk-r > :last-child { padding-left: 12px; }
+    .tk-r > * { padding-right: 12px; font-size: 15px; }
+    .tk-r .du { font-size: 16px; }
     .pris-kort ul { grid-template-columns: minmax(0, 1fr); }
     .pris-kort { padding: 24px; }
     .tilkoeb .l { flex-direction: column; gap: 2px; }
@@ -361,14 +355,14 @@
     </div>
     <div class="scene" aria-hidden="true">
       <div class="skaerm">
-        <div class="bar"><i></i><i></i><i></i><span>Tallo · uge 10</span></div>
+        <div class="bar"><i></i><i></i><i></i><span>Dit regnskabsprogram</span></div>
         <div class="krop">
-          <div class="h"><b>Dine bilag denne uge</b><span class="status">4 af 5 klaret</span></div>
+          <div class="h"><b>Bilag i marts</b><span class="status">4 af 5 bogført</span></div>
           <table><tbody>
-            <tr class="ny"><td>02.03</td><td>Candy People<small>Slik til butikken</small><span class="pille">Bogført</span></td><td class="tal">8.412,50</td></tr>
+            <tr class="ny"><td>02.03</td><td>Candy People<small>Slik til butikken</small><span class="pille">Bogført af din bogholder</span></td><td class="tal">8.412,50</td></tr>
             <tr><td>02.03</td><td>Dagrofa<small>Sodavand</small></td><td class="tal">3.180,00</td></tr>
             <tr><td>03.03</td><td>Nets<small>Betalinger med kort</small></td><td class="tal">19.744,18</td></tr>
-            <tr class="aaben"><td>04.03</td><td>Elgiganten<small>Vi spørger dig</small></td><td class="tal">2.499,00</td></tr>
+            <tr class="aaben"><td>04.03</td><td>Elgiganten<small>Din bogholder spørger dig</small></td><td class="tal">2.499,00</td></tr>
             <tr><td>05.03</td><td>Ørsted<small>Strøm</small></td><td class="tal">1.905,75</td></tr>
           </tbody></table>
         </div>
@@ -383,18 +377,7 @@
      personer, logoer eller butiksnavne, så fotoene viser kun hænder og ting.
      butik: Viktoriia Yatsentiuk (94kV-WXJ2_A), varevogn: Claudio Schwarz (a85IYeAXgxU, beskåret),
      vaerksted: Christian Buehner (Fd6osyVbtG4). Skiftes til egne fotos med samtykke, når de findes. -->
-<section class="stribe" aria-label="Små virksomheder">
-  <div class="skal">
-    <p class="stribe-tekst rejs">Til dig, der hellere vil passe din forretning end dine papirer.</p>
-    <div class="fotorad">
-      <img class="rejs" src="billeder/butik.webp" width="840" height="1050" loading="lazy" decoding="async" alt="Hænder, der binder en buket i en blomsterbutik">
-      <img class="rejs" src="billeder/varevogn.webp" width="720" height="960" loading="lazy" decoding="async" alt="En varevogn fuld af pakker, der bliver læsset">
-      <img class="rejs" src="billeder/vaerksted.webp" width="960" height="720" loading="lazy" decoding="async" alt="Hænder med en skruenøgle ved en bilmotor">
-    </div>
-  </div>
-</section>
-
-<section class="afsnit blaa-svag tal-flade" id="uge">
+<section class="stribe tal-flade" aria-label="Små virksomheder">
   <div class="tal-bag venstre oeverst" aria-hidden="true">31.640,00
 2.499,00
 8.412,50
@@ -403,46 +386,11 @@
 1.905,75
 57.410,00</div>
   <div class="skal">
-    <header class="hoved rejs">
-      <h2>Det skal du aldrig mere</h2>
-    </header>
-    <div class="uge-kort">
-      <article class="rejs moerk" data-mini="kalender">
-        <div class="mini" aria-hidden="true">
-          <div class="celle">
-            <div class="dag">Søndag 20:00</div>
-            <div class="hvad">Bogføring<small>Kvitteringer og bank</small></div>
-            <svg viewBox="0 0 200 74" preserveAspectRatio="none"><line class="streg" x1="10" y1="64" x2="190" y2="10"/></svg>
-          </div>
-        </div>
-        <h3>Du bogfører aldrig selv</h3>
-        <p>Ingen søndagsaftener med kvitteringer.</p>
-      </article>
-      <article class="rejs" data-mini="frist">
-        <div class="mini" aria-hidden="true">
-          <div class="celle lys">
-            <div class="dag">1. juni · Frist</div>
-            <div class="hvad">Moms indberettet<small>Klaret 20. maj</small></div>
-            <span class="flueben">✓</span>
-          </div>
-        </div>
-        <h3>Du glemmer aldrig en frist</h3>
-        <p>Vi indberetter momsen til tiden.</p>
-      </article>
-      <article class="rejs" data-mini="overblik">
-        <div class="mini" aria-hidden="true">
-          <div class="soejler"><div><i style="--h:58px"></i><span>Salg</span></div><div><i style="--h:38px"></i><span>Udgifter</span></div><div class="plus"><i style="--h:22px"></i><span>Overskud</span></div></div>
-        </div>
-        <h3>Du ved hver måned, hvordan det går</h3>
-        <p>Salg, udgifter og overskud.</p>
-      </article>
-      <article class="rejs" data-mini="fast">
-        <div class="mini" aria-hidden="true">
-          <div class="ettal"><b class="tal">1.500 kr.</b><span>om måneden. <u>Fast pris.</u></span></div>
-        </div>
-        <h3>Samme pris hver måned</h3>
-        <p>1.500 kr. om måneden, uanset hvor mange fakturaer du har.</p>
-      </article>
+    <h2 class="stribe-tekst rejs">Til dig, der hellere vil passe din forretning end dine papirer.</h2>
+    <div class="fotorad">
+      <figure class="rejs"><img src="billeder/butik.webp" width="840" height="1050" loading="lazy" decoding="async" alt="Hænder, der binder en buket i en blomsterbutik"><div class="maerkat" data-mini="soendag"><div class="mini" aria-hidden="true"><div class="celle"><div class="dag">Søndag 20:00</div><div class="hvad">Bogføring<small>Kvitteringer og bank</small></div><svg viewBox="0 0 200 74" preserveAspectRatio="none"><line class="streg" x1="10" y1="64" x2="190" y2="10"/></svg></div></div><h3>Du bogfører aldrig selv</h3></div></figure>
+      <figure class="rejs"><img src="billeder/varevogn.webp" width="720" height="960" loading="lazy" decoding="async" alt="En varevogn fuld af pakker, der bliver læsset"><div class="maerkat" data-mini="ubegraenset"><div class="mini" aria-hidden="true"><div class="bunke"><span>Faktura</span><span>Faktura</span><span>Faktura</span><b>Samme pris</b></div></div><h3>Ubegrænset antal fakturaer</h3></div></figure>
+      <figure class="rejs"><img src="billeder/vaerksted.webp" width="960" height="720" loading="lazy" decoding="async" alt="Hænder med en skruenøgle ved en bilmotor"><div class="maerkat" data-mini="overblik"><div class="mini" aria-hidden="true"><div class="soejler"><div><i style="--h:58px"></i><span>Salg</span></div><div><i style="--h:38px"></i><span>Udgifter</span></div><div class="plus"><i style="--h:22px"></i><span>Overskud</span></div></div></div><h3>Du ved hver måned, hvordan det går</h3></div></figure>
     </div>
   </div>
 </section>
@@ -462,27 +410,6 @@
     <header class="hoved rejs">
       <h2>Sådan foregår det</h2>
     </header>
-    <div class="delene">
-      <div class="din-del rejs">
-        <span class="mono">Din del</span>
-        <p class="stor">Næsten ingenting.</p>
-        <ul class="din-liste">
-          <li>Scan dine bilag</li>
-          <li>Svar, når vi skriver</li>
-        </ul>
-      </div>
-      <div class="vores-del rejs">
-        <span class="mono">Vores del</span>
-        <p class="ai-linje">AI læser dine bilag, og en bogholder tjekker hver post, før den bogføres.</p>
-        <ul>
-          <li>Vi bogfører alle dine fakturaer og kvitteringer, uanset hvor mange</li>
-          <li>Vi tjekker hver uge, at banken passer</li>
-          <li>Vi indberetter momsen og sender dig beløbet</li>
-          <li>Vi sender dig hver måned salg, udgifter og overskud</li>
-          <li>Vi laver årsregnskab og selvangivelse</li>
-        </ul>
-      </div>
-    </div>
     <div class="trin-wrap">
       <div class="spor"><div class="fyld"></div></div>
       <div class="trin">
@@ -490,6 +417,15 @@
         <div><span class="n">2</span><h3>Kobl banken til</h3></div>
         <div><span class="n">3</span><h3>Vi klarer resten</h3></div>
       </div>
+    </div>
+    <div class="tkonto rejs">
+      <div class="tk-top"><span>Du</span><span>Vi</span></div>
+      <div class="tk-r"><div class="du">Scan dine bilag</div><div class="vi ai">AI læser dine bilag, og en bogholder tjekker hver post, før den bogføres</div></div>
+      <div class="tk-r"><div></div><div class="vi">Vi bogfører alle dine fakturaer og kvitteringer, uanset hvor mange</div></div>
+      <div class="tk-r"><div></div><div class="vi">Vi tjekker hver uge, at banken passer</div></div>
+      <div class="tk-r"><div></div><div class="vi">Vi indberetter momsen og sender dig beløbet</div></div>
+      <div class="tk-r"><div></div><div class="vi">Vi sender dig hver måned salg, udgifter og overskud</div></div>
+      <div class="tk-r"><div></div><div class="vi">Vi laver årsregnskab og selvangivelse</div></div>
     </div>
   </div>
 </section>
@@ -748,7 +684,7 @@
   const status = skaerm.querySelector(".status");
   const toast = document.querySelector(".toast");
 
-  status.textContent = "3 af 4 klaret";
+  status.textContent = "3 af 4 bogført";
   gsap.set(skaerm, { rotation: bred ? -1.5 : 0, transformPerspective: 1400 });
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
   tl.from(".hero .tekst > *", { opacity: 0, y: 26, duration: 0.7, stagger: 0.09 }, 0.05)
@@ -757,7 +693,7 @@
     .from(toast, { opacity: 0, y: -14, x: 10, duration: 0.45, ease: "back.out(1.6)" }, 0.9)
     .from(ny, { opacity: 0, y: -16, duration: 0.4 }, 1.2)
     .from(nyPille, { scale: 0, transformOrigin: "left center", duration: 0.35, ease: "back.out(2)" }, 1.45)
-    .add(() => { status.textContent = "4 af 5 klaret"; }, 1.6)
+    .add(() => { status.textContent = "4 af 5 bogført"; }, 1.6)
     .fromTo(status, { scale: 1.15 }, { scale: 1, duration: 0.3, ease: "power2.out" }, 1.6);
 
   if (bred && fin) {
@@ -775,19 +711,20 @@
   /* Skaermen glider op og vipper let, naar man scroller vaek */
   if (bred) gsap.to(scene, { y: -40, rotationX: 3, transformPerspective: 1400, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true } });
 
-  /* 01: hvert kort faar sit lille oejeblik, forskudt 150 ms */
-  document.querySelectorAll(".uge-kort article").forEach((kort, i) => {
-    const slags = kort.dataset.mini;
-    if (slags === "frist") gsap.set(kort.querySelector(".flueben"), { scale: 0 });
-    if (slags === "kalender") { const s = kort.querySelector(".streg"); const L = s.getTotalLength(); gsap.set(s, { strokeDasharray: L, strokeDashoffset: L }); }
-    if (slags === "overblik") gsap.set(kort.querySelectorAll(".soejler i"), { scaleY: 0, transformOrigin: "50% 100%" });
+  /* Fotostriben: hvert maerkat faar sit lille oejeblik, naar det kommer ind */
+  const vifte = [{ x: -26, rotation: -9 }, { x: 0, rotation: -1 }, { x: 26, rotation: 8 }];
+  document.querySelectorAll(".maerkat[data-mini]").forEach((m) => {
+    const slags = m.dataset.mini;
+    if (getComputedStyle(m.querySelector(".mini")).display === "none") return;
+    if (slags === "soendag") gsap.set(m.querySelector(".streg"), { strokeDasharray: 188, strokeDashoffset: 188 });
+    if (slags === "overblik") gsap.set(m.querySelectorAll(".soejler i"), { scaleY: 0, transformOrigin: "50% 100%" });
+    if (slags === "ubegraenset") gsap.set(m.querySelectorAll(".bunke span"), { x: 0, rotation: -1 });
     ScrollTrigger.create({
-      trigger: kort, start: "top 78%", once: true,
+      trigger: m, start: "top 88%", once: true,
       onEnter: () => {
-        const d = i * 0.15;
-        if (slags === "frist") gsap.to(kort.querySelector(".flueben"), { scale: 1, duration: 0.4, delay: d + 0.3, ease: "back.out(2.2)" });
-        if (slags === "kalender") { gsap.to(kort.querySelector(".streg"), { strokeDashoffset: 0, duration: 0.5, delay: d + 0.2, ease: "power2.inOut" }); gsap.to(kort.querySelectorAll(".celle .dag, .celle .hvad"), { opacity: 0.45, duration: 0.4, delay: d + 0.6 }); }
-        if (slags === "overblik") gsap.to(kort.querySelectorAll(".soejler i"), { scaleY: 1, duration: 0.5, stagger: 0.08, delay: d + 0.2, ease: "power3.out" });
+        if (slags === "soendag") { gsap.to(m.querySelector(".streg"), { strokeDashoffset: 0, duration: 0.5, delay: 0.3, ease: "power2.inOut" }); gsap.to(m.querySelectorAll(".celle .dag, .celle .hvad"), { opacity: 0.45, duration: 0.4, delay: 0.75 }); }
+        if (slags === "overblik") gsap.to(m.querySelectorAll(".soejler i"), { scaleY: 1, duration: 0.5, stagger: 0.08, delay: 0.3, ease: "power3.out" });
+        if (slags === "ubegraenset") m.querySelectorAll(".bunke span").forEach((s, i) => gsap.to(s, { ...vifte[i], duration: 0.5, delay: 0.3, ease: "back.out(1.6)" }));
       },
     });
   });
