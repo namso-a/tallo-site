@@ -68,8 +68,6 @@
   .knap:hover .pil { transform: translateX(4px); }
   .knap.stille { background: transparent; color: inherit; border: 1px solid currentColor; opacity: .85; }
   .knap.stille:hover { opacity: 1; transform: none; background: rgba(20,20,20,.04); }
-  .knap.lys { background: var(--blaek); color: #fff; }
-  .knap.lys:hover { background: var(--blaa); }
 
   /* Afsløring ved scroll */
   .js .rejs { opacity: 0; transform: translateY(16px); }
@@ -99,9 +97,7 @@
   nav ul a:hover { opacity: 1; }
   nav .knap { height: 40px; padding: 0 18px; font-size: 14px; }
   nav.klaebet { background: rgba(255,255,255,.86); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--blaek); box-shadow: 0 1px 0 var(--lineal); }
-  nav.klaebet .knap.lys { background: var(--blaek); color: #fff; }
   nav.klaebet.over-nat { background: rgba(246,246,243,.94); color: var(--blaek); box-shadow: 0 1px 0 var(--lineal); }
-  nav.klaebet.over-nat .knap.lys { background: var(--blaek); color: #fff; }
   .hero-wrap { background: var(--nat); padding-top: var(--nav); }
 
   /* Hero */
@@ -145,13 +141,6 @@
   .afsnit.nat { background: var(--nat); color: var(--nat-tekst); }
   .afsnit.blaa-svag { background: var(--blaa-svag); }
   .hoved { max-width: 44em; margin-bottom: 48px; }
-  .etiket { display: inline-flex; align-items: center; gap: 12px; font-family: "Geist Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--daempet); margin-bottom: 18px; }
-  .etiket b { font-weight: 500; color: var(--blaa); }
-  .etiket::before { content: ""; width: 20px; height: 1px; background: currentColor; opacity: .5; transform-origin: left center; }
-  .js .rejs .etiket::before { transform: scaleX(0); transition: transform .5s cubic-bezier(.2,.7,.2,1) .25s; }
-  .js .rejs.inde .etiket::before { transform: scaleX(1); }
-  .nat .etiket { color: var(--nat-daempet); }
-  .nat .etiket b { color: var(--blaa-lys); }
   .nat h2 { color: var(--blaek); }
   .hoved p { margin-top: 14px; font-size: 19px; color: var(--daempet); max-width: 34em; }
   .nat .hoved p { color: var(--nat-daempet); }
@@ -172,7 +161,7 @@
   /* Overgange: ark oven paa ark. Hver sektion efter toppen ligger som et papirark oven paa den forrige (valgt 24. sep 2026).
      Hvert ark skal have sin egen baggrund, ellers skinner den forrige sektion igennem hjoernerne. */
   #pris { background: var(--lys); }
-  .stribe, #uge, #arbejde, #pris, #book, footer { position: relative; margin-top: -28px; margin-top: -28px; border-radius: 28px 28px 0 0; box-shadow: 0 -1px 0 var(--lineal), 0 -14px 30px -24px rgba(20,20,20,.18); }
+  .stribe, #uge, #arbejde, #pris, #book, footer { position: relative; margin-top: -28px; border-radius: 28px 28px 0 0; box-shadow: 0 -1px 0 var(--lineal), 0 -14px 30px -24px rgba(20,20,20,.18); }
   .uge-kort { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
   @media (max-width: 1100px) { .uge-kort { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .uge-kort article { background: #fff; border: 1px solid var(--lineal); border-radius: var(--r); padding: 18px 20px 24px; display: flex; flex-direction: column; transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s; }
@@ -203,7 +192,13 @@
   .celle.lys .hvad small { color: var(--daempet); }
   .celle .flueben { position: absolute; top: -10px; right: -10px; width: 28px; height: 28px; border-radius: 50%; background: var(--groen); color: #fff; display: grid; place-items: center; font-size: 15px; font-weight: 700; }
   .ettal u { text-decoration-color: var(--blaa); text-decoration-thickness: 2px; text-underline-offset: 3px; }
-  /* mini 3: tallet */
+  /* mini 3: maanedens overblik, uden beloeb (et beloeb er for lidt for nogen og for meget for andre) */
+  .soejler { display: flex; align-items: flex-end; gap: 14px; height: 80px; }
+  .soejler > div { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 56px; }
+  .soejler i { display: block; width: 26px; height: var(--h); background: var(--lineal); border-radius: 6px 6px 2px 2px; }
+  .soejler .plus i { background: var(--blaa); }
+  .soejler span { font-size: 11px; color: var(--daempet); }
+  /* mini 4: prisen */
   .ettal { text-align: center; }
   .ettal b { display: block; font-size: 38px; font-weight: 600; letter-spacing: -.04em; line-height: 1; }
   .ettal span { display: block; margin-top: 6px; font-size: 13px; color: var(--daempet); }
@@ -223,13 +218,10 @@
   .vores-del li { display: flex; gap: 12px; align-items: baseline; padding: 14px 0; border-bottom: 1px dashed #d9d9d2; font-size: 18px; color: var(--blaek); }
   .vores-del li:last-child { border-bottom: 0; }
   .vores-del li::before { content: "✓"; color: var(--blaa-lys); font-weight: 600; }
-  .foerste { margin-top: 80px; margin-bottom: 28px; }
-  .foerste .mono { color: var(--blaa-lys); display: block; margin-bottom: 8px; }
-  .foerste p { color: var(--nat-daempet); font-size: 17px; }
-  .arbejde-note { margin-top: 56px; font-size: 14px; color: var(--nat-daempet); }
+  .ai-linje { margin: 4px 0 16px; padding: 14px 16px; border-radius: 12px; background: var(--blaa-svag); color: var(--blaek); font-size: 16px; font-weight: 500; }
 
   /* 02 Foerste gang: linjen og trinene */
-  .trin-wrap { position: relative; padding-top: 14px; }
+  .trin-wrap { position: relative; padding-top: 14px; margin-top: 80px; }
   .spor { position: absolute; left: 0; right: 0; top: 27px; height: 2px; background: var(--nat-streg); }
   .spor .fyld { position: absolute; inset: 0; background: var(--blaa-lys); transform-origin: left center; }
   .trin { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; position: relative; }
@@ -240,26 +232,31 @@
   .trin > div.naaet h3 { opacity: 1; }
   .trin p { margin-top: 8px; color: var(--nat-daempet); font-size: 15px; }
 
-  /* 04 Prisen */
-  .pris-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: start; }
-  .beloeb { font-size: clamp(80px, 10vw, 136px); font-weight: 600; letter-spacing: -.05em; line-height: .9; }
-  .beloeb small { display: block; font-size: 18px; font-weight: 500; letter-spacing: 0; margin-top: 16px; color: var(--daempet); }
-  .altid { position: relative; color: var(--blaa); font-weight: 600; }
-  .altid::after { content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px; background: var(--blaa); transform: scaleX(0); transform-origin: left; transition: transform .5s cubic-bezier(.2,.7,.2,1) .7s; }
-  .rejs.inde .altid::after { transform: scaleX(1); }
-  .pris-grid .handling { margin-top: 32px; }
-  .pris-grid ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
-  .pris-grid li { display: flex; gap: 10px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--lineal); font-size: 16px; }
-  .pris-grid li::before { content: "✓"; color: var(--blaa); font-weight: 600; }
+  /* 03 Prisen */
+  .pris-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 20px; align-items: stretch; }
+  .pris-kort { background: var(--flade); border: 1px solid var(--lineal); border-radius: var(--r); padding: 32px; display: flex; flex-direction: column; }
+  .pris-kort .mono { color: var(--daempet); display: block; margin-bottom: 6px; }
+  .beloeb { font-size: clamp(44px, 4.4vw, 60px); font-weight: 600; letter-spacing: -.04em; line-height: 1; margin-top: 6px; }
+  .beloeb-under { margin-top: 10px; font-size: 17px; color: var(--daempet); }
+  .fast { margin-top: 18px; font-size: 17px; }
+  .streg-under { position: relative; color: var(--blaa); font-weight: 600; }
+  .streg-under::after { content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px; background: var(--blaa); transform: scaleX(0); transform-origin: left; transition: transform .5s cubic-bezier(.2,.7,.2,1) .7s; }
+  .rejs.inde .streg-under::after { transform: scaleX(1); }
+  .prisen .knap { margin-top: auto; align-self: flex-start; }
+  .prisen .fast { margin-bottom: 32px; }
+  .pris-kort ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
+  .pris-kort li { display: flex; gap: 10px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--lineal); font-size: 16px; }
+  .pris-kort li::before { content: "✓"; color: var(--blaa); font-weight: 600; }
   .tilkoeb { margin-top: 32px; }
   .tilkoeb .mono { color: var(--daempet); display: block; margin-bottom: 6px; }
   .tilkoeb .l { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--lineal); font-size: 16px; }
   .tilkoeb .l span:last-child { font-weight: 500; text-align: right; }
   .ubegraenset { font-size: clamp(22px, 2vw, 26px); font-weight: 600; letter-spacing: -.015em; color: var(--blaa); margin-bottom: 12px; }
-  .pris-grid .med { margin-top: 22px; color: var(--daempet); font-size: 15px; max-width: 40em; }
+  .pris-kort .med { margin-top: 22px; color: var(--daempet); font-size: 15px; }
 
   /* 04 Samtalen: kalender og formular */
   .hoved .om-link { margin-top: 12px; font-size: 16px; }
+  @media (min-width: 901px) { .hoved p.en-linje { white-space: nowrap; max-width: none; } }
   .om-link a { color: var(--blaa); font-weight: 500; }
   .kontakt { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: stretch; }
   .kontakt .kalender { padding: 18px 12px 12px; }
@@ -311,8 +308,9 @@
     .kalender { padding: 16px 10px; }
     .cal-ramme { max-height: 680px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .din-del, .vores-del { padding: 24px; }
-    .foerste { margin-top: 56px; }
-    .pris-grid ul { grid-template-columns: minmax(0, 1fr); }
+    .trin-wrap { margin-top: 48px; }
+    .pris-kort ul { grid-template-columns: minmax(0, 1fr); }
+    .pris-kort { padding: 24px; }
     .tilkoeb .l { flex-direction: column; gap: 2px; }
     .tilkoeb .l span:last-child { text-align: left; }
     .trin > div { padding: 14px 0; }
@@ -331,7 +329,7 @@
       <li><a href="#pris">Prisen</a></li>
       <li><a href="om-os/">Om os</a></li>
     </ul>
-    <a class="knap lys" href="#book" data-book>Bliv fri for bogføring</a>
+    <a class="knap" href="#book" data-book>Bliv fri for bogføring</a>
   </div>
 </nav>
 
@@ -354,12 +352,12 @@
   <div class="skal">
     <div class="tekst">
       <h1>Aldrig mere bogføring.<br><em>1.500 kr. om måneden.</em></h1>
-      <p class="manchet">Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem, indberetter momsen og sender dig hver måned, hvad du har tjent. Ubegrænset antal fakturaer.</p>
+      <p class="manchet">Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem, indberetter momsen og viser dig hver måned, hvad du har i overskud. Ubegrænset antal fakturaer.</p>
       <div class="handling">
         <a class="knap" href="#book" data-book>Bliv fri for bogføring <span class="pil">→</span></a>
         <a class="knap stille" href="#arbejde">Sådan foregår det</a>
       </div>
-      <p class="lille-under">30 minutters snak med Mohammed. Gratis.</p>
+      <p class="lille-under">30 minutters snak. Gratis.</p>
     </div>
     <div class="scene" aria-hidden="true">
       <div class="skaerm">
@@ -374,7 +372,6 @@
             <tr><td>05.03</td><td>Ørsted<small>Strøm</small></td><td class="tal">1.905,75</td></tr>
           </tbody></table>
         </div>
-        <div class="bund"><span>Du tjente i marts</span><b class="tal">31.640 kr.</b></div>
       </div>
       <div class="toast"><div class="ikon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h5l1.5 2.5h5L16 13h5"/><path d="M5.5 5h13L21 13v6H3v-6z"/></svg></div><div><b>Ny regning</b><span>Candy People, kom ind af sig selv</span></div></div>
     </div>
@@ -407,9 +404,7 @@
 57.410,00</div>
   <div class="skal">
     <header class="hoved rejs">
-      <span class="etiket"><b>01</b> Hverdagen</span>
       <h2>Det skal du aldrig mere</h2>
-      <p>Vi bogfører, indberetter og holder øje med dine tal. Du passer din virksomhed.</p>
     </header>
     <div class="uge-kort">
       <article class="rejs moerk" data-mini="kalender">
@@ -434,18 +429,18 @@
         <h3>Du glemmer aldrig en frist</h3>
         <p>Vi indberetter momsen til tiden.</p>
       </article>
-      <article class="rejs" data-mini="tal">
+      <article class="rejs" data-mini="overblik">
         <div class="mini" aria-hidden="true">
-          <div class="ettal"><b class="tal" data-til="31640">31.640</b><span>kr. tjent i marts</span></div>
+          <div class="soejler"><div><i style="--h:58px"></i><span>Salg</span></div><div><i style="--h:38px"></i><span>Udgifter</span></div><div class="plus"><i style="--h:22px"></i><span>Overskud</span></div></div>
         </div>
-        <h3>Du ved altid, hvordan det går</h3>
-        <p>Hver måned får du dit resultat.</p>
+        <h3>Du ved hver måned, hvordan det går</h3>
+        <p>Salg, udgifter og overskud.</p>
       </article>
       <article class="rejs" data-mini="fast">
         <div class="mini" aria-hidden="true">
-          <div class="ettal"><b class="tal">1.500 kr.</b><span>om måneden. <u>Altid.</u></span></div>
+          <div class="ettal"><b class="tal">1.500 kr.</b><span>om måneden. <u>Fast pris.</u></span></div>
         </div>
-        <h3>Du kender altid prisen</h3>
+        <h3>Samme pris hver måned</h3>
         <p>1.500 kr. om måneden, uanset hvor mange fakturaer du har.</p>
       </article>
     </div>
@@ -465,9 +460,7 @@
 148.220,00</div>
   <div class="skal">
     <header class="hoved rejs">
-      <span class="etiket"><b>02</b> Arbejdet</span>
       <h2>Sådan foregår det</h2>
-      <p>Din del er næsten ingenting. Vores del er hele regnskabet.</p>
     </header>
     <div class="delene">
       <div class="din-del rejs">
@@ -480,28 +473,24 @@
       </div>
       <div class="vores-del rejs">
         <span class="mono">Vores del</span>
+        <p class="ai-linje">AI læser dine bilag, og en bogholder tjekker hver post, før den bogføres.</p>
         <ul>
           <li>Vi bogfører alle dine fakturaer og kvitteringer, uanset hvor mange</li>
           <li>Vi tjekker hver uge, at banken passer</li>
           <li>Vi indberetter momsen og sender dig beløbet</li>
-          <li>Vi sender dig hver måned, hvad du har tjent</li>
+          <li>Vi sender dig hver måned salg, udgifter og overskud</li>
           <li>Vi laver årsregnskab og selvangivelse</li>
         </ul>
       </div>
-    </div>
-    <div class="foerste rejs">
-      <span class="mono">Første gang</span>
-      <p>Én gang. Vi guider dig igennem, og går det i stå, ringer vi.</p>
     </div>
     <div class="trin-wrap">
       <div class="spor"><div class="fyld"></div></div>
       <div class="trin">
         <div><span class="n">1</span><h3>Tilknyt dit regnskabsprogram</h3></div>
-        <div><span class="n">2</span><h3>Kobl banken til</h3><p>Med dit eget MitID.</p></div>
-        <div><span class="n">3</span><h3>Giv os adgang</h3><p>Så bogfører vi fra dag ét.</p></div>
+        <div><span class="n">2</span><h3>Kobl banken til</h3></div>
+        <div><span class="n">3</span><h3>Vi klarer resten</h3></div>
       </div>
     </div>
-    <p class="arbejde-note">Et program læser dine bilag, og Othman tjekker hver post, før den bogføres.</p>
   </div>
 </section>
 
@@ -515,21 +504,15 @@
 48.312,00</div>
   <div class="skal">
     <header class="hoved rejs">
-      <span class="etiket"><b>03</b> Prisen</span>
       <h2>Hvad det koster</h2>
-      <p>Det samme hver måned. Ingen binding.</p>
     </header>
     <div class="pris-grid">
-      <div class="rejs">
-        <div class="beloeb"><span class="tal" data-til="1500">1.500</span><small>kr. om måneden plus moms. <b class="altid">Altid.</b></small></div>
-        <a class="knap handling" href="#book" data-book>Bliv fri for bogføring <span class="pil">→</span></a>
-      </div>
-      <div class="rejs">
+      <div class="pris-kort rejs">
         <p class="ubegraenset">Ubegrænset antal fakturaer og kvitteringer.</p>
         <ul>
           <li>Alt bogført for dig</li>
           <li>Momsen indberettet til tiden</li>
-          <li>Dit resultat hver måned</li>
+          <li>Salg, udgifter og overskud hver måned</li>
           <li>Årsregnskab og selvangivelse</li>
         </ul>
         <div class="tilkoeb">
@@ -539,6 +522,13 @@
         </div>
         <p class="med">Alle priser er plus moms. Regnskabsprogrammet betaler du selv.</p>
       </div>
+      <div class="pris-kort prisen rejs">
+        <span class="mono">Prisen</span>
+        <div class="beloeb"><span class="tal" data-til="1500">1.500</span> kr.</div>
+        <p class="beloeb-under">om måneden plus moms</p>
+        <p class="fast"><b class="streg-under">Fast pris.</b> Ingen binding.</p>
+        <a class="knap" href="#book" data-book>Bliv fri for bogføring <span class="pil">→</span></a>
+      </div>
     </div>
   </div>
 </section>
@@ -547,10 +537,9 @@
 <section class="afsnit blaa-svag" id="book">
   <div class="skal">
     <header class="hoved rejs">
-      <span class="etiket"><b>04</b> Samtalen</span>
       <h2>Bliv fri for bogføring</h2>
-      <p>30 minutter med Mohammed i telefonen eller på video. Gratis, og du binder dig ikke.</p>
-      <p class="om-link"><a href="om-os/">Hvem er Mohammed og Othman? Læs om os <span class="pil">→</span></a></p>
+      <p class="en-linje">30 minutter i telefonen eller på video. Gratis, og du binder dig ikke.</p>
+      <p class="om-link"><a href="om-os/">Hvem er Tallo? Læs om os <span class="pil">→</span></a></p>
     </header>
     <div class="kontakt">
       <div class="kalender rejs">
@@ -791,14 +780,14 @@
     const slags = kort.dataset.mini;
     if (slags === "frist") gsap.set(kort.querySelector(".flueben"), { scale: 0 });
     if (slags === "kalender") { const s = kort.querySelector(".streg"); const L = s.getTotalLength(); gsap.set(s, { strokeDasharray: L, strokeDashoffset: L }); }
-    if (slags === "tal") kort.querySelector("[data-til]").textContent = "0";
+    if (slags === "overblik") gsap.set(kort.querySelectorAll(".soejler i"), { scaleY: 0, transformOrigin: "50% 100%" });
     ScrollTrigger.create({
       trigger: kort, start: "top 78%", once: true,
       onEnter: () => {
         const d = i * 0.15;
         if (slags === "frist") gsap.to(kort.querySelector(".flueben"), { scale: 1, duration: 0.4, delay: d + 0.3, ease: "back.out(2.2)" });
         if (slags === "kalender") { gsap.to(kort.querySelector(".streg"), { strokeDashoffset: 0, duration: 0.5, delay: d + 0.2, ease: "power2.inOut" }); gsap.to(kort.querySelectorAll(".celle .dag, .celle .hvad"), { opacity: 0.45, duration: 0.4, delay: d + 0.6 }); }
-        if (slags === "tal") taelOp(kort.querySelector("[data-til]"), 31640, 0.9).delay(d);
+        if (slags === "overblik") gsap.to(kort.querySelectorAll(".soejler i"), { scaleY: 1, duration: 0.5, stagger: 0.08, delay: d + 0.2, ease: "power3.out" });
       },
     });
   });
