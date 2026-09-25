@@ -155,7 +155,7 @@
   .fotorad figure { position: relative; margin: 0; }
   .fotorad img { display: block; width: 100%; height: auto; object-fit: cover; border-radius: var(--r); }
   .fotorad figure:nth-child(1) img { aspect-ratio: 4 / 5; }
-  .fotorad figure:nth-child(2) img { aspect-ratio: 3 / 4; }
+  .fotorad figure:nth-child(2) img { aspect-ratio: 1 / 1; object-position: 30% 50%; } /* venstre haand skal med */
   .fotorad figure:nth-child(3) img { aspect-ratio: 4 / 3; }
   .maerkat { position: absolute; right: -14px; bottom: -72px; z-index: 2; width: 240px; background: #fff; border-radius: 14px; padding: 12px 14px 14px; box-shadow: 0 22px 40px -22px rgba(20,20,20,.45), 0 1px 0 var(--lineal); transform: rotate(2deg); }
   .fotorad figure:nth-child(2) .maerkat { transform: rotate(-1.5deg); }
@@ -375,8 +375,8 @@
 
 <!-- Fotos: Unsplash-licens (fri kommerciel brug, kreditering ikke påkrævet). Licensen dækker IKKE genkendelige
      personer, logoer eller butiksnavne, så fotoene viser kun hænder og ting.
-     butik: Viktoriia Yatsentiuk (94kV-WXJ2_A), varevogn: Claudio Schwarz (a85IYeAXgxU, beskåret),
-     vaerksted: Christian Buehner (Fd6osyVbtG4). Skiftes til egne fotos med samtykke, når de findes. -->
+     bageri: Skyler Ewing (2uiZDQYTHBM), vaerksted: Christian Buehner (Fd6osyVbtG4),
+     frisoer: Tá Focando (i3x4Bjmt-Js). Skiftes til egne fotos med samtykke, når de findes. -->
 <section class="stribe tal-flade" aria-label="Små virksomheder">
   <div class="tal-bag venstre oeverst" aria-hidden="true">31.640,00
 2.499,00
@@ -388,9 +388,9 @@
   <div class="skal">
     <h2 class="stribe-tekst rejs">Til dig, der hellere vil passe din forretning end dine papirer.</h2>
     <div class="fotorad">
-      <figure class="rejs"><img src="billeder/butik.webp" width="840" height="1050" loading="lazy" decoding="async" alt="Hænder, der binder en buket i en blomsterbutik"><div class="maerkat" data-mini="soendag"><div class="mini" aria-hidden="true"><div class="celle"><div class="dag">Søndag 20:00</div><div class="hvad">Bogføring<small>Kvitteringer og bank</small></div><svg viewBox="0 0 200 74" preserveAspectRatio="none"><line class="streg" x1="10" y1="64" x2="190" y2="10"/></svg></div></div><h3>Du bogfører aldrig selv</h3></div></figure>
-      <figure class="rejs"><img src="billeder/varevogn.webp" width="720" height="960" loading="lazy" decoding="async" alt="En varevogn fuld af pakker, der bliver læsset"><div class="maerkat" data-mini="ubegraenset"><div class="mini" aria-hidden="true"><div class="bunke"><span>Faktura</span><span>Faktura</span><span>Faktura</span><b>Samme pris</b></div></div><h3>Ubegrænset antal fakturaer</h3></div></figure>
-      <figure class="rejs"><img src="billeder/vaerksted.webp" width="960" height="720" loading="lazy" decoding="async" alt="Hænder med en skruenøgle ved en bilmotor"><div class="maerkat" data-mini="overblik"><div class="mini" aria-hidden="true"><div class="soejler"><div><i style="--h:58px"></i><span>Salg</span></div><div><i style="--h:38px"></i><span>Udgifter</span></div><div class="plus"><i style="--h:22px"></i><span>Overskud</span></div></div></div><h3>Du ved hver måned, hvordan det går</h3></div></figure>
+      <figure class="rejs"><img src="billeder/bageri.webp" width="840" height="1260" loading="lazy" decoding="async" alt="Hænder, der former et brød af dej på et melet bord"><div class="maerkat" data-mini="soendag"><div class="mini" aria-hidden="true"><div class="celle"><div class="dag">Søndag 20:00</div><div class="hvad">Bogføring<small>Kvitteringer og bank</small></div><svg viewBox="0 0 200 74" preserveAspectRatio="none"><line class="streg" x1="10" y1="64" x2="190" y2="10"/></svg></div></div><h3>Du bogfører aldrig selv</h3></div></figure>
+      <figure class="rejs"><img src="billeder/vaerksted.webp" width="960" height="720" loading="lazy" decoding="async" alt="Hænder med en skruenøgle ved en bilmotor"><div class="maerkat" data-mini="ubegraenset"><div class="mini" aria-hidden="true"><div class="bunke"><span>Faktura</span><span>Faktura</span><span>Faktura</span><b>Samme pris</b></div></div><h3>Ubegrænset antal fakturaer</h3></div></figure>
+      <figure class="rejs"><img src="billeder/frisoer.webp" width="960" height="640" loading="lazy" decoding="async" alt="Hænder med en kam og en saks"><div class="maerkat" data-mini="overblik"><div class="mini" aria-hidden="true"><div class="soejler"><div><i style="--h:58px"></i><span>Salg</span></div><div><i style="--h:38px"></i><span>Udgifter</span></div><div class="plus"><i style="--h:22px"></i><span>Overskud</span></div></div></div><h3>Du ved hver måned, hvordan det går</h3></div></figure>
     </div>
   </div>
 </section>
