@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Mockup A: Kvitteringen</title>
+<link rel="stylesheet" href="base.css">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<style>
+  /* Idé: maaneden er en kvittering. Kvitteringen er det eneste stykke papir; resten er rolig flade. */
+  .bon { background: #fffefb; font-family: var(--mono); font-size: 13.5px; position: relative; padding: 18px 20px 26px;
+    filter: drop-shadow(0 12px 18px rgba(20,20,20,.10));
+    -webkit-mask: radial-gradient(7px at 50% 100%, #0000 98%, #000) 50% 100% / 14px 100% repeat-x;
+            mask: radial-gradient(7px at 50% 100%, #0000 98%, #000) 50% 100% / 14px 100% repeat-x; }
+  .bon .hoved { text-align: center; color: var(--daempet); font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; }
+  .bon .streg { border-top: 1.5px dashed #cfcec7; margin: 12px 0; }
+  .bon .l { display: flex; justify-content: space-between; padding: 3px 0; }
+  .bon .l.mangler { color: var(--roed); }
+  .bon .sum { display: flex; justify-content: space-between; align-items: baseline; font-weight: 600; }
+  .bon .sum b { font-size: 26px; letter-spacing: -.02em; }
+  .bon .soejler { display: flex; gap: 4px; align-items: flex-end; height: 34px; margin-top: 10px; }
+  .bon .soejler i { flex: 1; background: var(--violet); opacity: .85; border-radius: 2px 2px 0 0; }
+  .bon .soejler i.nu { background: repeating-linear-gradient(45deg, var(--violet) 0 3px, #fffefb 3px 6px); opacity: 1; }
+  .bon .md { display: flex; gap: 4px; font-size: 9.5px; color: var(--svag); margin-top: 4px; }
+  .bon .md span { flex: 1; text-align: center; }
+  .bon .fod { text-align: center; color: var(--svag); font-size: 11px; margin-top: 10px; }
+
+  /* mobil */
+  .m-top { display: flex; justify-content: space-between; align-items: center; padding: 8px 20px 14px; }
+  .m-top b { font-size: 17px; letter-spacing: -.01em; }
+  .m-top .mig { width: 34px; height: 34px; border-radius: 50%; background: var(--papir2); display: grid; place-items: center;
+    font-size: 13px; font-weight: 600; color: var(--daempet); }
+  .scan { margin: 0 20px; width: calc(100% - 40px); display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: var(--violet); color: #fff; border: 0; border-radius: 18px; height: 64px; font-size: 18px; font-weight: 600; }
+  .m-sp { margin: 14px 20px 0; background: var(--lys); border-radius: 16px; padding: 14px 16px; display: flex; align-items: center;
+    gap: 10px; box-shadow: inset 0 0 0 1px var(--lineal); font-weight: 500; }
+  .m-sp span.pil { margin-left: auto; color: var(--svag); }
+  .m-bon { margin: 18px 20px 0; }
+  .m-moms { margin: 18px 20px 0; font-size: 14px; color: var(--daempet); display: flex; gap: 8px; align-items: center; }
+
+  .q-kort { margin: 0 20px 14px; background: var(--lys); border-radius: 18px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--lineal); }
+  .q-kort .linje { font-family: var(--mono); font-size: 13px; padding: 12px 16px; background: #fffefb;
+    border-bottom: 1.5px dashed #d8d7d0; display: flex; justify-content: space-between; }
+  .q-kort .q { padding: 14px 16px 6px; font-size: 17px; font-weight: 500; letter-spacing: -.01em; }
+  .q-kort .svar { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 16px 16px; }
+  .q-kort .svar .knap { padding: 9px 14px; font-size: 14.5px; }
+  .m-titel { padding: 4px 20px 16px; }
+  .m-titel h3 { margin: 0; font-size: 26px; letter-spacing: -.02em; }
+  .m-titel p { margin: 4px 0 0; color: var(--daempet); font-size: 14.5px; }
+
+  /* computer */
+  .c { display: grid; grid-template-columns: 232px 1fr; height: 100%; }
+  .c nav { background: var(--papir); border-right: 1px solid var(--lineal); padding: 22px 16px; display: flex; flex-direction: column; gap: 2px; }
+  .c nav .firma { font-weight: 600; font-size: 16px; padding: 0 10px 18px; }
+  .c nav a { padding: 9px 10px; border-radius: 10px; color: var(--daempet); text-decoration: none; font-size: 15px; display: flex; justify-content: space-between; }
+  .c nav a.aktiv { background: var(--lys); color: var(--blaek); font-weight: 500; box-shadow: inset 0 0 0 1px var(--lineal); }
+  .c nav .send { margin-top: 14px; }
+  .c nav .tallo { margin-top: auto; font-weight: 700; letter-spacing: -.03em; padding: 0 10px; color: var(--svag); }
+  .c main { background: #fbfbf9; padding: 30px 36px; overflow: hidden; }
+  .c h1 { margin: 0 0 4px; font-size: 26px; letter-spacing: -.02em; }
+  .c .under { color: var(--daempet); margin: 0 0 22px; }
+  .c .kol { display: grid; grid-template-columns: 340px 1fr; gap: 28px; align-items: start; }
+  .panel { background: var(--lys); border-radius: 16px; box-shadow: inset 0 0 0 1px var(--lineal); padding: 20px 22px; }
+  .panel h4 { margin: 0 0 12px; font-size: 15px; }
+  .graf { display: flex; gap: 10px; align-items: flex-end; height: 170px; border-bottom: 1px solid var(--lineal); padding-top: 8px; }
+  .graf .m { flex: 1; display: flex; gap: 3px; align-items: flex-end; height: 100%; }
+  .graf .m i { flex: 1; border-radius: 3px 3px 0 0; }
+  .graf .ind { background: var(--violet); } .graf .ud { background: var(--violet-mid); }
+  .akse { display: flex; gap: 10px; font-size: 11.5px; color: var(--svag); margin-top: 6px; }
+  .akse span { flex: 1; text-align: center; }
+  .forkl { display: flex; gap: 16px; font-size: 13px; color: var(--daempet); margin-top: 12px; }
+  .forkl i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .udg { margin-top: 18px; }
+  .udg .r { display: grid; grid-template-columns: 130px 1fr 90px; gap: 12px; align-items: center; font-size: 14px; padding: 5px 0; }
+  .udg .r .bar { height: 8px; border-radius: 4px; background: var(--violet-svag); overflow: hidden; }
+  .udg .r .bar i { display: block; height: 100%; background: var(--violet2); border-radius: 4px; }
+  .udg .r .b { text-align: right; font-family: var(--mono); font-size: 13px; }
+  .ft { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  .ft td, .ft th { padding: 13px 10px; border-bottom: 1px solid var(--lineal); text-align: left; }
+  .ft th { font-size: 12.5px; color: var(--svag); font-weight: 500; }
+  .ft td.b { font-family: var(--mono); text-align: right; } .ft th.b { text-align: right; }
+  .stempel { display: inline-block; font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em; font-weight: 600;
+    text-transform: uppercase; padding: 3px 8px; border: 1.5px solid currentColor; border-radius: 4px; transform: rotate(-3deg); }
+  .stempel.betalt { color: var(--groen); } .stempel.sent { color: var(--roed); } .stempel.sendt { color: var(--violet); }
+  .stempel.kladde { color: var(--svag); transform: none; border-style: dashed; }
+  .toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 18px; }
+  .toolbar .knap.v { margin-left: auto; }
+  .opsum { display: flex; gap: 40px; margin: 0 0 22px; }
+  .opsum div { font-size: 13px; color: var(--daempet); }
+  .opsum b { display: block; font-family: var(--mono); font-size: 22px; color: var(--blaek); font-weight: 600; letter-spacing: -.02em; }
+</style>
+</head>
+<body>
+<div class="forklaring">
+  <a class="tilbage" href="./">← Alle retninger</a>
+  <h1>A. Kvitteringen</h1>
+  <p class="ide">Idé: måneden er en kvittering, vi skriver for dig.</p>
+  <p>Én bon samler det hele: hvor mange betalinger vi har styr på, hvad der mangler, og overskuddet nederst som totalen. Kvitteringen er det eneste stykke papir i appen; resten er rolige flader. På fakturaerne er status et stempel.</p>
+</div>
+
+<section class="afsnit">
+  <h2>Mobil</h2>
+  <div class="raekke">
+    <div>
+      <div class="tlf"><div class="status"><span>9.41</span><span>● ● ●</span></div><div class="indhold">
+        <div class="m-top"><b>Bageriet Kornet</b><span class="mig">MK</span></div>
+        <button class="scan">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.2"/></svg>
+          Scan bilag</button>
+        <div class="m-sp"><span class="prik"></span>Vi har 2 spørgsmål til dig<span class="pil">›</span></div>
+        <div class="m-bon"><div class="bon tal">
+          <div class="hoved">Oktober 2026 · Tallo</div>
+          <div class="streg"></div>
+          <div class="l"><span>Betalinger</span><span>40</span></div>
+          <div class="l"><span>Vi har styr på</span><span>38</span></div>
+          <div class="l mangler"><span>Mangler kvittering</span><span>2</span></div>
+          <div class="streg"></div>
+          <div class="l"><span>Indtægter i år</span><span>1.284.900</span></div>
+          <div class="l"><span>Udgifter i år</span><span>−872.520</span></div>
+          <div class="streg"></div>
+          <div class="sum"><span>OVERSKUD I ÅR</span><b>412.380 kr.</b></div>
+          <div class="soejler"><i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:62%"></i><i style="height:70%"></i><i style="height:66%"></i><i style="height:80%"></i><i style="height:74%"></i><i style="height:58%"></i><i class="nu" style="height:30%"></i></div>
+          <div class="md"><span>jan</span><span>feb</span><span>mar</span><span>apr</span><span>maj</span><span>jun</span><span>jul</span><span>aug</span><span>sep</span><span>okt</span></div>
+          <div class="fod">Momsen for 3. kvartal sender vi inden 1. december</div>
+        </div></div>
+      </div></div>
+      <p class="skaermtekst">Forsiden. Det eneste, kunden skal gøre, står øverst. Resten er kvitteringen for måneden.</p>
+    </div>
+
+    <div>
+      <div class="tlf"><div class="status"><span>9.42</span><span>● ● ●</span></div><div class="indhold">
+        <div class="m-top"><b>‹ Tilbage</b><span></span></div>
+        <div class="m-titel"><h3>2 spørgsmål</h3><p>Ét tryk er nok. Vi bruger svaret, når vi bogfører.</p></div>
+        <div class="q-kort">
+          <div class="linje tal"><span>BAUHAUS ROSKILDE</span><span>450,00</span></div>
+          <div class="q">Hvad var de 450 kr. til Bauhaus den 3. oktober?</div>
+          <div class="svar"><button class="knap">Til bageriet</button><button class="knap">Privat</button><button class="knap">Skriv selv</button><button class="knap v">Send kvittering</button></div>
+        </div>
+        <div class="q-kort">
+          <div class="linje tal"><span>METRO GLOSTRUP</span><span>1.250,00</span></div>
+          <div class="q">Vi mangler kvitteringen for 1.250 kr. til Metro den 12. oktober.</div>
+          <div class="svar"><button class="knap v">Scan den</button><button class="knap">Har ikke nogen</button></div>
+        </div>
+      </div></div>
+      <p class="skaermtekst">Spørgsmål til dig. Banklinjen står øverst som et stykke af kvitteringen, svaret er ét tryk.</p>
+    </div>
+  </div>
+</section>
+
+<section class="afsnit">
+  <h2>Computer: overblik</h2>
+  <div class="skala"><div class="skaerm"><div class="browser"><i></i><i></i><i></i><span>app.tallo.dk</span></div><div class="side">
+    <div class="c">
+      <nav>
+        <div class="firma">Bageriet Kornet</div>
+        <a class="aktiv" href="#">Overblik</a><a href="#">Fakturaer <span class="chip roed">1</span></a><a href="#">Bilag</a><a href="#">Rapporter</a><a href="#">Mig</a>
+        <button class="knap v send">Send bilag</button>
+        <div class="tallo">tallo</div>
+      </nav>
+      <main>
+        <h1>Oktober</h1>
+        <p class="under">Vi har 2 spørgsmål til dig, og 2 betalinger mangler en kvittering.</p>
+        <div class="kol">
+          <div class="bon tal">
+            <div class="hoved">Oktober 2026 · Tallo</div>
+            <div class="streg"></div>
+            <div class="l"><span>Betalinger</span><span>40</span></div>
+            <div class="l"><span>Vi har styr på</span><span>38</span></div>
+            <div class="l mangler"><span>Bauhaus 3/10</span><span>450,00</span></div>
+            <div class="l mangler"><span>Metro 12/10</span><span>1.250,00</span></div>
+            <div class="streg"></div>
+            <div class="l"><span>Ubetalte fakturaer</span><span>3</span></div>
+            <div class="l"><span>Heraf for sent</span><span>1</span></div>
+            <div class="streg"></div>
+            <div class="sum"><span>OVERSKUD I ÅR</span><b>412.380 kr.</b></div>
+            <div class="fod">Momsen for 3. kvartal sender vi inden 1. december</div>
+          </div>
+          <div class="panel">
+            <h4>Hvordan det går</h4>
+            <div class="graf">
+              <div class="m"><i class="ind" style="height:58%"></i><i class="ud" style="height:44%"></i></div>
+              <div class="m"><i class="ind" style="height:62%"></i><i class="ud" style="height:41%"></i></div>
+              <div class="m"><i class="ind" style="height:66%"></i><i class="ud" style="height:47%"></i></div>
+              <div class="m"><i class="ind" style="height:71%"></i><i class="ud" style="height:45%"></i></div>
+              <div class="m"><i class="ind" style="height:80%"></i><i class="ud" style="height:52%"></i></div>
+              <div class="m"><i class="ind" style="height:77%"></i><i class="ud" style="height:50%"></i></div>
+              <div class="m"><i class="ind" style="height:88%"></i><i class="ud" style="height:55%"></i></div>
+              <div class="m"><i class="ind" style="height:84%"></i><i class="ud" style="height:57%"></i></div>
+              <div class="m"><i class="ind" style="height:72%"></i><i class="ud" style="height:49%"></i></div>
+              <div class="m"><i class="ind" style="height:30%"></i><i class="ud" style="height:22%"></i></div>
+            </div>
+            <div class="akse"><span>jan</span><span>feb</span><span>mar</span><span>apr</span><span>maj</span><span>jun</span><span>jul</span><span>aug</span><span>sep</span><span>okt</span></div>
+            <div class="forkl"><span><i style="background:var(--violet)"></i>Indtægter</span><span><i style="background:var(--violet-mid)"></i>Udgifter</span></div>
+            <div class="udg">
+              <h4>Største udgifter i år</h4>
+              <div class="r"><span>Varer</span><span class="bar"><i style="width:100%"></i></span><span class="b">412.300</span></div>
+              <div class="r"><span>Løn</span><span class="bar"><i style="width:71%"></i></span><span class="b">291.800</span></div>
+              <div class="r"><span>Husleje</span><span class="bar"><i style="width:23%"></i></span><span class="b">96.000</span></div>
+              <div class="r"><span>El og varme</span><span class="bar"><i style="width:9%"></i></span><span class="b">38.420</span></div>
+              <div class="r"><span>Emballage</span><span class="bar"><i style="width:5%"></i></span><span class="b">19.950</span></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div></div></div>
+  <p class="skaermtekst">Samme kvittering, nu med plads til det, der mangler, ved navn. Til højre "Hvordan det går" med indtægter og udgifter pr. måned.</p>
+</section>
+
+<section class="afsnit">
+  <h2>Computer: fakturaer</h2>
+  <div class="skala"><div class="skaerm"><div class="browser"><i></i><i></i><i></i><span>app.tallo.dk/fakturaer</span></div><div class="side">
+    <div class="c">
+      <nav>
+        <div class="firma">Bageriet Kornet</div>
+        <a href="#">Overblik</a><a class="aktiv" href="#">Fakturaer <span class="chip roed">1</span></a><a href="#">Bilag</a><a href="#">Rapporter</a><a href="#">Mig</a>
+        <button class="knap v send">Send bilag</button>
+        <div class="tallo">tallo</div>
+      </nav>
+      <main>
+        <div class="toolbar"><h1 style="margin:0">Fakturaer</h1><button class="knap v">Ny faktura</button></div>
+        <div class="opsum"><div>Ubetalt<b>18.437,50</b></div><div>Heraf for sent<b style="color:var(--roed)">6.250,00</b></div><div>Betalt i oktober<b>42.180,00</b></div></div>
+        <table class="ft tal">
+          <tr><th>Nr.</th><th>Kunde</th><th>Dato</th><th>Forfald</th><th class="b">Beløb</th><th>Status</th></tr>
+          <tr><td>—</td><td>Café Søndergade</td><td>—</td><td>—</td><td class="b">3.125,00</td><td><span class="stempel kladde">Kladde</span></td></tr>
+          <tr><td>148</td><td>Aarhus Kommune, Rådhuskantinen</td><td>28.10.2026</td><td>27.11.2026</td><td class="b">9.062,50</td><td><span class="stempel sendt">Sendt</span></td></tr>
+          <tr><td>147</td><td>Hotel Royal</td><td>21.10.2026</td><td>29.10.2026</td><td class="b">3.125,00</td><td><span class="stempel sendt">Sendt</span></td></tr>
+          <tr><td>146</td><td>Café Søndergade</td><td>14.10.2026</td><td>22.10.2026</td><td class="b">6.250,00</td><td><span class="stempel sent">For sent</span> <button class="knap lille" style="margin-left:8px">Send en venlig påmindelse</button></td></tr>
+          <tr><td>145</td><td>Kaffebaren Vestergade</td><td>07.10.2026</td><td>15.10.2026</td><td class="b">2.500,00</td><td><span class="stempel betalt">Betalt</span></td></tr>
+          <tr><td>144</td><td>Hotel Royal</td><td>30.09.2026</td><td>08.10.2026</td><td class="b">12.500,00</td><td><span class="stempel betalt">Betalt</span></td></tr>
+          <tr><td>143</td><td>Aarhus Kommune, Rådhuskantinen</td><td>23.09.2026</td><td>23.10.2026</td><td class="b">9.062,50</td><td><span class="stempel betalt">Betalt</span></td></tr>
+        </table>
+      </main>
+    </div>
+  </div></div></div>
+  <p class="skaermtekst">Fakturaerne. Status er et stempel, og "Betalt" kommer af sig selv, når pengene står i banken.</p>
+</section>
+<script src="skala.js"></script>
+</body>
+</html>

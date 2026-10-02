@@ -1,0 +1,64 @@
+@font-face{font-family:"Geist";src:url("../fonts/geist.woff2") format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Geist Mono";src:url("../fonts/geist-mono.woff2") format("woff2");font-weight:100 900;font-display:swap}
+
+:root {
+  --lys: #fff; --papir: #f6f6f3; --papir2: #ecebe5; --blaek: #141414; --daempet: #5f5f5b; --svag: #8a8a84;
+  --lineal: #e2e2dd; --violet: #4b3aa6; --violet2: #6a5bc4; --violet-svag: #f0eef8; --violet-mid: #d9d4f1;
+  --roed: #c4321c; --roed-svag: #fdebe7; --groen: #1f7a4a; --groen-svag: #e6f4ec; --nat: #17151f;
+  --mono: "Geist Mono", ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-family: "Geist", system-ui, sans-serif; color: var(--blaek); background: #e9e8e2;
+  -webkit-font-smoothing: antialiased; line-height: 1.45; }
+button { font: inherit; color: inherit; cursor: pointer; }
+.mono { font-family: var(--mono); }
+.tal { font-variant-numeric: tabular-nums; }
+
+/* ---------- rammen omkring mockuppen (ikke en del af designet) ---------- */
+.forklaring { max-width: 1280px; margin: 0 auto; padding: 40px 24px 8px; }
+.forklaring a.tilbage { color: var(--daempet); text-decoration: none; font-size: 14px; }
+.forklaring h1 { font-size: clamp(28px, 4vw, 40px); letter-spacing: -.025em; margin: 14px 0 6px; }
+.forklaring p { max-width: 720px; color: var(--daempet); font-size: 17px; margin: 0 0 6px; }
+.forklaring .ide { color: var(--blaek); font-weight: 500; }
+.afsnit { max-width: 1328px; margin: 0 auto; padding: 28px 24px; }
+.afsnit > h2 { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--daempet); font-weight: 500; margin: 0 0 16px; }
+.raekke { display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start; }
+.skaermtekst { font-size: 13px; color: var(--daempet); margin: 12px 4px 0; max-width: 390px; }
+
+.tlf { width: 390px; height: 844px; border-radius: 46px; border: 11px solid #111; background: var(--papir);
+  overflow: hidden; position: relative; box-shadow: 0 30px 60px -30px rgba(20,20,20,.45); flex: none; }
+.tlf .status { height: 44px; display: flex; justify-content: space-between; align-items: center; padding: 0 26px;
+  font-size: 14px; font-weight: 600; }
+.tlf .indhold { position: absolute; inset: 44px 0 0 0; overflow: hidden; }
+
+.skala { width: 100%; }
+.skaerm { width: 1280px; height: 800px; border-radius: 14px; overflow: hidden; background: var(--papir);
+  box-shadow: 0 40px 80px -40px rgba(20,20,20,.45); position: relative; transform-origin: 0 0; }
+.skaerm .browser { height: 36px; background: #dcdbd4; display: flex; align-items: center; gap: 7px; padding: 0 14px; }
+.skaerm .browser i { width: 11px; height: 11px; border-radius: 50%; background: #c3c2ba; }
+.skaerm .browser span { margin-left: 16px; background: #f3f2ec; border-radius: 6px; padding: 3px 12px; font-size: 12px;
+  color: var(--daempet); width: 360px; }
+.skaerm .side { position: absolute; inset: 36px 0 0 0; overflow: hidden; }
+
+/* ---------- faelles smaadele ---------- */
+.prik { width: 8px; height: 8px; border-radius: 50%; background: var(--roed); display: inline-block; }
+.knap { border: 0; border-radius: 999px; padding: 11px 18px; font-weight: 500; font-size: 15px; background: var(--lys);
+  box-shadow: inset 0 0 0 1px var(--lineal); }
+.knap.v { background: var(--violet); color: #fff; box-shadow: none; }
+.knap.lille { padding: 7px 12px; font-size: 13px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 3px 10px; font-size: 12.5px;
+  font-weight: 500; }
+.chip.groen { background: var(--groen-svag); color: var(--groen); }
+.chip.roed { background: var(--roed-svag); color: var(--roed); }
+.chip.violet { background: var(--violet-svag); color: var(--violet); }
+.chip.graa { background: var(--papir2); color: var(--daempet); }
+kbd { font-family: var(--mono); font-size: 11px; border-radius: 5px; padding: 1px 6px; background: var(--lys);
+  box-shadow: inset 0 0 0 1px var(--lineal), 0 1px 0 var(--lineal); color: var(--daempet); }
+
+/* paa en telefon: telefonrammen fylder bredden, intet vandret rul */
+@media (max-width: 480px) {
+  .afsnit { padding: 20px 12px; }
+  .forklaring { padding: 28px 16px 4px; }
+  .tlf { width: 100%; max-width: 390px; }
+}

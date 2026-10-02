@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Arbejdsbord 3: Arket</title>
+<link rel="stylesheet" href="base.css"><link rel="stylesheet" href="bord.css">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<style>
+  .ark { height: calc(100% - 52px); padding: 16px 22px; position: relative; overflow: hidden; }
+  .linjer { width: 100%; border-collapse: collapse; font-size: 13.5px; background: var(--lys); border-radius: 12px; overflow: hidden;
+    box-shadow: inset 0 0 0 1px var(--lineal); }
+  .linjer th { font-size: 11.5px; color: var(--svag); font-weight: 500; text-align: left; padding: 8px 10px; background: var(--papir); border-bottom: 1px solid var(--lineal); }
+  .linjer td { padding: 8px 10px; border-bottom: 1px solid #efeee9; white-space: nowrap; }
+  .linjer td.b { font-family: var(--mono); font-size: 12.5px; text-align: right; } .linjer th.b { text-align: right; }
+  .linjer .gruppe td { background: #f7f6f2; font-size: 12.5px; color: var(--daempet); font-weight: 500; padding: 7px 10px; }
+  .linjer .gruppe td .knap { margin-left: 10px; }
+  .linjer tr.valgt td { background: var(--violet-svag); }
+  .linjer tr.fokus td { box-shadow: inset 0 1px 0 var(--violet), inset 0 -1px 0 var(--violet); }
+  .celle { background: var(--lys); border-radius: 6px; padding: 2px 8px; box-shadow: inset 0 0 0 1px var(--lineal); font-family: var(--mono); font-size: 12px; }
+  .celle.redig { box-shadow: inset 0 0 0 2px var(--violet); }
+  .cb { width: 15px; height: 15px; border-radius: 4px; box-shadow: inset 0 0 0 1.5px #c9c8c1; display: inline-block; vertical-align: -3px; }
+  .cb.on { background: var(--violet); box-shadow: none; position: relative; }
+  .cb.on::after { content: "✓"; color: #fff; font-size: 11px; position: absolute; left: 3px; top: -1px; }
+  .handlebar { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); background: var(--nat); color: #fff; border-radius: 14px;
+    padding: 10px 12px 10px 18px; display: flex; gap: 12px; align-items: center; box-shadow: 0 20px 40px -12px rgba(20,20,20,.5); font-size: 14px; }
+  .handlebar .knap { background: #2d2a3a; color: #fff; box-shadow: none; padding: 8px 12px; font-size: 13px; }
+  .handlebar .knap.v { background: var(--violet); }
+  .handlebar kbd { background: rgba(255,255,255,.14); color: #fff; box-shadow: none; }
+  .kig { position: absolute; right: 40px; top: 566px; width: 300px; transform: rotate(1.5deg) scale(.72); transform-origin: top right; } .kig .faktbillede table tr:nth-child(3) { display: none; }
+  .kig .faktbillede { padding: 16px; font-size: 9.5px; }
+  .kig .faktbillede .fh b { font-size: 12px; }
+  .kig .faktbillede td { font-size: 9.5px; }
+</style>
+</head>
+<body>
+<div class="forklaring">
+  <a class="tilbage" href="./">← Alle retninger</a>
+  <h1>3. Arket</h1>
+  <p class="ide">Idé: et regneark, hvor man godkender mange ad gangen.</p>
+  <p>Alt, der venter, i én tabel grupperet efter sikkerhed. De sikre godkendes i ét hug ("Godkend alle 6"), de usikre rettes direkte i cellen. Bilaget vises som et lille kig, når en række har fokus. Bedst ved mange kunder og høj sikkerhed; mindre plads til at se det enkelte bilag.</p>
+</div>
+<section class="afsnit">
+  <h2>Alt, der venter, som ét ark</h2>
+  <div class="skala"><div class="skaerm"><div class="browser"><i></i><i></i><i></i><span>bord.tallo.dk/ark</span></div><div class="side">
+    <div class="bord">
+      <div class="btop"><span class="lg">tallo</span><div class="faner2"><a class="aktiv" href="#">Bilag <b>12</b></a><a href="#">Bank <b>7</b></a><a href="#">Spørgsmål <b>3</b></a><a href="#">Moms <b>1</b></a><a href="#">Bogført af regler <b>14</b></a></div>
+        <span class="bruger">Othman <span class="ava">OA</span></span></div>
+      <div class="ark">
+        <table class="linjer tal">
+          <tr><th style="width:26px"></th><th>Kunde</th><th>Dato</th><th>Afsender</th><th class="b">Beløb</th><th>Konto</th><th>Moms</th><th>Banklinje</th><th>Sikkerhed</th></tr>
+          <tr class="gruppe"><td colspan="9">Sikre (100 %) · 6 <button class="knap lille v">Godkend alle 6 <kbd style="background:rgba(255,255,255,.2);color:#fff;box-shadow:none">⇧↵</kbd></button></td></tr>
+          <tr class="valgt"><td><span class="cb on"></span></td><td>Bageriet Kornet</td><td>14.10</td><td>Bagergrossisten A/S</td><td class="b">1.500,00</td><td><span class="celle">1310</span></td><td>køb 25</td><td>15.10 ✓</td><td><span class="sik"><i style="--s:100%"></i>5/5</span></td></tr>
+          <tr class="valgt"><td><span class="cb on"></span></td><td>Slikbutikken Bolsjen</td><td>12.10</td><td>Kandis Grossisten ApS</td><td class="b">8.912,50</td><td><span class="celle">1310</span></td><td>køb 25</td><td>14.10 ✓</td><td><span class="sik"><i style="--s:100%"></i>9/9</span></td></tr>
+          <tr class="valgt"><td><span class="cb on"></span></td><td>Bageriet Kornet</td><td>09.10</td><td>Ørsted Salg &amp; Service</td><td class="b">1.112,00</td><td><span class="celle">2400</span></td><td>køb 25</td><td>10.10 ✓</td><td><span class="sik"><i style="--s:100%"></i>8/8</span></td></tr>
+          <tr class="valgt"><td><span class="cb on"></span></td><td>Frisør Saks &amp; Co.</td><td>08.10</td><td>Telenor A/S</td><td class="b">349,00</td><td><span class="celle">2800</span></td><td>køb 25</td><td>08.10 ✓</td><td><span class="sik"><i style="--s:100%"></i>14/14</span></td></tr>
+          <tr class="valgt"><td><span class="cb on"></span></td><td>Vognmand Hansen ApS</td><td>07.10</td><td>Shell Fredericia</td><td class="b">4.015,20</td><td><span class="celle">2810</span></td><td>køb 25</td><td>07.10 ✓</td><td><span class="sik"><i style="--s:100%"></i>22/22</span></td></tr>
+          <tr class="valgt"><td><span class="cb on"></span></td><td>Slikbutikken Bolsjen</td><td>06.10</td><td>Vejle Kommune</td><td class="b">2.150,00</td><td><span class="celle">2730</span></td><td>uden</td><td>06.10 ✓</td><td><span class="sik"><i style="--s:100%"></i>4/4</span></td></tr>
+          <tr class="gruppe"><td colspan="9">Kræver et blik · 4</td></tr>
+          <tr class="fokus"><td><span class="cb"></span></td><td>Frisør Saks &amp; Co.</td><td>13.10</td><td>L'Oréal Danmark A/S</td><td class="b">3.240,00</td><td><span class="celle redig">1310 ▾</span></td><td>køb 25</td><td>15.10 ✓</td><td><span class="sik"><i style="--s:92%"></i>11/12</span></td></tr>
+          <tr><td><span class="cb"></span></td><td>Vognmand Hansen ApS</td><td>12.10</td><td>Circle K Kolding</td><td class="b">2.180,40</td><td><span class="celle">2810</span></td><td>køb 25</td><td style="color:var(--roed)">2 mulige</td><td><span class="sik mid"><i style="--s:60%"></i>3/5</span></td></tr>
+          <tr><td><span class="cb"></span></td><td>Frisør Saks &amp; Co.</td><td>10.10</td><td>Matas Strøget</td><td class="b">459,00</td><td><span class="celle">?</span></td><td>?</td><td>10.10 ✓</td><td><span class="sik lav"><i style="--s:10%"></i>ny</span></td></tr>
+          <tr><td><span class="cb"></span></td><td>Vognmand Hansen ApS</td><td>11.10</td><td>IMG_2214.jpg</td><td class="b">—</td><td colspan="3" style="color:var(--roed)">Kunne ikke læses: uskarpt. Spørg kunden <kbd>S</kbd></td><td></td></tr>
+        </table>
+        <div class="kig"><div class="faktbillede">
+          <div class="fh"><div><b>L'ORÉAL DANMARK A/S</b><br>CVR 13284109</div><div style="text-align:right">Nr. 2026-551902<br>13.10.2026</div></div>
+          <table><tr><td>Majirel farve 50 ml</td><td>1.392,00</td></tr><tr><td>Serie Expert shampoo</td><td>720,00</td></tr><tr><td>Oxydant creme 1 l</td><td>480,00</td></tr></table>
+          <div class="tot"><span>Moms<br>648,00</span><span>I alt<br><b>3.240,00</b></span></div>
+        </div></div>
+        <div class="handlebar">6 valgt · 18.038,70 kr. <button class="knap v">Godkend <kbd>⇧↵</kbd></button><button class="knap">Fravælg</button></div>
+      </div>
+    </div>
+  </div></div></div>
+  <p class="skaermtekst">Arket. Kontoen rettes i cellen med søgning på nummer eller navn; "Godkend alle" gælder kun gruppen med fuld sikkerhed.</p>
+</section>
+<script src="skala.js"></script>
+</body>
+</html>
