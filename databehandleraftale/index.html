@@ -38,19 +38,27 @@
   mark.p { background: transparent; color: var(--daempet); border: 1px dashed var(--daempet); border-radius: 6px; padding: 0 6px; font-family: "Geist Mono", monospace; font-size: 12px; letter-spacing: .04em; white-space: nowrap; }
   .bund { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--lineal); color: var(--daempet); font-size: 14px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .note { background: var(--flade); border-radius: 12px; padding: 16px 18px; font-size: 15px; color: var(--daempet); margin: 0 0 24px; }
+  .note ul { margin: 6px 0 0; } .note li { font-size: 15px; margin-bottom: 2px; }
   @media (max-width: 900px) { mark.p { white-space: normal; } table { display: block; overflow-x: auto; } }
 </style>
 </head>
 <body>
 <nav><div class="skal"><a class="logo" href="../">tallo</a><a class="tilbage" href="../">Tilbage til forsiden</a></div></nav>
-<div class="udkast"><div class="skal">Udkast, version 0.1. Ikke gennemgået af Mohammed Chahrour endnu.</div></div>
+<div class="udkast"><div class="skal">Udkast, version 0.3. Gennemgået af Mohammed Chahrour, rettelser indarbejdet, endelig godkendelse udestår.</div></div>
 
 <main>
   <span class="mono">Databehandleraftale</span>
   <h1>Databehandleraftale</h1>
   <p class="ind">Aftale efter databeskyttelsesforordningens artikel 28 mellem kunden som dataansvarlig og Tallo som databehandler. Den er en del af bogføringsaftalen og følger Datatilsynets standardstruktur.</p>
 
-  <div class="note">Dette er et udkast skrevet som arbejdsgrundlag. Felter i stiplet ramme udfyldes, når navn, CVR og underdatabehandlere er på plads. Bilag A til C udfyldes pr. kunde.</div>
+  <div class="note">Dette er et udkast skrevet som arbejdsgrundlag. Felter i stiplet ramme udfyldes, når adresse, timepris og de sidste underdatabehandlere er på plads. Bilag A til C udfyldes pr. kunde.</div>
+
+  <div class="note"><strong>Ændringer i 0.3</strong>
+    <ul>
+      <li>Punkt 5: navnene er erstattet af en beskrivelse af, hvem der har adgang. En liste over navngivne personer udleveres på anmodning.</li>
+      <li>Bilag A: det står tydeligt, at kundekendskab efter hvidvaskloven ikke er en del af databehandlingen, fordi Tallo her er selvstændigt dataansvarlig.</li>
+    </ul>
+  </div>
 
   <h2>1. Parterne</h2>
   <p>Den dataansvarlige: kunden, som angivet i bogføringsaftalen. Databehandleren: Tallo v/ Othman Ajjawi (enkeltmandsvirksomhed), CVR 46440986, <mark class="p">adresse kommer</mark>, <span data-u="kontakt" data-d="tallo.dk">kontakt (at) tallo.dk</span>.</p>
@@ -65,7 +73,7 @@
   <p>Databehandleren behandler kun personoplysninger efter dokumenteret instruks fra den dataansvarlige, medmindre det kræves efter EU-retten eller dansk ret, som databehandleren er underlagt. I så fald underretter databehandleren den dataansvarlige om kravet, før behandlingen sker, medmindre loven forbyder det. Databehandleren underretter straks den dataansvarlige, hvis en instruks efter databehandlerens opfattelse er i strid med loven.</p>
 
   <h2>5. Fortrolighed</h2>
-  <p>Kun personer, der har behov for adgang for at opfylde aftalen, får adgang til oplysningerne. Det er <mark class="p">Othman Ajjawi og Mohammed Chahrour</mark>. Begge er underlagt tavshedspligt efter aftale. Databehandleren kan på anmodning dokumentere, hvem der har adgang.</p>
+  <p>Kun personer, der har behov for adgang for at opfylde aftalen, får adgang til oplysningerne. Det er databehandleren og de personer, der arbejder for databehandleren (ansatte eller faste samarbejdspartnere). Alle er underlagt tavshedspligt efter aftale eller lov. Databehandleren fører en liste over de navngivne personer, der har adgang, og udleverer den på anmodning.</p>
 
   <h2>6. Behandlingssikkerhed</h2>
   <p>Databehandleren gennemfører passende tekniske og organisatoriske foranstaltninger, jf. artikel 32. Som minimum:</p>
@@ -102,7 +110,7 @@
     <tr><th>Formål</th><td>Bogføring, afstemning, momsangivelse, løn, årsregnskab og indberetning for den dataansvarlige.</td></tr>
     <tr><th>Behandlingens karakter</th><td>Registrering, systematisering, opbevaring i den dataansvarliges systemer, videregivelse til myndigheder efter lov.</td></tr>
     <tr><th>Kategorier af registrerede</th><td>Den dataansvarliges ansatte, kunder, leverandører og ejere.</td></tr>
-    <tr><th>Kategorier af oplysninger</th><td>Navn, kontaktoplysninger, bankoplysninger, løn, pension, fravær, CPR-numre (ansatte). Legitimation af kunden og de reelle ejere efter hvidvaskloven er ikke omfattet: den behandler Tallo som selvstændigt dataansvarlig, se privatlivspolitikken.</td></tr>
+    <tr><th>Kategorier af oplysninger</th><td>Navn, kontaktoplysninger, bankoplysninger, løn, pension, fravær, CPR-numre (ansatte). Legitimation af kunden og de reelle ejere er ikke omfattet af denne aftale. Den behandler Tallo som selvstændigt dataansvarlig efter hvidvaskloven, se <a href="../privatliv/">privatlivspolitikken</a>.</td></tr>
     <tr><th>Varighed</th><td>Så længe bogføringsaftalen løber, og derefter i det omfang loven kræver opbevaring.</td></tr>
   </table>
 
@@ -124,7 +132,7 @@
     <li>Ingen personoplysninger overføres til andre systemer end dem i bilag B.</li>
   </ul>
 
-  <div class="bund"><span>Version 0.2, udkast</span><span>24. september 2026</span></div>
+  <div class="bund"><span>Version 0.3, udkast</span><span>2. oktober 2026</span></div>
 </main>
 <script src="../js/mail.js"></script>
 </body>
