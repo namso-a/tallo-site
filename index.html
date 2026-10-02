@@ -8,11 +8,11 @@
 <title>Tallo: aldrig mere bogføring</title>
 <style>@font-face{font-family:"Geist";src:url("fonts/geist.woff2") format("woff2");font-weight:100 900;font-display:swap}@font-face{font-family:"Geist Mono";src:url("fonts/geist-mono.woff2") format("woff2");font-weight:100 900;font-display:swap}</style>
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem, indberetter momsen og laver årsregnskabet. 1.500 kr. om måneden for små virksomheder.">
+<meta name="description" content="Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem, indberetter momsen og laver årsregnskabet. 1.000 kr. om måneden for små virksomheder, regnskabsprogram inkluderet.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Tallo: aldrig mere bogføring">
-<meta property="og:description" content="Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem, indberetter momsen og laver årsregnskabet. 1.500 kr. om måneden.">
+<meta property="og:description" content="Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem, indberetter momsen og laver årsregnskabet. 1.000 kr. om måneden.">
 <meta property="og:image" content="https://tallo.dk/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -345,7 +345,7 @@
 <header class="hero">
   <div class="skal">
     <div class="tekst">
-      <h1>Aldrig mere bogføring.<br><em>1.500 kr. om måneden.</em></h1>
+      <h1>Aldrig mere bogføring.<br><em>1.000 kr. om måneden.</em></h1>
       <p class="manchet">Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem, indberetter momsen og viser dig hver måned, hvad du har i overskud. Ubegrænset antal fakturaer.</p>
       <div class="handling">
         <a class="knap" href="#book" data-book>Bliv fri for bogføring <span class="pil">→</span></a>
@@ -431,7 +431,7 @@
 </section>
 
 <section class="afsnit tal-flade" id="pris">
-  <div class="tal-bag kort" aria-hidden="true">1.500,00
+  <div class="tal-bag kort" aria-hidden="true">1.000,00
 15.231,00
 250,00
 4.000,00
@@ -450,17 +450,18 @@
           <li>Momsen indberettet til tiden</li>
           <li>Salg, udgifter og overskud hver måned</li>
           <li>Årsregnskab og selvangivelse</li>
+          <li>Regnskabsprogrammet er med</li>
         </ul>
         <div class="tilkoeb">
           <span class="mono">Tilkøb</span>
           <div class="l"><span>Løn, lønsystemet er med</span><span>250 kr. om måneden + 50 kr. pr. lønseddel</span></div>
           <div class="l"><span>Årsrapport, hvis du har ApS</span><span>4.000 kr. om året</span></div>
         </div>
-        <p class="med">Alle priser er plus moms. Regnskabsprogrammet betaler du selv.</p>
+        <p class="med">Alle priser er plus moms. Regnskabsprogrammet er med i prisen.</p>
       </div>
       <div class="pris-kort prisen rejs">
         <span class="mono">Prisen</span>
-        <div class="beloeb"><span class="tal" data-til="1500">1.500</span> kr.</div>
+        <div class="beloeb"><span class="tal" data-til="1000">1.000</span> kr.</div>
         <p class="beloeb-under">om måneden plus moms</p>
         <p class="fast"><b class="streg-under">Fast pris.</b> Ingen binding.</p>
         <a class="knap" href="#book" data-book>Bliv fri for bogføring <span class="pil">→</span></a>
@@ -742,7 +743,7 @@
   /* 04: prisen taeller op */
   const pris = document.querySelector(".beloeb [data-til]");
   pris.textContent = "0";
-  ScrollTrigger.create({ trigger: pris, start: "top 80%", once: true, onEnter: () => taelOp(pris, 1500, 0.6) });
+  ScrollTrigger.create({ trigger: pris, start: "top 80%", once: true, onEnter: () => taelOp(pris, 1000, 0.6) });
 
   /* Footer: ordet stiger op */
   gsap.from(".kaempe", { yPercent: 35, ease: "none", scrollTrigger: { trigger: "footer", start: "top bottom", end: "bottom bottom", scrub: true } });
