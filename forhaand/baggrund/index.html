@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Tallo · beskyttet side</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  body { margin:0; min-height:100vh; display:grid; place-items:center; background:#f6f6f3; color:#141414;
+         font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  form { background:#fff; border-radius:14px; padding:28px; width:min(360px,90vw); box-shadow:0 1px 0 #d9d8d2; }
+  h1 { font-size:20px; margin:0 0 4px; } p { color:#6b6b66; font-size:14px; margin:0 0 16px; }
+  input { width:100%; box-sizing:border-box; font:inherit; padding:10px 12px; border:1px solid #d9d8d2; border-radius:8px; }
+  button { margin-top:12px; width:100%; font:inherit; font-weight:600; padding:10px; border:0; border-radius:8px;
+           background:#4b3aa6; color:#fff; cursor:pointer; }
+  .fejl { color:#b3261e; font-size:14px; min-height:20px; margin:8px 0 0; }
+</style>
+</head>
+<body>
+<form id="f">
+  <h1>Beskyttet side</h1>
+  <p>Skriv kodeordet for at åbne siden.</p>
+  <input id="k" type="password" autocomplete="current-password" autofocus aria-label="Kodeord">
+  <button>Åbn</button>
+  <div class="fejl" id="fejl" role="alert"></div>
+</form>
+<script>
+const P = {"salt": "GlPG4UMasyPgBUCmUV6fbA==", "iv": "bvsYVXcrnQn52xzY", "data": "emZ6EDGqXCK0xLNUjWMfk9hqWXpEhLo5WSSCUYRXQIOpZ+/2yUO+DsjPRtdFZTMXz8zoPIn0qHBxpwF604+izhoIdSnm/dPQCyBMT3oYwyF1wWlPjTjt90zNbIC8zDHjxiG4v0cuurK9ERmkdAyvg3k5XOPc4WC93jCh9ZBcTBqBhIOVMo4+Nw9hURDhJ5bq/LpKPSdTVkvzLFRxMs7njjW2CaIKL4nSthrgCo8C9CUvoQKDLH/IkNsNydomaNcmtmXaHpIE8+TH4Sr64r9Og/k8Qg8JdUdxJla6omgmoBChFNFz4lpTNsIMIYJWNjJtuSCjQcMHaUs5lzTUrQ55eqSpntKiEDuvJ9cj5yyklP3sCJew7bi70TyTDBe6uCnPMR+JMHgrNdU52icGyyXXcG9WEDvu42y4xgDiT/UHQPjTNOA8O4cCnENYiy+84iATHhh6rt75gTrQ6ZrRCNw+coUptkvkrXdj9N4Jhgix6g3o3iwjUhDtKkeTTfMFlYM/6nkZSELES2xxqic3Ukh/HV5WE/0daS6rNXUErPZPQNJrbl/nEY6qldPncTrsoYoy0JNlmForB9xdc6S6tue24xh/D5C10PcnHmG17ZFWD8rSZVdAJclx1zaIZl66r1Tk0U3XjPrms3xBUgSWS2f1egaixyVus2Vw4m3gqNLhXGtx01KVnQPWW8c5GD7jDz+o0+YNVwVjGFuIkEna2lMUt1g3qtc1z/tZ52hyRWGtAawXEAaTWndQn/NW1mh5NOMmfg9C8qHNmZPKXjFkIolMG8zmQvidkojr2p4BpNT+5ZMOhLmzotjdvTtttbquVEAdde8qAEnqrOYqub2n3RxmBVmfIeTMj/IdymIde/Ii+Bb8Qr3B1XdLrS///XzcaRiTSFUWvjV5+fGqVr+r/jVqfK87qSuBEKMQlQefv4Df6A6AB/M325ETOu2+fyTQNmOxThe5a+pTTYIo6yr642wLDL/SYDu7DH8Q8grGKLMF4ZcHsD/NgjXTpB5jqClorBdokmfdDHyIgoVOtOisHbUSYylXy4L+oxfJ1xC/MfTNbHQS9/nCU32gOse4fGVv73OBTWg6rgtA5Xwgzb3mo75wazYXmIagV7ME/ewFxRUptzOPo13vMUCJYmf3/Z3JSqKj+/EqCIiYILhVDEsPS6/zeWlGqs4FwwkBjHbnqNJmqOzKCML8ykBjPUkNM0TZzm1wazPS1Clx9TjrEvIMvbEuwwoBHCNvHi5dHCGG2zUQf308wGyXav7KM+VRw+kOF/FN+XezT0Ey3h7yCbY0nBkNCpmDO4/xGuHCEBSp1nh/8+oDf48et6s3lcLKvhui2jt7VEQ+qHZwtgTmNrjwJIBghsN3IPPX2eGxRavw75tbFDWLyiDH+Z89W6UUQo0PxyU+1aQbyNoJUDLFyjQldbsiEb+LSvveJQVakNlNnSc/4LeHeATwdEQS6YDsf3KRx3OwJWweryYtASaXkeDl86y3g718sVsyDijykgqL/WSataK/GGV+EG4czvwdrCfQ7kp/iFfdxV8/5CmJO9oSkt+ZSuDHp8OE4iayKMOTJoGpUJvQXouCDDXGuyvUIlbZn0u/i+2Dhtp1LEHxq6T5e76bcfrhWNFTwvj9Yngn/1m+Oqm/SIBcpzrW2Xpt2IBBOspLOOCB+7Yi7tc3NVeGn2Nw+p202AzHoZA5f115DOBiORnCBMf5Czpv0aPoPSMrSktl8xLaueeBe5Ea49NrUVexX9vNI1+KgI3bbYtRdOi+m6NfBjt/4b58ktroiuTdHADFX3j90oQMxLzuqLabKFqwUme8MZE9I/ICBGOu+yI1Kw5b+M+5e93MG6yNww6nqF5Ikt0P/6ov+tZUWIXILpyfBPcHLrqoy6qJfTGo8Cc6Cu7dFqSVHQUVAPA4HibOkQdrH4NNQb1QRLH06Kl+W9z7Ok7LgSAoC1fjR8LPlW+/XY3HG9pSnIucv3kE8pn5xJtZlPyFlEZJ94rsyLzoe1r7eJxvczu+h7ko8ZyOrNAUBGmh14qYyg5BKgCqEyAmp4jrie0DBg870UsdSUmm9LAltmuq6HkiJdYn8AFX9poEvoS+SWwZhxss5zH50KXsglp9lYU1D230zO+L90r/0iZ17YPKfqr3xoTDt4yerNhYZaWJ9B/TGRqfWly9THqvcgMMJm78YDYqOSj3bVQebk878rC8QAp9ie20sa0fQywKp0n4Pe29DwV5jSgkoxdKZQ48BYw/ZXVf4QcMUqxVjlz6BEcMOTKct/INUEfCee8lLcdAXj9es/0gMbOtm780+iZapBwV3UpWP/XkH+obTV0fCA5yoZFasiLFj7FTyfy2EE10/DtGyiqMAuIkkYQAJMcwXQRiQ9f0/HjebzyeZreYmvF0sWr96qLqoH9T9Vm9ACRrlJuH7d10hT/6oCZ24W5/9uZRx0bpbbos3HWuUcC++w23OnFh1OR/2q2bCh9+YGbWlkaDmYwmhk/zTUCJ5o6CfrCjb+PN5DtdV3ag/YG8+H2VzNgoeleayrayzA/7FO2MWKFN1AhVZnn6t7XihR7BYVwjWfSJbVc1WryzZGYj60bNNusUKP5QjShIeJM5dAabW2BnXeGzPsp2dc0JqWaJBvUOi1OmTI/kzxy1RV3NHPfiV0huPJO9wTAdpqM/hsLUycrPTBC2B66VQz3gqayqej1P1M/aFx2GdFMXOVFY+ULzT5cd74ZdSvFeyYgQKn0mBmvesNoW8wkyh+P9bCscxAc1W6GEXYA4ouQ8fNeGqh9JR/PVIVE1y6ef25QWZeRe/5O6zfFFXkn+cYPLsNwiGL9QC/KZo+udirA0yhT0JtuEG0j9C/zGtzEghfweWB72rsW8OIODi5YTKhvjffyGqYGV/k1biYKj2VMjSdyOaZvg9zFsJ6rvlmWkUHRZkCo07EzWBP6cJr2JHBgzMmjRT4lFvKT2E0jEi8WtVfDD1qgryxVCauRm3k1xJZSTk6CRlAjW6tcYqTB751gG3Ky/X40S7yXphDTMlpC/zNVeoym3rVcuY0QNkTV8QheED7M+lbpSZ/SbFZYKwSLCDv30XOMEC2zySnGjJyIW8LTq2V1Ehq7D43nkbyeXF0tuzTGMhXHZ5lTy03VhQHZCbUpstO90Oi2scR2AzJtV1y8=", "runder": 600000, "husk": "tallo-k-forhaand"};
+const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function aabn(kode) {
+  const raa = await crypto.subtle.importKey('raw', new TextEncoder().encode(kode), 'PBKDF2', false, ['deriveKey']);
+  const noegle = await crypto.subtle.deriveKey({name: 'PBKDF2', salt: b64(P.salt), iterations: P.runder, hash: 'SHA-256'},
+    raa, {name: 'AES-GCM', length: 256}, false, ['decrypt']);
+  const klar = await crypto.subtle.decrypt({name: 'AES-GCM', iv: b64(P.iv)}, noegle, b64(P.data));
+  const html = new TextDecoder().decode(klar);
+  if (P.husk) sessionStorage.setItem(P.husk, kode);
+  document.open(); document.write(html); document.close();
+}
+async function proev(kode) {
+  document.getElementById('fejl').textContent = 'Åbner …';
+  try { await aabn(kode.trim()); }
+  catch (e) { if (P.husk) sessionStorage.removeItem(P.husk); document.getElementById('fejl').textContent = 'Forkert kodeord.'; }
+}
+document.getElementById('f').addEventListener('submit', e => { e.preventDefault(); proev(document.getElementById('k').value); });
+const h = new URLSearchParams(location.hash.slice(1)).get('k');
+const gemt = P.husk && sessionStorage.getItem(P.husk);
+if (h) proev(h); else if (gemt) proev(gemt);
+</script>
+</body>
+</html>
