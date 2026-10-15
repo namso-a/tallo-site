@@ -1,0 +1,54 @@
+/* Mockup 16. okt 2026: tre bud på baggrunden på undersiderne (A, B, C). Lægges oven på tallo.css af
+   .tmp/lav_baggrund_mockup.py; produktionen røres ikke, før Othman har valgt. */
+
+/* Fælles: regionerne mister deres egen flade, så baggrunden styres af varianten */
+html[class*="bg-"] .region { background: transparent; }
+html[class*="bg-"] main { overflow-x: clip; }
+html[class*="bg-"] .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
+
+/* A. Én farve pr. side: hele siden på én tone, afsnit skilt af luft, øjeblikket på en hvid scene */
+html.bg-a[data-side="appen"] { --bund: #fbe4d5; }
+html.bg-a[data-side="priser"] { --bund: #e2dcff; }
+html.bg-a[data-side="skift"] { --bund: #d9eadb; }
+html.bg-a body { background: var(--bund); }
+html.bg-a .region + .region { padding-top: 0; }
+html.bg-a .scene-a { position: relative; width: min(1240px, calc(100% - 48px)); margin: 0 auto; padding: 0 56px; border-radius: 36px; background: #fff; box-shadow: 0 50px 100px -70px rgba(20,20,20,.45); }
+html.bg-a .regner.scene-a { padding: 64px 56px; width: min(1160px, calc(100% - 48px)); }
+html.bg-a .traek.scene-a { padding: 48px; width: min(1160px, calc(100% - 48px)); }
+html.bg-a .tabel-ramme { box-shadow: none; }
+html.bg-a .skyder, html.bg-c .skyder { background: linear-gradient(to right, var(--blaa) var(--fyld, 6%), #e7e4f5 var(--fyld, 6%)); }
+html.bg-a .bunke i, html.bg-c .bunke i { box-shadow: 0 8px 14px -8px rgba(29,20,66,.55), inset 0 0 0 1px #e7e4f5; }
+html.bg-a .fod { background: var(--bund); border-top-color: rgba(20,20,20,.08); }
+
+/* B. Farven glider med rullet: én baggrund uden kanter; js/mock-baggrund.js blander tonerne efter skærmens midte */
+html.bg-b body { background: var(--bund, #f6f6f3); }
+html.bg-b .fod { background: transparent; }
+
+/* C. Papir og fotos: papir hele vejen, farven kommer fra fotos i fuld bredde med indholdet på et hvidt kort */
+html.bg-c { --bund: #f6f6f3; }
+html.bg-c .mfoto { position: relative; isolation: isolate; }
+html.bg-c .mfoto::before { content: ""; position: absolute; z-index: -1; top: -96px; bottom: -96px; left: calc(50% - 50vw); width: 100vw; background: var(--foto) center / cover no-repeat; }
+html.bg-c .region.mflade { padding: 150px 0; background: var(--foto) center / cover no-repeat; }
+html.bg-c .regner.mkort { padding: 56px; border-radius: 32px; background: #fff; box-shadow: 0 50px 100px -50px rgba(20,20,20,.6); }
+html.bg-c .udsagn.mkort { width: min(820px, calc(100% - 48px)); padding: 64px 48px; border-radius: 32px; background: #fff; box-shadow: 0 50px 100px -50px rgba(20,20,20,.6); }
+html.bg-c .traek.mfoto { margin-top: 140px; padding: 0; }
+html.bg-c .traek.mfoto::before { top: -84px; bottom: -84px; }
+html.bg-c .traek.mfoto .gammel { background: #f1f0eb; box-shadow: 0 40px 80px -40px rgba(20,20,20,.6); }
+html.bg-c .traek.mfoto .flyt-vindue { box-shadow: 0 40px 80px -40px rgba(20,20,20,.6); }
+html.bg-c .region.top:has(.traek.mfoto) { padding-bottom: 140px; }
+
+@media (max-width: 899px) {
+  html.bg-a .scene-a { width: calc(100% - 24px); padding: 0 16px; border-radius: 26px; }
+  html.bg-a .regner.scene-a, html.bg-a .traek.scene-a { padding: 32px 20px; width: calc(100% - 24px); }
+  html.bg-c .regner.mkort { padding: 32px 20px; width: calc(100% - 24px); }
+  html.bg-c .udsagn.mkort { padding: 44px 22px; width: calc(100% - 24px); }
+  html.bg-c .mfoto::before { top: -56px; bottom: -56px; }
+  html.bg-c .region.mflade { padding: 100px 0; }
+  html.bg-c .traek.mfoto { margin-top: 96px; width: calc(100% - 24px); }
+}
+
+/* Skifteren nederst i hjørnet: samme side i de andre varianter */
+.mock-skift { position: fixed; z-index: 60; right: 16px; bottom: 16px; display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: 999px; background: rgba(20,20,20,.86); color: #fff; font-size: 14px; box-shadow: 0 20px 40px -16px rgba(0,0,0,.5); }
+.mock-skift span { padding: 0 8px 0 10px; opacity: .7; }
+.mock-skift a { display: grid; place-items: center; min-width: 40px; height: 40px; padding: 0 12px; border-radius: 999px; color: #fff; font-weight: 600; text-decoration: none; }
+.mock-skift a[aria-current] { background: #fff; color: #141414; }
