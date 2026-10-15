@@ -82,6 +82,34 @@
     document.querySelectorAll("[data-falder]").forEach((el) => { el.classList.add("js-vis"); iSyne(el, () => el.classList.add("inde"), "-20%"); });
   }
 
+  // Farven glider med rullet: hvert afsnit i <main> har en tone (data-tone, ellers papir). Inde i et afsnit står tonen
+  // stille; nær grænsen blandes den med naboen. Følger kun rullet, så den kører også ved reduceret bevægelse.
+  const afsnit = [...document.querySelectorAll("main > section")];
+  if (afsnit.some((a) => a.dataset.tone)) {
+    const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+    const toner = afsnit.map((a) => rgb(a.dataset.tone || "#f6f6f3"));
+    const bland = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+    const glat = (t) => t * t * (3 - 2 * t);
+    let sidst = "", venter = false;
+    const tegn = () => {
+      venter = false;
+      const midt = innerHeight / 2, zone = innerHeight * 0.45;
+      let i = afsnit.findIndex((a) => a.getBoundingClientRect().bottom > midt);
+      if (i < 0) i = afsnit.length - 1;
+      const r = afsnit[i].getBoundingClientRect();
+      let farve = toner[i];
+      if (i > 0 && midt - r.top < zone) farve = bland(toner[i - 1], toner[i], glat(Math.max(0, 0.5 + (midt - r.top) / (2 * zone))));
+      else if (i < afsnit.length - 1 && r.bottom - midt < zone) farve = bland(toner[i], toner[i + 1], glat(0.5 - (r.bottom - midt) / (2 * zone)));
+      const v = `rgb(${farve.join(",")})`;
+      if (v !== sidst) { html.style.setProperty("--bund", v); sidst = v; }
+    };
+    const bed = () => { if (!venter) { venter = true; requestAnimationFrame(tegn); } };
+    addEventListener("scroll", bed, { passive: true });
+    addEventListener("resize", bed);
+    tegn();
+    html.classList.add("glid");
+  }
+
   // Telefonscenen: teksten midt på skærmen (på mobil: lige under telefonen) bestemmer skærm og chip
   document.querySelectorAll("[data-telefon]").forEach((scene) => {
     const tekster = [...scene.querySelectorAll(".ts-tekst")];
