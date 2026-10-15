@@ -1,0 +1,161 @@
+/* Tallo: fælles for forsiden og undersiderne. Menu, mobilmenu, booking (Cal.com), afsløring ved scroll og
+   pakkeblokken. Forsidens zoom og tilmelding står i forsiden selv. */
+(() => {
+  const html = document.documentElement;
+  const roligt = html.classList.contains("stille");
+
+  // Menuen: gennemsigtig over forsidens foto, hvid flade når man scroller og altid på undersiderne
+  const nav = document.getElementById("nav");
+  const forside = !!document.getElementById("rejse");
+  const opdaterNav = () => nav.classList.toggle("fast", !forside || scrollY > 8);
+  addEventListener("scroll", opdaterNav, { passive: true });
+  opdaterNav();
+
+  // Mobilmenuen: et fuldt ark; lukker på Esc, kryds og link; fokus bliver i arket, mens det er åbent
+  const menuKnap = document.getElementById("menuKnap"), ark = document.getElementById("menuArk");
+  if (menuKnap && ark) {
+    const fokusbare = () => [...ark.querySelectorAll("a, button")];
+    const aabn = () => {
+      ark.hidden = false;
+      requestAnimationFrame(() => ark.classList.add("aaben"));
+      menuKnap.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+      ark.querySelector("ul a").focus();
+    };
+    const luk = (tilbage = true) => {
+      ark.classList.remove("aaben");
+      menuKnap.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+      setTimeout(() => { if (!ark.classList.contains("aaben")) ark.hidden = true; }, 260);
+      if (tilbage) menuKnap.focus();
+    };
+    menuKnap.addEventListener("click", aabn);
+    ark.querySelector(".menu-luk").addEventListener("click", () => luk());
+    ark.addEventListener("click", (e) => { if (e.target.closest("a")) luk(false); });
+    document.addEventListener("keydown", (e) => {
+      if (ark.hidden) return;
+      if (e.key === "Escape") return luk();
+      if (e.key !== "Tab") return;
+      const f = fokusbare(), i = f.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    });
+    matchMedia("(min-width: 900px)").addEventListener("change", (e) => { if (e.matches && !ark.hidden) luk(false); });
+  }
+
+  // Cal.com: hentes først, når nogen nærmer sig en "Vælg en tid"-knap
+  const CAL_LINK = "tallo/møde";
+  const CAL_CONFIG = { layout: "month_view", theme: "light" };
+  const CAL_UI = { hideEventTypeDetails: true, theme: "light", layout: "month_view", cssVarsPerTheme: { light: { "cal-brand": "#4b3aa6" }, dark: { "cal-brand": "#4b3aa6" } } };
+  let calHentet = false;
+  const hentCal = () => {
+    if (calHentet) return;
+    calHentet = true;
+    (function (C, A, L) { const p = (a, ar) => { a.q.push(ar); }; const d = C.document; C.Cal = C.Cal || function () { const cal = C.Cal; const ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const ns = ar[1]; api.q = api.q || []; if (typeof ns === "string") { cal.ns[ns] = cal.ns[ns] || api; p(cal.ns[ns], ar); p(cal, ["initNamespace", ns]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init", { origin: "https://cal.com" });
+    Cal("ui", CAL_UI);
+  };
+  ["pointerover", "focusin", "touchstart"].forEach((ev) => document.addEventListener(ev, (e) => {
+    if (e.target.closest && e.target.closest("[data-book]")) hentCal();
+  }, { passive: true }));
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("[data-book]")) return;
+    e.preventDefault();
+    hentCal();
+    Cal("modal", { calLink: CAL_LINK, config: CAL_CONFIG });
+    Cal("ui", CAL_UI);
+  }, true);
+
+  // Afsløring ved scroll: [data-afslor] glider ind, og grupper med .js-vis får klassen "inde"
+  const iSyne = (el, fn, margin = "-15%") => {
+    if (!("IntersectionObserver" in window)) return fn();
+    new IntersectionObserver((poster, o) => poster.forEach((p) => {
+      if (p.isIntersecting) { o.disconnect(); fn(); }
+    }), { rootMargin: `0px 0px ${margin} 0px` }).observe(el);
+  };
+  if (!roligt) {
+    const afslor = document.querySelectorAll("[data-afslor]");
+    if (afslor.length) {
+      html.classList.add("js-afslor");
+      afslor.forEach((el) => iSyne(el, () => el.classList.add("inde"), "-10%"));
+    }
+    document.querySelectorAll("[data-falder]").forEach((el) => { el.classList.add("js-vis"); iSyne(el, () => el.classList.add("inde"), "-20%"); });
+  }
+
+  // Liste + panel: punkterne skifter skærmbilledet; skifter selv hvert 6. sekund, til man klikker
+  document.querySelectorAll("[data-lp]").forEach((lp) => {
+    const li = [...lp.querySelectorAll(".punkter li")];
+    const knapper = li.map((l) => l.querySelector("button"));
+    const billeder = [...lp.querySelectorAll(".lp-panel > [data-i]")];
+    let auto = !roligt, timer = 0;
+    const vis = (n) => {
+      li.forEach((l, j) => { l.classList.toggle("aktiv", j === n); l.classList.remove("koerer"); });
+      knapper.forEach((k, j) => k.setAttribute("aria-pressed", String(j === n)));
+      billeder.forEach((b, j) => b.classList.toggle("vist", j === n));
+      clearTimeout(timer);
+      if (!auto) return;
+      void li[n].offsetWidth;
+      li[n].classList.add("koerer");
+      timer = setTimeout(() => vis((n + 1) % li.length), 6000);
+    };
+    knapper.forEach((k, j) => k.addEventListener("click", () => { auto = false; vis(j); }));
+    vis(0);
+    if (auto) { clearTimeout(timer); li[0].classList.remove("koerer"); iSyne(lp, () => vis(0), "-20%"); }
+  });
+
+  // Pakkeblokken: vælgeren skifter pakke, regningen viser forskellen, og prisen ruller
+  const vaelger = document.getElementById("vaelger");
+  if (!vaelger) return;
+  const pakker = document.getElementById("pakker");
+  const demo = document.getElementById("demo");
+  const hint = document.getElementById("demoHint");
+  const pPris = document.getElementById("pPris");
+  const PAKKER = {
+    selv: { navn: "Gør det selv med AI", hvem: "Du trykker godkend. Appen gør resten.", pris: 349 },
+    bogholder: { navn: "Med bogholder", hvem: "Vi bogfører. Du bogfører aldrig selv.", pris: 799 },
+  };
+  let pakke = "bogholder", demoTimer = 0, prisNu = 799, prisRaf = 0;
+  function visTilstand(trin) {
+    demo.dataset.trin = trin;
+    const noegle = `${pakke} ${trin}`;
+    demo.querySelectorAll(".tilstand").forEach((t) => t.classList.toggle("vist", t.dataset.vis === noegle));
+    hint.textContent = pakke === "selv" && trin === "venter" ? "Prøv selv: tryk Godkend." : "";
+  }
+  function rulPris(til) {
+    cancelAnimationFrame(prisRaf);
+    if (roligt) { prisNu = til; pPris.textContent = til; return; }
+    const fra = prisNu, t0 = performance.now();
+    const trin = (nu) => {
+      const t = Math.min(1, (nu - t0) / 520), e = 1 - Math.pow(1 - t, 3);
+      prisNu = Math.round(fra + (til - fra) * e);
+      pPris.textContent = prisNu;
+      if (t < 1) prisRaf = requestAnimationFrame(trin);
+    };
+    prisRaf = requestAnimationFrame(trin);
+  }
+  function vaelgPakke(navn) {
+    pakke = navn;
+    const P = PAKKER[navn];
+    vaelger.dataset.valgt = navn;
+    vaelger.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.pakke === navn)));
+    demo.dataset.pakke = navn;
+    document.getElementById("pNavn").textContent = P.navn;
+    document.getElementById("pHvem").textContent = P.hvem;
+    pakker.querySelectorAll(".lister ul").forEach((ul) => { ul.hidden = ul.dataset.pakke !== navn; });
+    rulPris(P.pris);
+    // Tilmeldingen på forsiden følger med
+    const radio = document.querySelector(`#tilmeld input[data-pakke="${navn}"]`);
+    if (radio) { radio.checked = true; radio.dispatchEvent(new Event("change", { bubbles: true })); }
+    clearTimeout(demoTimer);
+    visTilstand("venter");
+    // Med bogholder bogfører regningen sig selv; gør du det selv, venter den på dit tryk
+    if (navn === "bogholder") demoTimer = setTimeout(() => visTilstand("bogfoert"), 1600);
+  }
+  vaelger.addEventListener("click", (e) => { const b = e.target.closest("button"); if (b && b.dataset.pakke !== pakke) vaelgPakke(b.dataset.pakke); });
+  document.getElementById("godkend").addEventListener("click", () => visTilstand("bogfoert"));
+  document.getElementById("fortryd").addEventListener("click", () => visTilstand("venter"));
+  visTilstand("venter");
+  // Feltet glider ind, når det kommer i syne, og først da starter regningen
+  if (!roligt) pakker.classList.add("js-vis");
+  iSyne(pakker, () => { pakker.classList.add("inde"); vaelgPakke(pakke); }, "-25%");
+})();
