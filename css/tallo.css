@@ -14,6 +14,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html, body { margin: 0; }
+main { overflow-x: clip; }
 body { font-family: "Geist", system-ui, sans-serif; color: var(--blaek); background: var(--flade); -webkit-font-smoothing: antialiased; line-height: 1.5; -webkit-tap-highlight-color: transparent; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3, p, ol, ul, figure, dl { margin: 0; }
@@ -67,8 +68,8 @@ h1 { font-size: 49px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em
 .felt { width: min(1240px, calc(100% - 64px)); margin: 0 auto; padding: 88px 0 64px; border-radius: 28px; background: #cdc3ff; color: #1d1442; text-align: center; }
 .felt h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; }
 .felt .ingress { color: #2e2563; max-width: 600px; padding: 0 20px; text-wrap: balance; }
-.vaelger { position: relative; display: inline-grid; grid-template-columns: 1fr 1fr; margin-top: 32px; padding: 5px; border-radius: 999px; background: rgba(255,255,255,.45); }
-.vaelger button { position: relative; z-index: 1; height: 46px; padding: 0 26px; border: 0; border-radius: 999px; background: none; font: inherit; font-size: 16px; font-weight: 560; color: #3b3178; cursor: pointer; white-space: nowrap; transition: color .25s; }
+.vaelger { position: relative; display: inline-grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 100%; margin-top: 32px; padding: 5px; border-radius: 999px; background: rgba(255,255,255,.45); }
+.vaelger button { position: relative; z-index: 1; min-height: 46px; padding: 6px 26px; line-height: 1.15; text-wrap: balance; border: 0; border-radius: 999px; background: none; font: inherit; font-size: 16px; font-weight: 560; color: #3b3178; cursor: pointer; transition: color .25s; }
 .vaelger button[aria-pressed="true"] { color: #1d1442; }
 .vaelger .glider { position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc(50% - 5px); border-radius: 999px; background: #fff; box-shadow: 0 2px 10px -4px rgba(29,20,66,.35); transition: transform .45s cubic-bezier(.3,.7,.2,1); }
 .vaelger[data-valgt="bogholder"] .glider { transform: translateX(100%); }
@@ -162,7 +163,7 @@ h1 { font-size: 49px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em
 .fod-indre { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; width: min(1160px, calc(100% - 64px)); margin: 0 auto; font-size: 15px; }
 .fod-indre p { margin-top: 8px; color: var(--daempet); }
 .fod-indre ul { list-style: none; margin: 0; padding: 0; }
-.fod-indre li a, .fod-indre li span { display: inline-flex; align-items: center; min-height: 36px; }
+.fod-indre li a, .fod-indre li span { display: inline-flex; align-items: center; min-height: 36px; min-width: 44px; }
 .fod-indre a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .fod .titel { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--daempet); }
 .kaempe { margin: 48px 0 -0.24em; font-size: clamp(120px, 27vw, 420px); font-weight: 700; line-height: .9; letter-spacing: -.06em; text-align: center; color: #e4dff6; user-select: none; }
@@ -286,11 +287,12 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 /* Papir og fotos (C): ét foto pr. side i egen ramme, og det levende øjeblik på et hvidt kort over fotoets nederste kant */
 .fotoramme { width: min(1240px, calc(100% - 48px)); aspect-ratio: 2.2; margin: 0 auto; overflow: hidden; border-radius: 32px; }
 .side-top + .fotoramme { margin-top: 64px; }
+.region:has(> .fotoramme:first-child) { padding-top: 32px; }
 .fotoramme img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--fp, 50% 50%); }
 .kort-over { position: relative; z-index: 1; margin: -170px auto 0; border-radius: 28px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 40px 80px -50px rgba(20,20,20,.45); }
 .regner.kort-over, .traek.kort-over { width: min(1120px, calc(100% - 120px)); padding: 56px; }
 .udsagn.kort-over { width: min(820px, calc(100% - 120px)); padding: 56px 48px; }
-.kort-over .skyder { background: linear-gradient(to right, var(--blaa) var(--fyld, 6%), #e7e4f5 var(--fyld, 6%)); }
+.kort-over .skyder { --spor: #e7e4f5; }
 .kort-over .bunke i { box-shadow: 0 8px 14px -8px rgba(29,20,66,.55), inset 0 0 0 1px #e7e4f5; }
 .region .side-top.delt { padding-top: 0; }
 .indre { width: min(1160px, calc(100% - 64px)); margin: 0 auto; }
@@ -425,8 +427,10 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 .regner h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
 .regner .antal { margin-top: 30px; font-size: 19px; color: #2e2563; }
 .regner .antal b { display: block; font-size: 72px; font-weight: 500; line-height: 1; letter-spacing: -.035em; color: #1d1442; font-variant-numeric: tabular-nums; }
-.skyder { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 10px; margin: 26px 0 0; border-radius: 10px; background: linear-gradient(to right, var(--blaa) var(--fyld, 6%), rgba(255,255,255,.7) var(--fyld, 6%)); cursor: pointer; }
-.skyder::-webkit-slider-thumb { -webkit-appearance: none; width: 36px; height: 36px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px var(--blaa), 0 8px 18px -6px rgba(29,20,66,.5); cursor: grab; }
+.skyder { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 44px; margin: 14px 0 0; background: transparent; cursor: pointer; touch-action: pan-y; }
+.skyder::-webkit-slider-runnable-track { height: 10px; border-radius: 10px; background: linear-gradient(to right, var(--blaa) var(--fyld, 6%), var(--spor, rgba(255,255,255,.7)) var(--fyld, 6%)); }
+.skyder::-moz-range-track { height: 10px; border-radius: 10px; background: linear-gradient(to right, var(--blaa) var(--fyld, 6%), var(--spor, rgba(255,255,255,.7)) var(--fyld, 6%)); }
+.skyder::-webkit-slider-thumb { -webkit-appearance: none; width: 36px; height: 36px; margin-top: -13px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px var(--blaa), 0 8px 18px -6px rgba(29,20,66,.5); cursor: grab; }
 .skyder::-moz-range-thumb { width: 36px; height: 36px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px var(--blaa), 0 8px 18px -6px rgba(29,20,66,.5); cursor: grab; }
 .skyder:focus-visible { outline: 2px solid #1d1442; outline-offset: 6px; }
 .regner .fast { margin-top: 22px; font-size: 17px; line-height: 1.5; color: #2e2563; text-wrap: pretty; }
@@ -434,9 +438,9 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 .bunke { position: absolute; left: 0; right: 34%; bottom: 0; height: 100%; }
 .bunke i { position: absolute; width: 12%; aspect-ratio: .7; border-radius: 4px; background: #fff no-repeat; background-image: linear-gradient(#cdc3ff 0 0), linear-gradient(#e7e4f5 0 0), linear-gradient(#e7e4f5 0 0), linear-gradient(#e7e4f5 0 0); background-size: 56% 7%, 70% 4%, 62% 4%, 40% 4%; background-position: 50% 16%, 50% 42%, 50% 56%, 50% 80%; box-shadow: 0 8px 14px -8px rgba(29,20,66,.55); transform: rotate(var(--r)); animation: lander .4s cubic-bezier(.3,1.4,.5,1) both; }
 @keyframes lander { from { opacity: 0; transform: translateY(-36px) rotate(var(--r)); } to { opacity: 1; transform: rotate(var(--r)); } }
-.regner-pris { position: absolute; right: 0; top: 18px; width: 290px; padding: 22px 22px 24px; border-radius: 22px; background: #fff; box-shadow: 0 30px 60px -30px rgba(29,20,66,.55); }
+.regner-pris { position: absolute; right: 0; top: 18px; width: 330px; padding: 22px 22px 24px; border-radius: 22px; background: #fff; box-shadow: 0 30px 60px -30px rgba(29,20,66,.55); }
 .regner-pris .vaelger { margin: 0; width: 100%; background: #f1eefc; }
-.regner-pris .vaelger button { height: 38px; padding: 0 8px; font-size: 13px; }
+.regner-pris .vaelger button { min-height: 40px; padding: 4px 8px; font-size: 13px; }
 .regner-pris .belob { margin-top: 20px; font-size: 64px; font-weight: 500; line-height: 1; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
 .regner-pris .belob small { margin-left: 6px; font-size: 17px; font-weight: 400; letter-spacing: 0; color: var(--daempet); }
 .regner-pris .fast-linje { margin-top: 8px; font-size: 14px; color: var(--daempet); }
@@ -483,8 +487,13 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 .traek-fil.traekkes { transition: box-shadow .2s; box-shadow: 0 30px 50px -18px rgba(20,20,20,.5), inset 0 0 0 2px var(--blaa); }
 .traek-fil b { display: block; font-size: 15px; font-weight: 560; }
 .traek-fil small { display: block; font-size: 13px; color: var(--daempet); }
-.traek-fil .greb { margin-left: auto; font-size: 13px; font-weight: 500; color: var(--blaa); white-space: nowrap; }
+.traek-fil { flex-wrap: wrap; }
+.traek-fil > div { flex: 1; min-width: 0; }
+/* "Træk mig ind" står altid på sin egen linje under navnet, så de to aldrig klemmes sammen i en smal kolonne */
+.traek-fil .greb { flex-basis: 100%; margin: 4px 0 0; padding-top: 10px; border-top: 1px solid #efeee9; font-size: 13px; font-weight: 500; color: var(--blaa); text-align: center; }
 .traek-fil.flyttet { visibility: hidden; }
+.traek-fil .fin { display: none; }
+@media (pointer: coarse) { .traek-fil .mus { display: none; } .traek-fil .fin { display: inline; } }
 .traek .flyt { width: 100%; margin: 0; }
 .traek .flyt-zone { justify-content: center; color: #6d63b5; font-size: 15px; font-weight: 500; transition: background .2s, border-color .2s; }
 .traek .flyt-zone.over { background: #efecff; border-color: var(--blaa); }
@@ -539,7 +548,7 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
   .regner .antal b { font-size: 56px; }
   .regner-scene { min-height: 340px; }
   .bunke { right: 0; height: 60%; }
-  .regner-pris { left: 50%; right: auto; top: 0; width: min(290px, 90%); transform: translateX(-50%); }
+  .regner-pris { left: 50%; right: auto; top: 0; width: min(340px, 100%); transform: translateX(-50%); }
   .regner-pris.nik { animation: none; }
   .spm-delt { grid-template-columns: minmax(0, 1fr); gap: 24px; width: calc(100% - 40px); }
   .spm-delt h2 { position: static; font-size: 32px; }
@@ -552,11 +561,13 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
   .laes-raekke { grid-template-columns: 64px 1fr auto; min-height: 38px; font-size: 14px; }
   .laes-forslag { margin-top: 8px; padding: 10px 12px; font-size: 13.5px; }
   .telefon-scene { grid-template-columns: minmax(0, 1fr); gap: 0; width: 100%; }
-  .ts-scene { order: -1; z-index: 3; top: var(--nav); height: auto; padding: 18px 0 22px; background: inherit; }
+  .ts-scene { order: -1; z-index: 3; top: var(--nav); height: auto; padding: 18px 0 22px; background: var(--bund, var(--flade)); }
+  .ts-scene::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 36px; background: linear-gradient(var(--bund, var(--flade)), transparent); pointer-events: none; }
   .ts-ramme { width: min(170px, calc(40vh * .462)); }
+  .ts-telefon { border-radius: 26px; box-shadow: 0 0 0 6px #1c1c1e, 0 0 0 7px #3a3a3c, 0 30px 60px -30px rgba(20,20,20,.5); }
   .ts-ramme::before { width: 150%; }
   .telefon-scene { background: inherit; }
-  .ts-tekster { width: min(560px, calc(100% - 40px)); margin: 0 auto; padding: 4vh 0 30vh; }
+  .ts-tekster { width: min(560px, calc(100% - 40px)); margin: 0 auto; padding: 4vh 0 12vh; }
   .ts-tekst { min-height: 46vh; justify-content: flex-start; }
   .ts-tekst h2 { font-size: 28px; }
   .ts-tekst p { font-size: 16px; }
@@ -607,7 +618,7 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
   .pakke { padding: 28px 18px 24px; }
   .pris b { font-size: 48px; }
   .vaelger { margin-top: 26px; }
-  .vaelger button { height: 44px; padding: 0 14px; font-size: 14px; }
+  .vaelger button { min-height: 44px; padding: 5px 14px; font-size: 14px; }
   .demo { padding: 22px 14px; border-radius: 18px; }
   .regning { padding: 16px 14px; }
   .raekke { gap: 10px; }
@@ -652,7 +663,8 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
   /* Tabellen på telefon: teksten i fuld bredde, de to pakkers svar side om side under den */
   .tabel-ramme { width: calc(100% - 24px); }
   .sammenlign, .sammenlign thead, .sammenlign tbody { display: block; }
-  .sammenlign tr { display: grid; grid-template-columns: 1fr 1fr; }
+  .sammenlign tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .sammenlign .snart { white-space: normal; text-align: center; }
   .sammenlign thead th:first-child { display: none; }
   .sammenlign thead th { padding: 18px 14px 14px; font-size: 15px; }
   .sammenlign thead th small { font-size: 13px; }

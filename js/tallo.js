@@ -110,6 +110,12 @@
     html.classList.add("glid");
   }
 
+  // Tabellerne i privatlivspolitikken: kolonnens navn på hver celle, så rækkerne kan stå som kort på mobil
+  document.querySelectorAll(".juridisk table").forEach((tb) => {
+    const navne = [...tb.querySelectorAll("thead th, tr:first-child th")].map((th) => th.textContent.trim());
+    tb.querySelectorAll("tbody tr").forEach((tr) => [...tr.children].forEach((td, i) => { if (navne[i]) td.dataset.label = navne[i]; }));
+  });
+
   // Telefonscenen: teksten midt på skærmen (på mobil: lige under telefonen) bestemmer skærm og chip
   document.querySelectorAll("[data-telefon]").forEach((scene) => {
     const tekster = [...scene.querySelectorAll(".ts-tekst")];
@@ -217,7 +223,12 @@
     let start = null;
     const over = (e) => { const r = zone.getBoundingClientRect(); return e.clientX > r.left - 30 && e.clientX < r.right + 30 && e.clientY > r.top - 30 && e.clientY < r.bottom + 30; };
     const tilbage = () => { fil.classList.remove("traekkes", "flyttet"); fil.style.transform = ""; };
-    const flyt = () => { fil.classList.remove("traekkes"); fil.classList.add("flyttet"); fil.style.transform = ""; zone.classList.remove("over"); spil(); };
+    const flyt = () => {
+      fil.classList.remove("traekkes"); fil.classList.add("flyttet"); fil.style.transform = ""; zone.classList.remove("over"); spil();
+      // På mobil står Tallo-vinduet under filen: rul det i syne, så man ser historikken flytte ind
+      const r = fl.getBoundingClientRect();
+      if (r.top < 0 || r.bottom > innerHeight) fl.scrollIntoView({ behavior: roligt ? "auto" : "smooth", block: r.height > innerHeight ? "start" : "center" });
+    };
     fil.addEventListener("pointerdown", (e) => { start = { x: e.clientX, y: e.clientY, flyttede: false }; fil.setPointerCapture(e.pointerId); fil.classList.add("traekkes"); });
     fil.addEventListener("pointermove", (e) => {
       if (!start) return;
