@@ -142,7 +142,7 @@
     const PRISER = { selv: 349, bogholder: 799 };
     const tal = (i) => { const x = Math.sin(i * 12.9898) * 43758.5453; return x - Math.floor(x); };  // fast "tilfældighed"
     let vist = 0, halvtreds = -1;
-    const nik = () => { if (roligt) return; kort.classList.remove("nik"); void kort.offsetWidth; kort.classList.add("nik"); };
+    const nik = () => { kort.classList.remove("nik"); void kort.offsetWidth; kort.classList.add("nik"); };
     const opdater = () => {
       const n = +skyder.value;
       antal.textContent = n;
@@ -178,12 +178,69 @@
       fl.classList.remove("i-gang", "faerdig"); linjer.forEach((l) => l.classList.remove("klar"));
       void fl.offsetWidth;
       fl.classList.add("i-gang");
-      const start = roligt ? 0 : 1300, trin = roligt ? 0 : 520;
+      const start = 1300, trin = 520;  // startes altid af én selv, så den spiller også ved reduceret bevægelse
       linjer.forEach((l, i) => timere.push(setTimeout(() => l.classList.add("klar"), start + i * trin)));
-      timere.push(setTimeout(() => fl.classList.add("faerdig"), start + linjer.length * trin + (roligt ? 0 : 300)));
+      timere.push(setTimeout(() => fl.classList.add("faerdig"), start + linjer.length * trin + 300));
     };
-    fl.querySelector(".flyt-igen").addEventListener("click", spil);
-    iSyne(fl, spil, "-25%");
+    const traek = fl.closest("[data-traek]");
+    if (!traek) { fl.querySelector(".flyt-igen").addEventListener("click", spil); iSyne(fl, spil, "-25%"); return; }
+    // Træk filen ind: følg pointeren; slippes den over Tallo-vinduet (eller trykkes der), flytter historikken
+    const fil = traek.querySelector(".traek-fil"), zone = fl.querySelector(".flyt-zone");
+    let start = null;
+    const over = (e) => { const r = zone.getBoundingClientRect(); return e.clientX > r.left - 30 && e.clientX < r.right + 30 && e.clientY > r.top - 30 && e.clientY < r.bottom + 30; };
+    const tilbage = () => { fil.classList.remove("traekkes", "flyttet"); fil.style.transform = ""; };
+    const flyt = () => { fil.classList.remove("traekkes"); fil.classList.add("flyttet"); fil.style.transform = ""; zone.classList.remove("over"); spil(); };
+    fil.addEventListener("pointerdown", (e) => { start = { x: e.clientX, y: e.clientY, flyttede: false }; fil.setPointerCapture(e.pointerId); fil.classList.add("traekkes"); });
+    fil.addEventListener("pointermove", (e) => {
+      if (!start) return;
+      const dx = e.clientX - start.x, dy = e.clientY - start.y;
+      if (Math.abs(dx) + Math.abs(dy) > 6) start.flyttede = true;
+      fil.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.max(-6, Math.min(6, dx / 40))}deg)`;
+      zone.classList.toggle("over", over(e));
+    });
+    fil.addEventListener("pointerup", (e) => {
+      if (!start) return;
+      const klik = !start.flyttede; start = null;
+      if (klik || over(e)) flyt(); else { tilbage(); zone.classList.remove("over"); }
+    });
+    fil.addEventListener("pointercancel", () => { start = null; tilbage(); zone.classList.remove("over"); });
+    fil.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flyt(); } });
+    fl.querySelector(".flyt-igen").addEventListener("click", () => {
+      timere.forEach(clearTimeout); fl.classList.remove("i-gang", "faerdig"); linjer.forEach((l) => l.classList.remove("klar")); tilbage(); fil.focus();
+    });
+  });
+
+  // Spørg os: tryk på et spørgsmål; den, der svarer, skriver et øjeblik, og svaret kommer
+  document.querySelectorAll("[data-spoerg]").forEach((sp) => {
+    const traad = sp.querySelector(".traad"), knapper = [...sp.querySelectorAll(".spoergsmaal-knapper button")];
+    const FOLK = { othman: { navn: "Othman", billede: "/billeder/othman.webp" }, mohammed: { navn: "Mohammed", billede: "/billeder/mohammed.webp" } };
+    const tilBund = () => { traad.scrollTop = traad.scrollHeight; };
+    const svar = (hvem, tekst) => {
+      const f = FOLK[hvem], el = document.createElement("div");
+      el.className = "besked";
+      el.innerHTML = `<img src="${f.billede}" alt=""><p class="boble ai"><span class="navn"></span></p>`;
+      el.querySelector(".navn").textContent = f.navn;
+      el.querySelector(".boble").append(tekst);
+      return el;
+    };
+    knapper.forEach((k) => k.addEventListener("click", () => {
+      knapper.forEach((x) => { x.disabled = true; });
+      k.classList.add("stillet");
+      const du = document.createElement("div");
+      du.className = "besked du";
+      du.innerHTML = '<p class="boble du"></p>';
+      du.querySelector(".boble").textContent = k.textContent;
+      traad.append(du); tilBund();
+      const skriver = document.createElement("div");
+      skriver.className = "besked";
+      skriver.innerHTML = `<img src="${FOLK[k.dataset.hvem].billede}" alt=""><span class="skriver" aria-label="skriver"><i></i><i></i><i></i></span>`;
+      setTimeout(() => { traad.append(skriver); tilBund(); }, 350);
+      setTimeout(() => {
+        skriver.remove();
+        traad.append(svar(k.dataset.hvem, k.dataset.svar)); tilBund();
+        knapper.forEach((x) => { x.disabled = false; });
+      }, 1500 + Math.min(1200, k.dataset.svar.length * 8));
+    }));
   });
 
   // Liste + panel: punkterne skifter skærmbilledet; skifter selv hvert 6. sekund, til man klikker
@@ -227,7 +284,6 @@
   }
   function rulPris(til) {
     cancelAnimationFrame(prisRaf);
-    if (roligt) { prisNu = til; pPris.textContent = til; return; }
     const fra = prisNu, t0 = performance.now();
     const trin = (nu) => {
       const t = Math.min(1, (nu - t0) / 520), e = 1 - Math.pow(1 - t, 3);
