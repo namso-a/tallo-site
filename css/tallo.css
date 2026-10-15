@@ -358,6 +358,104 @@ h1 { font-size: 49px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em
 .principper li::before { counter-increment: p; content: counter(p, decimal-leading-zero); padding-top: .35em; font-size: 15px; font-weight: 600; letter-spacing: 0; color: #3d5a42; }
 .principper small { display: block; margin-top: 10px; font-size: 17px; font-weight: 400; line-height: 1.5; letter-spacing: 0; color: #3d3d39; }
 
+/* Telefonscenen (/appen): telefonen står fast, teksterne ruller forbi; hver tekst skifter skærmen og sender et chip ud */
+.telefon-scene { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; width: min(1160px, calc(100% - 64px)); margin: 0 auto; }
+.ts-tekster { padding: 18vh 0 26vh; }
+.ts-tekst { display: flex; flex-direction: column; justify-content: center; min-height: 74vh; opacity: .28; transition: opacity .45s ease-out; }
+.ts-tekst.aktiv { opacity: 1; }
+.ts-tekst .nr { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--blaa); color: #fff; font-size: 15px; font-weight: 600; }
+.ts-tekst h2 { margin-top: 18px; font-size: 40px; font-weight: 480; line-height: 1.08; letter-spacing: -.02em; text-wrap: balance; }
+.ts-tekst p { max-width: 440px; margin-top: 14px; font-size: 18px; line-height: 1.55; color: var(--daempet); text-wrap: pretty; }
+.ts-scene { position: sticky; top: calc(var(--nav) + 24px); height: calc(100vh - var(--nav) - 48px); display: grid; place-items: center; }
+.ts-ramme { position: relative; width: min(316px, calc((100vh - var(--nav) - 80px) * .462)); }
+.ts-ramme::before { content: ""; position: absolute; left: 50%; top: 50%; width: 175%; aspect-ratio: 1; border-radius: 50%; background: var(--blaa-svag); transform: translate(-50%, -50%); }
+.ts-telefon { position: relative; overflow: hidden; aspect-ratio: 390 / 844; border-radius: 46px; background: #f7f6f2; box-shadow: 0 0 0 10px #1c1c1e, 0 0 0 11px #3a3a3c, 0 50px 90px -40px rgba(20,20,20,.5); }
+.ts-telefon img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0; transform: translateX(28px); transition: opacity .4s ease-out, transform .55s cubic-bezier(.2,.7,.2,1); }
+.ts-telefon img.vist { opacity: 1; transform: none; }
+.ts-telefon .markering { position: absolute; left: 6.2%; top: 56.2%; width: 87.6%; height: 12.4%; border-radius: 12px; background: rgba(75,58,166,.06); box-shadow: inset 0 0 0 2px rgba(75,58,166,.55); opacity: 0; transition: opacity .4s ease-out .3s; }
+[data-trin="1"] .ts-telefon .markering, [data-trin="2"] .ts-telefon .markering { opacity: 1; }
+.ts-chip { position: absolute; z-index: 2; left: var(--x); top: var(--y); display: flex; align-items: center; gap: 10px; padding: 9px 16px 9px 9px; border-radius: 999px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 24px 48px -20px rgba(20,20,20,.45); font-size: 15px; font-weight: 500; white-space: nowrap; opacity: 0; transform: translateY(10px) scale(.94); transition: opacity .3s ease-out, transform .45s cubic-bezier(.3,1.4,.5,1); pointer-events: none; }
+.ts-chip.vist { opacity: 1; transform: none; transition-delay: .25s; }
+.ts-chip b { font-weight: 600; }
+
+/* Læse-scenen (/ai): følger rullet; linjen glider ned over kvitteringen, felterne markeres, app-kortet fyldes ud */
+.region.laes-region { padding: 0; }
+.laes { position: relative; height: 280vh; }
+.laes-scene { position: sticky; top: var(--nav); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); gap: 64px; align-items: center; height: calc(100vh - var(--nav)); width: min(1080px, calc(100% - 64px)); margin: 0 auto; }
+.laes-papir { position: relative; overflow: hidden; width: min(380px, 100%); aspect-ratio: 540 / 600; margin-left: auto; border-radius: 22px; box-shadow: 0 40px 80px -40px rgba(20,20,20,.55); }
+.laes-papir .ark { position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: 540 / 950; }
+.laes-papir .ark img { display: block; width: 100%; height: 100%; }
+.laes-felt { position: absolute; border-radius: 6px; box-shadow: inset 0 0 0 2px rgba(75,58,166,.75); background: rgba(75,58,166,.08); transform: rotate(-3.5deg) scale(.96); opacity: 0; transition: opacity .25s ease-out, transform .35s cubic-bezier(.3,1.4,.5,1); }
+.laes-felt.laest { opacity: 1; transform: rotate(-3.5deg); }
+.laes-linje { position: absolute; left: -4%; right: -4%; height: 3px; border-radius: 3px; background: #8f84e0; box-shadow: 0 0 0 6px rgba(143,132,224,.18); transform: rotate(-3.5deg); }
+.laes-kort { padding: 10px 24px 20px; border-radius: 18px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 30px 60px -40px rgba(20,20,20,.35); }
+.laes-kort .lk-titel { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0 8px; font-size: 14px; font-weight: 500; color: var(--daempet); }
+.laes-raekke { display: grid; grid-template-columns: 90px 1fr auto; gap: 12px; align-items: center; min-height: 50px; border-top: 1px solid #efeee9; font-size: 15px; }
+.laes-raekke > span:first-child { color: var(--daempet); }
+.laes-raekke b { font-weight: 560; font-variant-numeric: tabular-nums; opacity: 0; transform: translateX(-6px); transition: opacity .25s ease-out, transform .35s cubic-bezier(.2,.7,.2,1); }
+.laes-raekke .app-pille { opacity: 0; transform: scale(.8); transition: opacity .2s ease-out, transform .35s cubic-bezier(.3,1.6,.5,1); }
+.laes-raekke.laest b, .laes-raekke.laest .app-pille { opacity: 1; transform: none; }
+.laes-forslag { margin-top: 14px; padding: 14px 16px; border-radius: 12px; background: var(--blaa-svag); font-size: 15px; line-height: 1.45; color: #3b3460; opacity: 0; transform: translateY(8px); transition: opacity .3s ease-out, transform .4s cubic-bezier(.2,.7,.2,1); }
+.laes-forslag b { display: block; color: var(--blaa); font-size: 13px; font-weight: 600; }
+.laes-forslag.vist { opacity: 1; transform: none; }
+.laes-status { position: relative; display: inline-flex; min-width: 148px; height: 28px; }
+.laes-status > span { position: absolute; left: 0; top: 0; transition: opacity .25s ease-out; }
+.laes-status .ok { opacity: 0; }
+.laes-status.ok .ok { opacity: 1; } .laes-status.ok .graa { opacity: 0; }
+.laes-tekst { margin-bottom: 22px; }
+.laes-tekst h2 { font-size: 34px; font-weight: 480; line-height: 1.1; letter-spacing: -.018em; }
+.laes-tekst p { margin-top: 10px; font-size: 17px; line-height: 1.5; color: var(--daempet); }
+
+/* Skyderen (/priser): bunken vokser, prisen står stille og nikker for hver 50 bilag */
+.regner { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 64px; align-items: center; width: min(1160px, calc(100% - 64px)); margin: 0 auto; }
+.regner h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
+.regner .antal { margin-top: 30px; font-size: 19px; color: #2e2563; }
+.regner .antal b { display: block; font-size: 72px; font-weight: 500; line-height: 1; letter-spacing: -.035em; color: #1d1442; font-variant-numeric: tabular-nums; }
+.skyder { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 10px; margin: 26px 0 0; border-radius: 10px; background: linear-gradient(to right, var(--blaa) var(--fyld, 6%), rgba(255,255,255,.7) var(--fyld, 6%)); cursor: pointer; }
+.skyder::-webkit-slider-thumb { -webkit-appearance: none; width: 36px; height: 36px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px var(--blaa), 0 8px 18px -6px rgba(29,20,66,.5); cursor: grab; }
+.skyder::-moz-range-thumb { width: 36px; height: 36px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px var(--blaa), 0 8px 18px -6px rgba(29,20,66,.5); cursor: grab; }
+.skyder:focus-visible { outline: 2px solid #1d1442; outline-offset: 6px; }
+.regner .fast { margin-top: 22px; font-size: 17px; line-height: 1.5; color: #2e2563; text-wrap: pretty; }
+.regner-scene { position: relative; min-height: 400px; }
+.bunke { position: absolute; left: 0; right: 34%; bottom: 0; height: 100%; }
+.bunke i { position: absolute; width: 12%; aspect-ratio: .7; border-radius: 4px; background: #fff no-repeat; background-image: linear-gradient(#cdc3ff 0 0), linear-gradient(#e7e4f5 0 0), linear-gradient(#e7e4f5 0 0), linear-gradient(#e7e4f5 0 0); background-size: 56% 7%, 70% 4%, 62% 4%, 40% 4%; background-position: 50% 16%, 50% 42%, 50% 56%, 50% 80%; box-shadow: 0 8px 14px -8px rgba(29,20,66,.55); transform: rotate(var(--r)); animation: lander .4s cubic-bezier(.3,1.4,.5,1) both; }
+@keyframes lander { from { opacity: 0; transform: translateY(-36px) rotate(var(--r)); } to { opacity: 1; transform: rotate(var(--r)); } }
+.regner-pris { position: absolute; right: 0; top: 18px; width: 290px; padding: 22px 22px 24px; border-radius: 22px; background: #fff; box-shadow: 0 30px 60px -30px rgba(29,20,66,.55); }
+.regner-pris .vaelger { margin: 0; width: 100%; background: #f1eefc; }
+.regner-pris .vaelger button { height: 38px; padding: 0 8px; font-size: 13px; }
+.regner-pris .belob { margin-top: 20px; font-size: 64px; font-weight: 500; line-height: 1; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
+.regner-pris .belob small { margin-left: 6px; font-size: 17px; font-weight: 400; letter-spacing: 0; color: var(--daempet); }
+.regner-pris .fast-linje { margin-top: 8px; font-size: 14px; color: var(--daempet); }
+.regner-pris .samme { display: inline-flex; margin-top: 14px; }
+.regner-pris.nik { animation: nik .55s cubic-bezier(.3,1.5,.5,1); }
+@keyframes nik { 35% { transform: scale(1.045) rotate(-1deg); } }
+.regner-pris.nik .samme { animation: blink .55s ease-out; }
+@keyframes blink { 30% { transform: scale(1.12); } }
+
+/* Flytningen (/skift): spiller af sig selv i syne; filen glider ind, linjen fyldes, fire ting får flueben */
+.flyt { position: relative; width: min(760px, calc(100% - 40px)); margin: 56px auto 0; }
+.flyt-vindue { position: relative; overflow: hidden; padding: 28px 32px 30px; border-radius: 22px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 40px 80px -48px rgba(20,20,20,.45); }
+.flyt-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 560; }
+.flyt-zone { display: flex; align-items: center; gap: 16px; min-height: 92px; margin-top: 18px; padding: 16px 18px; border: 1.5px dashed #cdc3ff; border-radius: 14px; background: #faf9ff; }
+.flyt-fil { display: flex; align-items: center; gap: 14px; transform: translateX(-140%); opacity: 0; transition: transform .9s cubic-bezier(.2,.75,.2,1), opacity .4s ease-out; }
+.flyt.i-gang .flyt-fil { transform: none; opacity: 1; }
+.flyt-fil b { display: block; font-size: 16px; font-weight: 560; }
+.flyt-fil small { display: block; font-size: 14px; color: var(--daempet); }
+.flyt-linje { height: 6px; margin-top: 18px; border-radius: 6px; background: #efeee9; overflow: hidden; }
+.flyt-linje i { display: block; height: 100%; width: 100%; border-radius: 6px; background: var(--blaa); transform: scaleX(0); transform-origin: left; transition: transform 2.4s cubic-bezier(.4,0,.2,1) .9s; }
+.flyt.i-gang .flyt-linje i { transform: scaleX(1); }
+.flyt-liste { list-style: none; margin: 14px 0 0; padding: 0; }
+.flyt-liste li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; border-top: 1px solid #efeee9; font-size: 16px; }
+.flyt-liste .app-pille { opacity: 0; transform: scale(.7); transition: opacity .25s ease-out, transform .4s cubic-bezier(.3,1.6,.5,1); }
+.flyt-liste li.klar .app-pille { opacity: 1; transform: none; }
+.flyt-slut { margin-top: 16px; font-size: 17px; font-weight: 560; opacity: 0; transform: translateY(6px); transition: opacity .35s ease-out, transform .45s cubic-bezier(.2,.7,.2,1); }
+.flyt.faerdig .flyt-slut { opacity: 1; transform: none; }
+.flyt-igen { display: inline-flex; align-items: center; min-height: 44px; margin-top: 10px; border: 0; background: none; font: inherit; font-size: 15px; color: var(--blaa); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; opacity: 0; transition: opacity .3s; }
+.flyt.faerdig .flyt-igen { opacity: 1; }
+.spm-delt { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 64px; align-items: start; width: min(1160px, calc(100% - 64px)); margin: 0 auto; }
+.spm-delt .spoergsmaal { width: auto; margin: 0; }
+.spm-delt h2 { position: sticky; top: calc(var(--nav) + 32px); font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; }
+
 /* Afsløring ved scroll (ikke ved reduceret bevægelse) */
 .js-afslor [data-afslor] { opacity: 0; transform: translateY(24px); transition: opacity .7s ease-out, transform .8s cubic-bezier(.2,.7,.2,1); }
 .js-afslor [data-afslor].inde { opacity: 1; transform: none; }
@@ -370,6 +468,34 @@ h1 { font-size: 49px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em
   .par { grid-template-columns: minmax(0, 440px); gap: 56px; margin-top: 44px; padding: 0 28px; }
   .raek, .raek.vendt { grid-template-columns: minmax(0, 1fr); gap: 40px; margin-top: 96px; }
   .raek.vendt .raek-tekst { order: 0; }
+  .regner { grid-template-columns: minmax(0, 1fr); gap: 32px; width: min(560px, calc(100% - 40px)); }
+  .regner h2 { font-size: 32px; }
+  .regner .antal b { font-size: 56px; }
+  .regner-scene { min-height: 340px; }
+  .bunke { right: 0; height: 60%; }
+  .regner-pris { left: 50%; right: auto; top: 0; width: min(290px, 90%); transform: translateX(-50%); }
+  .regner-pris.nik { animation: none; }
+  .spm-delt { grid-template-columns: minmax(0, 1fr); gap: 24px; width: calc(100% - 40px); }
+  .spm-delt h2 { position: static; font-size: 32px; }
+  .flyt-vindue { padding: 20px 18px 22px; }
+  .laes { height: 260vh; }
+  .laes-scene { grid-template-columns: minmax(0, 1fr); gap: 14px; align-content: center; width: calc(100% - 32px); }
+  .laes-papir { width: min(230px, 60vw); margin: 0 auto; }
+  .laes-tekst { display: none; }
+  .laes-kort { padding: 4px 16px 14px; }
+  .laes-raekke { grid-template-columns: 64px 1fr auto; min-height: 38px; font-size: 14px; }
+  .laes-forslag { margin-top: 8px; padding: 10px 12px; font-size: 13.5px; }
+  .telefon-scene { grid-template-columns: minmax(0, 1fr); gap: 0; width: 100%; }
+  .ts-scene { order: -1; z-index: 3; top: var(--nav); height: auto; padding: 18px 0 22px; background: inherit; }
+  .ts-ramme { width: min(170px, calc(40vh * .462)); }
+  .ts-ramme::before { width: 150%; }
+  .telefon-scene { background: inherit; }
+  .ts-tekster { width: min(560px, calc(100% - 40px)); margin: 0 auto; padding: 4vh 0 30vh; }
+  .ts-tekst { min-height: 46vh; justify-content: flex-start; }
+  .ts-tekst h2 { font-size: 28px; }
+  .ts-tekst p { font-size: 16px; }
+  .ts-chip { left: 50%; top: auto; bottom: -14px; transform: translate(-50%, 10px) scale(.94); font-size: 13px; padding: 6px 12px 6px 6px; }
+  .ts-chip.vist { transform: translate(-50%, 0); }
   .region { padding: 88px 0; }
   .region.top { padding: calc(var(--nav) + 40px) 0 80px; }
   .lp { grid-template-columns: minmax(0, 1fr); gap: 40px; }
