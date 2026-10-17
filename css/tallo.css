@@ -130,6 +130,10 @@ h1 { font-size: 49px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em
 .snak-mail a { display: inline-block; padding: 10px 0; text-decoration: underline; text-underline-offset: 3px; }
 
 /* Fotokort: står skævt, falder på plads i syne og retter sig op ved hover; et lige app-kort på hvert */
+.par.bred { gap: 140px; }
+/* /skift: ens rytme mellem afsnittene (Othman 17. okt: "ikke jævn plads vertikalt") */
+.region.skift-trin { padding-bottom: 60px; }
+.region.skift-slut { padding-top: 60px; padding-bottom: 120px; }
 .par { display: grid; grid-template-columns: repeat(2, minmax(0, 400px)); justify-content: center; gap: 72px; margin-top: 64px; padding: 0 32px; text-align: left; }
 .person, .ramme { position: relative; }
 .foto-kort { position: relative; aspect-ratio: 1; border-radius: 22px; background: #eceae4; transform: rotate(var(--skaev)); transition: transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s; box-shadow: 0 30px 60px -36px rgba(20,20,20,.4); }
@@ -257,6 +261,7 @@ h1 { font-size: 49px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em
 .side-top.delt { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 64px; align-items: center; width: min(1240px, calc(100% - 64px)); margin: 0 auto; padding: calc(var(--nav) + 56px) 0 0; text-align: left; }
 .side-top.delt .ingress { margin-left: 0; }
 .side-top.delt .knapper { justify-content: flex-start; }
+.knap-note { margin-top: 12px; font-size: 14px; color: var(--daempet); }
 .top-foto { overflow: hidden; aspect-ratio: 1.08; border-radius: 28px; box-shadow: 0 40px 80px -48px rgba(20,20,20,.5); }
 .top-foto img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 58%; }
 .flise { position: relative; overflow: hidden; aspect-ratio: 1.15; padding: 56px 48px 0; border-radius: 28px; }
@@ -517,26 +522,23 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 .detalje { position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: -1; overflow: hidden; pointer-events: none; }
 .detalje.lang { bottom: -340px; -webkit-mask-image: linear-gradient(#000 45%, transparent 100%); mask-image: linear-gradient(#000 45%, transparent 100%); }
 .detalje > * { position: absolute; }
-.d-bilag, .d-papir { aspect-ratio: .72; border-radius: 4px; background: #fff no-repeat; background-image: linear-gradient(#cdc3ff 0 0), linear-gradient(#e7e4f5 0 0), linear-gradient(#e7e4f5 0 0); background-size: 56% 8%, 70% 5%, 50% 5%; background-position: 50% 18%, 50% 46%, 50% 64%; box-shadow: 0 10px 18px -10px rgba(29,20,66,.5); }
+.d-bilag { aspect-ratio: .72; border-radius: 4px; background: #fff no-repeat; background-image: linear-gradient(#cdc3ff 0 0), linear-gradient(#e7e4f5 0 0), linear-gradient(#e7e4f5 0 0); background-size: 56% 8%, 70% 5%, 50% 5%; background-position: 50% 18%, 50% 46%, 50% 64%; box-shadow: 0 10px 18px -10px rgba(29,20,66,.5); }
 .d-bilag { width: 44px; opacity: 0; animation: d-ind 9s cubic-bezier(.45,0,.2,1) infinite; animation-delay: var(--d); }
 @keyframes d-ind { 0% { opacity: 0; transform: translate(0, 0) rotate(var(--r)); } 12% { opacity: .9; } 70% { opacity: .9; } 100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(0deg) scale(.4); } }
 html.stille .d-bilag { animation: none; opacity: .6; transform: rotate(var(--r)); }
-.d-papir { left: 0; top: 0; width: 30px; opacity: .85; transition: transform 2.4s cubic-bezier(.45,.05,.2,1); transition-delay: var(--d, 0s); }
-.d-bunke-navn { transform: translateX(-50%); font-size: 12px; font-weight: 600; color: rgba(46,37,99,.75); letter-spacing: .02em; opacity: 0; transition: opacity .5s ease-out; }
-.d-bunke-navn.vist { opacity: 1; }
 .d-svg { left: 0; top: 0; width: 100%; height: 100%; overflow: visible; clip-path: inset(0 100% 0 0); transition: clip-path 2.2s cubic-bezier(.45,0,.25,1); }
 .d-svg.lodret { clip-path: inset(0 0 100% 0); }
 .d-svg.tegnet { clip-path: inset(0 0 0 0); }
 .d-svg path { fill: none; stroke: #4b3aa6; stroke-width: 2; stroke-dasharray: 7 7; opacity: .55; }
 .d-maerke { transform: translate(-50%, -50%); padding: 6px 12px; border-radius: 999px; background: #fff; box-shadow: 0 10px 22px -14px rgba(20,20,20,.5), inset 0 0 0 1px rgba(75,58,166,.2); font-size: 13px; font-weight: 560; color: #2e2563; white-space: nowrap; opacity: 0; transition: opacity .45s ease-out; transition-delay: var(--d, 0s); }
 .d-maerke.vist { opacity: 1; }
-html.stille .d-papir, html.stille .d-svg, html.stille .d-maerke, html.stille .d-bunke-navn { transition: none; }
+html.stille .d-svg, html.stille .d-maerke { transition: none; }
 
 /* Tekst til mus og til touch */
 .fin { display: none; }
 @media (pointer: coarse) { .mus { display: none; } .fin { display: inline; } }
 .foto-top { position: relative; isolation: isolate; }
-.top-baggrund { position: absolute; inset: 0 0 -110% 0; z-index: -1; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(#000 40%, transparent 100%); mask-image: linear-gradient(#000 40%, transparent 100%); }
+.top-baggrund { position: absolute; inset: 0 0 -160% 0; z-index: -1; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(transparent 0, transparent 210px, #000 360px, #000 62%, transparent 100%); mask-image: linear-gradient(transparent 0, transparent 210px, #000 360px, #000 62%, transparent 100%); }
 .top-baggrund img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; opacity: .3; mix-blend-mode: multiply; filter: saturate(.7); }
 /* Spillet: en stiplet pil viser vejen fra filen over i Tallo, og filen giver et lille skub, indtil man rører den */
 .traek-pil { position: relative; order: 1; align-self: center; width: 100%; height: 2px; background: repeating-linear-gradient(90deg, var(--blaa) 0 8px, transparent 8px 14px); background-size: 28px 2px; animation: pil-flyd 1.2s linear infinite; transition: opacity .3s; }
@@ -567,6 +569,9 @@ html.stille .traek-pil { animation: none; }
   .menu-knap { display: inline-flex; align-items: center; }
   .kort { grid-template-columns: 1fr; }
   .par { grid-template-columns: minmax(0, 440px); gap: 56px; margin-top: 44px; padding: 0 28px; }
+  .par.bred { gap: 56px; }
+  .region.skift-trin { padding-bottom: 28px; }
+  .region.skift-slut { padding-top: 28px; padding-bottom: 104px; }
   .raek, .raek.vendt { grid-template-columns: minmax(0, 1fr); gap: 40px; margin-top: 96px; }
   .raek.vendt .raek-tekst { order: 0; }
   .traek { grid-template-columns: minmax(0, 1fr); gap: 14px; }
