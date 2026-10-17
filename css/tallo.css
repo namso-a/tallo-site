@@ -175,6 +175,9 @@ h1 { font-size: 49px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em
 .afsnit-hoved { text-align: center; }
 .afsnit-hoved h2, .baand h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
 .afsnit-hoved .ingress { margin-top: 12px; }
+.pris-ingress { text-wrap: balance; }
+.pris-ingress span { white-space: nowrap; }
+.pris-ingress b { font-weight: 600; color: var(--blaek); }
 .raek { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 80px; align-items: center; width: min(1160px, calc(100% - 64px)); margin: 128px auto 0; }
 .raek.vendt { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
 .raek.vendt .raek-tekst { order: 2; }
