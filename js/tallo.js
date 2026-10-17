@@ -124,6 +124,97 @@
     tb.querySelectorAll("tbody tr").forEach((tr) => [...tr.children].forEach((td, i) => { if (navne[i]) td.dataset.label = navne[i]; }));
   });
 
+  // Baggrundsdetaljer bag toppen (Othman 17. okt 2026, variant C): bilag driver ind i telefonen (/appen, loop);
+  // papirerne sorterer sig i tre bunker (/ai) og linjen mellem jer tegnes (/om-os), én gang lige efter indlæsning.
+  // Alt placeres med fast "tilfældighed" og uden om tekst og billeder. Ved reduceret bevægelse vises slutbilledet.
+  document.querySelectorAll("[data-detalje]").forEach((region) => {
+    const v = region.dataset.detalje;
+    const lag = document.createElement("div");
+    lag.className = "detalje"; lag.setAttribute("aria-hidden", "true");
+    if (v === "sortering") lag.classList.add("lang");
+    region.prepend(lag);
+    const tal = (i) => { const x = Math.sin(i * 12.9898 + 4.1) * 43758.5453; return x - Math.floor(x); };
+    const rel = (el, m = 0) => { const r = el.getBoundingClientRect(), g = region.getBoundingClientRect(); return { l: r.left - g.left - m, t: r.top - g.top - m, r: r.right - g.left + m, b: r.bottom - g.top + m }; };
+    const bokse = (sel, m = 18) => [...region.querySelectorAll(sel)].filter((e) => e.getBoundingClientRect().width).map((e) => rel(e, m));
+    const rammer = (a, b) => a.l < b.r && a.r > b.l && a.t < b.b && a.b > b.t;
+    const ny = (cls, tekst) => { const e = document.createElement("div"); e.className = cls; if (tekst) e.textContent = tekst; return e; };
+    // Lægger et element et sted, hvor det ikke rammer undgå-boksene eller de andre; fjerner det, hvis der ikke er plads
+    const placer = (e, undgaa, brugt, seed, kant = .1) => {
+      lag.appendChild(e);
+      const w = e.offsetWidth, h = e.offsetHeight, W = lag.clientWidth, H = lag.clientHeight;
+      for (let j = 0; j < 900; j++) {
+        const x = -w * kant + tal(seed * 97 + j * 2) * (W - w + 2 * w * kant), y = -h * kant + tal(seed * 89 + j * 2 + 1) * (H - h + 2 * h * kant);
+        const b = { l: x, t: y, r: x + w, b: y + h };
+        if (undgaa.some((u) => rammer(b, u)) || brugt.some((u) => rammer(b, { l: u.l - 14, t: u.t - 14, r: u.r + 14, b: u.b + 14 }))) continue;
+        brugt.push(b); return b;
+      }
+      e.remove(); return null;
+    };
+
+    if (v === "bilag-ind") {
+      const foto = region.querySelector(".top-foto"); if (!foto) return;
+      const m = rel(foto), mx = (m.l + m.r) / 2, my = (m.t + m.b) / 2;
+      const undgaa = bokse(".side-top.delt > div, .top-foto", 10), brugt = [];
+      for (let i = 0; i < 12; i++) {
+        const e = ny("d-bilag");
+        e.style.setProperty("--r", (tal(i + 40) - .5) * 40 + "deg");
+        const b = placer(e, undgaa, brugt, i + 30); if (!b) continue;
+        e.style.left = b.l + "px"; e.style.top = b.t + "px";
+        e.style.setProperty("--tx", mx - (b.l + b.r) / 2 + "px"); e.style.setProperty("--ty", my - (b.t + b.b) / 2 + "px");
+        e.style.setProperty("--d", i * .75 + "s");
+      }
+    }
+
+    if (v === "sortering") {
+      // Selve overskriften og ingressen (ikke hele blokken, der er lige så bred som skærmen)
+      const tb = [...region.querySelectorAll(".side-top h1, .side-top .ingress")].map((e) => {
+        const rg = document.createRange(); rg.selectNodeContents(e);
+        const r = rg.getBoundingClientRect(), g = region.getBoundingClientRect(), m = 14;
+        return { l: r.left - g.left - m, t: r.top - g.top - m, r: r.right - g.left + m, b: r.bottom - g.top + m };
+      });
+      const tekst = { l: Math.min(...tb.map((x) => x.l)), t: Math.min(...tb.map((x) => x.t)), r: Math.max(...tb.map((x) => x.r)), b: Math.max(...tb.map((x) => x.b)) };
+      const W = lag.clientWidth, mobil = innerWidth < 900;
+      // Tre bunker til siden for overskriften (på mobil i kanterne ved siden af kvitteringen)
+      const STAK = mobil ? [[.11 * W, tekst.b + 80], [.89 * W, tekst.b + 80], [.11 * W, tekst.b + 210]]
+        : [[tekst.l * .45, tekst.b - 6], [W - (W - tekst.r) * .45, tekst.b - 6], [W - (W - tekst.r) * .8, tekst.t + 30]];
+      const navne = ["Varer", "Husleje", "Moms"].map((t, k) => { const e = ny("d-bunke-navn", t); e.style.left = STAK[k][0] + "px"; e.style.top = STAK[k][1] + 26 + "px"; lag.appendChild(e); return e; });
+      const brugt = [], papirer = [];
+      for (let i = 0; i < 18; i++) {
+        const e = ny("d-papir"), b = placer(e, [tekst], brugt, i + 70, .05); if (!b) continue;
+        const k = i % 3, n = papirer.filter((p) => p.k === k).length;
+        e.style.transform = `translate(${b.l}px, ${b.t}px) rotate(${(tal(i + 80) - .5) * 50}deg)`;
+        e.style.setProperty("--d", papirer.length * .05 + "s");
+        papirer.push({ e, k, slut: `translate(${STAK[k][0] - 15 + (tal(i) - .5) * 6}px, ${STAK[k][1] - 22 - n * 4}px) rotate(${(tal(i + 5) - .5) * 8}deg)` });
+      }
+      const sorter = () => { papirer.forEach((p) => { p.e.style.transform = p.slut; }); navne.forEach((n) => n.classList.add("vist")); };
+      if (roligt) sorter();
+      else { void lag.offsetWidth; setTimeout(sorter, 400); }
+    }
+
+    if (v === "linje") {
+      const kort = [...region.querySelectorAll(".par .foto-kort")].map((e) => rel(e)); if (kort.length < 2) return;
+      const W = lag.clientWidth, mobil = innerWidth < 700;
+      const NS = "http://www.w3.org/2000/svg", svg = document.createElementNS(NS, "svg"), sti = document.createElementNS(NS, "path");
+      svg.setAttribute("class", "d-svg" + (mobil ? " lodret" : "")); svg.appendChild(sti); lag.appendChild(svg);
+      let MAERKER = [];
+      if (!mobil) {
+        const a = kort[0], b = kort[1], y = (a.t + a.b) / 2;
+        sti.setAttribute("d", `M -20 ${y + 40} C ${W * .2} ${y - 60}, ${W * .35} ${y + 80}, ${(a.r + b.l) / 2} ${y} S ${W * .8} ${y - 80}, ${W + 20} ${y + 30}`);
+        // Er margenen for smal til et mærke, står det over portrættets yderste hjørne i stedet
+        const venstre = a.l > 150 ? [a.l / 2, y - 10] : [a.l + 70, a.t - 30];
+        const hoejre = W - b.r > 150 ? [b.r + (W - b.r) / 2, y - 20] : [b.r - 70, b.t - 30];
+        MAERKER = [["Første snak", ...venstre, .15], ["Aftale", (a.r + b.l) / 2, a.t - 30, .5], ["Bogføring", ...hoejre, .85]];
+      } else {
+        const x = W - 14;
+        sti.setAttribute("d", `M ${x} ${kort[0].t} L ${x} ${kort[1].b}`);
+      }
+      const maerker = MAERKER.map(([t, x, y, ved]) => { const e = ny("d-maerke", t); e.style.left = x + "px"; e.style.top = y + "px"; e.style.setProperty("--d", .2 + ved * 2.2 + "s"); lag.appendChild(e); return e; });
+      const tegn = () => { svg.classList.add("tegnet"); maerker.forEach((m) => m.classList.add("vist")); };
+      if (roligt) tegn();
+      else { void svg.getBoundingClientRect(); setTimeout(tegn, 300); }
+    }
+  });
+
   // Telefonscenen: teksten midt på skærmen (på mobil: lige under telefonen) bestemmer skærm og chip
   document.querySelectorAll("[data-telefon]").forEach((scene) => {
     const tekster = [...scene.querySelectorAll(".ts-tekst")];
