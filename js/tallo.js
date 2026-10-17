@@ -93,7 +93,7 @@
     let sidst = "", venter = false;
     const tegn = () => {
       venter = false;
-      const midt = innerHeight / 2, zone = innerHeight * 0.45;
+      const midt = innerHeight / 2, zone = innerHeight * 0.65;
       let i = afsnit.findIndex((a) => a.getBoundingClientRect().bottom > midt);
       if (i < 0) i = afsnit.length - 1;
       const r = afsnit[i].getBoundingClientRect();
@@ -169,27 +169,39 @@
     tegn();
   });
 
-  // Skyderen: bunken af kvitteringer vokser, prisen står stille og nikker for hver 50 bilag
+  // Skyderen: kvitteringerne lander i hele afsnittets baggrund rundt om kortet, mens man trækker; prisen står stille og
+  // nikker for hver 50 bilag (Othman 17. okt 2026: papirerne som en del af baggrunden)
   document.querySelectorAll("[data-regner]").forEach((rg) => {
-    const skyder = rg.querySelector(".skyder"), antal = rg.querySelector("[data-antal]"), bunke = rg.querySelector(".bunke");
+    const skyder = rg.querySelector(".skyder"), antal = rg.querySelector("[data-antal]");
+    const flade = rg.closest(".region") || rg.parentElement, lag = flade.querySelector(".bilag-baggrund");
     const kort = rg.querySelector(".regner-pris"), pris = rg.querySelector("[data-pris]"), vaelg = rg.querySelector(".vaelger");
     const PRISER = { selv: 349, bogholder: 799 };
     const tal = (i) => { const x = Math.sin(i * 12.9898) * 43758.5453; return x - Math.floor(x); };  // fast "tilfældighed"
-    let vist = 0, halvtreds = -1;
+    let pladser = [], vist = 0, halvtreds = -1;
+    // Faste pladser i procent af fladen; midten af et papir må ikke ligge langt inde bag kortet
+    const beregn = () => {
+      const f = flade.getBoundingClientRect(), k = rg.getBoundingClientRect(), ind = 60;
+      const bag = (x, y) => x > k.left - f.left + ind && x < k.right - f.left - ind && y > k.top - f.top + ind && y < k.bottom - f.top - ind;
+      pladser = [];
+      for (let j = 0; pladser.length < 90 && j < 4000; j++) {
+        const x = tal(j * 3 + 1) * f.width, y = tal(j * 3 + 2) * f.height;
+        if (!bag(x, y)) pladser.push({ x: (x / f.width) * 100, y: (y / f.height) * 100, r: (tal(j * 3 + 3) - .5) * 40, s: 56 + tal(j + 7) * 28 });
+      }
+    };
+    const laeg = (i) => {
+      const p = pladser[i], el = document.createElement("i");
+      el.style.left = p.x + "%"; el.style.top = p.y + "%";
+      el.style.setProperty("--r", p.r + "deg"); el.style.setProperty("--s", p.s + "px");
+      lag.appendChild(el);
+    };
     const nik = () => { kort.classList.remove("nik"); void kort.offsetWidth; kort.classList.add("nik"); };
     const opdater = () => {
       const n = +skyder.value;
       antal.textContent = n;
       skyder.style.setProperty("--fyld", ((n - 10) / 490) * 100 + "%");
-      const maal = Math.min(56, Math.ceil(n / 9));
-      while (vist < maal) {
-        const i = vist, el = document.createElement("i"), kol = i % 7, rk = Math.floor(i / 7);
-        el.style.left = 4 + kol * 13 + (tal(i) - .5) * 7 + "%";
-        el.style.bottom = rk * 11 + (tal(i + 50) - .5) * 4 + "%";
-        el.style.setProperty("--r", (tal(i + 9) - .5) * 26 + "deg");
-        bunke.appendChild(el); vist++;
-      }
-      while (vist > maal) { bunke.lastElementChild.remove(); vist--; }
+      const maal = Math.min(pladser.length, Math.ceil(n / 5.5));
+      while (vist < maal) laeg(vist++);
+      while (vist > maal) { lag.lastElementChild.remove(); vist--; }
       const h = Math.floor(n / 50);
       if (h !== halvtreds) { if (halvtreds >= 0) nik(); halvtreds = h; }
     };
@@ -200,7 +212,15 @@
       vaelg.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
       pris.textContent = PRISER[b.dataset.pakke]; nik();
     });
-    opdater();
+    // Når bredden ændrer sig, lægges papirerne om (uden at lande igen)
+    let bredde = innerWidth;
+    addEventListener("resize", () => {
+      if (Math.abs(innerWidth - bredde) < 40) return;
+      bredde = innerWidth; beregn(); lag.replaceChildren(); vist = 0;
+      opdater();
+      lag.querySelectorAll("i").forEach((el) => { el.style.animation = "none"; });
+    });
+    beregn(); opdater();
   });
 
   // Flytningen: spiller af sig selv, når den kommer i syne; "Se det igen" starter forfra
@@ -229,6 +249,13 @@
       const r = fl.getBoundingClientRect();
       if (r.top < 0 || r.bottom > innerHeight) fl.scrollIntoView({ behavior: roligt ? "auto" : "smooth", block: r.height > innerHeight ? "start" : "center" });
     };
+    let skubTimer = 0;
+    const stopSkub = () => { clearInterval(skubTimer); skubTimer = -1; fil.classList.remove("skub"); };
+    if (!roligt) iSyne(traek, () => {
+      if (skubTimer === -1) return;
+      skubTimer = setInterval(() => { fil.classList.remove("skub"); void fil.offsetWidth; fil.classList.add("skub"); }, 3000);
+    }, "-20%");
+    ["pointerdown", "keydown", "focus"].forEach((t) => fil.addEventListener(t, stopSkub));
     fil.addEventListener("pointerdown", (e) => { start = { x: e.clientX, y: e.clientY, flyttede: false }; fil.setPointerCapture(e.pointerId); fil.classList.add("traekkes"); });
     fil.addEventListener("pointermove", (e) => {
       if (!start) return;
@@ -249,37 +276,28 @@
     });
   });
 
-  // Spørg os: tryk på et spørgsmål; den, der svarer, skriver et øjeblik, og svaret kommer
-  document.querySelectorAll("[data-spoerg]").forEach((sp) => {
-    const traad = sp.querySelector(".traad"), knapper = [...sp.querySelectorAll(".spoergsmaal-knapper button")];
-    const FOLK = { othman: { navn: "Othman", billede: "/billeder/othman.webp" }, mohammed: { navn: "Mohammed", billede: "/billeder/mohammed.webp" } };
-    const tilBund = () => { traad.scrollTop = traad.scrollHeight; };
-    const svar = (hvem, tekst) => {
-      const f = FOLK[hvem], el = document.createElement("div");
-      el.className = "besked";
-      el.innerHTML = `<img src="${f.billede}" alt=""><p class="boble ai"><span class="navn"></span></p>`;
-      el.querySelector(".navn").textContent = f.navn;
-      el.querySelector(".boble").append(tekst);
-      return el;
-    };
-    knapper.forEach((k) => k.addEventListener("click", () => {
-      knapper.forEach((x) => { x.disabled = true; });
-      k.classList.add("stillet");
-      const du = document.createElement("div");
-      du.className = "besked du";
-      du.innerHTML = '<p class="boble du"></p>';
-      du.querySelector(".boble").textContent = k.textContent;
-      traad.append(du); tilBund();
-      const skriver = document.createElement("div");
-      skriver.className = "besked";
-      skriver.innerHTML = `<img src="${FOLK[k.dataset.hvem].billede}" alt=""><span class="skriver" aria-label="skriver"><i></i><i></i><i></i></span>`;
-      setTimeout(() => { traad.append(skriver); tilBund(); }, 350);
-      setTimeout(() => {
-        skriver.remove();
-        traad.append(svar(k.dataset.hvem, k.dataset.svar)); tilBund();
-        knapper.forEach((x) => { x.disabled = false; });
-      }, 1500 + Math.min(1200, k.dataset.svar.length * 8));
-    }));
+  // Spørgsmål og svar: svaret glider op og ned i stedet for at springe; "+" drejer til "×" i CSS. Man starter det selv,
+  // så det spiller altid
+  document.querySelectorAll("[data-faq] details").forEach((d) => {
+    const summary = d.querySelector("summary"), svar = d.querySelector(".svar");
+    let anim = null;
+    const kurve = { duration: 340, easing: "cubic-bezier(.2,.7,.2,1)" };
+    summary.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (anim) anim.cancel();
+      if (!d.open) {
+        d.open = true;
+        const h = svar.scrollHeight;
+        anim = svar.animate([{ height: "0px", opacity: 0 }, { height: h + "px", opacity: 1 }], kurve);
+        anim.onfinish = () => { anim = null; };
+      } else {
+        const h = svar.offsetHeight;
+        anim = svar.animate([{ height: h + "px", opacity: 1 }, { height: "0px", opacity: 0 }], { ...kurve, duration: 260 });
+        d.classList.add("lukker");
+        anim.onfinish = () => { d.open = false; d.classList.remove("lukker"); anim = null; };
+        anim.oncancel = () => d.classList.remove("lukker");
+      }
+    });
   });
 
   // Liste + panel: punkterne skifter skærmbilledet; skifter selv hvert 6. sekund, til man klikker
