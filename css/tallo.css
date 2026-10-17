@@ -121,12 +121,12 @@ h1 { font-size: 49px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em
 .js-vis.inde .felt, .js-vis.inde .kort { opacity: 1; transform: none; }
 
 /* "Hellere en snak?"-kortet */
-.snak { padding: 32px 30px; border-radius: 24px; background: var(--blaa-svag); text-align: left; }
+.snak { display: flex; flex-direction: column; align-items: flex-start; padding: 32px 30px; border-radius: 24px; background: var(--blaa-svag); text-align: left; }  /* lige så høj som formularen ved siden af */
 .snak img { display: block; width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 .snak h3 { margin: 18px 0 0; font-size: 20px; font-weight: 560; }
 .snak p { margin-top: 8px; font-size: 15px; line-height: 1.5; color: #3b3460; }
 .snak .pille { margin-top: 18px; }
-.snak .lille { margin-top: 14px; font-size: 14px; }
+.snak .lille { margin-top: auto; padding-top: 14px; font-size: 14px; }
 .snak .lille a { display: inline-block; padding: 12px 0; text-decoration: underline; text-underline-offset: 3px; }
 
 /* Fotokort: står skævt, falder på plads i syne og retter sig op ved hover; et lige app-kort på hvert */
@@ -290,7 +290,7 @@ h1 { font-size: 49px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em
 .region.salvie { background: #cfe3d1; }
 .region.himmel { background: #cfe0f5; }
 .region.fersken { background: #f8d9c4; }
-.region.top { padding: calc(var(--nav) + 56px) 0 112px; }
+.region.top { padding: calc(var(--nav) + 56px) 0 24px; }
 /* Farven glider med rullet (B): js/tallo.js sætter html.glid og --bund ud fra afsnittenes data-tone; uden JS har
    hvert afsnit sin tone som flade. Sidste afsnit er papir, så footeren står som på forsiden (Othman 16. okt 2026). */
 html.glid body { background: var(--bund, var(--flade)); }
@@ -300,7 +300,10 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 .fotoramme { width: min(1240px, calc(100% - 48px)); aspect-ratio: 2.2; margin: 0 auto; overflow: hidden; border-radius: 32px; }
 .side-top + .fotoramme { margin-top: 64px; }
 .region:has(> .fotoramme:first-child) { padding-top: 32px; }
-.region.top:has(+ .region > .fotoramme:first-child) { padding-bottom: 24px; }
+/* Indholdet starter tæt under toppens ingres på alle undersider (Othman 17. okt: "stadig mellemrum") */
+.region.top { padding-bottom: 24px; }
+.region.top + .region { padding-top: 40px; }
+.region.top + .region.laes-region { padding-top: 16px; }
 .fotoramme img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--fp, 50% 50%); }
 .fotoramme + .kort-over { margin-top: -170px; margin-inline: auto; }
 .kort-over { position: relative; z-index: 1; border-radius: 28px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 40px 80px -50px rgba(20,20,20,.45); }
@@ -363,6 +366,10 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 .udsagn h2 { max-width: 900px; margin: 0 auto; font-size: clamp(40px, 5.2vw, 68px); font-weight: 480; line-height: 1.05; letter-spacing: -.028em; text-wrap: balance; }
 .udsagn p { max-width: 600px; margin: 22px auto 0; font-size: 19px; line-height: 1.5; text-wrap: balance; }
 .udsagn .knapper { margin-top: 34px; }
+.udsagn.rolig h2 { font-size: clamp(28px, 3vw, 36px); line-height: 1.15; letter-spacing: -.02em; }
+.udsagn.rolig p { font-size: 17px; }
+.udsagn.rolig .knapper { margin-top: 26px; }
+.udsagn.rolig.kort-over { width: min(680px, calc(100% - 120px)); padding: 44px 40px; }
 
 /* Delt i fuld bredde: foto helt ud til kanten på den ene side, tekst på farvet flade på den anden */
 .fuld-delt { display: grid; grid-template-columns: 1fr 1fr; min-height: 620px; }
@@ -411,7 +418,7 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 /* Læse-scenen (/ai): følger rullet; linjen glider ned over kvitteringen, felterne markeres, app-kortet fyldes ud */
 .region.laes-region { padding: 0; }
 .laes { position: relative; height: 280vh; }
-.laes-scene { position: sticky; top: var(--nav); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); gap: 64px; align-items: center; height: calc(100vh - var(--nav)); width: min(1080px, calc(100% - 64px)); margin: 0 auto; }
+.laes-scene { position: sticky; top: var(--nav); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); gap: 64px; align-items: start; padding-top: 24px; box-sizing: border-box; height: calc(100vh - var(--nav)); width: min(1080px, calc(100% - 64px)); margin: 0 auto; }
 .laes-papir { position: relative; overflow: hidden; width: min(380px, 100%); aspect-ratio: 540 / 600; margin-left: auto; border-radius: 22px; box-shadow: 0 40px 80px -40px rgba(20,20,20,.55); }
 .laes-papir .ark { position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: 540 / 950; }
 .laes-papir .ark img { display: block; width: 100%; height: 100%; }
@@ -450,6 +457,8 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 .regner .fast { margin-top: 22px; font-size: 17px; line-height: 1.5; color: #2e2563; text-wrap: pretty; }
 .regner-region { position: relative; overflow: hidden; isolation: isolate; }
 .regner-region .regner { position: relative; z-index: 1; }
+.regner-region .side-top ~ .regner { margin-top: 64px; }
+.region.top.regner-region { padding-bottom: 104px; }
 .bilag-baggrund { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .bilag-baggrund i { position: absolute; width: var(--s, 64px); aspect-ratio: .7; border-radius: 5px; background: #fff no-repeat; background-image: linear-gradient(#cdc3ff 0 0), linear-gradient(#e7e4f5 0 0), linear-gradient(#e7e4f5 0 0), linear-gradient(#e7e4f5 0 0); background-size: 56% 7%, 70% 4%, 62% 4%, 40% 4%; background-position: 50% 16%, 50% 42%, 50% 56%, 50% 80%; box-shadow: 0 14px 22px -12px rgba(29,20,66,.5); transform: translate(-50%, -50%) rotate(var(--r)); animation: lander-bag .5s cubic-bezier(.3,1.4,.5,1) both; }
 @keyframes lander-bag { from { opacity: 0; transform: translate(-50%, calc(-50% - 44px)) rotate(var(--r)); } to { opacity: 1; transform: translate(-50%, -50%) rotate(var(--r)); } }
@@ -509,9 +518,9 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 /* Tekst til mus og til touch */
 .fin { display: none; }
 @media (pointer: coarse) { .mus { display: none; } .fin { display: inline; } }
-.foto-top { position: relative; overflow: hidden; isolation: isolate; }
-.top-baggrund { position: absolute; inset: 0; z-index: -1; -webkit-mask-image: linear-gradient(#000 55%, transparent 100%); mask-image: linear-gradient(#000 55%, transparent 100%); }
-.top-baggrund img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 55%; opacity: .32; mix-blend-mode: multiply; filter: saturate(.7); }
+.foto-top { position: relative; isolation: isolate; }
+.top-baggrund { position: absolute; inset: 0 0 -110% 0; z-index: -1; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(#000 40%, transparent 100%); mask-image: linear-gradient(#000 40%, transparent 100%); }
+.top-baggrund img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; opacity: .3; mix-blend-mode: multiply; filter: saturate(.7); }
 /* Spillet: en stiplet pil viser vejen fra filen over i Tallo, og filen giver et lille skub, indtil man rører den */
 .traek-pil { position: relative; order: 1; align-self: center; width: 100%; height: 2px; background: repeating-linear-gradient(90deg, var(--blaa) 0 8px, transparent 8px 14px); background-size: 28px 2px; animation: pil-flyd 1.2s linear infinite; transition: opacity .3s; }
 .traek-pil::after { content: ""; position: absolute; right: -2px; top: 50%; width: 10px; height: 10px; border-top: 2px solid var(--blaa); border-right: 2px solid var(--blaa); transform: translateY(-50%) rotate(45deg); }
@@ -559,7 +568,7 @@ html.stille .traek-pil { animation: none; }
   .regner-pris.nik { animation: none; }
   .flyt-vindue { padding: 20px 18px 22px; }
   .laes { height: 260vh; }
-  .laes-scene { grid-template-columns: minmax(0, 1fr); gap: 14px; align-content: center; width: calc(100% - 32px); }
+  .laes-scene { grid-template-columns: minmax(0, 1fr); gap: 14px; align-content: start; padding-top: 12px; width: calc(100% - 32px); }
   .laes-papir { width: min(230px, 60vw); margin: 0 auto; }
   .laes-tekst { display: none; }
   .laes-kort { padding: 4px 16px 14px; }
@@ -579,13 +588,18 @@ html.stille .traek-pil { animation: none; }
   .ts-chip { left: 50%; top: auto; bottom: -14px; transform: translate(-50%, 10px) scale(.94); font-size: 13px; padding: 6px 12px 6px 6px; }
   .ts-chip.vist { transform: translate(-50%, 0); }
   .region { padding: 88px 0; }
-  .region.top { padding: calc(var(--nav) + 40px) 0 80px; }
+  .region.top { padding: calc(var(--nav) + 40px) 0 16px; }
+  .region.top + .region { padding-top: 24px; }
+  .region.top + .region.laes-region { padding-top: 8px; }
+  .regner-region .side-top ~ .regner { margin-top: 40px; }
+  .region.top.regner-region { padding-bottom: 72px; }
   .fotoramme { width: calc(100% - 24px); aspect-ratio: 4 / 3; border-radius: 22px; }
   .side-top + .fotoramme { margin-top: 40px; }
   .fotoramme img { object-position: var(--fpm, 50% 50%); }
   .kort-over { border-radius: 22px; }
   .fotoramme + .kort-over { margin-top: -64px; }
   .regner.kort-over, .traek.kort-over, .udsagn.kort-over { width: calc(100% - 40px); padding: 28px 18px; }
+  .udsagn.rolig.kort-over { width: calc(100% - 40px); padding: 28px 18px; }
   .lp { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .gitter { grid-template-columns: minmax(0, 1fr); }
   .gk.hoej { grid-row: auto; }
