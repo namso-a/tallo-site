@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://app.cal.com; font-src 'self'; connect-src 'self' https://api.web3forms.com https://app.cal.com; frame-src https://app.cal.com https://cal.com; object-src 'none'; base-uri 'self'; form-action https://api.web3forms.com mailto:">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex, nofollow">
+<title>Sådan bruger vi AI: Tallo</title>
+<meta name="description" content="AI'en læser dine bilag i EU og bogfører det, der ligner det, den har set før. Alt usædvanligt ser et menneske på.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tallo.dk/ai/">
+<meta property="og:title" content="Sådan bruger vi AI: Tallo">
+<meta property="og:description" content="AI'en læser dine bilag i EU og bogfører det, der ligner det, den har set før. Alt usædvanligt ser et menneske på.">
+<meta property="og:image" content="https://tallo.dk/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="da_DK">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/geist.woff2" crossorigin>
+<link rel="stylesheet" href="/css/tallo.css">
+<script>document.documentElement.classList.add("zoom"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("stille");</script>
+</head>
+<body>
+<nav class="nav" id="nav" aria-label="Hovedmenu">
+  <a class="logo" href="/" aria-label="Tallo, til forsiden">tallo</a>
+  <ul class="nav-links">
+    <li><a href="/appen/">Appen</a></li>
+    <li><a href="/priser/">Priser</a></li>
+    <li><a href="/ai/" aria-current="page">AI</a></li>
+    <li><a href="/skift/">Skift</a></li>
+    <li><a href="/om-os/">Om os</a></li>
+  </ul>
+  <div class="nav-hoejre">
+    <a class="pille farve" href="/#kom">Skriv dig op</a>
+    <button class="menu-knap" id="menuKnap" type="button" aria-expanded="false" aria-controls="menuArk">Menu</button>
+  </div>
+</nav>
+<div class="menu-ark" id="menuArk" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="menu-top"><a class="logo" href="/">tallo</a><button class="menu-luk" type="button" aria-label="Luk menuen">×</button></div>
+  <ul>
+    <li><a href="/">Forsiden</a></li>
+    <li><a href="/appen/">Appen</a></li>
+    <li><a href="/priser/">Priser</a></li>
+    <li><a href="/ai/" aria-current="page">AI</a></li>
+    <li><a href="/skift/">Skift</a></li>
+    <li><a href="/om-os/">Om os</a></li>
+  </ul>
+  <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
+  <p class="lille">Eller skriv til os: <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
+</div>
+
+<main>
+  <section class="region lilla top" data-tone="#cdc3ff">
+    <div class="side-top">
+      <h1>Sådan bruger vi AI</h1>
+      <p class="ingress">AI'en bærer det tunge læs. En bogholder kvalitetssikrer det.</p>
+    </div>
+  </section>
+
+  <section class="region papir laes-region" data-tone="#f6f6f3">
+    <div class="laes" data-laes>
+      <div class="laes-scene">
+        <div class="laes-papir">
+          <div class="ark">
+            <img src="/billeder/ai-kvittering.webp" alt="Kvittering fra Bagergrossisten A/S på 1.500 kr. med 300 kr. i moms, 14. oktober 2026" width="540" height="950">
+            <span class="laes-felt" data-felt="fra" data-y="10" style="left:10%;top:7.9%;width:45%;height:4.4%"></span>
+            <span class="laes-felt" data-felt="varer" data-y="22" style="left:11%;top:18%;width:57%;height:15.6%"></span>
+            <span class="laes-felt" data-felt="beloeb" data-y="38" style="left:13.5%;top:35.8%;width:56%;height:4.8%"></span>
+            <span class="laes-felt" data-felt="moms" data-y="42" style="left:14%;top:39.8%;width:56%;height:4.4%"></span>
+            <span class="laes-felt" data-felt="dato" data-y="49" style="left:15%;top:47%;width:38%;height:4.4%"></span>
+            <span class="laes-linje" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div>
+          <div class="laes-tekst">
+            <h2>Den læser dine bilag</h2>
+            <p>Hvem der har sendt dem, beløb, moms og dato. Det sker i EU, og dine bilag forlader ikke EU.</p>
+          </div>
+          <div class="laes-kort" aria-live="polite">
+            <p class="lk-titel"><span>Ny kvittering</span><span class="laes-status"><span class="app-pille graa"><i class="snurre" aria-hidden="true"></i>Læser</span><span class="app-pille ok ok">✓ Bogført</span></span></p>
+          <div class="laes-raekke"><span>Fra</span><b>Bagergrossisten A/S</b><span class="app-pille ok">✓</span></div>
+          <div class="laes-raekke"><span>Varer</span><b>Mel, sukker, gær og smør</b><span class="app-pille ok">✓</span></div>
+          <div class="laes-raekke"><span>Beløb</span><b><span data-beloeb>0,00 kr.</span></b><span class="app-pille ok">✓</span></div>
+          <div class="laes-raekke"><span>Moms</span><b>300,00 kr.</b><span class="app-pille ok">✓</span></div>
+          <div class="laes-raekke"><span>Dato</span><b>14. okt. 2026</b><span class="app-pille ok">✓</span></div>
+            <p class="laes-forslag"><b>✦ Forslag: Varer og råvarer, 25 % moms</b>Bagergrossisten A/S er bogført som varekøb i alle tidligere bilag.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="region papir" data-tone="#f6f6f3">
+    <div class="indre bogholder-blok" data-afslor>
+      <div class="bb-tekst">
+        <h2>En bogholder kvalitetssikrer</h2>
+        <p class="ingress">AI'en er hurtig og god til det, den har set før, men den kan tage fejl. Derfor kvalitetssikrer en bogholder den, også momsen, før den indberettes. Gør du det selv med AI, godkender du selv hvert forslag.</p>
+        <div class="knapper">
+          <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
+          <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
+        </div>
+      </div>
+      <figure class="bb-person">
+        <img src="/billeder/othman.webp" alt="Othman Ajjawi" width="400" height="400" loading="lazy">
+        <figcaption><b>Othman Ajjawi</b><span>Din bogholder</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="region papir" data-tone="#f6f6f3">
+    <div class="indre">
+      <div class="region-hoved midt" data-afslor>
+        <h2>Spørg din egen <img class="ai-maerke" src="/billeder/claude.svg" alt="">Claude eller <img class="ai-maerke" src="/billeder/chatgpt.svg" alt="">ChatGPT <span class="snart">Kommer senere</span></h2>
+        <p>Det er ikke klar endnu. Når det er, kan du forbinde din egen AI. Den vil kunne læse dine tal og lave fakturaudkast, som du selv sender. Den vil aldrig kunne bogføre, indberette moms eller slette noget, og du vælger selv, om du vil forbinde den.</p>
+      </div>
+      <div class="ai-chat" data-ai-chat>
+        <div class="ac-top">
+          <span class="ac-maerker"><img src="/billeder/claude.svg" alt=""><img src="/billeder/chatgpt.svg" alt=""></span>
+          <span><b>Din egen AI</b><small>Forbundet til Tallo · kan læse dine tal</small></span>
+          <span class="snart">Kommer senere</span>
+        </div>
+        <div class="ac-traad">
+          <div class="ac-besked du"><p>Hvad er mit overskud i år?</p></div>
+          <div class="ac-besked ai"><span class="ac-ikon" aria-hidden="true">✦</span><div>
+            <p class="ac-vaerktoej"><i class="snurre" aria-hidden="true"></i><span class="ok" aria-hidden="true">✓</span>Læser dine tal i Tallo</p>
+            <div class="ac-svar"><p>Dit overskud i år er <b>376.368 kr.</b> Det er 8 % mere end på samme tid sidste år.</p></div>
+          </div></div>
+          <div class="ac-besked du"><p>Lav en faktura til Café Rosengården på 12 kager.</p></div>
+          <div class="ac-besked ai"><span class="ac-ikon" aria-hidden="true">✦</span><div>
+            <p class="ac-vaerktoej"><i class="snurre" aria-hidden="true"></i><span class="ok" aria-hidden="true">✓</span>Laver et udkast i Tallo</p>
+            <div class="ac-svar"><p>Udkastet ligger klar. Du sender det selv, når du har set det.</p>
+              <div class="ac-kort"><span class="app-pille graa">Udkast</span><b>Faktura til Café Rosengården</b><small>12 kager · 1.440,00 kr. plus moms</small><span class="ac-aabn">Åbn i Tallo →</span></div>
+            </div>
+          </div></div>
+        </div>
+        <div class="ac-felt" aria-hidden="true"><span>Spørg om dine tal …</span><i>↑</i></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="fod">
+  <div class="fod-indre">
+    <div>
+      <a class="logo" href="/">tallo</a>
+      <p>Bogføring for små virksomheder.</p>
+    </div>
+    <div>
+      <span class="titel">Tallo</span>
+      <ul>
+        <li><a href="/appen/">Appen</a></li>
+        <li><a href="/priser/">Priser</a></li>
+        <li><a href="/ai/">Sådan bruger vi AI</a></li>
+        <li><a href="/skift/">Skift til Tallo</a></li>
+        <li><a href="/om-os/">Om os</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="titel">Kontakt</span>
+      <ul>
+        <li><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></li>
+        <li><span>CVR 46440986</span></li>
+        <li><a href="/privatliv/">Privatlivspolitik</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="kaempe" aria-hidden="true">tallo</div>
+</footer>
+<script src="/js/tallo.js"></script>
+<script src="/js/mail.js"></script>
+</body>
+</html>

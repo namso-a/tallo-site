@@ -3,49 +3,91 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://app.cal.com; font-src 'self'; connect-src 'self' https://api.web3forms.com https://app.cal.com; frame-src https://app.cal.com https://cal.com; object-src 'none'; base-uri 'self'; form-action https://api.web3forms.com mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex, nofollow">
 <title>Privatlivspolitik: Tallo</title>
-<style>@font-face{font-family:"Geist";src:url("../fonts/geist.woff2") format("woff2");font-weight:100 900;font-display:swap}@font-face{font-family:"Geist Mono";src:url("../fonts/geist-mono.woff2") format("woff2");font-weight:100 900;font-display:swap}</style>
-<link rel="icon" type="image/svg+xml" href="../favicon.svg">
-
+<meta name="description" content="Sådan behandler Tallo oplysninger om dig.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tallo.dk/privatliv/">
+<meta property="og:title" content="Privatlivspolitik: Tallo">
+<meta property="og:description" content="Sådan behandler Tallo oplysninger om dig.">
+<meta property="og:image" content="https://tallo.dk/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="da_DK">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/geist.woff2" crossorigin>
+<link rel="stylesheet" href="/css/tallo.css">
+<script>document.documentElement.classList.add("zoom"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("stille");</script>
 <style>
-  :root { --lys: #fff; --flade: #f6f6f3; --blaek: #141414; --daempet: #5f5f5b; --lineal: #e2e2dd; --blaa: #4b3aa6; --blaa-svag: #f0eef8; --nat: #141414; --roed: #d1341c; --roed-svag: #ffe9e4; }
-  *, *::before, *::after { box-sizing: border-box; }
-  body { margin: 0; font-family: "Geist", system-ui, sans-serif; color: var(--blaek); background: var(--lys); -webkit-font-smoothing: antialiased; line-height: 1.55; }
-  a { color: var(--blaa); }
-  nav { position: sticky; top: 0; background: rgba(255,255,255,.9); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--lineal); z-index: 5; }
-  nav .skal { display: flex; justify-content: space-between; align-items: center; height: 64px; }
-  nav .logo { font-weight: 700; letter-spacing: -.03em; font-size: 20px; color: var(--blaek); text-decoration: none; }
-  nav .tilbage { font-size: 14px; color: var(--daempet); text-decoration: none; }
-  nav .tilbage:hover { color: var(--blaek); }
-  .skal { width: min(1160px, calc(100% - 64px)); margin-inline: auto; }
-  .udkast { background: var(--roed-svag); color: var(--roed); font-family: "Geist Mono", monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding: 10px 0; }
-  main { width: min(720px, calc(100% - 64px)); margin: 56px auto 96px; }
-  .mono { font-family: "Geist Mono", monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--daempet); }
-  h1 { font-size: clamp(32px, 4vw, 44px); letter-spacing: -.025em; line-height: 1.08; margin: 12px 0 16px; }
-  .ind { font-size: 18px; color: var(--daempet); margin: 0 0 40px; }
-  h2 { font-size: 22px; letter-spacing: -.02em; margin: 40px 0 10px; }
-  p, li { font-size: 16.5px; }
-  p { margin: 0 0 14px; }
-  ul, ol { padding-left: 22px; margin: 0 0 14px; }
-  li { margin-bottom: 6px; }
-  table { width: 100%; border-collapse: collapse; margin: 8px 0 18px; font-size: 15px; }
-  th, td { text-align: left; padding: 10px 8px 10px 0; border-bottom: 1px solid var(--lineal); vertical-align: top; }
-  th { font-weight: 500; color: var(--daempet); font-size: 13px; }
-  mark.p { background: transparent; color: var(--daempet); border: 1px dashed var(--daempet); border-radius: 6px; padding: 0 6px; font-family: "Geist Mono", monospace; font-size: 12px; letter-spacing: .04em; white-space: nowrap; }
-  .bund { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--lineal); color: var(--daempet); font-size: 14px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  .note { background: var(--flade); border-radius: 12px; padding: 16px 18px; font-size: 15px; color: var(--daempet); margin: 0 0 24px; }
-  .note ul { margin: 6px 0 0; } .note li { font-size: 15px; margin-bottom: 2px; }
-  @media (max-width: 900px) { mark.p { white-space: normal; } table { display: block; overflow-x: auto; } }
+  /* Privatlivspolitikkens indhold (version 0.3, udkast); kun rammen er ny */
+  .juridisk { width: min(720px, calc(100% - 40px)); margin: calc(var(--nav) + 56px) auto 96px; }
+  .juridisk .udkast { margin: 0 0 28px; padding: 12px 16px; border-radius: 12px; background: #ffe9e4; color: #b42d17; font-size: 14px; font-weight: 500; }
+  .juridisk h1 { margin: 8px 0 16px; font-size: clamp(32px, 4vw, 44px); }
+  .juridisk .ind { margin: 0 0 40px; font-size: 18px; color: var(--daempet); }
+  .juridisk h2 { margin: 40px 0 10px; font-size: 22px; font-weight: 560; letter-spacing: -.02em; }
+  .juridisk p, .juridisk li { font-size: 16.5px; line-height: 1.6; }
+  .juridisk p { margin: 0 0 14px; }
+  .juridisk ul, .juridisk ol { margin: 0 0 14px; padding-left: 22px; }
+  .juridisk li { margin-bottom: 6px; }
+  .juridisk a { color: var(--blaa); text-decoration: underline; text-underline-offset: 3px; }
+  .juridisk .mono { font-size: 13px; font-weight: 500; color: var(--daempet); }
+  .juridisk table { width: 100%; margin: 8px 0 18px; border-collapse: collapse; font-size: 15px; }
+  .juridisk th, .juridisk td { padding: 10px 8px 10px 0; border-bottom: 1px solid var(--lineal); text-align: left; vertical-align: top; }
+  .juridisk th { font-size: 13px; font-weight: 500; color: var(--daempet); }
+  .juridisk mark.p { padding: 0 6px; border: 1px dashed var(--daempet); border-radius: 6px; background: transparent; color: var(--daempet); font-size: 12.5px; white-space: nowrap; }
+  .juridisk .bund { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--lineal); color: var(--daempet); font-size: 14px; }
+  .juridisk .note { margin: 0 0 24px; padding: 16px 18px; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal); color: var(--daempet); font-size: 15px; }
+  .juridisk .note ul { margin: 6px 0 0; } .juridisk .note li { margin-bottom: 2px; font-size: 15px; }
+  /* Mobil: hver række bliver et lille kort; kolonnens navn (data-label, sat af js/tallo.js) står over værdien */
+  @media (max-width: 699px) {
+    .juridisk table, .juridisk tbody, .juridisk tr, .juridisk td { display: block; }
+    .juridisk thead, .juridisk tr:has(> th) { display: none; }
+    .juridisk tr { padding: 12px 0; border-bottom: 1px solid var(--lineal); }
+    .juridisk td { padding: 2px 0; border: 0; }
+    .juridisk td:first-child { font-weight: 560; }
+    .juridisk td[data-label]:not(:first-child)::before { content: attr(data-label); display: block; margin-top: 6px; font-size: 12.5px; font-weight: 500; color: var(--daempet); }
+  }
+  @media (max-width: 900px) { .juridisk mark.p { white-space: normal; } .juridisk table { display: block; overflow-x: auto; } }
 </style>
 </head>
 <body>
-<nav><div class="skal"><a class="logo" href="../">tallo</a><a class="tilbage" href="../">Tilbage til forsiden</a></div></nav>
-<div class="udkast"><div class="skal">Udkast, version 0.3. Gennemgået af Mohammed Chahrour, rettelser indarbejdet, endelig godkendelse udestår.</div></div>
+<nav class="nav" id="nav" aria-label="Hovedmenu">
+  <a class="logo" href="/" aria-label="Tallo, til forsiden">tallo</a>
+  <ul class="nav-links">
+    <li><a href="/appen/">Appen</a></li>
+    <li><a href="/priser/">Priser</a></li>
+    <li><a href="/ai/">AI</a></li>
+    <li><a href="/skift/">Skift</a></li>
+    <li><a href="/om-os/">Om os</a></li>
+  </ul>
+  <div class="nav-hoejre">
+    <a class="pille farve" href="/#kom">Skriv dig op</a>
+    <button class="menu-knap" id="menuKnap" type="button" aria-expanded="false" aria-controls="menuArk">Menu</button>
+  </div>
+</nav>
+<div class="menu-ark" id="menuArk" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="menu-top"><a class="logo" href="/">tallo</a><button class="menu-luk" type="button" aria-label="Luk menuen">×</button></div>
+  <ul>
+    <li><a href="/">Forsiden</a></li>
+    <li><a href="/appen/">Appen</a></li>
+    <li><a href="/priser/">Priser</a></li>
+    <li><a href="/ai/">AI</a></li>
+    <li><a href="/skift/">Skift</a></li>
+    <li><a href="/om-os/">Om os</a></li>
+  </ul>
+  <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
+  <p class="lille">Eller skriv til os: <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
+</div>
 
 <main>
+  <div class="juridisk">
+<!-- indhold:start -->
+<p class="udkast">Udkast, version 0.3. Gennemgået af Mohammed Chahrour, rettelser indarbejdet, endelig godkendelse udestår.</p>
+
+
   <span class="mono">Privatlivspolitik</span>
   <h1>Sådan behandler vi oplysninger om dig</h1>
   <p class="ind">Kort version: vi bruger dine oplysninger til at svare dig og til at bogføre for dig. Vi sælger dem aldrig, og hjemmesiden sætter selv ingen cookies.</p>
@@ -114,7 +156,39 @@
   <p>Vi opdaterer denne politik, når vores leverandører eller behandlinger ændrer sig. Dato og version står nederst på siden.</p>
 
   <div class="bund"><span>Version 0.3, udkast</span><span>2. oktober 2026</span></div>
+
+<!-- indhold:slut -->
+</div>
 </main>
-<script src="../js/mail.js"></script>
+
+<footer class="fod">
+  <div class="fod-indre">
+    <div>
+      <a class="logo" href="/">tallo</a>
+      <p>Bogføring for små virksomheder.</p>
+    </div>
+    <div>
+      <span class="titel">Tallo</span>
+      <ul>
+        <li><a href="/appen/">Appen</a></li>
+        <li><a href="/priser/">Priser</a></li>
+        <li><a href="/ai/">Sådan bruger vi AI</a></li>
+        <li><a href="/skift/">Skift til Tallo</a></li>
+        <li><a href="/om-os/">Om os</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="titel">Kontakt</span>
+      <ul>
+        <li><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></li>
+        <li><span>CVR 46440986</span></li>
+        <li><a href="/privatliv/">Privatlivspolitik</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="kaempe" aria-hidden="true">tallo</div>
+</footer>
+<script src="/js/tallo.js"></script>
+<script src="/js/mail.js"></script>
 </body>
 </html>
