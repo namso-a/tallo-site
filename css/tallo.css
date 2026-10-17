@@ -37,6 +37,8 @@ h1 { font-size: 49px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em
 /* Menu: gennemsigtig over forsidens foto, hvid flade når man scroller og altid på undersiderne */
 .nav { position: fixed; inset: 0 0 auto; z-index: 20; height: var(--nav); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; transition: background .25s, box-shadow .25s; }
 .nav.fast { background: rgba(255,255,255,.92); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--lineal); }
+/* På undersiderne har menuen sidens farve (følger rullet som baggrunden), men ligger stadig hævet med kant (Othman 17. okt) */
+html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0 rgba(20,20,20,.09), 0 12px 28px -20px rgba(20,20,20,.4); }
 .logo { font-weight: 700; font-size: 22px; letter-spacing: -.03em; }
 .nav-links { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 34px; list-style: none; margin: 0; padding: 0; font-size: 16px; font-weight: 500; }
 .nav-links a { opacity: .85; transition: opacity .15s; }
@@ -226,8 +228,10 @@ h1 { font-size: 49px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em
 .faq { width: min(760px, calc(100% - 48px)); margin: 0 auto; }
 .faq h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; text-align: center; }
 .faq .spoergsmaal { width: auto; margin: 32px 0 0; }
-.svarer { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--blaa); }
-.svarer img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
+/* Portrættet af den, der svarer, står på række med svaret (Othman 17. okt 2026) */
+.svar:has(.svarer) { display: flex; align-items: flex-start; gap: 14px; }
+.spoergsmaal details p.svarer { flex: none; margin: 0; padding: 0; }
+.svarer img { display: block; width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
 .faq-forside { padding: 120px 0 0; }
 .spoergsmaal .svar { overflow: hidden; }
 .spoergsmaal details p { padding: 0 48px 22px 0; font-size: 17px; line-height: 1.55; color: var(--daempet); }
@@ -538,7 +542,6 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 .bogholder-blok { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 72px; align-items: center; }
 .bb-tekst h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; }
 .bb-tekst .ingress { margin: 16px 0 0; text-align: left; }
-.bb-moms { display: flex; align-items: center; gap: 10px; margin-top: 22px; font-size: 17px; font-weight: 560; }
 .bb-tekst .knapper { justify-content: flex-start; }
 .bb-person { margin: 0; justify-self: center; width: min(360px, 100%); }
 .bb-person img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 24px; background: #eceae4; transform: rotate(2deg); box-shadow: 0 40px 70px -40px rgba(20,20,20,.5); }

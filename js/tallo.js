@@ -184,7 +184,8 @@
         const hoejre = W - b.r > 150 ? [b.r + (W - b.r) / 2, y - 20] : [b.r - 70, b.t - 30];
         const aftale = [(a.r + b.l) / 2, y];  // mellem billederne, på linjen
         // Linjen går gennem alle tre mærker (Catmull-Rom omsat til kubiske Bézier-kurver), så de sidder på den
-        const P = [[-20, y + 40], venstre, aftale, hoejre, [W + 20, y + 30]];
+        // Linjen slutter med at gå op ad (Othman 17. okt)
+        const P = [[-20, y + 40], venstre, aftale, hoejre, [W + 20, b.t - 90]];
         let d = `M ${P[0][0]} ${P[0][1]}`;
         for (let k = 0; k < P.length - 1; k++) {
           const p0 = P[Math.max(0, k - 1)], p1 = P[k], p2 = P[k + 1], p3 = P[Math.min(P.length - 1, k + 2)];
