@@ -624,7 +624,7 @@ def om_os():
 # ---------------------------------------------------------------------------------------------------- /privatliv
 JURIDISK_CSS = """
 <style>
-  /* Privatlivspolitikkens indhold (version 0.3, udkast); kun rammen er ny */
+  /* Privatlivspolitikken (forenklet 17. okt 2026); indholdet står mellem indhold-markørerne i siden */
   .juridisk { width: min(720px, calc(100% - 40px)); margin: calc(var(--nav) + 56px) auto 96px; }
   .juridisk .udkast { margin: 0 0 28px; padding: 12px 16px; border-radius: 12px; background: #ffe9e4; color: #b42d17; font-size: 14px; font-weight: 500; }
   .juridisk h1 { margin: 8px 0 16px; font-size: clamp(32px, 4vw, 44px); }
