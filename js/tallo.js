@@ -278,7 +278,7 @@
     const skyder = rg.querySelector(".skyder"), antal = rg.querySelector("[data-antal]");
     const flade = rg.closest(".region") || rg.parentElement, lag = flade.querySelector(".bilag-baggrund");
     const kort = rg.querySelector(".regner-pris"), pris = rg.querySelector("[data-pris]"), vaelg = rg.querySelector(".vaelger");
-    const PRISER = { selv: 349, bogholder: 799 };
+    const PRISER = { selv: 500, bogholder: 1000 };
     const tal = (i) => { const x = Math.sin(i * 12.9898) * 43758.5453; return x - Math.floor(x); };  // fast "tilfældighed"
     let pladser = [], vist = 0, halvtreds = -1;
     // Faste pladser i procent af fladen; midten af et papir må ikke ligge langt inde bag kortet
@@ -316,7 +316,7 @@
       const b = e.target.closest("button"); if (!b) return;
       vaelg.dataset.valgt = b.dataset.pakke;
       vaelg.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-      pris.textContent = PRISER[b.dataset.pakke]; nik();
+      pris.textContent = PRISER[b.dataset.pakke].toLocaleString("da-DK"); nik();
     });
     // Når bredden ændrer sig, lægges papirerne om (uden at lande igen)
     let bredde = innerWidth;
@@ -435,10 +435,10 @@
   const hint = document.getElementById("demoHint");
   const pPris = document.getElementById("pPris");
   const PAKKER = {
-    selv: { navn: "Gør det selv med AI", hvem: "Du trykker godkend. Appen gør resten.", pris: 349 },
-    bogholder: { navn: "Med bogholder", hvem: "Vi bogfører. Du bogfører aldrig selv.", pris: 799 },
+    selv: { navn: "Gør det selv med AI", hvem: "Du trykker godkend. Appen gør resten.", pris: 500 },
+    bogholder: { navn: "Med bogholder", hvem: "Vi bogfører. Du bogfører aldrig selv.", pris: 1000 },
   };
-  let pakke = "bogholder", demoTimer = 0, prisNu = 799, prisRaf = 0;
+  let pakke = "bogholder", demoTimer = 0, prisNu = 1000, prisRaf = 0;
   function visTilstand(trin) {
     demo.dataset.trin = trin;
     const noegle = `${pakke} ${trin}`;
@@ -451,7 +451,7 @@
     const trin = (nu) => {
       const t = Math.min(1, (nu - t0) / 520), e = 1 - Math.pow(1 - t, 3);
       prisNu = Math.round(fra + (til - fra) * e);
-      pPris.textContent = prisNu;
+      pPris.textContent = prisNu.toLocaleString("da-DK");
       if (t < 1) prisRaf = requestAnimationFrame(trin);
     };
     prisRaf = requestAnimationFrame(trin);

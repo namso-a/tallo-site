@@ -95,6 +95,7 @@ def fod():
         <li><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></li>
         <li><span>CVR 46440986</span></li>
         <li><a href="/privatliv/">Privatlivspolitik</a></li>
+        <li><a href="/handelsbetingelser/">Handelsbetingelser</a></li>
       </ul>
     </div>
   </div>
@@ -150,7 +151,7 @@ def pakkeblok(overskrift=True, taet=False):
 
         <div class="pakke">
           <h3 id="pNavn">Med bogholder</h3>
-          <p class="pris"><b><span id="pPris">799</span> kr.</b><span>om måneden plus moms</span></p>
+          <p class="pris"><b><span id="pPris">1.000</span> kr.</b><span>om måneden plus moms</span></p>
           <div class="lister">
             <ul data-pakke="selv" hidden>
               <li>Regninger og fakturaer kommer ind af sig selv</li>
@@ -304,7 +305,7 @@ def priser():
     raekker = "\n".join(f'          <tr><th scope="row">{a}</th><td>{b}</td><td class="valgt">{c}</td></tr>' for a, b, c in SAMMENLIGN)
     top = """<div class="side-top">
       <h1>Hvad det koster</h1>
-      <p class="ingress pris-ingress"><span>Gør det selv med AI til <b>349 kr.</b></span> eller <span>med bogholder til <b>799 kr.</b></span> om måneden. Fast pris, ingen binding, plus moms.</p>
+      <p class="ingress pris-ingress"><span>Gør det selv med AI til <b>500 kr.</b></span> eller <span>med bogholder til <b>1.000 kr.</b></span> om måneden. Fast pris, ingen binding, plus moms.</p>
     </div>"""
     regner = """<div class="bilag-baggrund" aria-hidden="true"></div>
     <div class="regner kort-over" data-regner>
@@ -321,7 +322,7 @@ def priser():
             <button type="button" data-pakke="bogholder" aria-pressed="true" tabindex="-1">Med bogholder</button>
             <span class="glider"></span>
           </div>
-          <p class="belob"><span data-pris>799</span><small>kr.</small></p>
+          <p class="belob"><span data-pris>1.000</span><small>kr.</small></p>
           <p class="fast-linje">om måneden, plus moms</p>
           <span class="app-pille ok samme">Samme pris</span>
         </div>
@@ -332,7 +333,7 @@ def priser():
       <div class="tabel-ramme" data-afslor>
         <table class="sammenlign">
           <thead>
-            <tr><th scope="col"><span class="sr">Hvad er med</span></th><th scope="col">Gør det selv med AI<small>349 kr. om måneden</small></th><th scope="col" class="valgt">Med bogholder<small>799 kr. om måneden</small></th></tr>
+            <tr><th scope="col"><span class="sr">Hvad er med</span></th><th scope="col">Gør det selv med AI<small>500 kr. om måneden</small></th><th scope="col" class="valgt">Med bogholder<small>1.000 kr. om måneden</small></th></tr>
           </thead>
           <tbody>
 {raekker}
@@ -350,7 +351,7 @@ def priser():
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
       </div>
     </div>"""
-    return side("/priser/", "Priser: Tallo", "To pakker, fast pris, ingen binding: Gør det selv med AI til 349 kr. eller Med bogholder til 799 kr. om måneden.",
+    return side("/priser/", "Priser: Tallo", "To pakker, fast pris, ingen binding: Gør det selv med AI til 500 kr. eller Med bogholder til 1.000 kr. om måneden.",
                 "\n\n  ".join([region("lilla top regner-region", top + "\n    " + regner), region("papir", tabel),
                                 region("papir", spoerg), region("papir", slut)]))
 
@@ -673,6 +674,68 @@ def privatliv():
                 f'<div class="juridisk">\n<!-- indhold:start -->{indhold}<!-- indhold:slut -->\n</div>', JURIDISK_CSS)
 
 
+# ---------------------------------------------------------------------------------------------------- /handelsbetingelser
+HANDELSBETINGELSER = """
+  <p class="mono">Handelsbetingelser</p>
+  <h1>Betingelser for at være kunde hos Tallo</h1>
+  <p class="ind">Kort fortalt: fast pris om måneden, ingen binding, og du betaler først, når vi åbner. Her står det, du skal vide.</p>
+
+  <h2>Parterne og aftalen</h2>
+  <p>Aftalen er mellem din virksomhed og Tallo v/ Othman Ajjawi, CVR 46440986. Når du skriver dig op på hjemmesiden, opretter du en konto, men du har ikke købt noget endnu. Vi åbner, når vores regnskabsprogram er registreret hos Erhvervsstyrelsen. Aftalen begynder, når vi har åbnet, du har bekræftet, at du vil i gang, og vi har gennemført kundekendskab efter hvidvaskloven.</p>
+
+  <h2>Pakkerne</h2>
+  <ul>
+    <li><b>Gør det selv med AI, 500 kr. om måneden:</b> regnskabsprogrammet og appen. Regninger og fakturaer kommer ind af sig selv, AI'en foreslår, hvor de skal hen, og du godkender selv. Momsen regnes ud, og du indberetter den selv.</li>
+    <li><b>Med bogholder, 1.000 kr. om måneden:</b> alt fra Gør det selv med AI, og vi bogfører for dig, uanset hvor mange bilag du har. AI'en bærer det tunge læs, og en bogholder kvalitetssikrer bogføringen. Vi indberetter momsen for dig, og et menneske godkender den hver gang. Du får overblik over salg, udgifter og overskud hver måned.</li>
+    <li><b>Tilkøb:</b> løn, årsregnskab, selvangivelse og årsrapport (ApS). Prisen får du, før du siger ja.</li>
+  </ul>
+  <p>Alle priser er plus moms og faste. De afhænger ikke af, hvor mange bilag du har. Du kan skifte pakke fra måned til måned.</p>
+
+  <h2>Betaling</h2>
+  <p>Du betaler månedsvis forud med 8 dages betalingsfrist. Betaler du for sent, kan vi holde pause med arbejdet, indtil betalingen er kommet, og opkræve rente efter renteloven. Vi kan regulere prisen én gang om året med 30 dages varsel.</p>
+
+  <h2>Det, du skal gøre</h2>
+  <ul>
+    <li>Koble din bank til med dit eget MitID og forny samtykket, når banken beder om det. Forbindelsen kan kun læse og kan ikke flytte penge. Vi bruger aldrig dit MitID.</li>
+    <li>Sende de bilag, der ikke kommer ind af sig selv, senest den 5. i måneden efter.</li>
+    <li>Svare på vores spørgsmål om bilag, vi ikke kan placere, inden for rimelig tid.</li>
+    <li>Give os de oplysninger, hvidvaskloven kræver: legitimation af dig og virksomhedens ejere, og hvad virksomheden laver. Uden dem må vi ikke begynde.</li>
+    <li>Med bogholder: give os adgang til Skattestyrelsens TastSelv, så vi kan indberette momsen.</li>
+  </ul>
+
+  <h2>Det, der ikke er med</h2>
+  <ul>
+    <li>Revision og erklæringer. Vi er bogholdere, ikke godkendte revisorer. Har din virksomhed pligt til revision, skal du selv vælge og betale en godkendt revisor. Vi leverer gerne grundlaget.</li>
+    <li>Juridisk rådgivning og skatterådgivning ud over det, bogføringen kræver.</li>
+    <li>Oprydning i bogføring fra før aftalen. Det kan vi tilbyde for sig.</li>
+  </ul>
+
+  <h2>Ansvar</h2>
+  <p>Vi retter fejl, vi selv har begået, uden beregning. Vores samlede ansvar er begrænset til det, du har betalt i de seneste tre måneder, og vi hæfter ikke for indirekte tab som driftstab eller tabt fortjeneste. Vi hæfter heller ikke for fejl i systemer, vi ikke ejer, fx banker, betalingsudbydere og myndighedernes systemer, eller for forhold uden for vores kontrol. Begrænsningerne gælder ikke ved forsæt eller grov uagtsomhed.</p>
+  <p>Sig til skriftligt, så snart du opdager en fejl, og senest tre måneder efter. Med Gør det selv med AI godkender og indberetter du selv og står selv inde for det. Efter loven er det altid din virksomhed, der har pligt til at bogføre rigtigt; vi udfører arbejdet, men pligten bliver hos dig.</p>
+
+  <h2>Fortrolighed og data</h2>
+  <p>Alt, vi ser i din virksomhed, er fortroligt, også når aftalen er slut. Dine data ligger i EU. Behandlingen af personoplysninger står i databehandleraftalen, som du får, før vi begynder, og i <a href="/privatliv/">privatlivspolitikken</a>.</p>
+
+  <h2>Opsigelse</h2>
+  <p>Der er ingen binding. Begge parter kan opsige aftalen til udgangen af en måned. Kan vi ikke gennemføre kundekendskab efter hvidvaskloven, kan vi opsige med det samme. Har du betalt for en periode, vi ikke når at levere, får du pengene tilbage.</p>
+  <p>Når aftalen slutter, får du hele din bogføring med bilag i standardformatet SAF-T, så en anden kan tage over. Loven kræver, at bogføringen gemmes i fem år; det gør vi for dig, og du kan få en kopi, når som helst i de fem år.</p>
+
+  <h2>Ændringer og tvister</h2>
+  <p>Vi kan ændre betingelserne med 30 dages varsel på mail. Er du uenig, kan du opsige aftalen til den dag, ændringen træder i kraft. Aftalen følger dansk ret. Kan vi ikke løse en uenighed ved at tale sammen, afgøres den ved Retten i Aarhus.</p>
+
+  <div class="bund"><span>Senest opdateret 17. oktober 2026</span><span>Tallo · CVR 46440986</span></div>
+"""
+
+
+def handelsbetingelser():
+    """Handelsbetingelser (17. okt 2026): kort udgave af vilkår 0.4 (system/design/vilkaar), opdateret til de to pakker
+    (500 og 1.000 kr.), AI-bogholderen og åbningen ved registreringen."""
+    return side("/handelsbetingelser/", "Handelsbetingelser: Tallo",
+                "Fast pris om måneden, ingen binding, og du betaler først, når vi åbner. Betingelserne for at være kunde hos Tallo.",
+                f'<div class="juridisk">{HANDELSBETINGELSER}</div>', JURIDISK_CSS)
+
+
 # ---------------------------------------------------------------------------------------------------- forsiden
 def erstat(s, navn, nyt):
     moenster = re.compile(rf"(<!-- {navn}:start -->)(.*?)(<!-- {navn}:slut -->)", re.S)
@@ -684,7 +747,7 @@ def forside():
     fil = ROD / "index.html"
     s = fil.read_text(encoding="utf-8")
     s = erstat(s, "hoved", hoved("Tallo: aldrig mere bogføring",
-                                 "Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 349 kr. om måneden.", "/"))
+                                 "Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 500 kr. om måneden.", "/"))
     s = erstat(s, "menu", menu("/"))
     s = erstat(s, "pakker", "  " + pakkeblok())
     s = erstat(s, "faq", '  <section class="faq-forside" id="faq">\n    ' + faq(FAQ_FORSIDE) + "\n  </section>")
@@ -693,7 +756,7 @@ def forside():
 
 
 if __name__ == "__main__":
-    for navn, html in [("priser", priser()), ("appen", appen()), ("ai", ai()), ("skift", skift()), ("om-os", om_os()), ("privatliv", privatliv())]:
+    for navn, html in [("priser", priser()), ("appen", appen()), ("ai", ai()), ("skift", skift()), ("om-os", om_os()), ("privatliv", privatliv()), ("handelsbetingelser", handelsbetingelser())]:
         (ROD / navn).mkdir(exist_ok=True)
         (ROD / navn / "index.html").write_text(html, encoding="utf-8")
         print("skrevet", navn)
