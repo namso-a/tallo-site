@@ -4,6 +4,13 @@
   const html = document.documentElement;
   const roligt = html.classList.contains("stille");
 
+  // Skrivetilstand til sprogrettelser: ?ret tænder den for fanen; ellers hentes intet ekstra (js/ret.js)
+  if (/[?&]ret(=|&|$)/.test(location.search)) sessionStorage.setItem("tallo-ret", "1");
+  if (sessionStorage.getItem("tallo-ret")) {
+    const s = document.createElement("script"); s.src = "/js/ret.js"; s.defer = true;
+    addEventListener("load", () => document.head.appendChild(s));
+  }
+
   // Menuen: gennemsigtig over forsidens foto, hvid flade når man scroller og altid på undersiderne
   const nav = document.getElementById("nav");
   const forside = !!document.getElementById("rejse");
@@ -182,13 +189,21 @@
       for (let i = 0; i < 18; i++) {
         const e = ny("d-papir"), b = placer(e, [tekst], brugt, i + 70, .05); if (!b) continue;
         const k = i % 3, n = papirer.filter((p) => p.k === k).length;
+        // Startpladsen sættes uden overgang; ellers glider papiret først derhen og vender midt i bevægelsen
+        e.style.transition = "none";
         e.style.transform = `translate(${b.l}px, ${b.t}px) rotate(${(tal(i + 80) - .5) * 50}deg)`;
-        e.style.setProperty("--d", papirer.length * .05 + "s");
+        e.style.setProperty("--d", papirer.length * .08 + "s");
         papirer.push({ e, k, slut: `translate(${STAK[k][0] - 15 + (tal(i) - .5) * 6}px, ${STAK[k][1] - 22 - n * 4}px) rotate(${(tal(i + 5) - .5) * 8}deg)` });
       }
-      const sorter = () => { papirer.forEach((p) => { p.e.style.transform = p.slut; }); navne.forEach((n) => n.classList.add("vist")); };
-      if (roligt) sorter();
-      else { void lag.offsetWidth; setTimeout(sorter, 400); }
+      void lag.offsetWidth;
+      const sorter = () => {
+        papirer.forEach((p) => { p.e.style.transition = ""; });
+        void lag.offsetWidth;
+        papirer.forEach((p) => { p.e.style.transform = p.slut; });
+        // Navnene kommer, når det sidste papir er landet
+        setTimeout(() => navne.forEach((n) => n.classList.add("vist")), roligt ? 0 : 2400 + papirer.length * 80);
+      };
+      if (roligt) sorter(); else setTimeout(sorter, 600);
     }
 
     if (v === "linje") {
@@ -199,11 +214,19 @@
       let MAERKER = [];
       if (!mobil) {
         const a = kort[0], b = kort[1], y = (a.t + a.b) / 2;
-        sti.setAttribute("d", `M -20 ${y + 40} C ${W * .2} ${y - 60}, ${W * .35} ${y + 80}, ${(a.r + b.l) / 2} ${y} S ${W * .8} ${y - 80}, ${W + 20} ${y + 30}`);
         // Er margenen for smal til et mærke, står det over portrættets yderste hjørne i stedet
         const venstre = a.l > 150 ? [a.l / 2, y - 10] : [a.l + 70, a.t - 30];
         const hoejre = W - b.r > 150 ? [b.r + (W - b.r) / 2, y - 20] : [b.r - 70, b.t - 30];
-        MAERKER = [["Første snak", ...venstre, .15], ["Aftale", (a.r + b.l) / 2, a.t - 30, .5], ["Bogføring", ...hoejre, .85]];
+        const aftale = [(a.r + b.l) / 2, a.t - 30];
+        // Linjen går gennem alle tre mærker (Catmull-Rom omsat til kubiske Bézier-kurver), så de sidder på den
+        const P = [[-20, y + 40], venstre, aftale, hoejre, [W + 20, y + 30]];
+        let d = `M ${P[0][0]} ${P[0][1]}`;
+        for (let k = 0; k < P.length - 1; k++) {
+          const p0 = P[Math.max(0, k - 1)], p1 = P[k], p2 = P[k + 1], p3 = P[Math.min(P.length - 1, k + 2)];
+          d += ` C ${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6}, ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6}, ${p2[0]} ${p2[1]}`;
+        }
+        sti.setAttribute("d", d);
+        MAERKER = [["Første snak", ...venstre, venstre[0] / W], ["Aftale", ...aftale, aftale[0] / W], ["Bogføring", ...hoejre, hoejre[0] / W]];
       } else {
         const x = W - 14;
         sti.setAttribute("d", `M ${x} ${kort[0].t} L ${x} ${kort[1].b}`);
