@@ -132,13 +132,12 @@
   });
 
   // Baggrundsdetaljer bag toppen (Othman 17. okt 2026, variant C): bilag driver ind i telefonen (/appen, loop);
-  // papirerne sorterer sig i tre bunker (/ai) og linjen mellem jer tegnes (/om-os), én gang lige efter indlæsning.
+  // linjen mellem jer tegnes (/om-os), én gang lige efter indlæsning.
   // Alt placeres med fast "tilfældighed" og uden om tekst og billeder. Ved reduceret bevægelse vises slutbilledet.
   document.querySelectorAll("[data-detalje]").forEach((region) => {
     const v = region.dataset.detalje;
     const lag = document.createElement("div");
     lag.className = "detalje"; lag.setAttribute("aria-hidden", "true");
-    if (v === "sortering") lag.classList.add("lang");
     region.prepend(lag);
     const tal = (i) => { const x = Math.sin(i * 12.9898 + 4.1) * 43758.5453; return x - Math.floor(x); };
     const rel = (el, m = 0) => { const r = el.getBoundingClientRect(), g = region.getBoundingClientRect(); return { l: r.left - g.left - m, t: r.top - g.top - m, r: r.right - g.left + m, b: r.bottom - g.top + m }; };
@@ -172,40 +171,6 @@
       }
     }
 
-    if (v === "sortering") {
-      // Selve overskriften og ingressen (ikke hele blokken, der er lige så bred som skærmen)
-      const tb = [...region.querySelectorAll(".side-top h1, .side-top .ingress")].map((e) => {
-        const rg = document.createRange(); rg.selectNodeContents(e);
-        const r = rg.getBoundingClientRect(), g = region.getBoundingClientRect(), m = 14;
-        return { l: r.left - g.left - m, t: r.top - g.top - m, r: r.right - g.left + m, b: r.bottom - g.top + m };
-      });
-      const tekst = { l: Math.min(...tb.map((x) => x.l)), t: Math.min(...tb.map((x) => x.t)), r: Math.max(...tb.map((x) => x.r)), b: Math.max(...tb.map((x) => x.b)) };
-      const W = lag.clientWidth, mobil = innerWidth < 900;
-      // Tre bunker til siden for overskriften (på mobil i kanterne ved siden af kvitteringen)
-      const STAK = mobil ? [[.11 * W, tekst.b + 80], [.89 * W, tekst.b + 80], [.11 * W, tekst.b + 210]]
-        : [[tekst.l * .45, tekst.b - 6], [W - (W - tekst.r) * .45, tekst.b - 6], [W - (W - tekst.r) * .8, tekst.t + 30]];
-      const navne = ["Varer", "Husleje", "Moms"].map((t, k) => { const e = ny("d-bunke-navn", t); e.style.left = STAK[k][0] + "px"; e.style.top = STAK[k][1] + 26 + "px"; lag.appendChild(e); return e; });
-      const brugt = [], papirer = [];
-      for (let i = 0; i < 18; i++) {
-        const e = ny("d-papir"), b = placer(e, [tekst], brugt, i + 70, .05); if (!b) continue;
-        const k = i % 3, n = papirer.filter((p) => p.k === k).length;
-        // Startpladsen sættes uden overgang; ellers glider papiret først derhen og vender midt i bevægelsen
-        e.style.transition = "none";
-        e.style.transform = `translate(${b.l}px, ${b.t}px) rotate(${(tal(i + 80) - .5) * 50}deg)`;
-        e.style.setProperty("--d", papirer.length * .08 + "s");
-        papirer.push({ e, k, slut: `translate(${STAK[k][0] - 15 + (tal(i) - .5) * 6}px, ${STAK[k][1] - 22 - n * 4}px) rotate(${(tal(i + 5) - .5) * 8}deg)` });
-      }
-      void lag.offsetWidth;
-      const sorter = () => {
-        papirer.forEach((p) => { p.e.style.transition = ""; });
-        void lag.offsetWidth;
-        papirer.forEach((p) => { p.e.style.transform = p.slut; });
-        // Navnene kommer, når det sidste papir er landet
-        setTimeout(() => navne.forEach((n) => n.classList.add("vist")), roligt ? 0 : 2400 + papirer.length * 80);
-      };
-      if (roligt) sorter(); else setTimeout(sorter, 600);
-    }
-
     if (v === "linje") {
       const kort = [...region.querySelectorAll(".par .foto-kort")].map((e) => rel(e)); if (kort.length < 2) return;
       const W = lag.clientWidth, mobil = innerWidth < 700;
@@ -217,7 +182,7 @@
         // Er margenen for smal til et mærke, står det over portrættets yderste hjørne i stedet
         const venstre = a.l > 150 ? [a.l / 2, y - 10] : [a.l + 70, a.t - 30];
         const hoejre = W - b.r > 150 ? [b.r + (W - b.r) / 2, y - 20] : [b.r - 70, b.t - 30];
-        const aftale = [(a.r + b.l) / 2, a.t - 30];
+        const aftale = [(a.r + b.l) / 2, y];  // mellem billederne, på linjen
         // Linjen går gennem alle tre mærker (Catmull-Rom omsat til kubiske Bézier-kurver), så de sidder på den
         const P = [[-20, y + 40], venstre, aftale, hoejre, [W + 20, y + 30]];
         let d = `M ${P[0][0]} ${P[0][1]}`;
