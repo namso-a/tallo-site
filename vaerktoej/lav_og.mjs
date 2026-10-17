@@ -20,7 +20,7 @@ await p.addStyleTag({ content: `
   .top-tekst .ingress { margin-top: 14px; font-size: 32px; font-weight: 500; color: #4b3aa6; max-width: none; }
 ` });
 await p.evaluate(() => {
-  document.querySelector(".top-tekst .ingress").textContent = "Fra 349 kr. om måneden.";
+  document.querySelector(".top-tekst .ingress").textContent = "Fra 500 kr. om måneden.";
   dispatchEvent(new Event("resize"));
 });
 await p.waitForTimeout(800);

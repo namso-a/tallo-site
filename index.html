@@ -8,11 +8,11 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex, nofollow">
 <title>Tallo: aldrig mere bogføring</title>
-<meta name="description" content="Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 349 kr. om måneden.">
+<meta name="description" content="Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 500 kr. om måneden.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tallo.dk/">
 <meta property="og:title" content="Tallo: aldrig mere bogføring">
-<meta property="og:description" content="Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 349 kr. om måneden.">
+<meta property="og:description" content="Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 500 kr. om måneden.">
 <meta property="og:image" content="https://tallo.dk/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -159,6 +159,8 @@
   .send .pille { height: 48px; padding: 0 26px; font-size: 16px; border: 0; cursor: pointer; font-family: inherit; }
   .send .pille:disabled { opacity: .6; cursor: default; }
   .formular-status { min-height: 1.4em; font-size: 14px; }
+  .formular-note { margin-top: 6px; font-size: 13px; line-height: 1.5; color: var(--daempet); }
+  .formular-note a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
   .formular-status.ok { color: var(--blaa); }
   .formular-status.fejl { color: #c4321c; }
   .faelde { position: absolute; left: -9999px; }
@@ -268,7 +270,7 @@
 
         <div class="top-tekst" id="tekst">
           <h1>Aldrig mere bogføring.</h1>
-          <p class="ingress">Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 349 kr. om måneden.</p>
+          <p class="ingress">Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 500 kr. om måneden.</p>
           <div class="knapper">
             <a class="pille farve" href="#kom">Skriv dig op på 2 minutter</a>
             <a class="pille glas" href="#kom">Hellere en snak?</a>
@@ -395,7 +397,7 @@
 
         <div class="pakke">
           <h3 id="pNavn">Med bogholder</h3>
-          <p class="pris"><b><span id="pPris">799</span> kr.</b><span>om måneden plus moms</span></p>
+          <p class="pris"><b><span id="pPris">1.000</span> kr.</b><span>om måneden plus moms</span></p>
           <div class="lister">
             <ul data-pakke="selv" hidden>
               <li>Regninger og fakturaer kommer ind af sig selv</li>
@@ -503,8 +505,8 @@
             <div>
               <span class="lbl" id="pakkeLbl">Vælg pakke</span>
               <div class="pakkevalg" role="radiogroup" aria-labelledby="pakkeLbl">
-                <label><input type="radio" name="pakke" value="Gør det selv med AI, 349 kr." data-pakke="selv"><span>Gør det selv med AI<small>349 kr. om måneden</small></span></label>
-                <label><input type="radio" name="pakke" value="Med bogholder, 799 kr." data-pakke="bogholder" checked><span>Med bogholder<small>799 kr. om måneden</small></span></label>
+                <label><input type="radio" name="pakke" value="Gør det selv med AI, 500 kr." data-pakke="selv"><span>Gør det selv med AI<small>500 kr. om måneden</small></span></label>
+                <label><input type="radio" name="pakke" value="Med bogholder, 1.000 kr." data-pakke="bogholder" checked><span>Med bogholder<small>1.000 kr. om måneden</small></span></label>
               </div>
               <p class="hjaelp">Du kan skifte, når du vil.</p>
             </div>
@@ -513,6 +515,7 @@
         <div class="send">
           <button class="pille farve" type="submit">Skriv mig op</button>
           <p class="formular-status" role="status" aria-live="polite"></p>
+          <p class="formular-note">Vi bruger dine oplysninger som beskrevet i <a href="/privatliv/">privatlivspolitikken</a>. Når vi åbner, gælder <a href="/handelsbetingelser/">handelsbetingelserne</a>.</p>
         </div>
       </form>
 
@@ -552,6 +555,7 @@
         <li><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></li>
         <li><span>CVR 46440986</span></li>
         <li><a href="/privatliv/">Privatlivspolitik</a></li>
+        <li><a href="/handelsbetingelser/">Handelsbetingelser</a></li>
       </ul>
     </div>
   </div>
