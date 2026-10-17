@@ -1,36 +1,903 @@
 <!doctype html>
 <html lang="da">
 <head>
+<!-- hoved:start -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://app.cal.com; font-src 'self'; connect-src 'self' https://api.web3forms.com https://app.cal.com; frame-src https://app.cal.com https://cal.com; object-src 'none'; base-uri 'self'; form-action https://api.web3forms.com mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex, nofollow">
-<title>Tallo</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<!-- Pladsholder (14. okt 2026): den gamle forside er taget ned, indtil den nye er klar.
-     Den gamle ligger i git-historikken; den nye bygges i ny/. -->
+<title>Tallo: aldrig mere bogføring</title>
+<meta name="description" content="Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 349 kr. om måneden.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tallo.dk/">
+<meta property="og:title" content="Tallo: aldrig mere bogføring">
+<meta property="og:description" content="Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 349 kr. om måneden.">
+<meta property="og:image" content="https://tallo.dk/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="da_DK">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/geist.woff2" crossorigin>
+<link rel="stylesheet" href="/css/tallo.css">
+<script>document.documentElement.classList.add("zoom"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("stille");</script>
+<!-- hoved:slut -->
+<link rel="preload" as="image" href="/billeder/top-foto.webp">
+<!--
+  Toppen efter .docs/design/brief.md (8. okt 2026): ét foto, og scroll fører ind i skærmen, hvor appen er.
+  Derefter glider appen ud til højre som et panel, og fire punkter til venstre skifter skærm (Mercury ved 1350-1700).
+  Pladsholderfoto: Moses Londo, Unsplash (unsplash.com/photos/2MPu1Baa6eo), Unsplash License.
+  Beskåret uden mikrofonen i venstre side. Skiftes ud, når Othmans eget foto kommer; mål da skærmens
+  fire hjørner igen og ret SKAERM nedenfor.
+  App-billederne er taget i 2x fra demoen i system/design/platform (.tmp/app_skaerme.mjs).
+-->
+<!-- Menu, pakkeblok og footer skrives af vaerktoej/undersider.py mellem markørerne; ret dem dér. -->
 <style>
-  @font-face { font-family: "Geist"; src: url("fonts/geist.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; }
-  body { display: flex; flex-direction: column; font-family: "Geist", system-ui, sans-serif; color: #141414; background: #f6f6f3; -webkit-font-smoothing: antialiased; line-height: 1.5; }
-  header { padding: 24px 32px; }
-  .logo { font-weight: 700; font-size: 22px; letter-spacing: -.03em; }
-  main { flex: 1; display: grid; place-content: center; padding: 24px; text-align: center; }
-  h1 { margin: 0; font-size: clamp(34px, 4.5vw, 49px); font-weight: 480; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
-  p { margin: 14px auto 0; max-width: 460px; font-size: 18px; color: #5f5f5b; text-wrap: balance; }
-  a { color: #4b3aa6; text-decoration: underline; text-underline-offset: 3px; }
-  footer { padding: 24px 32px; font-size: 14px; color: #5f5f5b; }
+  /* Rejsen: scenen står fast, mens man scroller (højden sættes af scriptet) */
+  .rejse { position: relative; height: calc(100vh + 3300px); }
+  .scene { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+  .topflade { position: absolute; inset: 0; }
+  .foto { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform, opacity; }
+  .foto img { display: block; width: 100%; height: 100%; }
+  /* Flyttes fotoet ned på korte skærme, fylder fotoets egen lyse farve over det (og følger zoomen) */
+  .foto::before { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 100vh; background: #d1e2d2; }
+  .sloer { position: absolute; inset: 0 0 auto; height: 55%; background: linear-gradient(to bottom, rgba(255,255,255,.5), rgba(255,255,255,0)); pointer-events: none; }
+
+  .top-tekst { position: absolute; left: 0; right: 0; top: calc(var(--nav) + 70px); padding: 0 24px; text-align: center; }
+
+  .bjaelke { position: absolute; left: 50%; bottom: 32px; transform: translateX(-50%); padding: 10px 20px; border-radius: 10px; background: rgba(255,255,255,.7); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font-size: 13px; font-weight: 500; white-space: nowrap; }
+
+  /* Skærmen: app-billedet lagt på laptoppen med matrix3d, så det følger fotoets vinkel.
+     Et lag pr. format (desktop, mobil); lagene flyttes og skaleres, billederne i dem skifter. */
+  .skaerm { position: absolute; left: 0; top: 0; transform-origin: 0 0; overflow: hidden; background: #f7f6f2; will-change: transform; }
+  .lag { position: absolute; left: 0; top: 0; }
+  .lag img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .45s ease-out; }
+  .lag img.vist { opacity: 1; }
+  .lag.m img.fokus { top: -30%; }
+  .markering { position: absolute; border-radius: 10px; background: rgba(75,58,166,.06); box-shadow: inset 0 0 0 1.5px rgba(75,58,166,.5); opacity: 0; pointer-events: none; }
+  .lag.d .markering { left: 20.3%; top: 40.2%; width: 77.8%; height: 7.2%; }
+  .lag.m .markering { left: 6.2%; top: 26.6%; width: 87.6%; height: 12%; }
+  .spiller .markering { animation: markering 2.8s ease-out both; }
+  @keyframes markering { 0% { opacity: 0; } 12% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; } }
+
+  /* Produktet: fire punkter til venstre, appen i panelet til højre */
+  .produkt { position: absolute; left: 0; top: 0; opacity: 0; visibility: hidden; }
+  .produkt h2 { font-size: 26px; font-weight: 500; line-height: 1.2; letter-spacing: -.015em; }
+  .punkter { list-style: none; padding: 0; margin-top: 52px; }
+  .punkter li { position: relative; border-top: 1px solid var(--lineal); }
+  .punkter .linje { position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--blaek); transform: scaleX(0); transform-origin: left; }
+  .punkter button { display: block; width: 100%; padding: 13px 0; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 560; color: var(--daempet); text-align: left; cursor: pointer; transition: color .2s; }
+  .punkter button:hover, .punkter li.aktiv button { color: var(--blaek); }
+  .punkter p { display: none; margin: -6px 0 0; padding-bottom: 18px; font-size: 16px; line-height: 1.45; color: var(--daempet); text-wrap: pretty; }
+  .punkter li.aktiv p { display: block; }
+  .se-appen { display: inline-flex; align-items: center; min-height: 44px; margin-top: 22px; font-size: 16px; font-weight: 560; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
+  /* Fokus: skærmbilledet dæmpes, og et levende kort glider frem foran det, der handler om punktet */
+  .daemp { position: absolute; inset: 0; background: rgba(241,240,234,0); transition: background .45s ease-out; pointer-events: none; }
+  .skaerm.daempet .daemp { background: rgba(241,240,234,.55); }
+  .fokus { position: absolute; left: 0; top: 0; pointer-events: none; opacity: 0; transition: opacity .3s ease-out; }
+  .fokus.synlig { opacity: 1; }
+  .fk { position: absolute; left: 40px; bottom: 40px; width: min(380px, calc(100% - 80px)); padding: 22px 24px; border-radius: 16px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 30px 60px -28px rgba(20,20,20,.38); opacity: 0; visibility: hidden; transform: translateY(18px) scale(.98); transition: opacity .35s ease-out, transform .5s cubic-bezier(.2,.7,.2,1), visibility 0s .5s; }
+  .fk.vist { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .fk-lbl { font-size: 14px; font-weight: 500; color: var(--daempet); }
+  .fk-tal { margin-top: 2px; font-size: 44px; font-weight: 500; letter-spacing: -.03em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+  .fk-tal small { font-size: 18px; letter-spacing: 0; color: var(--daempet); }
+  .fk .app-pille { margin-top: 10px; }
+  .soejler { display: flex; align-items: flex-end; gap: 7px; height: 96px; margin-top: 20px; border-bottom: 1px solid var(--lineal); }
+  .soejler i { flex: 1; display: flex; align-items: flex-end; gap: 2px; height: 100%; }
+  .soejler b { flex: 1; border-radius: 3px 3px 0 0; background: #4b3aa6; transform: scaleY(0); transform-origin: bottom; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+  .soejler b + b { background: #d9d4f1; }
+  .fk.spil .soejler b { transform: scaleY(1); }
+  .soejle-akse { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--daempet); }
+  .ind { list-style: none; margin: 10px 0 0; padding: 0; }
+  .ind li { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid #efeee9; font-size: 15px; opacity: 0; transform: translateY(-10px); transition: opacity .35s ease-out, transform .45s cubic-bezier(.2,.7,.2,1); }
+  .ind li:first-child { border-top: 0; }
+  .fk.spil .ind li { opacity: 1; transform: none; transition-delay: .15s; }
+  .fk.spil .ind li:nth-child(2) { transition-delay: .7s; }
+  .fk.spil .ind li:nth-child(3) { transition-delay: 1.25s; }
+  .ind b { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 560; }
+  .kr { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .kr.plus { color: var(--blaa); }
+  .kilde { flex: none; width: 72px; padding: 3px 0; border-radius: 6px; font-size: 12px; font-weight: 600; text-align: center; color: #fff; }
+  .kilde.mail { background: #c98a3b; } .kilde.faktura { background: #4b3aa6; } .kilde.bank { background: #5a5a54; }
+  .fk-fod { margin-top: 12px; font-size: 14px; color: var(--daempet); opacity: 0; transition: opacity .4s ease-out; }
+  .fk.spil .fk-fod { opacity: 1; transition-delay: 1.8s; }
+  .fk.lille { bottom: auto; width: auto; display: flex; align-items: center; gap: 10px; padding: 8px 16px 8px 8px; border-radius: 999px; font-size: 15px; font-weight: 500; white-space: nowrap; }
+  .fk.lille.vist { transition-delay: 1.25s; }
+  .moms { display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; margin: 14px 0 0; font-size: 15px; }
+  .moms dt { color: var(--daempet); }
+  .moms dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+  .moms > * { opacity: 0; transition: opacity .35s ease-out .1s; }
+  .fk.spil .moms > * { opacity: 1; }
+  .fk.spil .moms > :nth-child(n+3) { transition-delay: .5s; }
+  .moms-streg { height: 1.5px; margin-top: 12px; background: var(--blaek); transform: scaleX(0); transform-origin: left; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+  .fk.spil .moms-streg { transform: scaleX(1); transition-delay: .85s; }
+  .moms-total { display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px; }
+  .moms-total > span { font-size: 15px; color: var(--daempet); }
+  .moms-total b { font-size: 30px; font-weight: 500; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+
+  .os { padding: 140px 0 40px; text-align: center; }
+  .os h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; }
+  .os .ingress { margin-top: 12px; }
+  /* Tilmeldingen: tre trin i et kort i appens stil; hvert trin får et flueben, og stregen mellem dem fyldes */
+  .kom { padding: 140px 0 120px; }
+  .kom-hoved { text-align: center; padding: 0 24px; }
+  .kom-hoved h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; }
+  .kom-hoved .ingress { margin-top: 12px; max-width: 560px; text-wrap: balance; }
+  .kom-gitter { display: grid; grid-template-columns: minmax(0, 620px); justify-content: center; gap: 14px; margin-top: 56px; padding: 0 32px; }
+  .tilmeld { padding: 40px 40px 36px; border-radius: 24px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 30px 60px -40px rgba(20,20,20,.35); }
+  .trinliste { position: relative; list-style: none; margin: 0; padding: 0; }
+  .trinliste::before, .trinliste::after { content: ""; position: absolute; left: 17px; top: 20px; bottom: 40px; width: 2px; border-radius: 2px; background: #efeee9; }
+  .trinliste::after { background: var(--blaa); transform: scaleY(var(--fyld, 0)); transform-origin: top; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+  .trin { position: relative; display: grid; grid-template-columns: 36px 1fr; gap: 18px; padding-bottom: 30px; }
+  .trin:last-child { padding-bottom: 0; }
+  .nr { position: relative; z-index: 1; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 1.5px var(--lineal); font-size: 15px; font-weight: 600; color: var(--daempet); transition: background .3s, color .3s, box-shadow .3s; }
+  .nr::after { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; border-radius: 50%; background: var(--blaa); color: #fff; font-size: 16px; transform: scale(0); transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
+  .trin.klar .nr::after { transform: scale(1); }
+  .trin label, .trin .lbl { display: block; padding-top: 6px; font-size: 17px; font-weight: 560; }
+  .trin input[type="text"], .trin input[type="email"] { display: block; width: 100%; height: 50px; margin-top: 10px; padding: 0 16px; border: 0; border-radius: 12px; background: #f6f6f3; box-shadow: inset 0 0 0 1px var(--lineal); font: inherit; font-size: 17px; color: var(--blaek); transition: box-shadow .2s, background .2s; }
+  .trin input:focus { outline: none; background: #fff; box-shadow: inset 0 0 0 2px #4b3aa6; }
+  .trin input#cvr { font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+  .to-felter { display: grid; grid-template-columns: 170px 1fr; gap: 10px; }
+  .hjaelp { margin-top: 8px; font-size: 14px; color: var(--daempet); }
+  .manuel { margin-top: 12px; font-size: 15px !important; font-weight: 500 !important; }
+  .firma { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding: 12px 14px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--lineal); animation: ind .45s cubic-bezier(.2,.7,.2,1) both; }
+  .firma[hidden] { display: none; }
+  .firma .ava { width: 40px; height: 40px; border-radius: 10px; background: #c98a3b; font-size: 13px; }
+  .firma div { flex: 1; min-width: 0; }
+  .firma b { display: block; font-size: 16px; font-weight: 560; }
+  .firma small { display: block; font-size: 14px; color: var(--daempet); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  @keyframes ind { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  .pakkevalg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .pakkevalg label { position: relative; padding: 0; cursor: pointer; }
+  .pakkevalg input { position: absolute; opacity: 0; }
+  .pakkevalg span { display: block; padding: 14px 16px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--lineal); font-size: 16px; font-weight: 560; transition: box-shadow .2s, background .2s; }
+  .pakkevalg small { display: block; font-size: 14px; font-weight: 400; color: var(--daempet); }
+  .pakkevalg input:checked + span { background: #f3f0ff; box-shadow: inset 0 0 0 2px #4b3aa6; }
+  .pakkevalg input:focus-visible + span { outline: 2px solid #4b3aa6; outline-offset: 2px; }
+  .send { display: flex; align-items: center; gap: 16px; margin-top: 34px; padding-left: 54px; }
+  .send .pille { height: 48px; padding: 0 26px; font-size: 16px; border: 0; cursor: pointer; font-family: inherit; }
+  .send .pille:disabled { opacity: .6; cursor: default; }
+  .formular-status { min-height: 1.4em; font-size: 14px; }
+  .formular-status.ok { color: var(--blaa); }
+  .formular-status.fejl { color: #c4321c; }
+  .faelde { position: absolute; left: -9999px; }
+  .statisk { display: none; }
+  .statisk img { display: block; width: 100%; height: auto; border-radius: 14px; box-shadow: 0 0 0 1px rgba(20,20,20,.06), 0 30px 80px -30px rgba(20,20,20,.35); }
+  /* Uden zoom (reduceret bevægelse eller intet JS): fotoet øverst, produktet stille nedenunder.
+     Med reduceret bevægelse ligger appen stadig på laptopskærmen; uden JS står skærmen sort. */
+  html:not(.zoom) .rejse { height: auto !important; }
+  html:not(.zoom) .scene { position: relative; height: auto; overflow: visible; }
+  html:not(.zoom) .topflade { position: relative; height: 100vh; overflow: hidden; }
+  html:not(.zoom) .foto { inset: 0; }
+  html:not(.zoom) .foto img { object-fit: cover; }
+  html:not(.zoom) .skaerm { display: none; }
+  html:not(.zoom) .produkt { position: relative; left: auto !important; top: auto !important; opacity: 1 !important; visibility: visible !important; transform: none !important; display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 0 64px; grid-template-rows: auto auto 1fr; align-items: start; width: min(1240px, calc(100% - 48px)) !important; margin: 96px auto 0; }
+  html:not(.zoom) .statisk { display: block; grid-column: 2; grid-row: 1 / span 3; align-self: center; }
+  html:not(.zoom) .punkter p { display: block; }
+
+  @media (max-width: 899px) {
+    .kom-gitter { grid-template-columns: minmax(0, 560px); }
+    html:not(.zoom) .produkt { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    html:not(.zoom) .statisk { grid-column: 1; grid-row: auto; }
+  }
+  @media (max-width: 699px) {
+    .top-tekst { top: calc(var(--nav) + 24px); }
+    .bjaelke { bottom: 16px; width: calc(100% - 32px); white-space: normal; text-align: center; font-size: 12px; }
+    .produkt h2 { font-size: 23px; }
+    .punkter { margin-top: 18px; }
+    .punkter button { padding: 11px 0; font-size: 15px; }
+    .punkter p { font-size: 15px; padding-bottom: 12px; }
+    .se-appen { display: none; }
+    html:not(.zoom) .se-appen { display: inline-flex; }
+    .fk { left: 12px; bottom: 12px; width: calc(100% - 24px); padding: 16px 18px; }
+    .fk.lille { left: 12px; width: auto; }
+    .fk-tal { font-size: 36px; }
+    .soejler { height: 64px; margin-top: 14px; }
+    .os { padding-top: 96px; }
+    .os h2 { font-size: 32px; padding: 0 20px; }
+    .kom { padding: 96px 0 80px; }
+    .kom-hoved h2 { font-size: 32px; }
+    .kom-gitter { grid-template-columns: minmax(0, 1fr); margin-top: 36px; padding: 0 12px; }
+    .tilmeld { padding: 26px 18px 24px; }
+    .trin { gap: 14px; grid-template-columns: 32px 1fr; }
+    .nr { width: 32px; height: 32px; }
+    .trinliste::before, .trinliste::after { left: 15px; }
+    .pakkevalg { grid-template-columns: 1fr; }
+    .to-felter { grid-template-columns: 1fr; gap: 0; }
+    .send { padding-left: 0; flex-wrap: wrap; }
+  }
+  /* Korte telefoner: mindre tekst i toppen og i produktafsnittet, så foto, tekst og panel kan være der */
+  @media (max-width: 899px) and (max-height: 720px) {
+    .top-tekst { top: calc(var(--nav) + 14px); }
+    .top-tekst h1 { font-size: 30px; }
+    .top-tekst .ingress { margin-top: 10px; font-size: 15px; }
+    .top-tekst .knapper { margin-top: 16px; }
+    .produkt h2 { font-size: 20px; }
+    .punkter { margin-top: 10px; }
+    .punkter button { padding: 11px 0; font-size: 15px; }
+    .punkter p { font-size: 14px; padding-bottom: 10px; }
+    .fk { padding: 12px 14px; }
+    .fk-tal { font-size: 28px; }
+    .soejler { height: 40px; margin-top: 10px; }
+    .fk-fod { margin-top: 6px; }
+    .ind li { padding: 7px 0; }
+    .moms { margin-top: 8px; gap: 4px 16px; }
+    .moms-total b { font-size: 24px; }
+  }
 </style>
 </head>
 <body>
-<header><span class="logo">tallo</span></header>
+
+<!-- menu:start -->
+<nav class="nav" id="nav" aria-label="Hovedmenu">
+  <a class="logo" href="/" aria-label="Tallo, til forsiden">tallo</a>
+  <ul class="nav-links">
+    <li><a href="/appen/">Appen</a></li>
+    <li><a href="/priser/">Priser</a></li>
+    <li><a href="/ai/">AI</a></li>
+    <li><a href="/skift/">Skift</a></li>
+    <li><a href="/om-os/">Om os</a></li>
+  </ul>
+  <div class="nav-hoejre">
+    <a class="pille farve" href="/#kom">Skriv dig op</a>
+    <button class="menu-knap" id="menuKnap" type="button" aria-expanded="false" aria-controls="menuArk">Menu</button>
+  </div>
+</nav>
+<div class="menu-ark" id="menuArk" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="menu-top"><a class="logo" href="/">tallo</a><button class="menu-luk" type="button" aria-label="Luk menuen">×</button></div>
+  <ul>
+    <li><a href="/" aria-current="page">Forsiden</a></li>
+    <li><a href="/appen/">Appen</a></li>
+    <li><a href="/priser/">Priser</a></li>
+    <li><a href="/ai/">AI</a></li>
+    <li><a href="/skift/">Skift</a></li>
+    <li><a href="/om-os/">Om os</a></li>
+  </ul>
+  <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
+  <p class="lille">Eller skriv til os: <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
+</div>
+<!-- menu:slut -->
+
 <main>
-  <h1>Vores nye side er på vej.</h1>
-  <p>Indtil da kan du skrive til os på <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a>.</p>
+  <section class="rejse" id="rejse">
+    <div class="scene" id="scene">
+      <div class="topflade">
+        <div class="foto" id="foto"><img src="/billeder/top-foto.webp" alt="En bærbar computer på et marmorbord i en lys café om morgenen" width="3200" height="2000"></div>
+        <div class="sloer" id="sloer"></div>
+
+        <div class="top-tekst" id="tekst">
+          <h1>Aldrig mere bogføring.</h1>
+          <p class="ingress">Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 349 kr. om måneden.</p>
+          <div class="knapper">
+            <a class="pille farve" href="#kom">Skriv dig op på 2 minutter</a>
+            <a class="pille glas" href="#kom">Hellere en snak?</a>
+          </div>
+        </div>
+
+        <p class="bjaelke" id="bjaelke">Vi åbner, når programmet er registreret hos Erhvervsstyrelsen. Du betaler først, når vi åbner.</p>
+
+        <div class="skaerm" id="skaerm" aria-hidden="true">
+          <div class="lag d" id="lagD">
+            <img data-s="overblik" class="vist" src="/billeder/app-overblik-2x.webp" alt="" width="2880" height="1800">
+            <img data-s="foer" data-src="/billeder/app-transaktioner-2x.webp" alt="" width="2880" height="1800">
+            <img data-s="efter" data-src="/billeder/app-transaktioner-bogfoert-2x.webp" alt="" width="2880" height="1800">
+            <img data-s="moms" data-src="/billeder/app-moms-2x.webp" alt="" width="2880" height="1800">
+            <span class="markering"></span>
+          </div>
+          <div class="lag m" id="lagM">
+            <img data-s="overblik" class="vist" data-src="/billeder/app-mobil-2x.webp" alt="" width="780" height="1688">
+            <img data-s="foer" class="fokus" data-src="/billeder/app-mobil-transaktioner-2x.webp" alt="" width="780" height="1688">
+            <img data-s="efter" class="fokus" data-src="/billeder/app-mobil-transaktioner-bogfoert-2x.webp" alt="" width="780" height="1688">
+            <img data-s="moms" data-src="/billeder/app-mobil-moms-2x.webp" alt="" width="780" height="1688">
+            <span class="markering"></span>
+          </div>
+          <span class="daemp"></span>
+        </div>
+
+        <!-- Levende kort i appens stil foran skærmbilledet: ét pr. punkt, med demoens egne tal -->
+        <div class="fokus" id="fokus" aria-hidden="true">
+          <div class="fk" data-trin="0">
+            <p class="fk-lbl">Overskud i år</p>
+            <p class="fk-tal"><span data-tael="376368">376.368</span> <small>kr.</small></p>
+            <span class="app-pille ok">+8 % mod sidste år</span>
+            <div class="soejler" id="soejler"></div>
+            <div class="soejle-akse"><span>jan</span><span>okt</span></div>
+          </div>
+          <div class="fk" data-trin="1">
+            <p class="fk-lbl">Kommet ind i dag</p>
+            <ul class="ind">
+              <li><span class="kilde mail">Mail</span><b>Mejeriet Nord</b><span class="kr">−2.210,00</span></li>
+              <li><span class="kilde faktura">E-faktura</span><b>Bagergrossisten A/S</b><span class="kr">−9.485,50</span></li>
+              <li><span class="kilde bank">Bank</span><b>SumUp, kassesalg</b><span class="kr plus">+30.060,90</span></li>
+            </ul>
+            <p class="fk-fod">Ingen har tastet noget ind.</p>
+          </div>
+          <div class="fk lille" data-trin="2" id="kortChip"><span class="app-pille ok">✓ Bogført</span>Bilag 225 · Varer og råvarer</div>
+          <div class="fk" data-trin="3">
+            <p class="fk-lbl">Moms for 3. kvartal</p>
+            <dl class="moms">
+              <dt>Moms af salg</dt><dd>91.091,96</dd>
+              <dt>Moms af dine køb</dt><dd>−21.012,16</dd>
+            </dl>
+            <div class="moms-streg"></div>
+            <p class="moms-total"><span>At betale</span><b><span data-tael="70079.80" data-dec="2" data-forsink="1100">70.079,80</span> kr.</b></p>
+            <p class="fk-fod">Frist 1. december 2026</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="produkt" id="produkt">
+        <h2>Alt med regnskabet.<br>Ét sted.</h2>
+        <ol class="punkter" id="punkter">
+          <li class="aktiv"><span class="linje"></span><button type="button" data-trin="0" aria-expanded="true">Du ved hver måned, hvordan det går</button>
+            <p>Overskud, penge på kontoen og hvad kunderne skylder dig. Du kan se det hver dag, uden at spørge nogen.</p></li>
+          <li><span class="linje"></span><button type="button" data-trin="1" aria-expanded="false">Regningerne kommer ind af sig selv</button>
+            <p>Banken er koblet til, og regninger fra din mail og e-faktura lander i appen. Mangler der en kvittering, tager du et billede af den.</p></li>
+          <li><span class="linje"></span><button type="button" data-trin="2" aria-expanded="false">Bogført for dig, eller med ét tryk</button>
+            <p>Hver betaling får sin plads og sin moms. Med bogholder bogfører vi den. Gør du det selv med AI, trykker du godkend.</p></li>
+          <li><span class="linje"></span><button type="button" data-trin="3" aria-expanded="false">Momsen er regnet ud</button>
+            <p>Du kan se, hvad du skal betale, og hvornår. Med bogholder indberetter vi momsen for dig.</p></li>
+        </ol>
+        <a class="se-appen" href="/appen/">Se appen</a>
+        <figure class="statisk">
+          <img id="statiskBillede" src="/billeder/app-overblik-2x.webp" alt="Tallos app: overskud, penge på kontoen, hvad kunderne skylder, momsen, og det du skal tage stilling til" width="2880" height="1800" loading="lazy">
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- pakker:start -->
+  <section class="pakker" id="pakker">
+    <div class="felt">
+      <h2>To pakker. Fast pris.</h2>
+      <div class="vaelger" id="vaelger" role="group" aria-label="Vælg pakke" data-valgt="bogholder">
+        <button type="button" data-pakke="selv" aria-pressed="false">Gør det selv med AI</button>
+        <button type="button" data-pakke="bogholder" aria-pressed="true">Med bogholder</button>
+        <span class="glider" aria-hidden="true"></span>
+      </div>
+
+      <div class="kort">
+        <div class="demo" id="demo" data-pakke="bogholder" data-trin="venter">
+          <p class="demo-top">Ny regning · i dag kl. 07.12</p>
+          <div class="regning">
+            <div class="raekke">
+              <span class="ava" aria-hidden="true">DB</span>
+              <div class="hvad"><b>Mejeriet Nord</b><small>Bank · Driftskonto</small></div>
+              <span class="beloeb">−2.210,00 kr.</span>
+            </div>
+            <dl class="detaljer">
+              <dt>Konto</dt><dd><span class="app-pille kat">Varer og råvarer</span></dd>
+              <dt>Moms</dt><dd>25 % · 442,00 kr.</dd>
+            </dl>
+            <div class="handling" aria-live="polite">
+              <div class="tilstand" data-vis="selv venter">
+                <p class="tekst"><b>✦ Forslag</b>Mejeriet Nord er bogført som varekøb i alle tidligere bilag.</p>
+                <button type="button" class="godkend" id="godkend">Godkend</button>
+              </div>
+              <div class="tilstand" data-vis="selv bogfoert">
+                <span class="app-pille ok">✓ Bogført</span>
+                <p class="tekst">Bilag 225. Godkendt af dig, lige nu.</p>
+                <button type="button" class="fortryd" id="fortryd">Fortryd</button>
+              </div>
+              <div class="tilstand" data-vis="bogholder venter">
+                <span class="app-pille graa"><i class="snurre" aria-hidden="true"></i>Tallo behandler</span>
+                <p class="tekst">Vi læser regningen og bogfører den.</p>
+              </div>
+              <div class="tilstand" data-vis="bogholder bogfoert">
+                <span class="app-pille ok">✓ Bogført</span>
+                <p class="tekst">Bilag 225. Bogført for dig; du skulle ikke gøre noget.</p>
+              </div>
+            </div>
+          </div>
+          <p class="demo-hint" id="demoHint"></p>
+        </div>
+
+        <div class="pakke">
+          <h3 id="pNavn">Med bogholder</h3>
+          <p class="pris"><b><span id="pPris">799</span> kr.</b><span>om måneden plus moms</span></p>
+          <div class="lister">
+            <ul data-pakke="selv" hidden>
+              <li>Regninger og fakturaer kommer ind af sig selv</li>
+              <li>AI'en foreslår, hvor de skal hen</li>
+              <li>Du godkender med ét tryk</li>
+              <li>Momsen regnes ud, og du sender den selv</li>
+              <li>Skift til bogholder når som helst</li>
+              <li class="senere">Spørg din egen Claude eller ChatGPT om dine tal <span class="snart">Kommer senere</span></li>
+            </ul>
+            <ul data-pakke="bogholder">
+              <li>Alt fra Gør det selv med AI</li>
+              <li>Vi bogfører alt, uanset hvor mange bilag</li>
+              <li>En bogholder kvalitetssikrer bogføringen</li>
+              <li>Vi indberetter momsen for dig</li>
+              <li>Overblik over salg, udgifter og overskud hver måned</li>
+            </ul>
+          </div>
+          <div class="bund">
+            <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
+            <a href="/priser/">Se hvad der er med</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+<!-- pakker:slut -->
+
+  <section class="os" id="os" data-falder>
+    <h2>Tallo er Othman og Mohammed.</h2>
+    <div class="par">
+      <div class="person">
+        <div class="ramme">
+          <div class="foto-kort"><img src="/billeder/othman.webp" alt="Othman Ajjawi" width="400" height="400" loading="lazy"></div>
+          <div class="app-kort" aria-hidden="true">
+            <span class="rund">OA</span>
+            <span><b>Din bogholder: Othman</b><small>Svarer normalt samme dag</small></span>
+            <a href="#kom" tabindex="-1">Skriv</a>
+          </div>
+        </div>
+        <h3>Othman Ajjawi</h3>
+        <p class="rolle">Bogføring og teknik</p>
+        <p class="om">Othman har en kandidatgrad i erhvervsøkonomi og arbejder til daglig med økonomi, data og AI. Han holder øje med dine tal og skriver til dig, hvis noget skal afklares.</p>
+      </div>
+      <div class="person">
+        <div class="ramme">
+          <div class="foto-kort"><img src="/billeder/mohammed.webp" alt="Mohammed Chahrour" width="400" height="400" loading="lazy"></div>
+          <div class="app-kort" aria-hidden="true">
+            <span class="rund kal">30<br>min</span>
+            <span><b>Første snak med Mohammed</b><small>Når det passer dig</small></span>
+          </div>
+        </div>
+        <h3>Mohammed Chahrour</h3>
+        <p class="rolle">Kunder og aftaler</p>
+        <p class="om">Mohammed er ved at afslutte sin kandidatgrad i jura. Han tager den første snak med dig, sørger for aftalerne og at alt er som det skal være.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- faq:start -->
+  <section class="faq-forside" id="faq">
+    <div class="faq">
+      <h2>Spørgsmål og svar</h2>
+      <div class="spoergsmaal" data-faq>
+        <details><summary>Kan jeg stole på, at AI'en bogfører rigtigt?</summary><div class="svar"><p>AI'en er god til det, den har set før, men den kan tage fejl. Derfor bærer den det tunge læs, og en bogholder kvalitetssikrer den. Også momsen, før den indberettes. Vælger du Gør det selv med AI, godkender du selv hvert forslag, og du kan opgradere når som helst.</p></div></details>
+        <details><summary>Hvornår åbner I?</summary><div class="svar"><p>Når vores program er registreret hos Erhvervsstyrelsen. Det kræver loven for de fleste virksomheder. Du kan skrive dig op nu, og vi skriver til dig, den dag vi åbner.</p></div></details>
+        <details><summary>Er der binding?</summary><div class="svar"><p>Nej. Du opsiger fra måned til måned.</p></div></details>
+        <details><summary>Hvad skal jeg selv gøre?</summary><div class="svar"><p>Koble din bank til med dit eget MitID, én gang. Derefter kommer regninger og fakturaer ind af sig selv. Har du betalt noget med egne penge, tager du et billede af kvitteringen i appen.</p></div></details>
+        <details><summary>Hvor ligger mine data?</summary><div class="svar"><p>I EU. Dine bilag bliver læst i EU og forlader ikke EU.</p></div></details>
+      </div>
+    </div>
+  </section>
+<!-- faq:slut -->
+
+  <section class="kom" id="kom">
+    <div class="kom-hoved">
+      <h2>Skriv dig op på 2 minutter.</h2>
+      <p class="ingress">Vi åbner, når programmet er registreret hos Erhvervsstyrelsen. Indtil da betaler du intet.</p>
+    </div>
+    <div class="kom-gitter">
+      <form class="tilmeld" id="tilmeld" data-ok="Tak. Du er skrevet op, og vi skriver til dig, den dag vi åbner." action="https://api.web3forms.com/submit" method="post">
+        <input type="hidden" name="subject" value="Ny tilmelding fra tallo.dk">
+        <input type="checkbox" name="botcheck" class="faelde" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <ol class="trinliste" id="trinliste">
+          <li class="trin" data-trin="cvr">
+            <span class="nr" aria-hidden="true">1</span>
+            <div>
+              <span class="lbl">Din virksomhed</span>
+              <div class="to-felter">
+                <input id="cvr" enterkeyhint="next" name="cvr" type="text" inputmode="numeric" autocomplete="off" placeholder="CVR-nummer" aria-label="CVR-nummer" maxlength="11" pattern="[0-9 ]{8,11}" required>
+                <input id="virksomhed" enterkeyhint="next" name="virksomhed" type="text" autocomplete="organization" placeholder="Virksomhedens navn" aria-label="Virksomhedens navn" required>
+              </div>
+            </div>
+          </li>
+          <li class="trin" data-trin="mail">
+            <span class="nr" aria-hidden="true">2</span>
+            <div>
+              <label for="mail">Din mail</label>
+              <input id="mail" enterkeyhint="send" name="email" type="email" autocomplete="email" placeholder="dig@firma.dk" required>
+              <p class="hjaelp">Vi skriver til dig, den dag vi åbner.</p>
+            </div>
+          </li>
+          <li class="trin" data-trin="pakke">
+            <span class="nr" aria-hidden="true">3</span>
+            <div>
+              <span class="lbl" id="pakkeLbl">Vælg pakke</span>
+              <div class="pakkevalg" role="radiogroup" aria-labelledby="pakkeLbl">
+                <label><input type="radio" name="pakke" value="Gør det selv med AI, 349 kr." data-pakke="selv"><span>Gør det selv med AI<small>349 kr. om måneden</small></span></label>
+                <label><input type="radio" name="pakke" value="Med bogholder, 799 kr." data-pakke="bogholder" checked><span>Med bogholder<small>799 kr. om måneden</small></span></label>
+              </div>
+              <p class="hjaelp">Du kan skifte, når du vil.</p>
+            </div>
+          </li>
+        </ol>
+        <div class="send">
+          <button class="pille farve" type="submit">Skriv mig op</button>
+          <p class="formular-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <aside class="snak">
+        <img src="/billeder/mohammed.webp" alt="" width="400" height="400" loading="lazy">
+        <div>
+          <h3>Hellere en snak?</h3>
+          <p>30 minutter i telefonen eller på video.</p>
+        </div>
+        <a class="pille hvid" href="#kom" data-book>Vælg en tid</a>
+      </aside>
+      <p class="snak-mail">Eller skriv til os: <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
+    </div>
+  </section>
 </main>
-<footer>Tallo · CVR 46440986</footer>
-<script src="js/mail.js"></script>
+
+<!-- fod:start -->
+<footer class="fod">
+  <div class="fod-indre">
+    <div>
+      <a class="logo" href="/">tallo</a>
+      <p>Bogføring for små virksomheder.</p>
+    </div>
+    <div>
+      <span class="titel">Tallo</span>
+      <ul>
+        <li><a href="/appen/">Appen</a></li>
+        <li><a href="/priser/">Priser</a></li>
+        <li><a href="/ai/">Sådan bruger vi AI</a></li>
+        <li><a href="/skift/">Skift til Tallo</a></li>
+        <li><a href="/om-os/">Om os</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="titel">Kontakt</span>
+      <ul>
+        <li><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></li>
+        <li><span>CVR 46440986</span></li>
+        <li><a href="/privatliv/">Privatlivspolitik</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="kaempe" aria-hidden="true">tallo</div>
+</footer>
+<!-- fod:slut -->
+
+<script>
+(() => {
+  // Tilmeldingen: flueben pr. trin og afsendelse til Web3Forms (som på den nuværende forside).
+  // Intet CVR-opslag: cvrapi.dk afviser browsere (403); det kræver et mellemled på en server.
+  const tilmeld = document.getElementById("tilmeld");
+  const cvrFelt = document.getElementById("cvr"), mailFelt = document.getElementById("mail");
+  const virksomhed = document.getElementById("virksomhed");
+  function opdaterTrin() {
+    const cvrOk = cvrFelt.value.replace(/\D/g, "").length === 8 && virksomhed.value.trim().length > 1;
+    const mailOk = mailFelt.value.trim() !== "" && mailFelt.checkValidity();
+    const pakkeOk = !!tilmeld.querySelector('input[name="pakke"]:checked');
+    const klar = { cvr: cvrOk, mail: mailOk, pakke: pakkeOk };
+    tilmeld.querySelectorAll(".trin").forEach((li) => li.classList.toggle("klar", klar[li.dataset.trin]));
+    // Stregen fyldes til det sidste sammenhængende trin, der er klaret
+    document.getElementById("trinliste").style.setProperty("--fyld", cvrOk ? (mailOk ? 1 : .5) : 0);
+  }
+  tilmeld.addEventListener("input", opdaterTrin);
+  tilmeld.addEventListener("change", opdaterTrin);
+  opdaterTrin();
+
+  // Web3Forms. Nøglen er offentlig af design; den kan kun sende til vores egen kontaktadresse.
+  // Spam: en usynlig fælde (botcheck) og et tidstjek; Web3Forms filtrerer desuden på serveren.
+  const WEB3FORMS_KEY = "05a6c43e-d1d8-438c-a3fa-9c9fcde54186";
+  let foersteFokus = 0;
+  tilmeld.addEventListener("focusin", () => { if (!foersteFokus) foersteFokus = Date.now(); });
+  tilmeld.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const status = tilmeld.querySelector(".formular-status");
+    if (tilmeld.elements.namedItem("botcheck").checked) return;
+    if (!foersteFokus || Date.now() - foersteFokus < 4000) return; // robotter udfylder på under 4 s
+    const adr = "kontakt" + "@" + "tallo.dk";
+    const knap = tilmeld.querySelector('button[type="submit"]');
+    knap.disabled = true;
+    status.className = "formular-status";
+    status.textContent = "Sender";
+    try {
+      const data = Object.fromEntries(new FormData(tilmeld));
+      data.access_key = WEB3FORMS_KEY;
+      const svar = await fetch(tilmeld.action, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(data) });
+      const json = await svar.json();
+      if (!json.success) throw new Error(json.message || "fejl");
+      tilmeld.reset(); opdaterTrin();
+      status.className = "formular-status ok";
+      status.textContent = tilmeld.dataset.ok;
+    } catch {
+      status.className = "formular-status fejl";
+      status.textContent = "Det kom ikke igennem. Skriv til " + adr + " i stedet.";
+    } finally {
+      knap.disabled = false;
+    }
+  });
+
+  // Fotoets mål (den beskårne original) og laptopskærmens hjørner i dets pixels: øverst venstre, øverst højre,
+  // nederst højre, nederst venstre. Målt 8. okt 2026 på et gitter og efterprøvet med app-billedet lagt ind.
+  const FOTO = { w: 3857, h: 2411 };
+  const SKAERM = [[1262, 1091], [2164, 1094], [2140, 1675], [1231, 1673]].map(([x, y]) => [x / FOTO.w, y / FOTO.h]);
+  const ZOOM = 1000;  // px scroll fra foto til app; Mercury fylder skærmen ved cirka 1000
+  const OVER = 400;   // px fra fuld app til panelet med punkterne (Mercury er der ved 1350)
+  const TRIN = 450;   // px pr. punkt
+  const PUNKTER = 4;
+  const START = ZOOM + OVER;
+  // Appens skærmbilleder: desktop er 1440 × 900 med en 264 px sidebjælke, mobil 390 × 844
+  const APP = { d: { w: 1440, h: 900, side: 264 }, m: { w: 390, h: 844 } };
+  const SKAERME = ["overblik", "foer", "foer", "moms"]; // pr. punkt; punkt 3 bogfører rækken undervejs
+  const STATISK = { d: ["app-overblik-2x", "app-transaktioner-2x", "app-transaktioner-bogfoert-2x", "app-moms-2x"],
+                    m: ["app-mobil-2x", "app-mobil-transaktioner-2x", "app-mobil-transaktioner-bogfoert-2x", "app-mobil-moms-2x"] };
+
+  const rejse = document.getElementById("rejse");
+  const scene = document.getElementById("scene");
+  const foto = document.getElementById("foto");
+  const skaerm = document.getElementById("skaerm");
+  const lagD = document.getElementById("lagD"), lagM = document.getElementById("lagM");
+  // Kun laget, der bruges i den aktuelle bredde, henter sine billeder (mobil sparer desktopskærmene og omvendt)
+  const hent = (lag) => { if (lag.dataset.hentet) return; lag.dataset.hentet = "1"; lag.querySelectorAll("img[data-src]").forEach((i) => { i.src = i.dataset.src; }); };
+  const tekst = document.getElementById("tekst");
+  const sloer = document.getElementById("sloer");
+  const bjaelke = document.getElementById("bjaelke");
+  const produkt = document.getElementById("produkt");
+  const punkter = [...document.querySelectorAll("#punkter li")];
+  const statiskBillede = document.getElementById("statiskBillede");
+  const fokus = document.getElementById("fokus"), kortChip = document.getElementById("kortChip");
+  // Zoomen styres af rullet og vises for alle, også ved reduceret bevægelse (Othman 15. okt 2026);
+  // kun de små automatiske ting (prisen der ruller, afsnit der glider ind) slås fra i js/tallo.js.
+  const stille = false;
+
+  const klem = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const glid = (a, b, v) => { const t = klem((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+  const blod = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  // Zoomen accelererer som hos Mercury (målt: ca. 11 %, 34 % og 70 % af vejen ved 250, 500 og 750 px)
+  const fart = (t) => Math.pow(t, 1.4);
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const midt = (q) => [(q[0][0] + q[1][0] + q[2][0] + q[3][0]) / 4, (q[0][1] + q[1][1] + q[2][1] + q[3][1]) / 4];
+  const afstand = (a, b) => Math.hypot(b[0] - a[0], b[1] - a[1]);
+  const hjoerner = (x, y, w, h) => [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
+
+  // Homografi fra et rektangel (0,0)-(bw,bh) til en firkant, som CSS matrix3d
+  function matrix3d(q, bw, bh) {
+    const [[x0, y0], [x1, y1], [x2, y2], [x3, y3]] = q;
+    const dx1 = x1 - x2, dx2 = x3 - x2, dx3 = x0 - x1 + x2 - x3;
+    const dy1 = y1 - y2, dy2 = y3 - y2, dy3 = y0 - y1 + y2 - y3;
+    const n = dx1 * dy2 - dx2 * dy1;
+    const g = (dx3 * dy2 - dx2 * dy3) / n, h = (dx1 * dy3 - dx3 * dy1) / n;
+    const a = x1 - x0 + g * x1, b = x3 - x0 + h * x3, d = y1 - y0 + g * y1, e = y3 - y0 + h * y3;
+    return `matrix3d(${a / bw},${d / bw},0,${g / bw},${b / bh},${e / bh},0,${h / bh},0,0,1,0,${x0},${y0},0,1)`;
+  }
+
+  // Højden af produktteksten med hvert af de fire punkter foldet ud; den højeste bestemmer, hvor panelet starter
+  function hoejesteTekst() {
+    const foer = punkter.findIndex((li) => li.classList.contains("aktiv"));
+    let maks = 0;
+    punkter.forEach((_, i) => {
+      punkter.forEach((li, j) => li.classList.toggle("aktiv", i === j));
+      maks = Math.max(maks, produkt.offsetHeight);
+    });
+    punkter.forEach((li, j) => li.classList.toggle("aktiv", j === foer));
+    return maks;
+  }
+
+  let L;
+  function maal() {
+    const vw = scene.clientWidth, vh = innerHeight, mobil = vw < 900;
+    hent(mobil ? lagM : lagD);
+    // Fotoet dækker scenen. Er det bredere end skærmen (mobil), centreres det om laptoppen.
+    const s = Math.max(vw / FOTO.w, vh / FOTO.h);
+    const w = FOTO.w * s, h = FOTO.h * s;
+    const cx = midt(SKAERM)[0];
+    const ox = klem(vw / 2 - cx * w, vw - w, 0);
+    // Korte skærme: laptoppen må aldrig ligge under knapperne; ligger den der, flyttes fotoet ned
+    const knapper = tekst.querySelector(".knapper");
+    const knapBund = tekst.offsetTop + knapper.offsetTop + knapper.offsetHeight;
+    const skaermTop = (vh - h) / 2 + Math.min(...SKAERM.map(([, fy]) => fy)) * h;
+    const oy = (vh - h) / 2 + Math.max(0, knapBund + 20 - skaermTop);
+    const hj = SKAERM.map(([fx, fy]) => [ox + fx * w, oy + fy * h]);
+
+    // Hvor appen lander: så stor som muligt under menuen, i appens eget format
+    const navH = mobil ? 64 : 72, luft = mobil ? 12 : 24, format = mobil ? APP.m.w / APP.m.h : APP.d.w / APP.d.h;
+    let tw = vw - 2 * luft, th = tw / format;
+    const maxH = vh - navH - 2 * luft;
+    if (th > maxH) { th = maxH; tw = th * format; }
+    const tx = (vw - tw) / 2, ty = navH + (vh - navH - th) / 2;
+
+    // Panelet, appen glider ud i (skærer ud over højre kant som hos Mercury), og teksten til venstre
+    let panel, sc, tekstX, tekstW, tekstY;
+    if (mobil) {
+      // Teksten øverst, panelet under den højeste af de fire tekstblokke; på tablets midtstillet og ikke for bredt
+      tekstW = Math.min(vw - 40, 640); tekstX = Math.round((vw - tekstW) / 2); tekstY = navH + 14;
+      produkt.style.width = tekstW + "px";
+      const py = Math.max(Math.round(vh * .54), tekstY + hoejesteTekst() + 16);
+      const pw = Math.min(vw - 32, 520);
+      panel = { x: Math.round((vw - pw) / 2), y: py, w: pw, h: vh - py + 60 };
+      sc = pw / APP.m.w;
+    } else {
+      const px = Math.round(vw * .522), ph = Math.min(650, vh * .74);
+      panel = { x: px, y: navH + (vh - navH - ph) / 2 - 12, w: vw - px + 80, h: ph };
+      sc = .95; // næsten fuld størrelse, som hos Mercury; teksten i appen skal kunne læses
+      tekstX = Math.round(vw * .105); tekstW = Math.min(458, px - tekstX - 56); tekstY = panel.y + 90;
+    }
+
+    const sw = (afstand(hj[0], hj[1]) + afstand(hj[3], hj[2])) / 2;
+    const sh = (afstand(hj[0], hj[3]) + afstand(hj[1], hj[2])) / 2;
+    L = { vw, vh, mobil, ox, oy, hj, sw, sh, tw, th, C: midt(hj), sc, panel,
+      mal: hjoerner(tx, ty, tw, th), panelHj: hjoerner(panel.x, panel.y, panel.w, panel.h),
+      kSlut: Math.max(tw / sw, th / sh) };
+    L.V = midt(L.mal);
+    foto.style.width = w + "px";
+    foto.style.height = h + "px";
+    produkt.style.left = tekstX + "px";
+    produkt.style.top = tekstY + "px";
+    produkt.style.width = tekstW + "px";
+    // Kortene lægges i den synlige del af panelet; chippen lige under rækken, der bogføres
+    fokus.style.left = panel.x + "px";
+    fokus.style.top = panel.y + "px";
+    fokus.style.width = Math.min(panel.w, vw - panel.x) + "px";
+    fokus.style.height = Math.min(panel.h, vh - panel.y - (mobil ? 16 : 0)) + "px";
+    // Lige under rækken, så statuskolonnen kan ses; på desktop rykket ind under beskrivelsen
+    // Er der ikke plads under rækken i den synlige del af panelet (korte telefoner, tablets), lægges chippen over den
+    const synligH = Math.min(panel.h, vh - panel.y - (mobil ? 16 : 0));
+    const raekkeTop = mobil ? (477.3 / APP.m.h - .30) * APP.m.h * sc : 361.5 * sc;
+    const raekkeBund = mobil ? ((477.3 + 101) / APP.m.h - .30) * APP.m.h * sc : (361.5 + 64.9) * sc;
+    kortChip.style.top = (raekkeBund + 10 + 52 <= synligH ? raekkeBund + 10 : Math.max(8, raekkeTop - 52)) + "px";
+    kortChip.style.left = (mobil ? 12 : (580 - APP.d.side) * sc - 10) + "px";
+  }
+
+  function tegn(s) {
+    const { C, V, hj, mal, ox, oy, sw, sh, tw, th, kSlut, mobil, sc, panel, panelHj } = L;
+    const p = klem(s / ZOOM), q = blod(klem((s - ZOOM) / OVER));
+
+    // 1. Zoom fra foto ind i skærmen
+    const e = fart(p);
+    const k = Math.pow(kSlut, e);                       // eksponentielt, så zoomen føles jævn
+    const m = [(V[0] - C[0]) * e, (V[1] - C[1]) * e];   // skærmens midte glider mod landingens midte
+    const flyt = (pt) => [C[0] + k * (pt[0] - C[0]) + m[0], C[1] + k * (pt[1] - C[1]) + m[1]];
+    const T = flyt([ox, oy]);
+    foto.style.transform = `translate(${T[0]}px,${T[1]}px) scale(${k})`;
+    foto.style.opacity = 1 - glid(.75, .97, p);
+
+    // Til sidst rettes skærmen op og får appens præcise format; derefter glider den ud i panelet
+    const f = glid(.6, 1, p);
+    let kvad = hj.map((pt, i) => { const z = flyt(pt); return [lerp(z[0], mal[i][0], f), lerp(z[1], mal[i][1], f)]; });
+    let bw = lerp(sw * k, tw, f), bh = lerp(sh * k, th, f);
+    if (q > 0) {
+      kvad = mal.map((pt, i) => [lerp(pt[0], panelHj[i][0], q), lerp(pt[1], panelHj[i][1], q)]);
+      bw = lerp(tw, panel.w, q); bh = lerp(th, panel.h, q);
+    }
+    skaerm.style.width = bw + "px";
+    skaerm.style.height = bh + "px";
+    skaerm.style.transform = matrix3d(kvad, bw, bh);
+    skaerm.style.borderRadius = lerp(3, mobil ? 14 : 16, f) + "px";
+    skaerm.style.boxShadow = `0 0 0 1px rgba(20,20,20,${.06 * f}), 0 30px 80px -30px rgba(20,20,20,${.35 * f})`;
+
+    // Lagene: dækker skærmen under zoomen; i panelet vises appen i skala sc, og sidebjælken glider ud til venstre
+    const daek = (fmt) => Math.max(bw, bh * fmt);
+    const fmtD = APP.d.w / APP.d.h, fmtM = APP.m.w / APP.m.h;
+    let wD = daek(fmtD), xD = 0, wM = daek(fmtM), xM = (bw - wM) / 2;
+    if (q > 0) {
+      wD = lerp(tw, APP.d.w * sc, q); xD = lerp(0, -APP.d.side * sc, q);
+      wM = lerp(tw, APP.m.w * sc, q); xM = 0;
+    }
+    lagD.style.cssText = `width:${wD}px;height:${wD / fmtD}px;transform:translateX(${xD}px)`;
+    lagM.style.cssText = `width:${wM}px;height:${wM / fmtM}px;transform:translateX(${xM}px)`;
+    // Mobil: desktopbilledet fader ud til appens tomme flade, mens skærmen skifter form, og først derefter
+    // fader mobilbilledet ind. Et krydsfade viste de to layouts oven i hinanden.
+    lagD.style.opacity = mobil ? 1 - glid(.68, .78, p) : 1;
+    lagM.style.opacity = mobil ? glid(.84, .94, p) : 0;
+
+    // Teksten over fotoet forsvinder; punkterne kommer ind, mens appen glider ud i panelet
+    const ud = glid(0, .3, p);
+    tekst.style.opacity = sloer.style.opacity = bjaelke.style.opacity = 1 - ud;
+    tekst.style.transform = `translateY(${-24 * ud}px)`;
+    tekst.style.visibility = bjaelke.style.visibility = ud >= 1 ? "hidden" : "visible";
+    const ind = glid(mobil ? .8 : .6, 1, q); // på mobil glider panelet hen under teksten, så den venter længere
+    produkt.style.opacity = ind;
+    produkt.style.transform = `translateY(${16 * (1 - ind)}px)`;
+    produkt.style.visibility = ind > 0 ? "visible" : "hidden";
+    produkt.style.pointerEvents = ind > .5 ? "auto" : "none";
+
+    // 2. Punkterne: scrollen fører gennem dem ét ad gangen; stregen over det aktive viser hvor langt
+    const t = Math.max(0, (s - START) / TRIN);
+    const trin = Math.min(PUNKTER - 1, Math.floor(t));
+    saetTrin(trin);
+    punkter.forEach((li, i) => { li.firstElementChild.style.transform = `scaleX(${i === trin ? klem(t - trin) : 0})`; });
+
+    // Kortene vises først, når panelet står stille; så spiller det aktive forfra
+    const synlig = ind > .97;
+    if (synlig !== fokusSynlig) {
+      fokusSynlig = synlig;
+      fokus.classList.toggle("synlig", synlig);
+      visKort(synlig ? aktivt : -1);
+    }
+  }
+
+  // Det levende kort for punkt i: glider frem, og tal, søjler og rækker spiller forfra
+  const kort = [...fokus.querySelectorAll(".fk")];
+  const SOEJLER = [[125, 77], [107, 72], [122, 85], [99, 77], [131, 75], [104, 80], [133, 74], [98, 78], [131, 80], [22, 2]]; // tusinder, som i appens graf
+  document.getElementById("soejler").innerHTML = SOEJLER.map(([a, b], i) =>
+    `<i><b style="height:${a / 1.4}%;transition-delay:${.2 + i * .05}s"></b><b style="height:${b / 1.4}%;transition-delay:${.25 + i * .05}s"></b></i>`).join("");
+  let fokusSynlig = false, taelling = 0;
+  function taelOp(el, nr) {
+    const til = parseFloat(el.dataset.tael), dec = +(el.dataset.dec || 0);
+    const fmt = (v) => v.toLocaleString("da-DK", { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    el.textContent = fmt(0);
+    setTimeout(() => {
+      const t0 = performance.now();
+      const trin = (nu) => {
+        if (nr !== taelling) return;
+        const t = Math.min(1, (nu - t0) / 900);
+        el.textContent = fmt(til * (1 - Math.pow(1 - t, 3)));
+        if (t < 1) requestAnimationFrame(trin);
+      };
+      requestAnimationFrame(trin);
+    }, +(el.dataset.forsink || 150));
+  }
+  function visKort(i) {
+    const nr = ++taelling;
+    kort.forEach((k) => { k.classList.toggle("vist", +k.dataset.trin === i); k.classList.remove("spil"); });
+    skaerm.classList.toggle("daempet", i === 0 || i === 1 || i === 3);
+    const k = kort.find((x) => +x.dataset.trin === i);
+    if (!k) return;
+    void k.offsetWidth;
+    k.classList.add("spil");
+    k.querySelectorAll("[data-tael]").forEach((el) => taelOp(el, nr));
+  }
+
+  // Skift skærm. Punkt 3 viser en regning, der bogfører sig selv: rækken markeres, og status skifter.
+  let aktivt = -1, timer = 0;
+  function vis(navn) {
+    for (const lag of [lagD, lagM]) lag.querySelectorAll("img").forEach((img) => img.classList.toggle("vist", img.dataset.s === navn));
+  }
+  function saetTrin(i) {
+    if (i === aktivt) return;
+    aktivt = i;
+    punkter.forEach((li, j) => { li.classList.toggle("aktiv", j === i); li.querySelector("button").setAttribute("aria-expanded", String(j === i)); });
+    clearTimeout(timer);
+    skaerm.classList.remove("spiller");
+    if (stille) {
+      statiskBillede.src = `/billeder/${STATISK[innerWidth < 900 ? "m" : "d"][i]}.webp`;
+      return;
+    }
+    vis(SKAERME[i]);
+    if (i === 2) {
+      void skaerm.offsetWidth; // start markeringen forfra
+      skaerm.classList.add("spiller");
+      timer = setTimeout(() => vis("efter"), 1100);
+    }
+    if (fokusSynlig) visKort(i);
+  }
+
+  // Klik på et punkt: scroll derhen (eller skift billedet direkte, når der ikke zoomes)
+  punkter.forEach((li, i) => li.querySelector("button").addEventListener("click", () => {
+    if (stille) return saetTrin(i);
+    scrollTo({ top: rejse.offsetTop + START + i * TRIN + 2, behavior: "smooth" });
+  }));
+
+  // Bløde scrub: fremdriften følger scrollen med lidt efterslæb, som en film man spoler i
+  let maalS = 0, nuS = 0, koerer = false;
+  const position = () => Math.max(0, scrollY - rejse.offsetTop);
+  function loop() {
+    nuS += (maalS - nuS) * .16;
+    if (Math.abs(maalS - nuS) < .5) nuS = maalS;
+    tegn(nuS);
+    if (nuS !== maalS) requestAnimationFrame(loop); else koerer = false;
+  }
+  function vaek() { maalS = position(); if (!koerer) { koerer = true; requestAnimationFrame(loop); } }
+
+  rejse.style.height = `calc(100vh + ${START + PUNKTER * TRIN + 100}px)`;
+  maal();
+  if (stille) {
+    tegn(0);
+    saetTrin(0);
+    addEventListener("resize", () => { maal(); tegn(0); });
+    return;
+  }
+  nuS = maalS = position();
+  tegn(nuS);
+  addEventListener("resize", () => { maal(); tegn(nuS); });
+  addEventListener("scroll", vaek, { passive: true });
+})();
+</script>
+<script src="/js/tallo.js"></script>
+<script src="/js/mail.js"></script>
 </body>
 </html>

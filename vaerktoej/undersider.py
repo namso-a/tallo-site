@@ -1,0 +1,701 @@
+"""Bygger tallo.dk's fælles dele og undersider.
+
+    python vaerktoej/undersider.py
+
+- Skriver hoved, menu, pakkeblok og footer ind i forsiden (index.html) mellem markørerne
+  <!-- navn:start --> og <!-- navn:slut -->. Resten af forsiden er håndskrevet.
+- Laver undersiderne /appen, /priser, /ai, /skift og /om-os helt.
+- Giver /privatliv ny menu og footer; indholdet mellem <!-- indhold:start/slut --> røres ikke.
+
+Teksten bygger på den, Othman godkendte 7. okt 2026 (Tallo/.docs/design/tekst_2026-10-07.md), rettet 14. okt:
+pakken hedder "Gør det selv med AI", Claude/ChatGPT står som "kommer senere", og AI-bogholderen ser kun undtagelserne.
+Sprogregler i Tallo/CLAUDE.md: kundens sprog, ingen fagord, "fast pris", aldrig "vi hjælper".
+"""
+import re
+from pathlib import Path
+
+ROD = Path(__file__).resolve().parents[1]
+DOMAENE = "https://tallo.dk"
+
+CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.com; style-src 'self' 'unsafe-inline'; "
+       "img-src 'self' data: https://app.cal.com; font-src 'self'; connect-src 'self' https://api.web3forms.com "
+       "https://app.cal.com; frame-src https://app.cal.com https://cal.com; object-src 'none'; base-uri 'self'; "
+       "form-action https://api.web3forms.com mailto:")
+
+MENU = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "AI"), ("/skift/", "Skift"), ("/om-os/", "Om os")]
+FOD_LINKS = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "Sådan bruger vi AI"), ("/skift/", "Skift til Tallo"), ("/om-os/", "Om os")]
+
+
+def hoved(titel, beskrivelse, sti):
+    return f"""<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="{CSP}">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex, nofollow">
+<title>{titel}</title>
+<meta name="description" content="{beskrivelse}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{DOMAENE}{sti}">
+<meta property="og:title" content="{titel}">
+<meta property="og:description" content="{beskrivelse}">
+<meta property="og:image" content="{DOMAENE}/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="da_DK">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preload" as="font" type="font/woff2" href="/fonts/geist.woff2" crossorigin>
+<link rel="stylesheet" href="/css/tallo.css">
+<script>document.documentElement.classList.add("zoom"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("stille");</script>"""
+
+
+def menu(aktiv=None):
+    def li(h, t):
+        nu = ' aria-current="page"' if h == aktiv else ""
+        return f'    <li><a href="{h}"{nu}>{t}</a></li>'
+    smaa = "\n".join(li(h, t) for h, t in MENU)
+    store = "\n".join(li(h, t) for h, t in [("/", "Forsiden")] + MENU)
+    return f"""<nav class="nav" id="nav" aria-label="Hovedmenu">
+  <a class="logo" href="/" aria-label="Tallo, til forsiden">tallo</a>
+  <ul class="nav-links">
+{smaa}
+  </ul>
+  <div class="nav-hoejre">
+    <a class="pille farve" href="/#kom">Skriv dig op</a>
+    <button class="menu-knap" id="menuKnap" type="button" aria-expanded="false" aria-controls="menuArk">Menu</button>
+  </div>
+</nav>
+<div class="menu-ark" id="menuArk" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="menu-top"><a class="logo" href="/">tallo</a><button class="menu-luk" type="button" aria-label="Luk menuen">×</button></div>
+  <ul>
+{store}
+  </ul>
+  <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
+  <p class="lille">Eller skriv til os: <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
+</div>"""
+
+
+def fod():
+    links = "\n".join(f'        <li><a href="{h}">{t}</a></li>' for h, t in FOD_LINKS)
+    return f"""<footer class="fod">
+  <div class="fod-indre">
+    <div>
+      <a class="logo" href="/">tallo</a>
+      <p>Bogføring for små virksomheder.</p>
+    </div>
+    <div>
+      <span class="titel">Tallo</span>
+      <ul>
+{links}
+      </ul>
+    </div>
+    <div>
+      <span class="titel">Kontakt</span>
+      <ul>
+        <li><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></li>
+        <li><span>CVR 46440986</span></li>
+        <li><a href="/privatliv/">Privatlivspolitik</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="kaempe" aria-hidden="true">tallo</div>
+</footer>"""
+
+
+def pakkeblok(overskrift=True, taet=False):
+    h2 = '\n      <h2>To pakker. Fast pris.</h2>' if overskrift else ""
+    return f"""<section class="pakker{' taet' if taet else ''}" id="pakker">
+    <div class="felt">{h2}
+      <div class="vaelger" id="vaelger" role="group" aria-label="Vælg pakke" data-valgt="bogholder">
+        <button type="button" data-pakke="selv" aria-pressed="false">Gør det selv med AI</button>
+        <button type="button" data-pakke="bogholder" aria-pressed="true">Med bogholder</button>
+        <span class="glider" aria-hidden="true"></span>
+      </div>
+
+      <div class="kort">
+        <div class="demo" id="demo" data-pakke="bogholder" data-trin="venter">
+          <p class="demo-top">Ny regning · i dag kl. 07.12</p>
+          <div class="regning">
+            <div class="raekke">
+              <span class="ava" aria-hidden="true">DB</span>
+              <div class="hvad"><b>Mejeriet Nord</b><small>Bank · Driftskonto</small></div>
+              <span class="beloeb">−2.210,00 kr.</span>
+            </div>
+            <dl class="detaljer">
+              <dt>Konto</dt><dd><span class="app-pille kat">Varer og råvarer</span></dd>
+              <dt>Moms</dt><dd>25 % · 442,00 kr.</dd>
+            </dl>
+            <div class="handling" aria-live="polite">
+              <div class="tilstand" data-vis="selv venter">
+                <p class="tekst"><b>✦ Forslag</b>Mejeriet Nord er bogført som varekøb i alle tidligere bilag.</p>
+                <button type="button" class="godkend" id="godkend">Godkend</button>
+              </div>
+              <div class="tilstand" data-vis="selv bogfoert">
+                <span class="app-pille ok">✓ Bogført</span>
+                <p class="tekst">Bilag 225. Godkendt af dig, lige nu.</p>
+                <button type="button" class="fortryd" id="fortryd">Fortryd</button>
+              </div>
+              <div class="tilstand" data-vis="bogholder venter">
+                <span class="app-pille graa"><i class="snurre" aria-hidden="true"></i>Tallo behandler</span>
+                <p class="tekst">Vi læser regningen og bogfører den.</p>
+              </div>
+              <div class="tilstand" data-vis="bogholder bogfoert">
+                <span class="app-pille ok">✓ Bogført</span>
+                <p class="tekst">Bilag 225. Bogført for dig; du skulle ikke gøre noget.</p>
+              </div>
+            </div>
+          </div>
+          <p class="demo-hint" id="demoHint"></p>
+        </div>
+
+        <div class="pakke">
+          <h3 id="pNavn">Med bogholder</h3>
+          <p class="pris"><b><span id="pPris">799</span> kr.</b><span>om måneden plus moms</span></p>
+          <div class="lister">
+            <ul data-pakke="selv" hidden>
+              <li>Regninger og fakturaer kommer ind af sig selv</li>
+              <li>AI'en foreslår, hvor de skal hen</li>
+              <li>Du godkender med ét tryk</li>
+              <li>Momsen regnes ud, og du sender den selv</li>
+              <li>Skift til bogholder når som helst</li>
+              <li class="senere">Spørg din egen Claude eller ChatGPT om dine tal <span class="snart">Kommer senere</span></li>
+            </ul>
+            <ul data-pakke="bogholder">
+              <li>Alt fra Gør det selv med AI</li>
+              <li>Vi bogfører alt, uanset hvor mange bilag</li>
+              <li>En bogholder kvalitetssikrer bogføringen</li>
+              <li>Vi indberetter momsen for dig</li>
+              <li>Overblik over salg, udgifter og overskud hver måned</li>
+            </ul>
+          </div>
+          <div class="bund">
+            <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
+            <a href="/priser/">Se hvad der er med</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>"""
+
+
+def baand(titel="Skriv dig op på 2 minutter.",
+          tekst="Vi åbner, når programmet er registreret hos Erhvervsstyrelsen. Indtil da betaler du intet.",
+          anden='<a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>'):
+    return f"""<section class="baand" data-afslor>
+    <h2>{titel}</h2>
+    <p class="ingress">{tekst}</p>
+    <div class="knapper">
+      <a class="pille farve stor" href="/#kom">Skriv dig op</a>
+      {anden}
+    </div>
+  </section>"""
+
+
+def raek(nr, titel, tekst, billede, vendt=False, ekstra=""):
+    return f"""<section class="raek{' vendt' if vendt else ''}" data-afslor>
+    <div class="raek-tekst">
+      <span class="nr" aria-hidden="true">{nr}</span>
+      <h2>{titel}</h2>
+      {tekst}{ekstra}
+    </div>
+    <div class="raek-billede">
+      {billede}
+    </div>
+  </section>"""
+
+
+def vindue(fil, alt, bredde=1800, hoejde=1000, maks=None):
+    stil = f' style="max-width:{maks}px;margin-inline:auto"' if maks else ""
+    return f'<figure class="vindue"{stil}><img src="/billeder/{fil}" alt="{alt}" width="{bredde}" height="{hoejde}" loading="lazy"></figure>'
+
+
+def telefon(fil, alt):
+    return f'<figure class="telefon"><img src="/billeder/{fil}" alt="{alt}" width="780" height="1688" loading="lazy"></figure>'
+
+
+def side(sti, titel, beskrivelse, krop, ekstra_hoved=""):
+    return f"""<!doctype html>
+<html lang="da">
+<head>
+{hoved(titel, beskrivelse, sti)}{ekstra_hoved}
+</head>
+<body>
+{menu(sti)}
+
+<main>
+  {krop}
+</main>
+
+{fod()}
+<script src="/js/tallo.js"></script>
+<script src="/js/mail.js"></script>
+</body>
+</html>
+"""
+
+
+# ---------------------------------------------------------------------------------------------------- /priser
+JA, NEJ = '<span class="ja" aria-label="Med"></span>', '<span class="nej" aria-label="Ikke med">–</span>'
+SAMMENLIGN = [
+    ("Programmet og appen", JA, JA),
+    ("Regninger og fakturaer kommer ind af sig selv", JA, JA),
+    ("Ubegrænset antal fakturaer og kvitteringer", JA, JA),
+    ("AI'en foreslår, hvor dine bilag skal hen", JA, JA),
+    ("Du godkender selv", JA, NEJ),
+    ("Vi bogfører for dig", NEJ, JA),
+    ("En bogholder kvalitetssikrer det, AI'en laver", NEJ, JA),
+    ("Momsen regnes ud", JA, JA),
+    ("Momsen indberettes", "Du gør det", "Vi gør det"),
+    ("Salg, udgifter og overskud hver måned", "I appen", "I appen og på mail"),
+    ("Spørg din egen Claude eller ChatGPT", '<span class="snart">Kommer senere</span>', '<span class="snart">Kommer senere</span>'),
+    ("Løn, årsregnskab og selvangivelse", "Tilkøb", "Tilkøb"),
+]
+# Spørgsmål og svar: samme komponent tre steder, intet spørgsmål går igen (Othman 17. okt 2026). Forsiden har de
+# vigtigste lige før tilmeldingen; /priser pris og vilkår; /om-os jer to. Tredje felt: hvem der svarer (portræt).
+FAQ_FORSIDE = [
+    ("Kan jeg stole på, at AI'en bogfører rigtigt?",
+     "AI'en er god til det, den har set før, men den kan tage fejl. Derfor bærer den det tunge læs, og en bogholder "
+     "kvalitetssikrer den. Også momsen, før den indberettes. Vælger du Gør det selv med AI, godkender du selv hvert "
+     "forslag, og du kan opgradere når som helst."),
+    ("Hvornår åbner I?", "Når vores program er registreret hos Erhvervsstyrelsen. Det kræver loven for de fleste virksomheder. "
+     "Du kan skrive dig op nu, og vi skriver til dig, den dag vi åbner."),
+    ("Er der binding?", "Nej. Du opsiger fra måned til måned."),
+    ("Hvad skal jeg selv gøre?", "Koble din bank til med dit eget MitID, én gang. Derefter kommer regninger og fakturaer ind af sig "
+     "selv. Har du betalt noget med egne penge, tager du et billede af kvitteringen i appen."),
+    ("Hvor ligger mine data?", "I EU. Dine bilag bliver læst i EU og forlader ikke EU."),
+]
+FAQ_PRISER = [
+    ("Kan jeg skifte pakke?", "Ja, fra måned til måned, begge veje."),
+    ("Hvad hvis jeg har mange bilag?", "Prisen er den samme, uanset hvor mange."),
+    ("Hvad koster tilkøbene?", "Det afhænger af din virksomhed. Du får prisen, før du siger ja."),
+    ("Kommer jeg fra et andet program?", 'Så flytter vi dig gratis. Se <a href="/skift/">Skift til Tallo</a>.'),
+]
+FAQ_OM_OS = [
+    ("Hvem er min bogholder?", "Det er mig, Othman. AI'en bærer det tunge læs, og jeg kvalitetssikrer den. Skal noget "
+     "afklares, skriver jeg til dig.", "othman"),
+    ("Hvem taler jeg med, før jeg siger ja?", "Mig, Mohammed. Den første snak er 30 minutter i telefonen eller på video, "
+     "og du binder dig ikke.", "mohammed"),
+    ("Hvad hvis jeg har et spørgsmål?", "Så skriver du det i appen. Jeg svarer normalt samme dag. Haster det, så ring.", "othman"),
+]
+SVARER = {"othman": "Othman", "mohammed": "Mohammed"}
+
+
+def faq(spoergsmaal, overskrift="Spørgsmål og svar"):
+    """Spørgsmål og svar med overskriften over listen; js/tallo.js åbner og lukker svarene blødt ([data-faq])."""
+    def et(sp):
+        q, a, *hvem = sp
+        svarer = (f'<p class="svarer"><img src="/billeder/{hvem[0]}.webp" alt="" width="400" height="400" loading="lazy">'
+                  '</p>') if hvem else ""
+        return f'        <details><summary>{q}</summary><div class="svar">{svarer}<p>{a}</p></div></details>'
+    punkter = "\n".join(et(sp) for sp in spoergsmaal)
+    return f"""<div class="faq">
+      <h2>{overskrift}</h2>
+      <div class="spoergsmaal" data-faq>
+{punkter}
+      </div>
+    </div>"""
+
+
+def priser():
+    """Ét levende øjeblik: skyderen. Kvitteringerne lander i hele afsnittets baggrund, mens man trækker, og prisen står
+    stille og nikker for hver 50 bilag (Othman 17. okt: papirerne som en del af baggrunden i stedet for et foto).
+    Pakkedemoen bruges kun på forsiden, så den ikke gentages her."""
+    raekker = "\n".join(f'          <tr><th scope="row">{a}</th><td>{b}</td><td class="valgt">{c}</td></tr>' for a, b, c in SAMMENLIGN)
+    top = """<div class="side-top">
+      <h1>Hvad det koster</h1>
+      <p class="ingress pris-ingress"><span>Gør det selv med AI til <b>349 kr.</b></span> eller <span>med bogholder til <b>799 kr.</b></span> om måneden. Fast pris, ingen binding, plus moms.</p>
+    </div>"""
+    regner = """<div class="bilag-baggrund" aria-hidden="true"></div>
+    <div class="regner kort-over" data-regner>
+      <div>
+        <h2>Hvor mange bilag har du om måneden?</h2>
+        <p class="antal"><b data-antal>40</b>bilag om måneden</p>
+        <label class="sr" for="bilagAntal">Antal bilag om måneden</label>
+        <input class="skyder" id="bilagAntal" type="range" min="10" max="500" step="10" value="40">
+      </div>
+      <div class="regner-scene" aria-hidden="true">
+        <div class="regner-pris">
+          <div class="vaelger" data-valgt="bogholder">
+            <button type="button" data-pakke="selv" aria-pressed="false" tabindex="-1">Gør det selv med AI</button>
+            <button type="button" data-pakke="bogholder" aria-pressed="true" tabindex="-1">Med bogholder</button>
+            <span class="glider"></span>
+          </div>
+          <p class="belob"><span data-pris>799</span><small>kr.</small></p>
+          <p class="fast-linje">om måneden, plus moms</p>
+          <span class="app-pille ok samme">Samme pris</span>
+        </div>
+      </div>
+    </div>"""
+    tabel = f"""<div class="indre">
+      <div class="region-hoved midt" data-afslor><h2>Det hele, side om side</h2></div>
+      <div class="tabel-ramme" data-afslor>
+        <table class="sammenlign">
+          <thead>
+            <tr><th scope="col"><span class="sr">Hvad er med</span></th><th scope="col">Gør det selv med AI<small>349 kr. om måneden</small></th><th scope="col" class="valgt">Med bogholder<small>799 kr. om måneden</small></th></tr>
+          </thead>
+          <tbody>
+{raekker}
+          </tbody>
+        </table>
+      </div>
+      <p class="smaat" style="color:var(--daempet)"><b style="color:var(--blaek)">Tilkøb:</b> løn, årsregnskab, selvangivelse, og årsrapport (ApS). Prisen får du, når vi kender din virksomhed.</p>
+    </div>"""
+    spoerg = faq(FAQ_PRISER)
+    slut = """<div class="indre udsagn" data-afslor>
+      <h2>Fast pris. Ingen binding.</h2>
+      <p>Skriv dig op nu. Du betaler først, når vi åbner.</p>
+      <div class="knapper">
+        <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
+        <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
+      </div>
+    </div>"""
+    return side("/priser/", "Priser: Tallo", "To pakker, fast pris, ingen binding: Gør det selv med AI til 349 kr. eller Med bogholder til 799 kr. om måneden.",
+                "\n\n  ".join([region("lilla top regner-region", top + "\n    " + regner), region("papir", tabel),
+                                region("papir", spoerg), region("papir", slut)]))
+
+
+# ---------------------------------------------------------------------------------------------------- /appen
+# Ingen grøn og ingen blå (Othman 17. okt 2026): salvie og himmel er taget ud; orange (fersken) er den friske tone
+TONER = {"papir": "#f6f6f3", "hvid": "#ffffff", "lilla": "#cdc3ff", "fersken": "#f8d9c4"}
+
+
+def region(farve, indhold, ekstra=""):
+    """Et afsnit i fuld bredde med sin tone (papir, hvid, lilla, fersken). Tonen står i data-tone, og
+    js/tallo.js lader baggrunden glide fra tone til tone med rullet; uden JS har afsnittet tonen som flade.
+    Regler (Othman 16. okt 2026): korte sider højst én tone ud over papir, lange højst to; sidste afsnit er altid
+    papir, så footeren og det store tallo-logo står i deres rigtige farve."""
+    tone = TONER[farve.split()[0]]
+    return f'<section class="region {farve}" data-tone="{tone}"{ekstra}>\n    {indhold}\n  </section>'
+
+
+def fotoramme(navn, fokus, fokus_mobil):
+    """Ét foto pr. side i egen afrundet ramme; elementet efter det (klassen kort-over) lægger sig over fotoets nederste
+    kant. Fotos fra Pexels (fri licens), kun hænder og ting. fokus/fokus_mobil: hvor motivet sidder (object-position)."""
+    return (f'<figure class="fotoramme" style="--fp:{fokus};--fpm:{fokus_mobil}"><img src="/billeder/{navn}.webp" '
+            f'srcset="/billeder/{navn}-1200.webp 1200w, /billeder/{navn}-1600.webp 1600w, /billeder/{navn}.webp 2400w" sizes="(max-width: 899px) 100vw, 1240px" '
+            f'alt="" width="2400" height="1600" loading="lazy"></figure>\n    ')
+
+
+def appen():
+    """Ét levende øjeblik: telefonen står fast, mens fem korte tekster ruller forbi; hver skifter skærmen og sender et
+    chip ud (Othman 15. okt: variation er noget, der sker, ikke flere farver). Fotoet i toppen: Jakub Żerdzicki
+    (unsplash.com/photos/2MbXuj8PDrA) med appens mobilskærm lagt ind (.tmp/telefon_komp.py)."""
+    top = """<div class="side-top delt">
+      <div>
+        <h1>Alt om forretningen i lommen.</h1>
+        <p class="ingress">Overskud, bank, bilag, fakturaer og moms ét sted. På telefonen og på computeren.</p>
+        <div class="knapper">
+          <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
+          <a class="pille hvid" href="/#kom" data-book>Hellere en snak?</a>
+        </div>
+      </div>
+      <figure class="top-foto"><img src="/billeder/appen-top.webp" srcset="/billeder/appen-top-1000.webp 1000w, /billeder/appen-top-1400.webp 1400w, /billeder/appen-top.webp 2000w" sizes="(max-width: 899px) 100vw, 640px" alt="En hånd, der holder en telefon med Tallos app, i en lille forretning" width="2000" height="1334"></figure>
+    </div>"""
+    TRIN = [
+        ("overblik", "Du ved, hvor du står", "Overskud i år, hvad du har på kontoen, og hvad kunderne skylder dig. Det er det første, du ser, når du åbner appen."),
+        ("foer", "Regningen kommer selv", "En regning på mail eller en betaling i banken lander i appen af sig selv. Du skal ikke taste noget ind."),
+        ("efter", "Og bliver bogført", "AI'en bogfører den, og med bogholder kvalitetssikrer vi. Gør du det selv, trykker du godkend."),
+        ("scan", "En kvittering tager et øjeblik", "Tag et billede, så er den med. Har du betalt med egne penge, siger du det, når du scanner."),
+        ("moms", "Momsen kommer ikke bag på dig", "Du ser beløbet og fristen længe før, og hvordan tallet er regnet. Med bogholder indberetter vi den for dig."),
+    ]
+    tekster = "\n".join(f"""        <div class="ts-tekst" data-skaerm="{s_}"><span class="nr" aria-hidden="true">{i + 1}</span><h2>{t}</h2><p>{b}</p></div>""" for i, (s_, t, b) in enumerate(TRIN))
+    CHIPS = [
+        ("-62%", "16%", '<span class="app-pille ok">+8 %</span><b>376.368 kr.</b> overskud i år'),
+        ("-70%", "44%", '<span class="app-pille kat">Mail</span>Ny regning · Mejeriet Nord'),
+        ("-58%", "52%", '<span class="app-pille ok">✓ Bogført</span>Bilag 225 · Varer og råvarer'),
+        ("-46%", "74%", '<span class="app-pille graa">3 bilag klar</span>Sendt til Tallo'),
+        ("-64%", "30%", '<span class="app-pille kat">Frist 1. december</span>At betale <b>70.080 kr.</b>'),
+    ]
+    chips = "\n".join(f'          <span class="ts-chip" data-trin="{i}" style="--x:{x};--y:{y}">{h}</span>' for i, (x, y, h) in enumerate(CHIPS))
+    scene = f"""<div class="telefon-scene" data-telefon>
+      <div class="ts-tekster">
+{tekster}
+      </div>
+      <div class="ts-scene">
+        <div class="ts-ramme">
+          <div class="ts-telefon" role="img" aria-label="Tallos app på en telefon">
+            <img data-s="overblik" class="vist" src="/billeder/app-mobil-2x.webp" alt="" width="780" height="1688">
+            <img data-s="foer" src="/billeder/app-mobil-transaktioner-2x.webp" alt="" width="780" height="1688" loading="lazy">
+            <img data-s="efter" src="/billeder/app-mobil-transaktioner-bogfoert-2x.webp" alt="" width="780" height="1688" loading="lazy">
+            <img data-s="scan" src="/billeder/appen-scan.webp" alt="" width="780" height="1688" loading="lazy">
+            <img data-s="moms" src="/billeder/app-mobil-moms-2x.webp" alt="" width="780" height="1688" loading="lazy">
+            <span class="markering" aria-hidden="true"></span>
+          </div>
+{chips}
+        </div>
+      </div>
+    </div>"""
+    udsagn = fotoramme("foto-appen", "45% 88%", "38% 78%") + """<div class="indre udsagn kort-over" data-afslor>
+      <h2>Se dine egne tal i appen.</h2>
+      <p>Skriv dig op nu, så er din konto klar, den dag vi åbner.</p>
+      <div class="knapper">
+        <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
+        <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
+      </div>
+    </div>"""
+    return side("/appen/", "Appen: Tallo", "Overskud, bank, bilag, fakturaer og moms ét sted. På telefonen og på computeren.",
+                "\n\n  ".join([region("fersken top", top, ' data-detalje="bilag-ind"'), region("papir", scene), region("papir", udsagn)]))
+
+
+# ---------------------------------------------------------------------------------------------------- /ai
+def ai():
+    """Ét levende øjeblik: kvitteringen bliver læst, mens man ruller (følger rullet frem og tilbage). Felternes placering
+    på kvitteringen er målt på et gitter (ai-kvittering.webp, 540 × 950)."""
+    top = """<div class="side-top">
+      <h1>Sådan bruger vi AI</h1>
+      <p class="ingress">AI'en bærer det tunge læs. En bogholder kvalitetssikrer det.</p>
+    </div>"""
+    # (felt, venstre, top, bredde, højde, linjens udløser) i procent af arket
+    FELTER = [("fra", 10, 7.9, 45, 4.4, 10), ("varer", 11, 18, 57, 15.6, 22), ("beloeb", 13.5, 35.8, 56, 4.8, 38),
+              ("moms", 14, 39.8, 56, 4.4, 42), ("dato", 15, 47, 38, 4.4, 49)]
+    felter = "\n".join(f'            <span class="laes-felt" data-felt="{f}" data-y="{u}" style="left:{l}%;top:{t}%;width:{b}%;height:{h}%"></span>' for f, l, t, b, h, u in FELTER)
+    RAEKKER = [("Fra", "Bagergrossisten A/S"), ("Varer", "Mel, sukker, gær og smør"), ("Beløb", '<span data-beloeb>0,00 kr.</span>'),
+               ("Moms", "300,00 kr."), ("Dato", "14. okt. 2026")]
+    raekker = "\n".join(f'          <div class="laes-raekke"><span>{a}</span><b>{v}</b><span class="app-pille ok">✓</span></div>' for a, v in RAEKKER)
+    scene = f"""<div class="laes" data-laes>
+      <div class="laes-scene">
+        <div class="laes-papir">
+          <div class="ark">
+            <img src="/billeder/ai-kvittering.webp" alt="Kvittering fra Bagergrossisten A/S på 1.500 kr. med 300 kr. i moms, 14. oktober 2026" width="540" height="950">
+{felter}
+            <span class="laes-linje" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div>
+          <div class="laes-tekst">
+            <h2>Den læser dine bilag</h2>
+            <p>Hvem der har sendt dem, beløb, moms og dato. Det sker i EU, og dine bilag forlader ikke EU.</p>
+          </div>
+          <div class="laes-kort" aria-live="polite">
+            <p class="lk-titel"><span>Ny kvittering</span><span class="laes-status"><span class="app-pille graa"><i class="snurre" aria-hidden="true"></i>Læser</span><span class="app-pille ok ok">✓ Bogført</span></span></p>
+{raekker}
+            <p class="laes-forslag"><b>✦ Forslag: Varer og råvarer, 25 % moms</b>Bagergrossisten A/S er bogført som varekøb i alle tidligere bilag.</p>
+          </div>
+        </div>
+      </div>
+    </div>"""
+    # Bogholder og moms i ét afsnit med et menneske i stedet for en liste (Othman 17. okt 2026)
+    bogholder = """<div class="indre bogholder-blok" data-afslor>
+      <div class="bb-tekst">
+        <h2>En bogholder kvalitetssikrer</h2>
+        <p class="ingress">AI'en er hurtig og god til det, den har set før, men den kan tage fejl. Derfor kvalitetssikrer en bogholder den, også momsen, før den indberettes. Gør du det selv med AI, godkender du selv hvert forslag.</p>
+        <div class="knapper">
+          <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
+          <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
+        </div>
+      </div>
+      <figure class="bb-person">
+        <img src="/billeder/othman.webp" alt="Othman Ajjawi" width="400" height="400" loading="lazy">
+        <figcaption><b>Othman Ajjawi</b><span>Din bogholder</span></figcaption>
+      </figure>
+    </div>"""
+    # Samtalen ligner en rigtig AI-chat; den kommer frem én gang, når den ses (js/tallo.js, [data-ai-chat])
+    chat = """<div class="indre">
+      <div class="region-hoved midt" data-afslor>
+        <h2>Spørg din egen <img class="ai-maerke" src="/billeder/claude.svg" alt="">Claude eller <img class="ai-maerke" src="/billeder/chatgpt.svg" alt="">ChatGPT <span class="snart">Kommer senere</span></h2>
+        <p>Det er ikke klar endnu. Når det er, kan du forbinde din egen AI. Den vil kunne læse dine tal og lave fakturaudkast, som du selv sender. Den vil aldrig kunne bogføre, indberette moms eller slette noget, og du vælger selv, om du vil forbinde den.</p>
+      </div>
+      <div class="ai-chat" data-ai-chat>
+        <div class="ac-top">
+          <span class="ac-maerker"><img src="/billeder/claude.svg" alt=""><img src="/billeder/chatgpt.svg" alt=""></span>
+          <span><b>Din egen AI</b><small>Forbundet til Tallo · kan læse dine tal</small></span>
+          <span class="snart">Kommer senere</span>
+        </div>
+        <div class="ac-traad">
+          <div class="ac-besked du"><p>Hvad er mit overskud i år?</p></div>
+          <div class="ac-besked ai"><span class="ac-ikon" aria-hidden="true">✦</span><div>
+            <p class="ac-vaerktoej"><i class="snurre" aria-hidden="true"></i><span class="ok" aria-hidden="true">✓</span>Læser dine tal i Tallo</p>
+            <div class="ac-svar"><p>Dit overskud i år er <b>376.368 kr.</b> Det er 8 % mere end på samme tid sidste år.</p></div>
+          </div></div>
+          <div class="ac-besked du"><p>Lav en faktura til Café Rosengården på 12 kager.</p></div>
+          <div class="ac-besked ai"><span class="ac-ikon" aria-hidden="true">✦</span><div>
+            <p class="ac-vaerktoej"><i class="snurre" aria-hidden="true"></i><span class="ok" aria-hidden="true">✓</span>Laver et udkast i Tallo</p>
+            <div class="ac-svar"><p>Udkastet ligger klar. Du sender det selv, når du har set det.</p>
+              <div class="ac-kort"><span class="app-pille graa">Udkast</span><b>Faktura til Café Rosengården</b><small>12 kager · 1.440,00 kr. plus moms</small><span class="ac-aabn">Åbn i Tallo →</span></div>
+            </div>
+          </div></div>
+        </div>
+        <div class="ac-felt" aria-hidden="true"><span>Spørg om dine tal …</span><i>↑</i></div>
+      </div>
+    </div>"""
+    return side("/ai/", "Sådan bruger vi AI: Tallo", "AI'en læser dine bilag i EU og bogfører det, der ligner det, den har set før. Alt usædvanligt ser et menneske på.",
+                "\n\n  ".join([region("lilla top", top, ''), region("papir laes-region", scene), region("papir", bogholder),
+                                region("papir", chat)]))
+
+
+# ---------------------------------------------------------------------------------------------------- /skift
+def skift():
+    """Ét levende øjeblik: man trækker selv filen fra det gamle program over i Tallo (eller trykker på den), og
+    historikken flytter ind med flueben (Othman 16. okt: "Skift og om os har ikke noget"). Rækkefølgen efter Othman
+    17. okt: flyttekasserne subtilt i baggrunden af toppen, så de tre trin, og til sidst spillet med en tydelig opfordring.
+    Programnavne må stå på /skift (beslutning 7. okt 2026)."""
+    top = """<div class="side-top">
+      <h1>Skift til Tallo</h1>
+      <p class="ingress">Kommer du fra Dinero, e-conomic eller Billy? Din historik kommer med, og vi flytter dig gratis.</p>
+    </div>"""
+    baggrund = """<div class="top-baggrund" aria-hidden="true"><img src="/billeder/foto-skift-1600.webp" srcset="/billeder/foto-skift-1200.webp 1200w, /billeder/foto-skift-1600.webp 1600w, /billeder/foto-skift.webp 2400w" sizes="100vw" alt="" width="2400" height="1600"></div>"""
+    flyt = """<div class="region-hoved midt" data-afslor>
+      <h2>Prøv selv</h2>
+      <p><span class="mus">Træk filen fra dit gamle program over i Tallo, og se din historik flytte med.</span><span class="fin">Tryk på filen, og se din historik flytte over i Tallo.</span></p>
+    </div>
+    <div class="traek kort-over" data-traek>
+      <span class="traek-pil" aria-hidden="true"></span>
+      <div class="gammel">
+        <p class="gammel-top"><i></i><i></i><i></i><span>Dit gamle program</span></p>
+        <div class="gammel-raekker" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <button type="button" class="traek-fil" aria-label="Flyt filen med din historik over i Tallo"><span class="fil" aria-hidden="true">SAF-T</span><div><b>Bageriet Kornet, 2026</b><small>Hele din historik i én fil</small></div><span class="greb"><span class="mus">Træk mig ind i Tallo</span><span class="fin">Tryk for at flytte den ind i Tallo</span></span></button>
+      </div>
+      <div class="flyt" data-flyt>
+        <div class="flyt-vindue">
+          <p class="flyt-top"><span>Tallo</span><span class="app-pille kat">Bageriet Kornet</span></p>
+          <div class="flyt-zone">
+            <span class="hint">Træk filen hertil</span>
+            <div class="flyt-fil"><span class="fil" aria-hidden="true">SAF-T</span><div><b>Bageriet Kornet, 2026</b><small>Lagt i appen</small></div></div>
+          </div>
+          <div class="flyt-linje"><i></i></div>
+          <ul class="flyt-liste" aria-live="polite">
+            <li>Kontoplan<span class="app-pille ok">✓ Flyttet</span></li>
+            <li>Kunder og leverandører<span class="app-pille ok">✓ Flyttet</span></li>
+            <li>Posteringer<span class="app-pille ok">✓ Flyttet</span></li>
+            <li>Saldi<span class="app-pille ok">✓ Flyttet</span></li>
+          </ul>
+          <p class="flyt-slut">Tallene fortsætter, hvor de slap.</p>
+          <button type="button" class="flyt-igen">Prøv igen</button>
+        </div>
+      </div>
+    </div>"""
+    trin = """<div class="indre">
+      <div class="region-hoved midt" data-afslor><h2>Tre trin, så er du flyttet</h2></div>
+      <ol class="trin-vandret" data-afslor>
+        <li><span class="nr" aria-hidden="true">1</span><h3>Hent én fil fra dit gamle program</h3><p>Alle registrerede programmer kan lave den (en SAF-T-fil). Vi viser dig hvordan.</p></li>
+        <li><span class="nr" aria-hidden="true">2</span><h3>Læg den i appen</h3><p>Programmet flytter selv din historik og dine saldi, så tallene fortsætter, hvor de slap.</p></li>
+        <li><span class="nr" aria-hidden="true">3</span><h3>Kobl banken til</h3><p>Med dit eget MitID, én gang.</p></li>
+      </ol>
+    </div>"""
+    slut = """<div class="indre udsagn" data-afslor>
+      <h2>Vi flytter dig gratis.</h2>
+      <p>Indtil vi er registreret, kan du blive i dit gamle program. Vi flytter dig, den dag vi åbner.</p>
+      <div class="knapper">
+        <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
+        <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
+      </div>
+    </div>"""
+    return side("/skift/", "Skift til Tallo", "Kommer du fra Dinero, e-conomic eller Billy? Din historik kommer med, og vi flytter dig gratis.",
+                "\n\n  ".join([region("fersken top foto-top", baggrund + "\n    " + top), region("papir skift-trin", trin), region("papir skift-slut", slut)]))
+
+
+# ---------------------------------------------------------------------------------------------------- /om-os
+def om_os():
+    return side("/om-os/", "Om os: Tallo", "Tallo er Othman og Mohammed. AI'en bærer det tunge læs, og en bogholder kvalitetssikrer det.", """<section class="region fersken top" data-tone="#f8d9c4" data-detalje="linje">
+  <div class="side-top">
+    <h1>Tallo er Othman og Mohammed.</h1>
+  </div>
+
+  <div data-falder>
+    <div class="par bred">
+      <div class="person">
+        <div class="ramme">
+          <div class="foto-kort"><img src="/billeder/othman.webp" alt="Othman Ajjawi" width="400" height="400"></div>
+        </div>
+        <h3>Othman Ajjawi</h3>
+        <p class="rolle">Bogføring og teknik</p>
+        <p class="om">Othman har en kandidatgrad i erhvervsøkonomi og arbejder til daglig med økonomi, data og AI. Han holder øje med dine tal og skriver til dig, hvis noget skal afklares.</p>
+      </div>
+      <div class="person">
+        <div class="ramme">
+          <div class="foto-kort"><img src="/billeder/mohammed.webp" alt="Mohammed Chahrour" width="400" height="400"></div>
+        </div>
+        <h3>Mohammed Chahrour</h3>
+        <p class="rolle">Kunder og aftaler</p>
+        <p class="om">Mohammed er ved at afslutte sin kandidatgrad i jura. Han tager den første snak med dig, sørger for aftalerne og at alt er som det skal være.</p>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <section class="region papir" data-tone="#f6f6f3">
+    """ + faq(FAQ_OM_OS) + """
+  </section>
+
+  """ + baand())
+
+
+# ---------------------------------------------------------------------------------------------------- /privatliv
+JURIDISK_CSS = """
+<style>
+  /* Privatlivspolitikkens indhold (version 0.3, udkast); kun rammen er ny */
+  .juridisk { width: min(720px, calc(100% - 40px)); margin: calc(var(--nav) + 56px) auto 96px; }
+  .juridisk .udkast { margin: 0 0 28px; padding: 12px 16px; border-radius: 12px; background: #ffe9e4; color: #b42d17; font-size: 14px; font-weight: 500; }
+  .juridisk h1 { margin: 8px 0 16px; font-size: clamp(32px, 4vw, 44px); }
+  .juridisk .ind { margin: 0 0 40px; font-size: 18px; color: var(--daempet); }
+  .juridisk h2 { margin: 40px 0 10px; font-size: 22px; font-weight: 560; letter-spacing: -.02em; }
+  .juridisk p, .juridisk li { font-size: 16.5px; line-height: 1.6; }
+  .juridisk p { margin: 0 0 14px; }
+  .juridisk ul, .juridisk ol { margin: 0 0 14px; padding-left: 22px; }
+  .juridisk li { margin-bottom: 6px; }
+  .juridisk a { color: var(--blaa); text-decoration: underline; text-underline-offset: 3px; }
+  .juridisk .mono { font-size: 13px; font-weight: 500; color: var(--daempet); }
+  .juridisk table { width: 100%; margin: 8px 0 18px; border-collapse: collapse; font-size: 15px; }
+  .juridisk th, .juridisk td { padding: 10px 8px 10px 0; border-bottom: 1px solid var(--lineal); text-align: left; vertical-align: top; }
+  .juridisk th { font-size: 13px; font-weight: 500; color: var(--daempet); }
+  .juridisk mark.p { padding: 0 6px; border: 1px dashed var(--daempet); border-radius: 6px; background: transparent; color: var(--daempet); font-size: 12.5px; white-space: nowrap; }
+  .juridisk .bund { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--lineal); color: var(--daempet); font-size: 14px; }
+  .juridisk .note { margin: 0 0 24px; padding: 16px 18px; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal); color: var(--daempet); font-size: 15px; }
+  .juridisk .note ul { margin: 6px 0 0; } .juridisk .note li { margin-bottom: 2px; font-size: 15px; }
+  /* Mobil: hver række bliver et lille kort; kolonnens navn (data-label, sat af js/tallo.js) står over værdien */
+  @media (max-width: 699px) {
+    .juridisk table, .juridisk tbody, .juridisk tr, .juridisk td { display: block; }
+    .juridisk thead, .juridisk tr:has(> th) { display: none; }
+    .juridisk tr { padding: 12px 0; border-bottom: 1px solid var(--lineal); }
+    .juridisk td { padding: 2px 0; border: 0; }
+    .juridisk td:first-child { font-weight: 560; }
+    .juridisk td[data-label]:not(:first-child)::before { content: attr(data-label); display: block; margin-top: 6px; font-size: 12.5px; font-weight: 500; color: var(--daempet); }
+  }
+  @media (max-width: 900px) { .juridisk mark.p { white-space: normal; } .juridisk table { display: block; overflow-x: auto; } }
+</style>"""
+
+
+def privatliv():
+    fil = ROD / "privatliv" / "index.html"
+    s = fil.read_text(encoding="utf-8")
+    m = re.search(r"<!-- indhold:start -->(.*?)<!-- indhold:slut -->", s, re.S)
+    if m:
+        indhold = m.group(1)
+    else:  # første gang: tag den gamle sides indhold (udkast-bjælken og <main>) og fjern den gamle menu
+        start = s.index("</nav>") + len("</nav>")
+        slut = s.index('<script src="../js/mail.js">')
+        indhold = s[start:slut]
+        indhold = indhold.replace("<main>", "").replace("</main>", "")
+        indhold = re.sub(r'<div class="udkast"><div class="skal">(.*?)</div></div>', r'<p class="udkast">\1</p>', indhold, flags=re.S)
+        indhold = indhold.replace('href="../', 'href="/')
+    return side("/privatliv/", "Privatlivspolitik: Tallo", "Sådan behandler Tallo oplysninger om dig.",
+                f'<div class="juridisk">\n<!-- indhold:start -->{indhold}<!-- indhold:slut -->\n</div>', JURIDISK_CSS)
+
+
+# ---------------------------------------------------------------------------------------------------- forsiden
+def erstat(s, navn, nyt):
+    moenster = re.compile(rf"(<!-- {navn}:start -->)(.*?)(<!-- {navn}:slut -->)", re.S)
+    assert moenster.search(s), f"markøren {navn} mangler i forsiden"
+    return moenster.sub(lambda m: f"{m.group(1)}\n{nyt}\n{m.group(3)}", s, count=1)
+
+
+def forside():
+    fil = ROD / "index.html"
+    s = fil.read_text(encoding="utf-8")
+    s = erstat(s, "hoved", hoved("Tallo: aldrig mere bogføring",
+                                 "Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 349 kr. om måneden.", "/"))
+    s = erstat(s, "menu", menu("/"))
+    s = erstat(s, "pakker", "  " + pakkeblok())
+    s = erstat(s, "faq", '  <section class="faq-forside" id="faq">\n    ' + faq(FAQ_FORSIDE) + "\n  </section>")
+    s = erstat(s, "fod", fod())
+    fil.write_text(s, encoding="utf-8")
+
+
+if __name__ == "__main__":
+    for navn, html in [("priser", priser()), ("appen", appen()), ("ai", ai()), ("skift", skift()), ("om-os", om_os()), ("privatliv", privatliv())]:
+        (ROD / navn).mkdir(exist_ok=True)
+        (ROD / navn / "index.html").write_text(html, encoding="utf-8")
+        print("skrevet", navn)
+    forside()
+    print("forsiden opdateret")
