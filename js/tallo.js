@@ -203,6 +203,21 @@
     }
   });
 
+  // AI-samtalen på /ai: når den ses, kommer beskederne én ad gangen, og AI'en "læser" kort, før den svarer (én gang)
+  document.querySelectorAll("[data-ai-chat]").forEach((chat) => {
+    if (roligt) return;  // ved reduceret bevægelse står samtalen færdig
+    const beskeder = [...chat.querySelectorAll(".ac-besked")];
+    chat.classList.add("spil");
+    iSyne(chat, () => {
+      let t = 200;
+      beskeder.forEach((b) => {
+        setTimeout(() => b.classList.add("vist"), t);
+        if (b.classList.contains("ai")) { t += 1100; setTimeout(() => b.classList.add("klar"), t); t += 900; }
+        else t += 700;
+      });
+    }, "-20%");
+  });
+
   // Telefonscenen: teksten midt på skærmen (på mobil: lige under telefonen) bestemmer skærm og chip
   document.querySelectorAll("[data-telefon]").forEach((scene) => {
     const tekster = [...scene.querySelectorAll(".ts-tekst")];
@@ -447,7 +462,7 @@
     vaelger.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.pakke === navn)));
     demo.dataset.pakke = navn;
     document.getElementById("pNavn").textContent = P.navn;
-    document.getElementById("pHvem").textContent = P.hvem;
+    const hvem = document.getElementById("pHvem"); if (hvem) hvem.textContent = P.hvem;  // undertitlen er slettet (Othman 17. okt)
     pakker.querySelectorAll(".lister ul").forEach((ul) => { ul.hidden = ul.dataset.pakke !== navn; });
     rulPris(P.pris);
     // Tilmeldingen på forsiden følger med
