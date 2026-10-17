@@ -93,13 +93,21 @@
     let sidst = "", venter = false;
     const tegn = () => {
       venter = false;
-      const midt = innerHeight / 2, zone = innerHeight * 0.65;
+      // Målelinjen starter lige under menuen, når man står øverst, og glider ned til midten af skærmen, mens man ruller.
+      // Ellers ligger den allerede under en kort top ved indlæsning, og toppens farve vises aldrig.
+      const midt = Math.min(innerHeight / 2, 72 + scrollY), zone = innerHeight * 0.65;
       let i = afsnit.findIndex((a) => a.getBoundingClientRect().bottom > midt);
       if (i < 0) i = afsnit.length - 1;
-      const r = afsnit[i].getBoundingClientRect();
+      const r = afsnit[i].getBoundingClientRect(), h = (k) => afsnit[k].getBoundingClientRect().height;
+      // Hver overgang er højst halvt så bred som afsnittene på hver side; ellers overlapper top- og bundovergangen i
+      // et kort afsnit, og farven springer ved næste grænse (Othman 17. okt: "sygt mærkelige" farver på /om-os)
+      // Første og sidste afsnit har kun én overgang og må bruge hele deres højde; de andre højst det halve
+      const loft = (k) => (k === 0 || k === afsnit.length - 1 ? h(k) : h(k) / 2);
+      const wTop = i > 0 ? Math.min(zone, loft(i - 1), loft(i)) : 0;
+      const wBund = i < afsnit.length - 1 ? Math.min(zone, loft(i), loft(i + 1)) : 0;
       let farve = toner[i];
-      if (i > 0 && midt - r.top < zone) farve = bland(toner[i - 1], toner[i], glat(Math.max(0, 0.5 + (midt - r.top) / (2 * zone))));
-      else if (i < afsnit.length - 1 && r.bottom - midt < zone) farve = bland(toner[i], toner[i + 1], glat(0.5 - (r.bottom - midt) / (2 * zone)));
+      if (wTop && midt - r.top < wTop) farve = bland(toner[i - 1], toner[i], glat(Math.max(0, 0.5 + (midt - r.top) / (2 * wTop))));
+      else if (wBund && r.bottom - midt < wBund) farve = bland(toner[i], toner[i + 1], glat(Math.max(0, 0.5 - (r.bottom - midt) / (2 * wBund))));
       const v = `rgb(${farve.join(",")})`;
       if (v !== sidst) { html.style.setProperty("--bund", v); sidst = v; }
     };
@@ -181,7 +189,10 @@
     // Faste pladser i procent af fladen; midten af et papir må ikke ligge langt inde bag kortet
     const beregn = () => {
       const f = flade.getBoundingClientRect(), k = rg.getBoundingClientRect(), ind = 60;
-      const bag = (x, y) => x > k.left - f.left + ind && x < k.right - f.left - ind && y > k.top - f.top + ind && y < k.bottom - f.top - ind;
+      const tekst = flade.querySelector(".side-top")?.getBoundingClientRect();
+      const iBoks = (b, x, y, m) => b && x > b.left - f.left + m && x < b.right - f.left - m && y > b.top - f.top + m && y < b.bottom - f.top - m;
+      // Ikke langt inde bag kortet og aldrig bag overskrift og ingres
+      const bag = (x, y) => iBoks(k, x, y, ind) || iBoks(tekst, x, y, -40);
       pladser = [];
       for (let j = 0; pladser.length < 90 && j < 4000; j++) {
         const x = tal(j * 3 + 1) * f.width, y = tal(j * 3 + 2) * f.height;
