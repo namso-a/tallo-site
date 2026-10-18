@@ -427,12 +427,11 @@ def appen():
         </div>
       </div>
     </div>"""
-    udsagn = fotoramme("foto-appen", "45% 88%", "38% 78%") + """<div class="indre udsagn kort-over" data-afslor>
+    # Uden foto og kort, kun overskrift og én knap (Othman 18. okt 2026)
+    udsagn = """<div class="indre udsagn" data-afslor>
       <h2>Se dine egne tal i appen.</h2>
-      <p>Skriv dig op nu, så er din konto klar, den dag vi åbner.</p>
       <div class="knapper">
-        <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
-        <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
+        <a class="pille farve stor" href="/#kom">Skriv dig op</a>
       </div>
     </div>"""
     return side("/appen/", "Appen: Tallo", "Overskud, bank, bilag, fakturaer og moms ét sted. På telefonen og på computeren.",
@@ -681,7 +680,7 @@ HANDELSBETINGELSER = """
   <p class="ind">Kort fortalt: fast pris om måneden, ingen binding, og du betaler først, når vi åbner. Her står det, du skal vide.</p>
 
   <h2>Parterne og aftalen</h2>
-  <p>Aftalen er mellem din virksomhed og Tallo v/ Othman Ajjawi, CVR 46440986. Når du skriver dig op på hjemmesiden, opretter du en konto, men du har ikke købt noget endnu. Vi åbner, når vores regnskabsprogram er registreret hos Erhvervsstyrelsen. Aftalen begynder, når vi har åbnet, du har bekræftet, at du vil i gang, og vi har gennemført kundekendskab efter hvidvaskloven.</p>
+  <p>Aftalen er mellem din virksomhed og Tallo v/ Othman Ajjawi, CVR 46440986. Tallo er kun for virksomheder, så reglerne for forbrugerkøb, fx fortrydelsesret, gælder ikke. Når du skriver dig op på hjemmesiden, har du ikke købt noget. Vi åbner, når vores regnskabsprogram er registreret hos Erhvervsstyrelsen. Aftalen begynder, når vi har åbnet, du har bekræftet, at du vil i gang, og vi har gennemført kundekendskab efter hvidvaskloven.</p>
 
   <h2>Pakkerne</h2>
   <ul>
