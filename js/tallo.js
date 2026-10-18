@@ -171,30 +171,25 @@
 
     if (v === "linje") {
       const kort = [...region.querySelectorAll(".par .foto-kort")].map((e) => rel(e)); if (kort.length < 2) return;
-      const W = lag.clientWidth, mobil = innerWidth < 700;
+      // På mobil står portrætterne under hinanden, så en linje "mellem" dem giver ingen mening: ingen linje (Othman 19. okt)
+      const W = lag.clientWidth; if (innerWidth < 700) return;
       const NS = "http://www.w3.org/2000/svg", svg = document.createElementNS(NS, "svg"), sti = document.createElementNS(NS, "path");
-      svg.setAttribute("class", "d-svg" + (mobil ? " lodret" : "")); svg.appendChild(sti); lag.appendChild(svg);
-      let MAERKER = [];
-      if (!mobil) {
-        const a = kort[0], b = kort[1], y = (a.t + a.b) / 2;
-        // Er margenen for smal til et mærke, står det over portrættets yderste hjørne i stedet
-        const venstre = a.l > 150 ? [a.l / 2, y - 10] : [a.l + 70, a.t - 30];
-        const hoejre = W - b.r > 150 ? [b.r + (W - b.r) / 2, y - 20] : [b.r - 70, b.t - 30];
-        const aftale = [(a.r + b.l) / 2, y];  // mellem billederne, på linjen
-        // Linjen går gennem alle tre mærker (Catmull-Rom omsat til kubiske Bézier-kurver), så de sidder på den
-        // Linjen slutter med at gå op ad (Othman 17. okt)
-        const P = [[-20, y + 40], venstre, aftale, hoejre, [W + 20, b.t - 90]];
-        let d = `M ${P[0][0]} ${P[0][1]}`;
-        for (let k = 0; k < P.length - 1; k++) {
-          const p0 = P[Math.max(0, k - 1)], p1 = P[k], p2 = P[k + 1], p3 = P[Math.min(P.length - 1, k + 2)];
-          d += ` C ${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6}, ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6}, ${p2[0]} ${p2[1]}`;
-        }
-        sti.setAttribute("d", d);
-        MAERKER = [["Første snak", ...venstre, venstre[0] / W], ["Aftale", ...aftale, aftale[0] / W], ["Bogføring", ...hoejre, hoejre[0] / W]];
-      } else {
-        const x = W - 14;
-        sti.setAttribute("d", `M ${x} ${kort[0].t} L ${x} ${kort[1].b}`);
+      svg.setAttribute("class", "d-svg"); svg.appendChild(sti); lag.appendChild(svg);
+      const a = kort[0], b = kort[1], y = (a.t + a.b) / 2;
+      // Er margenen for smal til et mærke, står det over portrættets yderste hjørne i stedet
+      const venstre = a.l > 150 ? [a.l / 2, y - 10] : [a.l + 70, a.t - 30];
+      const hoejre = W - b.r > 150 ? [b.r + (W - b.r) / 2, y - 20] : [b.r - 70, b.t - 30];
+      const aftale = [(a.r + b.l) / 2, y];  // mellem billederne, på linjen
+      // Linjen går gennem alle tre mærker (Catmull-Rom omsat til kubiske Bézier-kurver), så de sidder på den
+      // Linjen slutter med at gå op ad (Othman 17. okt)
+      const P = [[-20, y + 40], venstre, aftale, hoejre, [W + 20, b.t - 90]];
+      let d = `M ${P[0][0]} ${P[0][1]}`;
+      for (let k = 0; k < P.length - 1; k++) {
+        const p0 = P[Math.max(0, k - 1)], p1 = P[k], p2 = P[k + 1], p3 = P[Math.min(P.length - 1, k + 2)];
+        d += ` C ${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6}, ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6}, ${p2[0]} ${p2[1]}`;
       }
+      sti.setAttribute("d", d);
+      const MAERKER = [["Første snak", ...venstre, venstre[0] / W], ["Aftale", ...aftale, aftale[0] / W], ["Bogføring", ...hoejre, hoejre[0] / W]];
       const maerker = MAERKER.map(([t, x, y, ved]) => { const e = ny("d-maerke", t); e.style.left = x + "px"; e.style.top = y + "px"; e.style.setProperty("--d", .2 + ved * 2.2 + "s"); lag.appendChild(e); return e; });
       const tegn = () => { svg.classList.add("tegnet"); maerker.forEach((m) => m.classList.add("vist")); };
       if (roligt) tegn();

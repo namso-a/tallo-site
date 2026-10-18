@@ -103,8 +103,8 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 .pakke { display: flex; flex-direction: column; padding: 40px 36px 36px; }
 .pakke h3 { margin: 0; font-size: 20px; font-weight: 560; letter-spacing: -.01em; }
 .pakke .hvem { margin-top: 4px; font-size: 15px; color: var(--daempet); }
-.pris { display: flex; align-items: baseline; gap: 8px; margin-top: 22px; }
-.pris b { font-size: 60px; font-weight: 500; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.pris { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 8px; margin-top: 22px; }
+.pris b { white-space: nowrap; font-size: 60px; font-weight: 500; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
 .pris > span { font-size: 16px; color: var(--daempet); }
 .lister { position: relative; margin-top: 26px; }
 .pakke ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--lineal); transition: opacity .3s ease-out; }
@@ -442,7 +442,7 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 .laes-forslag b { display: block; color: var(--blaa); font-size: 13px; font-weight: 600; }
 .laes-forslag.vist { opacity: 1; transform: none; }
 .laes-status { position: relative; display: inline-flex; min-width: 148px; height: 28px; }
-.laes-status > span { position: absolute; left: 0; top: 0; transition: opacity .25s ease-out; }
+.laes-status > span { position: absolute; right: 0; top: 0; transition: opacity .25s ease-out; }
 .laes-status .ok { opacity: 0; }
 .laes-status.ok .ok { opacity: 1; } .laes-status.ok .graa { opacity: 0; }
 .laes-tekst { margin-bottom: 22px; }
@@ -531,7 +531,6 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 @keyframes d-ind { 0% { opacity: 0; transform: translate(0, 0) rotate(var(--r)); } 12% { opacity: .9; } 70% { opacity: .9; } 100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(0deg) scale(.4); } }
 html.stille .d-bilag { animation: none; opacity: .6; transform: rotate(var(--r)); }
 .d-svg { left: 0; top: 0; width: 100%; height: 100%; overflow: visible; clip-path: inset(0 100% 0 0); transition: clip-path 2.2s cubic-bezier(.45,0,.25,1); }
-.d-svg.lodret { clip-path: inset(0 0 100% 0); }
 .d-svg.tegnet { clip-path: inset(0 0 0 0); }
 .d-svg path { fill: none; stroke: #4b3aa6; stroke-width: 2; stroke-dasharray: 7 7; opacity: .55; }
 .d-maerke { transform: translate(-50%, -50%); padding: 6px 12px; border-radius: 999px; background: #fff; box-shadow: 0 10px 22px -14px rgba(20,20,20,.5), inset 0 0 0 1px rgba(75,58,166,.2); font-size: 13px; font-weight: 560; color: #2e2563; white-space: nowrap; opacity: 0; transition: opacity .45s ease-out; transition-delay: var(--d, 0s); }
