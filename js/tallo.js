@@ -50,7 +50,8 @@
     matchMedia("(min-width: 900px)").addEventListener("change", (e) => { if (e.matches && !ark.hidden) luk(false); });
   }
 
-  // Cal.com: hentes først, når nogen nærmer sig en "Vælg en tid"-knap
+  // Cal.com: hentes først ved klik på "Vælg en tid", så Cal.com hverken får IP-adressen eller sætter sin cookie,
+  // før man selv beder om kalenderen (privatlivspolitikken lover det)
   const CAL_LINK = "tallo/møde";
   const CAL_CONFIG = { layout: "month_view", theme: "light" };
   const CAL_UI = { hideEventTypeDetails: true, theme: "light", layout: "month_view", cssVarsPerTheme: { light: { "cal-brand": "#4b3aa6" }, dark: { "cal-brand": "#4b3aa6" } } };
@@ -62,9 +63,6 @@
     Cal("init", { origin: "https://cal.com" });
     Cal("ui", CAL_UI);
   };
-  ["pointerover", "focusin", "touchstart"].forEach((ev) => document.addEventListener(ev, (e) => {
-    if (e.target.closest && e.target.closest("[data-book]")) hentCal();
-  }, { passive: true }));
   document.addEventListener("click", (e) => {
     if (!e.target.closest("[data-book]")) return;
     e.preventDefault();
