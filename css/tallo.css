@@ -658,7 +658,7 @@ html.stille .traek-pil { animation: none; }
   .ts-ramme::before { width: 150%; }
   .telefon-scene { background: inherit; }
   .ts-tekster { width: min(560px, calc(100% - 40px)); margin: 0 auto; padding: 4vh 0 12vh; }
-  .ts-tekst { min-height: 46vh; justify-content: flex-start; }
+  .ts-tekst { min-height: 0; padding-bottom: 64px; justify-content: flex-start; }
   .ts-tekst h2 { font-size: 28px; }
   .ts-tekst p { font-size: 16px; }
   .ts-chip { left: 50%; top: auto; bottom: -14px; transform: translate(-50%, 10px) scale(.94); font-size: 13px; padding: 6px 12px 6px 6px; }
@@ -715,6 +715,7 @@ html.stille .traek-pil { animation: none; }
   .pris b { font-size: 48px; }
   .vaelger { margin-top: 26px; }
   .vaelger button { min-height: 44px; padding: 5px 14px; font-size: 14px; }
+  .regner-pris .vaelger button { padding: 4px; font-size: 12.5px; letter-spacing: -.01em; }
   .demo { padding: 22px 14px; border-radius: 18px; }
   .regning { padding: 16px 14px; }
   .raekke { gap: 10px; }
