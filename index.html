@@ -4,7 +4,7 @@
 <!-- hoved:start -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://app.cal.com; font-src 'self'; connect-src 'self' https://api.web3forms.com https://app.cal.com; frame-src https://app.cal.com https://cal.com; object-src 'none'; base-uri 'self'; form-action https://api.web3forms.com mailto:">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://app.cal.com; font-src 'self'; connect-src 'self' https://nznqjlrknpbnfzizxnkr.supabase.co https://app.cal.com; frame-src https://app.cal.com https://cal.com; object-src 'none'; base-uri 'self'; form-action https://nznqjlrknpbnfzizxnkr.supabase.co mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex, nofollow">
 <title>Tallo: aldrig mere bogføring</title>
@@ -478,8 +478,7 @@
       <p class="ingress">Vi åbner, når programmet er registreret hos Erhvervsstyrelsen. Indtil da betaler du intet.</p>
     </div>
     <div class="kom-gitter">
-      <form class="tilmeld" id="tilmeld" data-ok="Tak. Du er skrevet op, og vi skriver til dig, den dag vi åbner." action="https://api.web3forms.com/submit" method="post">
-        <input type="hidden" name="subject" value="Ny tilmelding fra tallo.dk">
+      <form class="tilmeld" id="tilmeld" data-ok="Tak. Du er skrevet op, og vi skriver til dig, den dag vi åbner." action="https://nznqjlrknpbnfzizxnkr.supabase.co/functions/v1/tilmelding" method="post">
         <input type="checkbox" name="botcheck" class="faelde" tabindex="-1" autocomplete="off" aria-hidden="true">
         <ol class="trinliste" id="trinliste">
           <li class="trin" data-trin="cvr">
@@ -505,8 +504,8 @@
             <div>
               <span class="lbl" id="pakkeLbl">Vælg pakke</span>
               <div class="pakkevalg" role="radiogroup" aria-labelledby="pakkeLbl">
-                <label><input type="radio" name="pakke" value="Gør det selv med AI, 500 kr." data-pakke="selv"><span>Gør det selv med AI<small>500 kr. om måneden</small></span></label>
-                <label><input type="radio" name="pakke" value="Med bogholder, 1.000 kr." data-pakke="bogholder" checked><span>Med bogholder<small>1.000 kr. om måneden</small></span></label>
+                <label><input type="radio" name="pakke" value="selv" data-pakke="selv"><span>Gør det selv med AI<small>500 kr. om måneden</small></span></label>
+                <label><input type="radio" name="pakke" value="bogholder" data-pakke="bogholder" checked><span>Med bogholder<small>1.000 kr. om måneden</small></span></label>
               </div>
               <p class="hjaelp">Du kan skifte, når du vil.</p>
             </div>
@@ -566,7 +565,7 @@
 
 <script>
 (() => {
-  // Tilmeldingen: flueben pr. trin og afsendelse til Web3Forms (som på den nuværende forside).
+  // Tilmeldingen: flueben pr. trin og afsendelse til vores egen funktion i Supabase (EU).
   // Intet CVR-opslag: cvrapi.dk afviser browsere (403); det kræver et mellemled på en server.
   const tilmeld = document.getElementById("tilmeld");
   const cvrFelt = document.getElementById("cvr"), mailFelt = document.getElementById("mail");
@@ -584,9 +583,8 @@
   tilmeld.addEventListener("change", opdaterTrin);
   opdaterTrin();
 
-  // Web3Forms. Nøglen er offentlig af design; den kan kun sende til vores egen kontaktadresse.
-  // Spam: en usynlig fælde (botcheck) og et tidstjek; Web3Forms filtrerer desuden på serveren.
-  const WEB3FORMS_KEY = "05a6c43e-d1d8-438c-a3fa-9c9fcde54186";
+  // Tilmeldingen gemmes i vores egen database i EU (funktionen tilmelding i system/supabase/functions).
+  // Spam: en usynlig fælde (botcheck) og et tidstjek her; funktionen tjekker desuden afsender, fælde og et loft.
   let foersteFokus = 0;
   tilmeld.addEventListener("focusin", () => { if (!foersteFokus) foersteFokus = Date.now(); });
   tilmeld.addEventListener("submit", async (e) => {
@@ -601,10 +599,9 @@
     status.textContent = "Sender";
     try {
       const data = Object.fromEntries(new FormData(tilmeld));
-      data.access_key = WEB3FORMS_KEY;
-      const svar = await fetch(tilmeld.action, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(data) });
+      const svar = await fetch(tilmeld.action, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
       const json = await svar.json();
-      if (!json.success) throw new Error(json.message || "fejl");
+      if (!json.ok) throw new Error(json.fejl || "fejl");
       tilmeld.reset(); opdaterTrin();
       status.className = "formular-status ok";
       status.textContent = tilmeld.dataset.ok;
