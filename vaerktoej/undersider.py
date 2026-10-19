@@ -93,6 +93,7 @@ def fod():
       <span class="titel">Kontakt</span>
       <ul>
         <li><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></li>
+        <li><span>Damagervej 1E, 2. tv<br>8260 Viby J</span></li>
         <li><span>CVR 46440986</span></li>
         <li><a href="/privatliv/">Privatlivspolitik</a></li>
         <li><a href="/handelsbetingelser/">Handelsbetingelser</a></li>
@@ -490,15 +491,16 @@ def ai():
         <figcaption><b>Othman Ajjawi</b><span>Din bogholder</span></figcaption>
       </figure>
     </div>"""
-    # Samtalen ligner en rigtig AI-chat; den kommer frem én gang, når den ses (js/tallo.js, [data-ai-chat])
+    # Samtalen ligner en rigtig AI-chat; den kommer frem én gang, når den ses (js/tallo.js, [data-ai-chat]).
+    # Ingen Claude- eller ChatGPT-logoer: begge kræver godkendelse på forhånd; navnene må stå som tekst (19. okt 2026)
     chat = """<div class="indre">
       <div class="region-hoved midt" data-afslor>
-        <h2>Spørg din egen <img class="ai-maerke" src="/billeder/claude.svg" alt="">Claude eller <img class="ai-maerke" src="/billeder/chatgpt.svg" alt="">ChatGPT <span class="snart">Kommer senere</span></h2>
+        <h2>Spørg din egen Claude eller ChatGPT <span class="snart">Kommer senere</span></h2>
         <p>Det er ikke klar endnu. Når det er, kan du forbinde din egen AI. Den vil kunne læse dine tal og lave fakturaudkast, som du selv sender. Den vil aldrig kunne bogføre, indberette moms eller slette noget, og du vælger selv, om du vil forbinde den.</p>
       </div>
       <div class="ai-chat" data-ai-chat>
         <div class="ac-top">
-          <span class="ac-maerker"><img src="/billeder/claude.svg" alt=""><img src="/billeder/chatgpt.svg" alt=""></span>
+          <span class="ac-ikon" aria-hidden="true">✦</span>
           <span><b>Din egen AI</b><small>Forbundet til Tallo · kan læse dine tal</small></span>
           <span class="snart">Kommer senere</span>
         </div>
@@ -680,7 +682,7 @@ HANDELSBETINGELSER = """
   <p class="ind">Kort fortalt: fast pris om måneden, ingen binding, og du betaler først, når vi åbner. Her står det, du skal vide.</p>
 
   <h2>Parterne og aftalen</h2>
-  <p>Aftalen er mellem din virksomhed og Tallo v/ Othman Ajjawi, CVR 46440986. Tallo er kun for virksomheder, så reglerne for forbrugerkøb, fx fortrydelsesret, gælder ikke. Når du skriver dig op på hjemmesiden, har du ikke købt noget. Vi åbner, når vores regnskabsprogram er registreret hos Erhvervsstyrelsen. Aftalen begynder, når vi har åbnet, du har bekræftet, at du vil i gang, og vi har gennemført kundekendskab efter hvidvaskloven.</p>
+  <p>Aftalen er mellem din virksomhed og Tallo v/ Othman Ajjawi, Damagervej 1E, 2. tv, 8260 Viby J, CVR 46440986. Tallo er kun for virksomheder, så reglerne for forbrugerkøb, fx fortrydelsesret, gælder ikke. Når du skriver dig op på hjemmesiden, har du ikke købt noget. Vi åbner, når vores regnskabsprogram er registreret hos Erhvervsstyrelsen. Aftalen begynder, når vi har åbnet, du har bekræftet, at du vil i gang, og vi har gennemført kundekendskab efter hvidvaskloven.</p>
 
   <h2>Pakkerne</h2>
   <ul>
@@ -754,7 +756,23 @@ def forside():
     fil.write_text(s, encoding="utf-8")
 
 
+# ---------------------------------------------------------------------------------------------------- 404
+def ikke_fundet():
+    """Siden, GitHub Pages viser ved en adresse, der ikke findes (/404.html)."""
+    top = """<div class="side-top">
+      <h1>Siden findes ikke</h1>
+      <p class="ingress">Måske er adressen skrevet forkert, eller også er siden flyttet.</p>
+      <div class="knapper">
+        <a class="pille farve stor" href="/">Til forsiden</a>
+        <a class="pille hvid stor" href="/priser/">Se priserne</a>
+      </div>
+    </div>"""
+    return side("/404.html", "Siden findes ikke: Tallo", "Siden findes ikke.", region("papir top ikke-fundet", top))
+
+
 if __name__ == "__main__":
+    (ROD / "404.html").write_text(ikke_fundet(), encoding="utf-8")
+    print("skrevet 404")
     for navn, html in [("priser", priser()), ("appen", appen()), ("ai", ai()), ("skift", skift()), ("om-os", om_os()), ("privatliv", privatliv()), ("handelsbetingelser", handelsbetingelser())]:
         (ROD / navn).mkdir(exist_ok=True)
         (ROD / navn / "index.html").write_text(html, encoding="utf-8")

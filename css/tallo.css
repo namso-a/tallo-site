@@ -298,6 +298,8 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 .region.salvie { background: #cfe3d1; }
 .region.fersken { background: #f8d9c4; }
 .region.top { padding: calc(var(--nav) + 56px) 0 24px; }
+/* 404: kort side, så den får luft ned til footeren */
+.region.top.ikke-fundet { min-height: 62vh; padding-bottom: 120px; }
 /* Farven glider med rullet (B): js/tallo.js sætter html.glid og --bund ud fra afsnittenes data-tone; uden JS har
    hvert afsnit sin tone som flade. Sidste afsnit er papir, så footeren står som på forsiden (Othman 16. okt 2026). */
 html.glid body { background: var(--bund, var(--flade)); }
@@ -549,15 +551,11 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 .bb-person span { font-size: 15px; color: var(--blaa); }
 
 /* /ai: samtalen med din egen AI ligner en rigtig AI-chat */
-.ai-maerke { display: inline-block; height: .78em; width: auto; margin: 0 .16em 0 .06em; vertical-align: -.04em; border-radius: .16em; }
 .ai-chat { width: min(640px, calc(100% - 32px)); margin: 8px auto 0; overflow: hidden; border-radius: 24px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 40px 80px -50px rgba(20,20,20,.45); text-align: left; }
 .ac-top { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid #efeee9; }
 .ac-top b { display: block; font-size: 15px; font-weight: 600; }
 .ac-top small { display: block; font-size: 12.5px; color: var(--daempet); }
 .ac-top .snart { margin-left: auto; }
-.ac-maerker { display: flex; }
-.ac-maerker img { width: 28px; height: 28px; border-radius: 8px; background: #fff; box-shadow: 0 0 0 2px #fff; }
-.ac-maerker img + img { margin-left: -8px; }
 .ac-traad { display: flex; flex-direction: column; gap: 16px; padding: 22px 18px 10px; }
 .ac-besked.du { align-self: flex-end; max-width: 82%; }
 .ac-besked.du p { padding: 10px 15px; border-radius: 18px 18px 6px 18px; background: #f1f0ea; font-size: 15px; line-height: 1.45; }
