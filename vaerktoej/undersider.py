@@ -18,9 +18,9 @@ ROD = Path(__file__).resolve().parents[1]
 DOMAENE = "https://tallo.dk"
 
 CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.com; style-src 'self' 'unsafe-inline'; "
-       "img-src 'self' data: https://app.cal.com; font-src 'self'; connect-src 'self' https://api.web3forms.com "
-       "https://app.cal.com; frame-src https://app.cal.com https://cal.com; object-src 'none'; base-uri 'self'; "
-       "form-action https://api.web3forms.com mailto:")
+       "img-src 'self' data: https://app.cal.com; font-src 'self'; connect-src 'self' "
+       "https://nznqjlrknpbnfzizxnkr.supabase.co https://app.cal.com; frame-src https://app.cal.com https://cal.com; "
+       "object-src 'none'; base-uri 'self'; form-action https://nznqjlrknpbnfzizxnkr.supabase.co mailto:")
 
 MENU = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "AI"), ("/skift/", "Skift"), ("/om-os/", "Om os")]
 FOD_LINKS = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "Sådan bruger vi AI"), ("/skift/", "Skift til Tallo"), ("/om-os/", "Om os")]
