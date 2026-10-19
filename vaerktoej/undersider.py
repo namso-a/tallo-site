@@ -97,6 +97,7 @@ def fod():
         <li><span>CVR 46440986</span></li>
         <li><a href="/privatliv/">Privatlivspolitik</a></li>
         <li><a href="/handelsbetingelser/">Handelsbetingelser</a></li>
+        <li><a href="/databehandleraftale/">Databehandleraftale</a></li>
       </ul>
     </div>
   </div>
@@ -160,7 +161,7 @@ def pakkeblok(overskrift=True, taet=False):
               <li>Du godkender med ét tryk</li>
               <li>Momsen regnes ud, og du sender den selv</li>
               <li>Skift til bogholder når som helst</li>
-              <li class="senere">Spørg din egen Claude eller ChatGPT om dine tal <span class="snart">Kommer senere</span></li>
+              <li>Spørg din egen Claude eller ChatGPT om dine tal</li>
             </ul>
             <ul data-pakke="bogholder">
               <li>Alt fra Gør det selv med AI</li>
@@ -250,7 +251,7 @@ SAMMENLIGN = [
     ("Momsen regnes ud", JA, JA),
     ("Momsen indberettes", "Du gør det", "Vi gør det"),
     ("Salg, udgifter og overskud hver måned", "I appen", "I appen og på mail"),
-    ("Spørg din egen Claude eller ChatGPT", '<span class="snart">Kommer senere</span>', '<span class="snart">Kommer senere</span>'),
+    ("Spørg din egen Claude eller ChatGPT", JA, JA),
     ("Løn, årsregnskab og selvangivelse", "Tilkøb", "Tilkøb"),
 ]
 # Spørgsmål og svar: samme komponent tre steder, intet spørgsmål går igen (Othman 17. okt 2026). Forsiden har de
@@ -495,14 +496,13 @@ def ai():
     # Ingen Claude- eller ChatGPT-logoer: begge kræver godkendelse på forhånd; navnene må stå som tekst (19. okt 2026)
     chat = """<div class="indre">
       <div class="region-hoved midt" data-afslor>
-        <h2>Spørg din egen Claude eller ChatGPT <span class="snart">Kommer senere</span></h2>
-        <p>Det er ikke klar endnu. Når det er, kan du forbinde din egen AI. Den vil kunne læse dine tal og lave fakturaudkast, som du selv sender. Den vil aldrig kunne bogføre, indberette moms eller slette noget, og du vælger selv, om du vil forbinde den.</p>
+        <h2>Spørg din egen Claude eller ChatGPT</h2>
+        <p>Forbind din egen AI i appen under Indstillinger, Din AI. Den kan læse dine tal og lave fakturaudkast, som du selv sender. Den kan aldrig bogføre, indberette moms eller slette noget, og du vælger selv, om du vil forbinde den.</p>
       </div>
       <div class="ai-chat" data-ai-chat>
         <div class="ac-top">
           <span class="ac-ikon" aria-hidden="true">✦</span>
           <span><b>Din egen AI</b><small>Forbundet til Tallo · kan læse dine tal</small></span>
-          <span class="snart">Kommer senere</span>
         </div>
         <div class="ac-traad">
           <div class="ac-besked du"><p>Hvad er mit overskud i år?</p></div>
@@ -716,7 +716,7 @@ HANDELSBETINGELSER = """
   <p>Sig til skriftligt, så snart du opdager en fejl, og senest tre måneder efter. Med Gør det selv med AI godkender og indberetter du selv og står selv inde for det. Efter loven er det altid din virksomhed, der har pligt til at bogføre rigtigt; vi udfører arbejdet, men pligten bliver hos dig.</p>
 
   <h2>Fortrolighed og data</h2>
-  <p>Alt, vi ser i din virksomhed, er fortroligt, også når aftalen er slut. Dine data ligger i EU. Behandlingen af personoplysninger står i databehandleraftalen, som du får, før vi begynder, og i <a href="/privatliv/">privatlivspolitikken</a>.</p>
+  <p>Alt, vi ser i din virksomhed, er fortroligt, også når aftalen er slut. Dine data ligger i EU. Behandlingen af personoplysninger står i <a href="/databehandleraftale/">databehandleraftalen</a>, som du får, før vi begynder, og i <a href="/privatliv/">privatlivspolitikken</a>.</p>
 
   <h2>Opsigelse</h2>
   <p>Der er ingen binding. Begge parter kan opsige aftalen til udgangen af en måned. Kan vi ikke gennemføre kundekendskab efter hvidvaskloven, kan vi opsige med det samme. Har du betalt for en periode, vi ikke når at levere, får du pengene tilbage.</p>
@@ -735,6 +735,113 @@ def handelsbetingelser():
     return side("/handelsbetingelser/", "Handelsbetingelser: Tallo",
                 "Fast pris om måneden, ingen binding, og du betaler først, når vi åbner. Betingelserne for at være kunde hos Tallo.",
                 f'<div class="juridisk">{HANDELSBETINGELSER}</div>', JURIDISK_CSS)
+
+
+# ---------------------------------------------------------------------------------------------------- /databehandleraftale
+# Fra system/docs/databehandleraftale.md (version 1.0, Othmans juridiske valg 19. okt 2026). Appens tilmelding linker
+# hertil sammen med handelsbetingelserne og privatlivspolitikken. Ændres teksten dér, skal den også ændres her.
+DATABEHANDLERAFTALE = """
+  <p class="mono">Databehandleraftale</p>
+  <h1>Databehandler&shy;aftale</h1>
+  <p class="ind">Version 1.0, 19. oktober 2026. Skabelon; parterne og eventuelle tilkøb udfyldes pr. kunde ved tilmeldingen.</p>
+  <p>Aftale efter databeskyttelsesforordningens artikel 28 mellem kunden som dataansvarlig og Tallo som databehandler. Den er en del af aftalen om at være kunde hos Tallo (handelsbetingelserne) og følger Datatilsynets standardstruktur.</p>
+
+  <h2>1. Parterne</h2>
+  <p>Den dataansvarlige: kunden, som angivet ved tilmeldingen. Databehandleren: Tallo v/ Othman Ajjawi (enkeltmandsvirksomhed), CVR 46440986, Damagervej 1E, 2. tv, 8260 Viby J, <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a>.</p>
+
+  <h2>2. Baggrund og formål</h2>
+  <p>Databehandleren stiller sit regnskabsprogram og sin app til rådighed for den dataansvarlige. Med pakken Med bogholder bogfører og afstemmer databehandleren også, indberetter moms og udarbejder tal for den dataansvarlige, og ved tilkøb kører løn og udarbejder årsregnskab. I den forbindelse behandler databehandleren personoplysninger på den dataansvarliges vegne. Aftalen skal sikre, at behandlingen sker i overensstemmelse med databeskyttelsesforordningen og databeskyttelsesloven.</p>
+
+  <h2>3. Den dataansvarliges rettigheder og forpligtelser</h2>
+  <p>Den dataansvarlige har ansvaret for, at behandlingen har et lovligt grundlag, og for at give databehandleren en dokumenteret instruks. Instruksen er denne aftale med bilag A til C og handelsbetingelserne. Den dataansvarlige kan til enhver tid give yderligere skriftlig instruks.</p>
+
+  <h2>4. Databehandleren handler efter instruks</h2>
+  <p>Databehandleren behandler kun personoplysninger efter dokumenteret instruks fra den dataansvarlige, medmindre det kræves efter EU-retten eller dansk ret, som databehandleren er underlagt. I så fald underretter databehandleren den dataansvarlige om kravet, før behandlingen sker, medmindre loven forbyder det. Databehandleren underretter straks den dataansvarlige, hvis en instruks efter databehandlerens opfattelse er i strid med loven.</p>
+
+  <h2>5. Fortrolighed</h2>
+  <p>Kun personer, der har behov for adgang for at opfylde aftalen, får adgang til oplysningerne. Det er databehandleren og de personer, der arbejder for databehandleren (ansatte eller faste samarbejdspartnere). Alle er underlagt tavshedspligt efter aftale eller lov. Databehandleren fører en liste over de navngivne personer, der har adgang, og udleverer den på anmodning.</p>
+
+  <h2>6. Behandlingssikkerhed</h2>
+  <p>Databehandleren gennemfører passende tekniske og organisatoriske foranstaltninger, jf. artikel 32. Som minimum:</p>
+  <ul>
+    <li>Data ligger i EU, krypteret under overførsel og opbevaring, og hver kundes data er adskilt fra andres. Der tages dagligt krypteret sikkerhedskopi hos en anden leverandør i EU, låst mod sletning, og gendannelse afprøves.</li>
+    <li>Databehandlerens medarbejdere logger ind med to-faktor-godkendelse. Hvert opslag og hver ændring logges i en log, der ikke kan slettes eller ændres.</li>
+    <li>Med Gør det selv med AI godkender den dataansvarlige selv AI'ens forslag, før de bogføres. Med bogholder bogfører AI'en efter faste regler i programmet. Poster, der rammer en undtagelse (fx ny leverandør, beløb over en grænse, moms der ikke passer, eller lav sikkerhed), ses af en bogholder, og der tages stikprøver. Hver postering logges med tidspunkt, hvem eller hvad der bogførte den, og begrundelse.</li>
+    <li>Bankforbindelsen etablerer den dataansvarlige selv med sit eget MitID hos banken. Forbindelsen kan kun læse og kan ikke flytte penge. Databehandleren bruger aldrig den dataansvarliges MitID.</li>
+    <li>Hvor den dataansvarlige fortsat bruger sit eget regnskabsprogram, sker adgangen kun via brugere, som den dataansvarlige selv har inviteret, og med to-faktor-godkendelse.</li>
+    <li>Lønoplysninger ligger i databehandlerens lønsystem (Salary) under den dataansvarliges CVR, når løn er tilkøbt, og overdrages til den dataansvarlige ved aftalens ophør.</li>
+    <li>Databehandleren opbevarer ikke kopier lokalt ud over det, en konkret behandling kræver, og sletter dem, når behandlingen er afsluttet. Arbejdsstationer er krypterede, opdaterede og låst, når de ikke er i brug. Adgangskoder opbevares i en adgangskodeboks.</li>
+  </ul>
+
+  <h2>7. Underdatabehandlere</h2>
+  <p>Den dataansvarlige giver en generel godkendelse til, at databehandleren bruger underdatabehandlere. Databehandleren underretter den dataansvarlige skriftligt senest 30 dage, før en ny underdatabehandler tages i brug, så den dataansvarlige kan gøre indsigelse. Databehandleren pålægger underdatabehandlere de samme forpligtelser som i denne aftale og hæfter over for den dataansvarlige for deres opfyldelse. De godkendte underdatabehandlere står i bilag B.</p>
+
+  <h2>8. Overførsel til tredjelande</h2>
+  <p>Databehandleren overfører kun personoplysninger til lande uden for EU og EØS efter dokumenteret instruks og med et gyldigt overførselsgrundlag, jf. forordningens kapitel V. Grundlaget for hver underdatabehandler står i bilag B.</p>
+
+  <h2>9. Bistand til den dataansvarlige</h2>
+  <p>Databehandleren bistår den dataansvarlige med at besvare anmodninger fra registrerede (artikel 12 til 22), med sikkerhed (artikel 32), med anmeldelse af brud (artikel 33 og 34) og med konsekvensanalyser (artikel 35 og 36), i det omfang det er relevant for behandlingen. Bistand ud over det, der følger af almindelig drift, faktureres efter medgået tid, efter aftale om prisen på forhånd.</p>
+
+  <h2>10. Brud på persondatasikkerheden</h2>
+  <p>Databehandleren underretter den dataansvarlige uden unødig forsinkelse og senest 48 timer efter at være blevet bekendt med et brud. Underretningen beskriver bruddets karakter, de berørte kategorier og antal, de sandsynlige konsekvenser og de foranstaltninger, der er truffet.</p>
+
+  <h2>11. Sletning og tilbagelevering</h2>
+  <p>Ved aftalens ophør udleverer databehandleren bogføringsmaterialet til den dataansvarlige i standardformatet SAF-T sammen med bilagene. Bogføringsloven kræver, at materialet opbevares i 5 år fra udgangen af det regnskabsår, det vedrører. Databehandleren opbevarer det derfor i regnskabsprogrammet, låst mod ændringer, også hvis den dataansvarlige ophører eller går konkurs, udleverer en kopi på anmodning i hele perioden og sletter det, når fristen er udløbet. Andre personoplysninger slettes eller tilbageleveres ved ophør, medmindre EU-retten eller dansk ret kræver opbevaring. Hvor den dataansvarlige har brugt sit eget regnskabsprogram, fjerner databehandleren sin adgang, og materialet dér berøres ikke.</p>
+
+  <h2>12. Tilsyn</h2>
+  <p>Databehandleren stiller alle oplysninger til rådighed, der er nødvendige for at påvise overholdelse af artikel 28, og giver mulighed for og bidrager til revisioner og inspektioner, som den dataansvarlige eller en revisor bemyndiget af denne udfører. Tilsyn varsles med 14 dage, medmindre en myndighed kræver andet.</p>
+
+  <h2>13. Ikrafttræden og ophør</h2>
+  <p>Aftalen træder i kraft sammen med aftalen om at være kunde og gælder, så længe databehandleren behandler personoplysninger på den dataansvarliges vegne. Aftalen kan ændres efter skriftlig aftale mellem parterne.</p>
+
+  <h2>Bilag A: Oplysninger om behandlingen</h2>
+  <table>
+    <thead><tr><th>Formål</th><th>Drift af regnskabsprogram og app; bogføring, afstemning, momsangivelse, e-faktura, løn, årsregnskab og indberetning for den dataansvarlige, afhængigt af pakke og tilkøb.</th></tr></thead>
+    <tbody>
+      <tr><td>Behandlingens karakter</td><td>Registrering, systematisering, aflæsning af bilag med AI i EU, opbevaring, afsendelse af fakturaer og e-fakturaer, videregivelse til myndigheder efter lov.</td></tr>
+      <tr><td>Kategorier af registrerede</td><td>Den dataansvarliges ansatte, kunder, leverandører og ejere, og de brugere, den dataansvarlige giver adgang til programmet.</td></tr>
+      <tr><td>Kategorier af oplysninger</td><td>Navn, kontaktoplysninger, bankoplysninger, løn, pension, fravær, CPR-numre (ansatte, kun ved tilkøbt løn), og for brugere: login og log over opslag og ændringer. Legitimation af kunden og de reelle ejere er ikke omfattet af denne aftale; den behandler Tallo som selvstændigt dataansvarlig efter hvidvaskloven, se privatlivspolitikken.</td></tr>
+      <tr><td>Varighed</td><td>Så længe aftalen om at være kunde løber, og derefter i det omfang loven kræver opbevaring (punkt 11).</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Bilag B: Godkendte underdatabehandlere</h2>
+  <table>
+    <thead><tr><th>Navn</th><th>Behandling</th><th>Land og overførselsgrundlag</th></tr></thead>
+    <tbody>
+      <tr><td>Supabase Pte. Ltd. (Singapore; Supabase-koncernen)</td><td>Drift af regnskabsprogrammets database, login og bilagsarkiv</td><td>Data i EU (Irland eller Tyskland). Selskab uden for EU; EU's standardkontraktbestemmelser (Supabases DPA og overførselsvurdering)</td></tr>
+      <tr><td>Hetzner Online GmbH</td><td>Driftsserver til automatiske kørsler: bank, e-faktura, sikkerhedskopi, tilsyn</td><td>Tyskland</td></tr>
+      <tr><td>Scaleway SAS</td><td>Opbevaring af krypteret sikkerhedskopi (leverandøren kan ikke læse indholdet) og afsendelse af fakturaer og påmindelser på mail</td><td>Frankrig</td></tr>
+      <tr><td>Amazon Web Services EMEA SARL</td><td>AI-bogføring (Claude via Amazon Bedrock): vurderer bilag og banklinjer og foreslår eller udfører bogføring efter programmets regler</td><td>Tyskland (Frankfurt). Amerikansk koncern; EU-US Data Privacy Framework og EU's standardkontraktbestemmelser</td></tr>
+      <tr><td>Mistral AI SAS</td><td>Aflæsning af bilag: leverandør, beløb, moms og dato</td><td>Frankrig</td></tr>
+      <tr><td>Enable Banking Oy</td><td>Bankforbindelse: henter kontooplysninger og posteringer med den dataansvarliges samtykke</td><td>Finland</td></tr>
+      <tr><td>Visma e-conomic A/S (Sproom)</td><td>Afsendelse og modtagelse af e-fakturaer gennem Nemhandel og Peppol</td><td>Holland og Irland (Microsoft Azure). Egne underleverandører i USA (Twilio: Data Privacy Framework; KMD EDI: standardkontraktbestemmelser)</td></tr>
+      <tr><td>Cloudflare, Inc.</td><td>Modtagelse af bilag sendt til den dataansvarliges bilagsadresse, videresendt til regnskabsprogrammet</td><td>EU og USA; EU-US Data Privacy Framework</td></tr>
+      <tr><td>Salary ApS</td><td>Lønberegning, lønsedler og indberetning til eIndkomst i den dataansvarliges CVR, når løn er tilkøbt</td><td>Danmark</td></tr>
+      <tr><td>Zoho Corporation B.V.</td><td>Mail og dokumentudveksling</td><td>EU-datacenter</td></tr>
+      <tr><td>Visma Dinero A/S eller Visma e-conomic A/S</td><td>Kun hvor den dataansvarlige fortsat bruger sit eget regnskabsprogram</td><td>Danmark</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Bilag C: Instruks om behandlingen</h2>
+  <ul>
+    <li>Bilag modtages via appen, den dataansvarliges bilagsadresse eller som e-faktura, læses automatisk i EU og bogføres i regnskabsprogrammet. Med Gør det selv med AI godkender den dataansvarlige selv. Med bogholder bogfører AI'en efter faste regler, og en bogholder ser undtagelserne (punkt 6).</li>
+    <li>Bankposteringer hentes via bankforbindelsen, som den dataansvarlige selv har etableret med sit eget MitID. Samtykket fornyes af den dataansvarlige, når banken beder om det.</li>
+    <li>Elektroniske fakturaer sendes og modtages via Nemhandel og Peppol i den dataansvarliges navn, når den dataansvarlige har accepteret tilmeldingen. Fakturaer og påmindelser på mail sendes kun, når den dataansvarlige har bedt om det.</li>
+    <li>Løn køres i databehandlerens lønsystem (Salary) i den dataansvarliges CVR, når løn er tilkøbt. Timer og ændringer modtages fra den dataansvarlige; lønsedler sendes til de ansattes e-Boks.</li>
+    <li>Moms og oplysningsskema indberettes aldrig uden forudgående afstemning og aldrig automatisk. Med bogholder opretter programmet et udkast hos Skattestyrelsen, og en person godkender det i TastSelv med rådgiveradgang fra den dataansvarlige. Med Gør det selv med AI indberetter den dataansvarlige selv.</li>
+    <li>Forbinder den dataansvarlige sin egen AI-tjeneste til programmet, sendes de oplysninger, den dataansvarlige beder om, til den tjeneste. Forbindelsen kan kun læse tal og lave fakturaudkast; den kan ikke bogføre, indberette eller slette.</li>
+    <li>Ingen personoplysninger overføres til andre systemer end dem i bilag B, medmindre den dataansvarlige selv har bedt om det.</li>
+  </ul>
+
+  <div class="bund"><span>Version 1.0 · 19. oktober 2026</span><span>Tallo · CVR 46440986</span></div>
+"""
+
+
+def databehandleraftale():
+    return side("/databehandleraftale/", "Databehandleraftale: Tallo",
+                "Aftalen om, hvordan Tallo behandler personoplysninger på din virksomheds vegne.",
+                f'<div class="juridisk">{DATABEHANDLERAFTALE}</div>', JURIDISK_CSS)
 
 
 # ---------------------------------------------------------------------------------------------------- forsiden
@@ -773,7 +880,7 @@ def ikke_fundet():
 if __name__ == "__main__":
     (ROD / "404.html").write_text(ikke_fundet(), encoding="utf-8")
     print("skrevet 404")
-    for navn, html in [("priser", priser()), ("appen", appen()), ("ai", ai()), ("skift", skift()), ("om-os", om_os()), ("privatliv", privatliv()), ("handelsbetingelser", handelsbetingelser())]:
+    for navn, html in [("priser", priser()), ("appen", appen()), ("ai", ai()), ("skift", skift()), ("om-os", om_os()), ("privatliv", privatliv()), ("handelsbetingelser", handelsbetingelser()), ("databehandleraftale", databehandleraftale())]:
         (ROD / navn).mkdir(exist_ok=True)
         (ROD / navn / "index.html").write_text(html, encoding="utf-8")
         print("skrevet", navn)
