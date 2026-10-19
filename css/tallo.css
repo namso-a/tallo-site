@@ -164,13 +164,13 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 
 /* Footeren: rolig, med det store navn nederst */
 .fod { overflow: hidden; padding-top: 72px; border-top: 1px solid var(--lineal); background: var(--flade); }
-.fod-indre { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; width: min(1160px, calc(100% - 64px)); margin: 0 auto; font-size: 15px; }
+.fod-indre { position: relative; z-index: 1; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; width: min(1160px, calc(100% - 64px)); margin: 0 auto; font-size: 15px; }
 .fod-indre p { margin-top: 8px; color: var(--daempet); }
 .fod-indre ul { list-style: none; margin: 0; padding: 0; }
 .fod-indre li a, .fod-indre li span { display: inline-flex; align-items: center; min-height: 36px; min-width: 44px; }
 .fod-indre a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .fod .titel { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--daempet); }
-.kaempe { margin: 48px 0 -0.24em; font-size: clamp(120px, 27vw, 420px); font-weight: 700; line-height: .9; letter-spacing: -.06em; text-align: center; color: #e4dff6; user-select: none; }
+.kaempe { pointer-events: none; margin: 48px 0 -0.24em; font-size: clamp(120px, 27vw, 420px); font-weight: 700; line-height: .9; letter-spacing: -.06em; text-align: center; color: #e4dff6; user-select: none; }
 
 /* Undersider: top, afsnit med tekst og billede på skift, tabel, spørgsmål, bånd med "Kom i gang" */
 .side-top { padding: calc(var(--nav) + 56px) 24px 0; text-align: center; }
