@@ -682,7 +682,7 @@ HANDELSBETINGELSER = """
   <p class="ind">Kort fortalt: fast pris om måneden, ingen binding, og du betaler først, når vi åbner. Her står det, du skal vide.</p>
 
   <h2>Parterne og aftalen</h2>
-  <p>Aftalen er mellem din virksomhed og Tallo v/ Othman Ajjawi, Damagervej 1E, 2. tv, 8260 Viby J, CVR 46440986. Tallo er kun for virksomheder, så reglerne for forbrugerkøb, fx fortrydelsesret, gælder ikke. Når du skriver dig op på hjemmesiden, har du ikke købt noget. Vi åbner, når vores regnskabsprogram er registreret hos Erhvervsstyrelsen. Aftalen begynder, når vi har åbnet, du har bekræftet, at du vil i gang, og vi har gennemført kundekendskab efter hvidvaskloven.</p>
+  <p>Aftalen er mellem din virksomhed og Tallo v/ Othman Ajjawi, Damagervej 1E, 2. tv, 8260 Viby J, CVR 46440986. Tallo er kun for virksomheder, så reglerne for forbrugerkøb, fx fortrydelsesret, gælder ikke. Når du skriver dig op på hjemmesiden, har du ikke købt noget. Vi åbner, når vores regnskabsprogram er registreret hos Erhvervsstyrelsen. Aftalen begynder, når vi har åbnet, og du har bekræftet, at du vil i gang.</p>
 
   <h2>Pakkerne</h2>
   <ul>
@@ -700,7 +700,7 @@ HANDELSBETINGELSER = """
     <li>Koble din bank til med dit eget MitID og forny samtykket, når banken beder om det. Forbindelsen kan kun læse og kan ikke flytte penge. Vi bruger aldrig dit MitID.</li>
     <li>Sende de bilag, der ikke kommer ind af sig selv, senest den 5. i måneden efter.</li>
     <li>Svare på vores spørgsmål om bilag, vi ikke kan placere, inden for rimelig tid.</li>
-    <li>Give os de oplysninger, hvidvaskloven kræver: legitimation af dig og virksomhedens ejere, og hvad virksomheden laver. Uden dem må vi ikke begynde.</li>
+    <li>Oplyse hvem der ejer og tegner virksomheden, og hvad virksomheden laver, så vi ved, hvem vi indgår aftale med, og hvem der må handle på virksomhedens vegne.</li>
     <li>Med bogholder: give os adgang til Skattestyrelsens TastSelv, så vi kan indberette momsen.</li>
   </ul>
 
@@ -719,13 +719,13 @@ HANDELSBETINGELSER = """
   <p>Alt, vi ser i din virksomhed, er fortroligt, også når aftalen er slut. Dine data ligger i EU. Behandlingen af personoplysninger står i <a href="/databehandleraftale/">databehandleraftalen</a>, som du får, før vi begynder, og i <a href="/privatliv/">privatlivspolitikken</a>.</p>
 
   <h2>Opsigelse</h2>
-  <p>Der er ingen binding. Begge parter kan opsige aftalen til udgangen af en måned. Kan vi ikke gennemføre kundekendskab efter hvidvaskloven, kan vi opsige med det samme. Har du betalt for en periode, vi ikke når at levere, får du pengene tilbage.</p>
+  <p>Der er ingen binding. Begge parter kan opsige aftalen til udgangen af en måned. Kan vi ikke bekræfte, hvem der ejer og tegner virksomheden, kan vi opsige med det samme. Har du betalt for en periode, vi ikke når at levere, får du pengene tilbage.</p>
   <p>Når aftalen slutter, får du hele din bogføring med bilag i standardformatet SAF-T, så en anden kan tage over. Loven kræver, at bogføringen gemmes i fem år; det gør vi for dig, og du kan få en kopi, når som helst i de fem år.</p>
 
   <h2>Ændringer og tvister</h2>
   <p>Vi kan ændre betingelserne med 30 dages varsel på mail. Er du uenig, kan du opsige aftalen til den dag, ændringen træder i kraft. Aftalen følger dansk ret. Kan vi ikke løse en uenighed ved at tale sammen, afgøres den ved Retten i Aarhus.</p>
 
-  <div class="bund"><span>Senest opdateret 17. oktober 2026</span><span>Tallo · CVR 46440986</span></div>
+  <div class="bund"><span>Version 1.1 · senest opdateret 20. oktober 2026</span><span>Tallo · CVR 46440986</span></div>
 """
 
 
@@ -743,7 +743,7 @@ def handelsbetingelser():
 DATABEHANDLERAFTALE = """
   <p class="mono">Databehandleraftale</p>
   <h1>Databehandler&shy;aftale</h1>
-  <p class="ind">Version 1.0, 19. oktober 2026. Skabelon; parterne og eventuelle tilkøb udfyldes pr. kunde ved tilmeldingen.</p>
+  <p class="ind">Version 1.1, 20. oktober 2026. Skabelon; parterne og eventuelle tilkøb udfyldes pr. kunde ved tilmeldingen.</p>
   <p>Aftale efter databeskyttelsesforordningens artikel 28 mellem kunden som dataansvarlig og Tallo som databehandler. Den er en del af aftalen om at være kunde hos Tallo (handelsbetingelserne) og følger Datatilsynets standardstruktur.</p>
 
   <h2>1. Parterne</h2>
@@ -774,16 +774,16 @@ DATABEHANDLERAFTALE = """
   </ul>
 
   <h2>7. Underdatabehandlere</h2>
-  <p>Den dataansvarlige giver en generel godkendelse til, at databehandleren bruger underdatabehandlere. Databehandleren underretter den dataansvarlige skriftligt senest 30 dage, før en ny underdatabehandler tages i brug, så den dataansvarlige kan gøre indsigelse. Databehandleren pålægger underdatabehandlere de samme forpligtelser som i denne aftale og hæfter over for den dataansvarlige for deres opfyldelse. De godkendte underdatabehandlere står i bilag B.</p>
+  <p>Den dataansvarlige giver en generel godkendelse til, at databehandleren bruger underdatabehandlere. Databehandleren underretter den dataansvarlige skriftligt senest 30 dage, før en ny underdatabehandler tages i brug, så den dataansvarlige kan gøre indsigelse. Databehandleren pålægger underdatabehandlere de samme forpligtelser som i denne aftale og hæfter over for den dataansvarlige for deres opfyldelse. De godkendte underdatabehandlere står i bilag B. Gør den dataansvarlige indsigelse inden for fristen, og fastholder databehandleren underdatabehandleren, kan den dataansvarlige opsige aftalen med virkning fra den dag, underdatabehandleren tages i brug.</p>
 
   <h2>8. Overførsel til tredjelande</h2>
-  <p>Databehandleren overfører kun personoplysninger til lande uden for EU og EØS efter dokumenteret instruks og med et gyldigt overførselsgrundlag, jf. forordningens kapitel V. Grundlaget for hver underdatabehandler står i bilag B.</p>
+  <p>Databehandleren overfører kun personoplysninger til lande uden for EU og EØS efter dokumenteret instruks og med et gyldigt overførselsgrundlag, jf. forordningens kapitel V. Grundlaget for hver underdatabehandler står i bilag B. Tilslutter den dataansvarlige selv en tjeneste til programmet, jf. bilag C, sker overførslen alene på den dataansvarliges instruks, og den dataansvarlige er ansvarlig for overførselsgrundlaget over for den pågældende tjeneste. Tjenesten er ikke en underdatabehandler og fremgår derfor ikke af bilag B.</p>
 
   <h2>9. Bistand til den dataansvarlige</h2>
   <p>Databehandleren bistår den dataansvarlige med at besvare anmodninger fra registrerede (artikel 12 til 22), med sikkerhed (artikel 32), med anmeldelse af brud (artikel 33 og 34) og med konsekvensanalyser (artikel 35 og 36), i det omfang det er relevant for behandlingen. Bistand ud over det, der følger af almindelig drift, faktureres efter medgået tid, efter aftale om prisen på forhånd.</p>
 
   <h2>10. Brud på persondatasikkerheden</h2>
-  <p>Databehandleren underretter den dataansvarlige uden unødig forsinkelse og senest 48 timer efter at være blevet bekendt med et brud. Underretningen beskriver bruddets karakter, de berørte kategorier og antal, de sandsynlige konsekvenser og de foranstaltninger, der er truffet.</p>
+  <p>Databehandleren underretter den dataansvarlige uden unødig forsinkelse og senest 24 timer efter at være blevet bekendt med et brud. Underretningen beskriver bruddets karakter, de berørte kategorier og antal, de sandsynlige konsekvenser og de foranstaltninger, der er truffet.</p>
 
   <h2>11. Sletning og tilbagelevering</h2>
   <p>Ved aftalens ophør udleverer databehandleren bogføringsmaterialet til den dataansvarlige i standardformatet SAF-T sammen med bilagene. Bogføringsloven kræver, at materialet opbevares i 5 år fra udgangen af det regnskabsår, det vedrører. Databehandleren opbevarer det derfor i regnskabsprogrammet, låst mod ændringer, også hvis den dataansvarlige ophører eller går konkurs, udleverer en kopi på anmodning i hele perioden og sletter det, når fristen er udløbet. Andre personoplysninger slettes eller tilbageleveres ved ophør, medmindre EU-retten eller dansk ret kræver opbevaring. Hvor den dataansvarlige har brugt sit eget regnskabsprogram, fjerner databehandleren sin adgang, og materialet dér berøres ikke.</p>
@@ -800,7 +800,7 @@ DATABEHANDLERAFTALE = """
     <tbody>
       <tr><td>Behandlingens karakter</td><td>Registrering, systematisering, aflæsning af bilag med AI i EU, opbevaring, afsendelse af fakturaer og e-fakturaer, videregivelse til myndigheder efter lov.</td></tr>
       <tr><td>Kategorier af registrerede</td><td>Den dataansvarliges ansatte, kunder, leverandører og ejere, og de brugere, den dataansvarlige giver adgang til programmet.</td></tr>
-      <tr><td>Kategorier af oplysninger</td><td>Navn, kontaktoplysninger, bankoplysninger, løn, pension, fravær, CPR-numre (ansatte, kun ved tilkøbt løn), og for brugere: login og log over opslag og ændringer. Legitimation af kunden og de reelle ejere er ikke omfattet af denne aftale; den behandler Tallo som selvstændigt dataansvarlig efter hvidvaskloven, se privatlivspolitikken.</td></tr>
+      <tr><td>Kategorier af oplysninger</td><td>Navn, kontaktoplysninger, bankoplysninger, løn, pension, fravær, CPR-numre (ansatte, kun ved tilkøbt løn), og for brugere: login og log over opslag og ændringer. Oplysninger om kundens ejere og tegningsberettigede er ikke omfattet af denne aftale. Dem behandler Tallo som selvstændigt dataansvarlig for at kunne indgå og administrere aftalen, se privatlivspolitikken.</td></tr>
       <tr><td>Varighed</td><td>Så længe aftalen om at være kunde løber, og derefter i det omfang loven kræver opbevaring (punkt 11).</td></tr>
     </tbody>
   </table>
@@ -834,7 +834,7 @@ DATABEHANDLERAFTALE = """
     <li>Ingen personoplysninger overføres til andre systemer end dem i bilag B, medmindre den dataansvarlige selv har bedt om det.</li>
   </ul>
 
-  <div class="bund"><span>Version 1.0 · 19. oktober 2026</span><span>Tallo · CVR 46440986</span></div>
+  <div class="bund"><span>Version 1.1 · 20. oktober 2026</span><span>Tallo · CVR 46440986</span></div>
 """
 
 
