@@ -63,7 +63,7 @@
 
   /* Produktet: fire punkter til venstre, appen i panelet til højre */
   .produkt { position: absolute; left: 0; top: 0; opacity: 0; visibility: hidden; }
-  .produkt h2 { font-size: 26px; font-weight: 500; line-height: 1.2; letter-spacing: -.015em; }
+  .produkt h2 { font-size: var(--t-h2); font-weight: 500; line-height: 1.2; letter-spacing: -.015em; }
   .punkter { list-style: none; padding: 0; margin-top: 52px; }
   .punkter li { position: relative; border-top: 1px solid var(--lineal); }
   .punkter .linje { position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--blaek); transform: scaleX(0); transform-origin: left; }
@@ -117,12 +117,12 @@
   .moms-total b { font-size: 30px; font-weight: 500; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 
   .os { padding: 140px 0 40px; text-align: center; }
-  .os h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; }
+  .os h2 { font-size: var(--t-h2); font-weight: 500; line-height: 1.1; letter-spacing: -.02em; }
   .os .ingress { margin-top: 12px; }
   /* Tilmeldingen: tre trin i et kort i appens stil; hvert trin får et flueben, og stregen mellem dem fyldes */
   .kom { padding: 140px 0 120px; }
   .kom-hoved { text-align: center; padding: 0 24px; }
-  .kom-hoved h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
+  .kom-hoved h2 { font-size: var(--t-h2); font-weight: 500; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
   .kom-hoved .ingress { margin-top: 12px; max-width: 560px; text-wrap: balance; }
   .kom-gitter { display: grid; grid-template-columns: minmax(0, 620px); justify-content: center; gap: 14px; margin-top: 56px; padding: 0 32px; }
   .tilmeld { padding: 40px 40px 36px; border-radius: 24px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 30px 60px -40px rgba(20,20,20,.35); }
@@ -186,7 +186,6 @@
   @media (max-width: 699px) {
     .top-tekst { top: calc(var(--nav) + 24px); }
     .bjaelke { bottom: 16px; width: calc(100% - 32px); white-space: normal; text-align: center; font-size: 12px; }
-    .produkt h2 { font-size: 23px; }
     .punkter { margin-top: 18px; }
     .punkter button { padding: 11px 0; font-size: 15px; }
     .punkter p { font-size: 15px; padding-bottom: 12px; }
@@ -197,9 +196,8 @@
     .fk-tal { font-size: 36px; }
     .soejler { height: 64px; margin-top: 14px; }
     .os { padding-top: 96px; }
-    .os h2 { font-size: 32px; padding: 0 20px; }
+    .os h2 { padding: 0 20px; }
     .kom { padding: 96px 0 80px; }
-    .kom-hoved h2 { font-size: 32px; }
     .kom-gitter { grid-template-columns: minmax(0, 1fr); margin-top: 36px; padding: 0 12px; }
     .tilmeld { padding: 26px 18px 24px; }
     .trin { gap: 14px; grid-template-columns: 32px 1fr; }
@@ -215,7 +213,6 @@
     .top-tekst h1 { font-size: 30px; }
     .top-tekst .ingress { margin-top: 10px; font-size: 15px; }
     .top-tekst .knapper { margin-top: 16px; }
-    .produkt h2 { font-size: 20px; }
     .punkter { margin-top: 10px; }
     .punkter button { padding: 11px 0; font-size: 15px; }
     .punkter p { font-size: 14px; padding-bottom: 10px; }
@@ -238,7 +235,6 @@
     <li><a href="/appen/">Appen</a></li>
     <li><a href="/priser/">Priser</a></li>
     <li><a href="/ai/">AI</a></li>
-    <li><a href="/skift/">Skift</a></li>
     <li><a href="/om-os/">Om os</a></li>
   </ul>
   <div class="nav-hoejre">
@@ -253,7 +249,6 @@
     <li><a href="/appen/">Appen</a></li>
     <li><a href="/priser/">Priser</a></li>
     <li><a href="/ai/">AI</a></li>
-    <li><a href="/skift/">Skift</a></li>
     <li><a href="/om-os/">Om os</a></li>
   </ul>
   <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
@@ -475,7 +470,7 @@
   <section class="kom" id="kom">
     <div class="kom-hoved">
       <h2>Skriv dig op på 2 minutter.</h2>
-      <p class="ingress">Vi åbner, når programmet er registreret hos Erhvervsstyrelsen. Indtil da betaler du intet.</p>
+      <p class="ingress">Du betaler intet, før vi åbner.</p>
     </div>
     <div class="kom-gitter">
       <form class="tilmeld" id="tilmeld" data-ok="Tak. Du er skrevet op, og vi skriver til dig, den dag vi åbner." action="https://nznqjlrknpbnfzizxnkr.supabase.co/functions/v1/tilmelding" method="post">
@@ -544,7 +539,6 @@
         <li><a href="/appen/">Appen</a></li>
         <li><a href="/priser/">Priser</a></li>
         <li><a href="/ai/">Sådan bruger vi AI</a></li>
-        <li><a href="/skift/">Skift til Tallo</a></li>
         <li><a href="/om-os/">Om os</a></li>
       </ul>
     </div>

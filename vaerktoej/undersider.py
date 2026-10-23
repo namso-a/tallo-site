@@ -4,7 +4,7 @@
 
 - Skriver hoved, menu, pakkeblok og footer ind i forsiden (index.html) mellem markørerne
   <!-- navn:start --> og <!-- navn:slut -->. Resten af forsiden er håndskrevet.
-- Laver undersiderne /appen, /priser, /ai, /skift og /om-os helt.
+- Laver undersiderne /appen, /priser, /ai og /om-os helt (/skift er fjernet 24. okt 2026).
 - Giver /privatliv ny menu og footer; indholdet mellem <!-- indhold:start/slut --> røres ikke.
 
 Teksten bygger på den, Othman godkendte 7. okt 2026 (Tallo/.docs/design/tekst_2026-10-07.md), rettet 14. okt:
@@ -22,8 +22,8 @@ CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.co
        "https://nznqjlrknpbnfzizxnkr.supabase.co https://app.cal.com; frame-src https://app.cal.com https://cal.com; "
        "object-src 'none'; base-uri 'self'; form-action https://nznqjlrknpbnfzizxnkr.supabase.co mailto:")
 
-MENU = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "AI"), ("/skift/", "Skift"), ("/om-os/", "Om os")]
-FOD_LINKS = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "Sådan bruger vi AI"), ("/skift/", "Skift til Tallo"), ("/om-os/", "Om os")]
+MENU = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "AI"), ("/om-os/", "Om os")]
+FOD_LINKS = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "Sådan bruger vi AI"), ("/om-os/", "Om os")]
 
 
 def hoved(titel, beskrivelse, sti):
@@ -240,16 +240,12 @@ def side(sti, titel, beskrivelse, krop, ekstra_hoved=""):
 
 # ---------------------------------------------------------------------------------------------------- /priser
 JA, NEJ = '<span class="ja" aria-label="Med"></span>', '<span class="nej" aria-label="Ikke med">–</span>'
+# Syv rækker (Othman 24. okt 2026: "kan godt forenkles, så der ikke er så mange rækker")
 SAMMENLIGN = [
-    ("Programmet og appen", JA, JA),
     ("Regninger og fakturaer kommer ind af sig selv", JA, JA),
-    ("Ubegrænset antal fakturaer og kvitteringer", JA, JA),
-    ("AI'en foreslår, hvor dine bilag skal hen", JA, JA),
-    ("Du godkender selv", JA, NEJ),
-    ("Vi bogfører for dig", NEJ, JA),
-    ("En bogholder kvalitetssikrer det, AI'en laver", NEJ, JA),
-    ("Momsen regnes ud", JA, JA),
-    ("Momsen indberettes", "Du gør det", "Vi gør det"),
+    ("Ubegrænset antal bilag", JA, JA),
+    ("Bogføringen", "Du godkender AI'ens forslag", "Vi bogfører, en bogholder kvalitetssikrer"),
+    ("Momsen", "Regnes ud, du indberetter", "Vi indberetter"),
     ("Salg, udgifter og overskud hver måned", "I appen", "I appen og på mail"),
     ("Spørg din egen Claude eller ChatGPT", JA, JA),
     ("Løn, årsregnskab og selvangivelse", "Tilkøb", "Tilkøb"),
@@ -270,9 +266,8 @@ FAQ_FORSIDE = [
 ]
 FAQ_PRISER = [
     ("Kan jeg skifte pakke?", "Ja, fra måned til måned, begge veje."),
-    ("Hvad hvis jeg har mange bilag?", "Prisen er den samme, uanset hvor mange."),
     ("Hvad koster tilkøbene?", "Det afhænger af din virksomhed. Du får prisen, før du siger ja."),
-    ("Kommer jeg fra et andet program?", 'Så flytter vi dig gratis. Se <a href="/skift/">Skift til Tallo</a>.'),
+    ("Kommer jeg fra et andet program?", "Så flytter vi dig gratis. Din historik kommer med."),
 ]
 FAQ_OM_OS = [
     ("Hvem er min bogholder?", "Det er mig, Othman. AI'en bærer det tunge læs, og jeg kvalitetssikrer den. Skal noget "
@@ -311,7 +306,6 @@ def priser():
     regner = """<div class="bilag-baggrund" aria-hidden="true"></div>
     <div class="regner kort-over" data-regner>
       <div>
-        <h2>Hvor mange bilag har du om måneden?</h2>
         <p class="antal"><b data-antal>40</b>bilag om måneden</p>
         <label class="sr" for="bilagAntal">Antal bilag om måneden</label>
         <input class="skyder" id="bilagAntal" type="range" min="10" max="500" step="10" value="40">
@@ -325,7 +319,6 @@ def priser():
           </div>
           <p class="belob"><span data-pris>1.000</span><small>kr.</small></p>
           <p class="fast-linje">om måneden, plus moms</p>
-          <span class="app-pille ok samme">Samme pris</span>
         </div>
       </div>
     </div>"""
@@ -341,7 +334,7 @@ def priser():
           </tbody>
         </table>
       </div>
-      <p class="smaat" style="color:var(--daempet)"><b style="color:var(--blaek)">Tilkøb:</b> løn, årsregnskab, selvangivelse, og årsrapport (ApS). Prisen får du, før du siger ja.</p>
+      <p class="smaat" style="color:var(--daempet)"><b style="color:var(--blaek)">Tilkøb:</b> årsrapport (ApS). Prisen får du, før du siger ja.</p>
     </div>"""
     spoerg = faq(FAQ_PRISER)
     slut = """<div class="indre udsagn" data-afslor>
@@ -444,8 +437,7 @@ def ai():
     """Ét levende øjeblik: kvitteringen bliver læst, mens man ruller (følger rullet frem og tilbage). Felternes placering
     på kvitteringen er målt på et gitter (ai-kvittering.webp, 540 × 950)."""
     top = """<div class="side-top">
-      <h1>AI'en bærer det tunge læs. En bogholder kvalitetssikrer det.</h1>
-      <p class="ingress">Se, hvordan den læser dine bilag, hvem der holder øje med den, og hvad din egen AI må.</p>
+      <h1>AI'en bærer det tunge læs.<br>En bogholder kvalitetssikrer.</h1>
     </div>"""
     # (felt, venstre, top, bredde, højde, linjens udløser) i procent af arket
     FELTER = [("fra", 10, 7.9, 45, 4.4, 10), ("varer", 11, 18, 57, 15.6, 22), ("beloeb", 13.5, 35.8, 56, 4.8, 38),
@@ -456,6 +448,10 @@ def ai():
     raekker = "\n".join(f'          <div class="laes-raekke"><span>{a}</span><b>{v}</b><span class="app-pille ok">✓</span></div>' for a, v in RAEKKER)
     scene = f"""<div class="laes" data-laes>
       <div class="laes-scene">
+        <div class="region-hoved midt laes-hoved">
+          <h2>Den læser dine bilag</h2>
+          <p>Afsender, beløb, moms og dato. Alt i EU.</p>
+        </div>
         <div class="laes-papir">
           <div class="ark">
             <img src="/billeder/ai-kvittering.webp" alt="Kvittering fra Bagergrossisten A/S på 1.500 kr. med 300 kr. i moms, 14. oktober 2026" width="540" height="950">
@@ -464,10 +460,6 @@ def ai():
           </div>
         </div>
         <div>
-          <div class="laes-tekst">
-            <h2>Den læser dine bilag</h2>
-            <p>Hvem der har sendt dem, beløb, moms og dato. Det sker i EU, og dine bilag forlader ikke EU.</p>
-          </div>
           <div class="laes-kort" aria-live="polite">
             <p class="lk-titel"><span>Ny kvittering</span><span class="laes-status"><span class="app-pille graa"><i class="snurre" aria-hidden="true"></i>Læser</span><span class="app-pille ok ok">✓ Bogført</span></span></p>
 {raekker}
@@ -496,7 +488,7 @@ def ai():
     chat = """<div class="indre">
       <div class="region-hoved midt" data-afslor>
         <h2>Spørg din egen Claude eller ChatGPT</h2>
-        <p>Forbind din egen AI i appen under Indstillinger, Din AI. Den kan læse dine tal og lave fakturaudkast, som du selv sender. Den kan aldrig bogføre, indberette moms eller slette noget, og du vælger selv, om du vil forbinde den.</p>
+        <p>Forbind din egen AI i appen under Indstillinger, Din AI. Den kan læse dine tal og lave fakturaudkast, men aldrig bogføre, indberette moms eller slette noget.</p>
       </div>
       <div class="ai-chat" data-ai-chat>
         <div class="ac-top">
@@ -525,67 +517,6 @@ def ai():
                                 region("papir", chat)]))
 
 
-# ---------------------------------------------------------------------------------------------------- /skift
-def skift():
-    """Ét levende øjeblik: man trækker selv filen fra det gamle program over i Tallo (eller trykker på den), og
-    historikken flytter ind med flueben (Othman 16. okt: "Skift og om os har ikke noget"). Rækkefølgen efter Othman
-    17. okt: flyttekasserne subtilt i baggrunden af toppen, så de tre trin, og til sidst spillet med en tydelig opfordring.
-    Programnavne må stå på /skift (beslutning 7. okt 2026)."""
-    top = """<div class="side-top">
-      <h1>Skift til Tallo. Vi flytter dig gratis.</h1>
-      <p class="ingress">Kommer du fra Dinero, e-conomic eller Billy? Din historik kommer med, så tallene fortsætter, hvor de slap.</p>
-    </div>"""
-    baggrund = """<div class="top-baggrund" aria-hidden="true"><img src="/billeder/foto-skift-1600.webp" srcset="/billeder/foto-skift-1200.webp 1200w, /billeder/foto-skift-1600.webp 1600w, /billeder/foto-skift.webp 2400w" sizes="100vw" alt="" width="2400" height="1600"></div>"""
-    flyt = """<div class="region-hoved midt" data-afslor>
-      <h2>Prøv selv</h2>
-      <p><span class="mus">Træk filen fra dit gamle program over i Tallo, og se din historik flytte med.</span><span class="fin">Tryk på filen, og se din historik flytte over i Tallo.</span></p>
-    </div>
-    <div class="traek kort-over" data-traek>
-      <span class="traek-pil" aria-hidden="true"></span>
-      <div class="gammel">
-        <p class="gammel-top"><i></i><i></i><i></i><span>Dit gamle program</span></p>
-        <div class="gammel-raekker" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-        <button type="button" class="traek-fil" aria-label="Flyt filen med din historik over i Tallo"><span class="fil" aria-hidden="true">SAF-T</span><div><b>Bageriet Kornet, 2026</b><small>Hele din historik i én fil</small></div><span class="greb"><span class="mus">Træk mig ind i Tallo</span><span class="fin">Tryk for at flytte den ind i Tallo</span></span></button>
-      </div>
-      <div class="flyt" data-flyt>
-        <div class="flyt-vindue">
-          <p class="flyt-top"><span>Tallo</span><span class="app-pille kat">Bageriet Kornet</span></p>
-          <div class="flyt-zone">
-            <span class="hint">Træk filen hertil</span>
-            <div class="flyt-fil"><span class="fil" aria-hidden="true">SAF-T</span><div><b>Bageriet Kornet, 2026</b><small>Lagt i appen</small></div></div>
-          </div>
-          <div class="flyt-linje"><i></i></div>
-          <ul class="flyt-liste" aria-live="polite">
-            <li>Kontoplan<span class="app-pille ok">✓ Flyttet</span></li>
-            <li>Kunder og leverandører<span class="app-pille ok">✓ Flyttet</span></li>
-            <li>Posteringer<span class="app-pille ok">✓ Flyttet</span></li>
-            <li>Saldi<span class="app-pille ok">✓ Flyttet</span></li>
-          </ul>
-          <p class="flyt-slut">Tallene fortsætter, hvor de slap.</p>
-          <button type="button" class="flyt-igen">Prøv igen</button>
-        </div>
-      </div>
-    </div>"""
-    trin = """<div class="indre">
-      <div class="region-hoved midt" data-afslor><h2>Tre trin, så er du flyttet</h2></div>
-      <ol class="trin-vandret" data-afslor>
-        <li><span class="nr" aria-hidden="true">1</span><h3>Hent én fil fra dit gamle program</h3><p>Alle registrerede programmer kan lave den (en SAF-T-fil). Vi viser dig hvordan.</p></li>
-        <li><span class="nr" aria-hidden="true">2</span><h3>Læg den i appen</h3><p>Programmet flytter selv din historik og dine saldi, så tallene fortsætter, hvor de slap.</p></li>
-        <li><span class="nr" aria-hidden="true">3</span><h3>Kobl banken til</h3><p>Med dit eget MitID, én gang.</p></li>
-      </ol>
-    </div>"""
-    slut = """<div class="indre udsagn" data-afslor>
-      <h2>Bliv i dit gamle program, indtil vi åbner.</h2>
-      <p>Skriv dig op nu. Den dag vi åbner, flytter vi din historik for dig.</p>
-      <div class="knapper">
-        <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
-        <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
-      </div>
-    </div>"""
-    return side("/skift/", "Skift til Tallo", "Kommer du fra Dinero, e-conomic eller Billy? Din historik kommer med, og vi flytter dig gratis.",
-                "\n\n  ".join([region("fersken top foto-top", baggrund + "\n    " + top), region("papir skift-trin", trin), region("papir skift-slut", slut)]))
-
-
 # ---------------------------------------------------------------------------------------------------- /om-os
 def om_os():
     return side("/om-os/", "Om os: Tallo", "Tallo er Othman og Mohammed. AI'en bærer det tunge læs, og en bogholder kvalitetssikrer det.", """<section class="region fersken top" data-tone="#f8d9c4" data-detalje="linje">
@@ -597,19 +528,19 @@ def om_os():
     <div class="par bred">
       <div class="person">
         <div class="ramme">
-          <div class="foto-kort"><img src="/billeder/othman.webp" alt="Othman Ajjawi" width="400" height="400"></div>
-        </div>
-        <h3>Othman Ajjawi</h3>
-        <p class="rolle">Bogføring og teknik</p>
-        <p class="om">Othman har en kandidatgrad i erhvervsøkonomi og arbejder til daglig med økonomi, data og AI. Han holder øje med dine tal og skriver til dig, hvis noget skal afklares.</p>
-      </div>
-      <div class="person">
-        <div class="ramme">
           <div class="foto-kort"><img src="/billeder/mohammed.webp" alt="Mohammed Chahrour" width="400" height="400"></div>
         </div>
         <h3>Mohammed Chahrour</h3>
         <p class="rolle">Kunder og aftaler</p>
         <p class="om">Mohammed er ved at afslutte sin kandidatgrad i jura. Han tager den første snak med dig, sørger for aftalerne og at alt er som det skal være.</p>
+      </div>
+      <div class="person">
+        <div class="ramme">
+          <div class="foto-kort"><img src="/billeder/othman.webp" alt="Othman Ajjawi" width="400" height="400"></div>
+        </div>
+        <h3>Othman Ajjawi</h3>
+        <p class="rolle">Bogføring og teknik</p>
+        <p class="om">Othman har en kandidatgrad i erhvervsøkonomi og arbejder til daglig med økonomi, data og AI. Han holder øje med dine tal og skriver til dig, hvis noget skal afklares.</p>
       </div>
     </div>
   </div>
@@ -879,7 +810,7 @@ def ikke_fundet():
 if __name__ == "__main__":
     (ROD / "404.html").write_text(ikke_fundet(), encoding="utf-8")
     print("skrevet 404")
-    for navn, html in [("priser", priser()), ("appen", appen()), ("ai", ai()), ("skift", skift()), ("om-os", om_os()), ("privatliv", privatliv()), ("handelsbetingelser", handelsbetingelser()), ("databehandleraftale", databehandleraftale())]:
+    for navn, html in [("priser", priser()), ("appen", appen()), ("ai", ai()), ("om-os", om_os()), ("privatliv", privatliv()), ("handelsbetingelser", handelsbetingelser()), ("databehandleraftale", databehandleraftale())]:
         (ROD / navn).mkdir(exist_ok=True)
         (ROD / navn / "index.html").write_text(html, encoding="utf-8")
         print("skrevet", navn)

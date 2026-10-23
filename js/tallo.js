@@ -322,59 +322,6 @@
     beregn(); opdater();
   });
 
-  // Flytningen: spiller af sig selv, når den kommer i syne; "Se det igen" starter forfra
-  document.querySelectorAll("[data-flyt]").forEach((fl) => {
-    const linjer = [...fl.querySelectorAll(".flyt-liste li")];
-    let timere = [];
-    const spil = () => {
-      timere.forEach(clearTimeout); timere = [];
-      fl.classList.remove("i-gang", "faerdig"); linjer.forEach((l) => l.classList.remove("klar"));
-      void fl.offsetWidth;
-      fl.classList.add("i-gang");
-      const start = 1300, trin = 520;  // startes altid af én selv, så den spiller også ved reduceret bevægelse
-      linjer.forEach((l, i) => timere.push(setTimeout(() => l.classList.add("klar"), start + i * trin)));
-      timere.push(setTimeout(() => fl.classList.add("faerdig"), start + linjer.length * trin + 300));
-    };
-    const traek = fl.closest("[data-traek]");
-    if (!traek) { fl.querySelector(".flyt-igen").addEventListener("click", spil); iSyne(fl, spil, "-25%"); return; }
-    // Træk filen ind: følg pointeren; slippes den over Tallo-vinduet (eller trykkes der), flytter historikken
-    const fil = traek.querySelector(".traek-fil"), zone = fl.querySelector(".flyt-zone");
-    let start = null;
-    const over = (e) => { const r = zone.getBoundingClientRect(); return e.clientX > r.left - 30 && e.clientX < r.right + 30 && e.clientY > r.top - 30 && e.clientY < r.bottom + 30; };
-    const tilbage = () => { fil.classList.remove("traekkes", "flyttet"); fil.style.transform = ""; };
-    const flyt = () => {
-      fil.classList.remove("traekkes"); fil.classList.add("flyttet"); fil.style.transform = ""; zone.classList.remove("over"); spil();
-      // På mobil står Tallo-vinduet under filen: rul det i syne, så man ser historikken flytte ind
-      const r = fl.getBoundingClientRect();
-      if (r.top < 0 || r.bottom > innerHeight) fl.scrollIntoView({ behavior: roligt ? "auto" : "smooth", block: r.height > innerHeight ? "start" : "center" });
-    };
-    let skubTimer = 0;
-    const stopSkub = () => { clearInterval(skubTimer); skubTimer = -1; fil.classList.remove("skub"); };
-    if (!roligt) iSyne(traek, () => {
-      if (skubTimer === -1) return;
-      skubTimer = setInterval(() => { fil.classList.remove("skub"); void fil.offsetWidth; fil.classList.add("skub"); }, 3000);
-    }, "-20%");
-    ["pointerdown", "keydown", "focus"].forEach((t) => fil.addEventListener(t, stopSkub));
-    fil.addEventListener("pointerdown", (e) => { start = { x: e.clientX, y: e.clientY, flyttede: false }; fil.setPointerCapture(e.pointerId); fil.classList.add("traekkes"); });
-    fil.addEventListener("pointermove", (e) => {
-      if (!start) return;
-      const dx = e.clientX - start.x, dy = e.clientY - start.y;
-      if (Math.abs(dx) + Math.abs(dy) > 6) start.flyttede = true;
-      fil.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.max(-6, Math.min(6, dx / 40))}deg)`;
-      zone.classList.toggle("over", over(e));
-    });
-    fil.addEventListener("pointerup", (e) => {
-      if (!start) return;
-      const klik = !start.flyttede; start = null;
-      if (klik || over(e)) flyt(); else { tilbage(); zone.classList.remove("over"); }
-    });
-    fil.addEventListener("pointercancel", () => { start = null; tilbage(); zone.classList.remove("over"); });
-    fil.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flyt(); } });
-    fl.querySelector(".flyt-igen").addEventListener("click", () => {
-      timere.forEach(clearTimeout); fl.classList.remove("i-gang", "faerdig"); linjer.forEach((l) => l.classList.remove("klar")); tilbage(); fil.focus();
-    });
-  });
-
   // Spørgsmål og svar: svaret glider op og ned i stedet for at springe; "+" drejer til "×" i CSS. Man starter det selv,
   // så det spiller altid
   document.querySelectorAll("[data-faq] details").forEach((d) => {
