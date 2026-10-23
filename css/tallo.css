@@ -131,9 +131,6 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 
 /* Fotokort: står skævt, falder på plads i syne og retter sig op ved hover; et lige app-kort på hvert */
 .par.bred { gap: 140px; }
-/* /skift: ens rytme mellem afsnittene (Othman 17. okt: "ikke jævn plads vertikalt") */
-.region.skift-trin { padding-bottom: 60px; }
-.region.skift-slut { padding-top: 60px; padding-bottom: 120px; }
 .par { display: grid; grid-template-columns: repeat(2, minmax(0, 400px)); justify-content: center; gap: 72px; margin-top: 64px; padding: 0 32px; text-align: left; }
 .person, .ramme { position: relative; }
 .foto-kort { position: relative; aspect-ratio: 1; border-radius: 22px; background: #eceae4; transform: rotate(var(--skaev)); transition: transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s; box-shadow: 0 30px 60px -36px rgba(20,20,20,.4); }
@@ -253,7 +250,6 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 .skridt .nr { position: relative; z-index: 1; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 1.5px var(--lineal); font-size: 15px; font-weight: 600; color: var(--blaa); }
 .skridt h3 { margin: 6px 0 0; font-size: 19px; font-weight: 560; }
 .skridt p { margin-top: 6px; font-size: 16px; line-height: 1.55; color: var(--daempet); }
-.fil { display: grid; place-items: center; flex: none; width: 40px; height: 48px; border-radius: 6px; background: #5a5a54; color: #fff; font-size: 10.5px; font-weight: 700; letter-spacing: .02em; }
 .om-snak { width: min(520px, calc(100% - 40px)); margin: 96px auto 0; }
 
 /* Farve på undersiderne: produktet på en farvet flade eller et foto, ét greb pr. afsnit, aldrig to ens i træk */
@@ -299,7 +295,6 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
    hvert afsnit sin tone som flade. Sidste afsnit er papir, så footeren står som på forsiden (Othman 16. okt 2026). */
 html.glid body { background: var(--bund, var(--flade)); }
 html.glid .region { background: transparent; }
-html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 /* Papir og fotos (C): ét foto pr. side i egen ramme, og det levende øjeblik på et hvidt kort over fotoets nederste kant */
 .fotoramme { width: min(1240px, calc(100% - 48px)); aspect-ratio: 2.2; margin: 0 auto; overflow: hidden; border-radius: 32px; }
 .side-top + .fotoramme { margin-top: 64px; }
@@ -311,7 +306,7 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 .fotoramme img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--fp, 50% 50%); }
 .fotoramme + .kort-over { margin-top: -170px; margin-inline: auto; }
 .kort-over { position: relative; z-index: 1; border-radius: 28px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 40px 80px -50px rgba(20,20,20,.45); }
-.regner.kort-over, .traek.kort-over { width: min(1120px, calc(100% - 120px)); padding: 56px; }
+.regner.kort-over { width: min(1120px, calc(100% - 120px)); padding: 56px; }
 .udsagn.kort-over { width: min(820px, calc(100% - 120px)); padding: 56px 48px; }
 .kort-over .skyder { --spor: #e7e4f5; }
 /* Inde i et afsnit står menuens afstand allerede på afsnittet; overskriften må ikke lægge den til igen */
@@ -383,13 +378,6 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 .fuld-delt .ingress { margin-left: 0; }
 
 /* Trin vandret, forbundet af en streg */
-.trin-vandret { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; list-style: none; margin: 0; padding: 0; }
-.trin-vandret::before { content: ""; position: absolute; left: 18px; right: 18px; top: 18px; height: 2px; background: var(--lineal); }
-.trin-vandret > li { position: relative; }
-.trin-vandret .nr { position: relative; z-index: 1; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--blaa); color: #fff; font-size: 15px; font-weight: 600; box-shadow: 0 0 0 6px #fff; }
-.trin-vandret h3 { margin: 22px 0 0; font-size: 21px; font-weight: 560; }
-.trin-vandret p { margin-top: 8px; font-size: 16px; line-height: 1.55; color: var(--daempet); text-wrap: pretty; }
-.trin-vandret .element { margin-top: 22px; }
 
 /* Principper: en liste i stor skrift */
 .principper { list-style: none; margin: 0; padding: 0; counter-reset: p; }
@@ -421,14 +409,15 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 /* Læse-scenen (/ai): følger rullet; linjen glider ned over kvitteringen, felterne markeres, app-kortet fyldes ud */
 .region.laes-region { padding: 0; }
 .laes { position: relative; height: 280vh; }
-.laes-scene { position: sticky; top: var(--nav); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); gap: 64px; align-items: start; padding-top: 24px; box-sizing: border-box; height: calc(100vh - var(--nav)); width: min(1080px, calc(100% - 64px)); margin: 0 auto; }
+.laes-scene { position: sticky; top: var(--nav); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); gap: 28px 64px; align-items: center; align-content: start; padding-top: 24px; box-sizing: border-box; height: calc(100vh - var(--nav)); width: min(1080px, calc(100% - 64px)); margin: 0 auto; }
 .laes-papir { position: relative; overflow: hidden; width: min(380px, 100%); aspect-ratio: 540 / 600; margin-left: auto; border-radius: 22px; box-shadow: 0 40px 80px -40px rgba(20,20,20,.55); }
 .laes-papir .ark { position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: 540 / 950; }
 .laes-papir .ark img { display: block; width: 100%; height: 100%; }
 .laes-felt { position: absolute; border-radius: 6px; box-shadow: inset 0 0 0 2px rgba(75,58,166,.75); background: rgba(75,58,166,.08); transform: rotate(-3.5deg) scale(.96); opacity: 0; transition: opacity .25s ease-out, transform .35s cubic-bezier(.3,1.4,.5,1); }
 .laes-felt.laest { opacity: 1; transform: rotate(-3.5deg); }
 .laes-linje { position: absolute; left: -4%; right: -4%; height: 3px; border-radius: 3px; background: #8f84e0; box-shadow: 0 0 0 6px rgba(143,132,224,.18); transform: rotate(-3.5deg); }
-.laes-kort { padding: 10px 24px 20px; border-radius: 18px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 30px 60px -40px rgba(20,20,20,.35); }
+.laes-hoved { grid-column: 1 / -1; }
+.laes-kort { display: flex; flex-direction: column; justify-content: center; min-height: min(422px, 100%); padding: 10px 24px 20px; border-radius: 18px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 30px 60px -40px rgba(20,20,20,.35); }
 .laes-kort .lk-titel { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0 8px; font-size: 14px; font-weight: 500; color: var(--daempet); }
 .laes-raekke { display: grid; grid-template-columns: 90px 1fr auto; gap: 12px; align-items: center; min-height: 50px; border-top: 1px solid #efeee9; font-size: 15px; }
 .laes-raekke > span:first-child { color: var(--daempet); }
@@ -449,7 +438,7 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 /* Skyderen (/priser): bunken vokser, prisen står stille og nikker for hver 50 bilag */
 .regner { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 64px; align-items: center; width: min(1160px, calc(100% - 64px)); margin: 0 auto; }
 .regner h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
-.regner .antal { margin-top: 30px; font-size: 19px; color: #2e2563; }
+.regner .antal { margin-top: 0; font-size: 19px; color: #2e2563; }
 .regner .antal b { display: block; font-size: 72px; font-weight: 500; line-height: 1; letter-spacing: -.035em; color: #1d1442; font-variant-numeric: tabular-nums; }
 .skyder { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 44px; margin: 14px 0 0; background: transparent; cursor: pointer; touch-action: pan-y; }
 .skyder::-webkit-slider-runnable-track { height: 10px; border-radius: 10px; background: linear-gradient(to right, var(--blaa) var(--fyld, 6%), var(--spor, rgba(255,255,255,.7)) var(--fyld, 6%)); }
@@ -473,51 +462,19 @@ html.glid .trin-vandret .nr { box-shadow: 0 0 0 6px var(--bund, #fff); }
 .regner-pris .belob { margin-top: 20px; font-size: 64px; font-weight: 500; line-height: 1; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
 .regner-pris .belob small { margin-left: 6px; font-size: 17px; font-weight: 400; letter-spacing: 0; color: var(--daempet); }
 .regner-pris .fast-linje { margin-top: 8px; font-size: 14px; color: var(--daempet); }
-.regner-pris .samme { display: inline-flex; margin-top: 14px; }
 .regner-pris.nik { animation: nik .55s cubic-bezier(.3,1.5,.5,1); }
 @keyframes nik { 35% { transform: scale(1.045) rotate(-1deg); } }
-.regner-pris.nik .samme { animation: blink .55s ease-out; }
 @keyframes blink { 30% { transform: scale(1.12); } }
 
 /* Flytningen (/skift): spiller af sig selv i syne; filen glider ind, linjen fyldes, fire ting får flueben */
-.flyt { position: relative; width: min(760px, calc(100% - 40px)); margin: 56px auto 0; }
-.flyt-vindue { position: relative; overflow: hidden; padding: 28px 32px 30px; border-radius: 22px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 40px 80px -48px rgba(20,20,20,.45); }
-.flyt-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 560; }
-.flyt-zone { display: flex; align-items: center; gap: 16px; min-height: 92px; margin-top: 18px; padding: 16px 18px; border: 1.5px dashed #cdc3ff; border-radius: 14px; background: #faf9ff; }
-.flyt-fil { display: flex; align-items: center; gap: 14px; transform: translateX(-140%); opacity: 0; transition: transform .9s cubic-bezier(.2,.75,.2,1), opacity .4s ease-out; }
-.flyt.i-gang .flyt-fil { transform: none; opacity: 1; }
-.flyt-fil b { display: block; font-size: 16px; font-weight: 560; }
-.flyt-fil small { display: block; font-size: 14px; color: var(--daempet); }
-.flyt-linje { height: 6px; margin-top: 18px; border-radius: 6px; background: #efeee9; overflow: hidden; }
-.flyt-linje i { display: block; height: 100%; width: 100%; border-radius: 6px; background: var(--blaa); transform: scaleX(0); transform-origin: left; transition: transform 2.4s cubic-bezier(.4,0,.2,1) .9s; }
-.flyt.i-gang .flyt-linje i { transform: scaleX(1); }
-.flyt-liste { list-style: none; margin: 14px 0 0; padding: 0; }
-.flyt-liste li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; border-top: 1px solid #efeee9; font-size: 16px; }
-.flyt-liste .app-pille { opacity: 0; transform: scale(.7); transition: opacity .25s ease-out, transform .4s cubic-bezier(.3,1.6,.5,1); }
-.flyt-liste li.klar .app-pille { opacity: 1; transform: none; }
-.flyt-slut { margin-top: 16px; font-size: 17px; font-weight: 560; opacity: 0; transform: translateY(6px); transition: opacity .35s ease-out, transform .45s cubic-bezier(.2,.7,.2,1); }
-.flyt.faerdig .flyt-slut { opacity: 1; transform: none; }
-.flyt-igen { display: inline-flex; align-items: center; min-height: 44px; margin-top: 10px; border: 0; background: none; font: inherit; font-size: 15px; color: var(--blaa); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; opacity: 0; transition: opacity .3s; }
-.flyt.faerdig .flyt-igen { opacity: 1; }
 
 /* Træk filen ind (/skift): man trækker selv filen fra det gamle program over i Tallo, så flytter historikken */
-.traek { display: grid; grid-template-columns: minmax(0, .8fr) 56px minmax(0, 1.2fr); gap: 16px; align-items: center; width: min(1080px, calc(100% - 40px)); margin: 56px auto 0; }
-.gammel { padding: 22px 22px 26px; border-radius: 18px; background: #e9e8e3; box-shadow: inset 0 0 0 1px #d9d8d2; }
 .gammel-top { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #6b6b66; }
 .gammel-top i { width: 10px; height: 10px; border-radius: 50%; background: #c9c8c2; }
 .gammel-raekker { margin-top: 14px; }
 .gammel-raekker span { display: block; height: 10px; margin-top: 10px; border-radius: 5px; background: #d6d5cf; }
 .gammel-raekker span:nth-child(2n) { width: 78%; } .gammel-raekker span:nth-child(3n) { width: 62%; }
-.traek-fil { position: relative; z-index: 5; display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 22px; padding: 12px 14px; border: 0; border-radius: 14px; background: #fff; box-shadow: 0 16px 32px -16px rgba(20,20,20,.45), inset 0 0 0 1px var(--lineal); font: inherit; text-align: left; cursor: grab; touch-action: none; user-select: none; transition: box-shadow .2s, transform .45s cubic-bezier(.2,.75,.2,1); }
-.traek-fil:active { cursor: grabbing; }
-.traek-fil.traekkes { transition: box-shadow .2s; box-shadow: 0 30px 50px -18px rgba(20,20,20,.5), inset 0 0 0 2px var(--blaa); }
-.traek-fil b { display: block; font-size: 15px; font-weight: 560; }
-.traek-fil small { display: block; font-size: 13px; color: var(--daempet); }
-.traek-fil { flex-wrap: wrap; }
-.traek-fil > div { flex: 1; min-width: 0; }
 /* "Træk mig ind" står altid på sin egen linje under navnet, så de to aldrig klemmes sammen i en smal kolonne */
-.traek-fil .greb { flex-basis: 100%; margin: 4px 0 0; padding-top: 10px; border-top: 1px solid #efeee9; font-size: 13px; font-weight: 500; color: var(--blaa); text-align: center; }
-.traek-fil.flyttet { visibility: hidden; }
 /* Baggrundsdetaljer bag toppen: bilag ind i telefonen (/appen), sortering (/ai), linjen mellem jer (/om-os) */
 [data-detalje] { position: relative; isolation: isolate; }
 .detalje { position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: -1; overflow: hidden; pointer-events: none; }
@@ -577,28 +534,9 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 @keyframes ac-ind { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
 /* Tekst til mus og til touch */
-.fin { display: none; }
-@media (pointer: coarse) { .mus { display: none; } .fin { display: inline; } }
-.foto-top { position: relative; isolation: isolate; }
-.top-baggrund { position: absolute; inset: 0 0 -160% 0; z-index: -1; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(transparent 0, transparent 210px, #000 360px, #000 62%, transparent 100%); mask-image: linear-gradient(transparent 0, transparent 210px, #000 360px, #000 62%, transparent 100%); }
-.top-baggrund img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; opacity: .3; mix-blend-mode: multiply; filter: saturate(.7) blur(9px); transform: scale(1.06); }
 /* Spillet: en stiplet pil viser vejen fra filen over i Tallo, og filen giver et lille skub, indtil man rører den */
-.traek-pil { position: relative; order: 1; align-self: center; width: 100%; height: 2px; background: repeating-linear-gradient(90deg, var(--blaa) 0 8px, transparent 8px 14px); background-size: 28px 2px; animation: pil-flyd 1.2s linear infinite; transition: opacity .3s; }
-.traek-pil::after { content: ""; position: absolute; right: -2px; top: 50%; width: 10px; height: 10px; border-top: 2px solid var(--blaa); border-right: 2px solid var(--blaa); transform: translateY(-50%) rotate(45deg); }
 @keyframes pil-flyd { to { background-position: 28px 0; } }
-html.stille .traek-pil { animation: none; }
-.traek:has(.traek-fil.flyttet) .traek-pil { opacity: 0; }
-.traek .gammel { order: 0; } .traek .flyt { order: 2; }
-.traek-fil.skub { animation: skub .9s ease-in-out; }
 @keyframes skub { 0%, 100% { transform: none; } 30% { transform: translateX(16px) rotate(2deg); } 55% { transform: translateX(4px); } 75% { transform: translateX(10px) rotate(1deg); } }
-.traek .flyt { width: 100%; margin: 0; }
-.traek .flyt-zone { justify-content: center; color: #6d63b5; font-size: 15px; font-weight: 500; transition: background .2s, border-color .2s; }
-.traek .flyt-zone.over { background: #efecff; border-color: var(--blaa); }
-.traek .flyt-zone .hint { display: inline-flex; align-items: center; gap: 8px; }
-.traek .flyt.i-gang .flyt-zone .hint { display: none; }
-.traek .flyt-fil { display: none; transform: none; opacity: 1; }
-.traek .flyt.i-gang .flyt-fil { display: flex; animation: lander .45s cubic-bezier(.3,1.4,.5,1) both; --r: 0deg; }
-.traek .flyt-linje i { transition-delay: .3s; }
 
 
 /* Afsløring ved scroll (ikke ved reduceret bevægelse) */
@@ -612,13 +550,8 @@ html.stille .traek-pil { animation: none; }
   .kort { grid-template-columns: 1fr; }
   .par { grid-template-columns: minmax(0, 440px); gap: 56px; margin-top: 44px; padding: 0 28px; }
   .par.bred { gap: 56px; }
-  .region.skift-trin { padding-bottom: 28px; }
-  .region.skift-slut { padding-top: 28px; padding-bottom: 104px; }
   .raek, .raek.vendt { grid-template-columns: minmax(0, 1fr); gap: 40px; margin-top: 96px; }
   .raek.vendt .raek-tekst { order: 0; }
-  .traek { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  .traek-pil { justify-self: center; width: 2px; height: 36px; background: repeating-linear-gradient(180deg, var(--blaa) 0 8px, transparent 8px 14px); background-size: 2px 28px; animation-name: pil-flyd-ned; }
-  .traek-pil::after { right: auto; top: auto; left: 50%; bottom: -2px; transform: translateX(-50%) rotate(135deg); }
   @keyframes pil-flyd-ned { to { background-position: 0 28px; } }
   @keyframes skub { 0%, 100% { transform: none; } 30% { transform: translateY(10px); } 55% { transform: translateY(2px); } 75% { transform: translateY(6px); } }
   .faq h2 { font-size: 30px; }
@@ -635,7 +568,6 @@ html.stille .traek-pil { animation: none; }
   .regner-pris { width: min(340px, 100%); }
   .bilag-baggrund i { width: calc(var(--s, 64px) * .72); }
   .regner-pris.nik { animation: none; }
-  .flyt-vindue { padding: 20px 18px 22px; }
   .laes { height: 260vh; }
   .laes-scene { grid-template-columns: minmax(0, 1fr); gap: 14px; align-content: start; padding-top: 12px; width: calc(100% - 32px); }
   .laes-papir { width: min(230px, 60vw); margin: 0 auto; }
@@ -667,7 +599,7 @@ html.stille .traek-pil { animation: none; }
   .fotoramme img { object-position: var(--fpm, 50% 50%); }
   .kort-over { border-radius: 22px; }
   .fotoramme + .kort-over { margin-top: -64px; }
-  .regner.kort-over, .traek.kort-over, .udsagn.kort-over { width: calc(100% - 40px); padding: 28px 18px; }
+  .regner.kort-over, .udsagn.kort-over { width: calc(100% - 40px); padding: 28px 18px; }
   .udsagn.rolig.kort-over { width: calc(100% - 40px); padding: 28px 18px; }
   .lp { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .gitter { grid-template-columns: minmax(0, 1fr); }
@@ -677,11 +609,6 @@ html.stille .traek-pil { animation: none; }
   .tal-raekke > div:nth-child(3) { border-left: 0; padding-left: 0; }
   .fuld-delt { grid-template-columns: minmax(0, 1fr); }
   .fuld-delt > .tekst-halv { order: -1; padding: calc(var(--nav) + 40px) 24px 48px; }
-  .trin-vandret { grid-template-columns: minmax(0, 1fr); gap: 36px; }
-  .trin-vandret::before { left: 18px; right: auto; top: 18px; bottom: 18px; width: 2px; height: auto; }
-  .trin-vandret > li { padding-left: 60px; }
-  .trin-vandret .nr { position: absolute; left: 0; top: 0; }
-  .trin-vandret h3 { margin-top: 4px; }
   .side-top.delt { grid-template-columns: minmax(0, 1fr); gap: 36px; width: min(640px, calc(100% - 40px)); padding-top: calc(var(--nav) + 40px); }
   .fod-indre { grid-template-columns: 1fr 1fr; }
   .fod-indre > div:first-child { grid-column: 1 / -1; }
@@ -768,3 +695,32 @@ html.stille .traek-pil { animation: none; }
 /* Reduceret bevægelse: kun det, der kører af sig selv (afsnit der glider ind, listen der skifter selv), dæmpes i
    js/tallo.js. Det, man selv starter (træk, tryk, rul), spiller altid (Othman 15.-16. okt 2026). */
 
+/* ---------------------------------------------------------------------------------------------------------------
+   Én skala for skrift og farve (Othman 24. okt 2026: "for mange variationer ... tænk som Apple").
+   To overskriftsstørrelser (h1 og h2) plus h3, tre tekststørrelser og to tekstfarver; violet kun til links og roller.
+   Står sidst, så den vinder over de enkelte afsnits gamle regler. Tal i demoerne (priser, beløb) er ikke omfattet. */
+:root {
+  --t-h1: clamp(34px, 4.1vw, 52px);
+  --t-h2: clamp(27px, 2.8vw, 38px);
+  --t-h3: 20px;
+  --t-ingres: 19px;
+  --t-tekst: 17px;
+  --t-lille: 14px;
+}
+h1, .side-top h1, .udsagn h2 { font-size: var(--t-h1); font-weight: 500; line-height: 1.08; letter-spacing: -.025em; color: var(--blaek); }
+.felt h2, .afsnit-hoved h2, .baand h2, .raek-tekst h2, .faq h2, .region-hoved h2, .lp h2, .ts-tekst h2, .laes-tekst h2,
+.regner h2, .bb-tekst h2, .udsagn.rolig h2 { font-size: var(--t-h2); font-weight: 500; line-height: 1.12; letter-spacing: -.02em; color: var(--blaek); }
+.pakke h3, .person h3, .gk h3, .skridt h3, .snak h3 { font-size: var(--t-h3); font-weight: 560; letter-spacing: -.01em; }
+.spoergsmaal summary { font-size: 18px; }
+.ingress, .felt .ingress, .baand .ingress, .udsagn p { font-size: var(--t-ingres); color: var(--blaek); }
+.region-hoved p, .region.lilla .region-hoved p, .gk p, .ts-tekst p, .laes-tekst p, .person .om, .spoergsmaal .svar p,
+.smaat, .regner .antal, .regner .fast, .principper small, .ac-besked.ai p { font-size: var(--t-tekst); color: var(--daempet); }
+.smaat b { color: var(--blaek); }
+.snak p { color: var(--daempet); }
+.region.lilla, .felt { color: var(--blaek); }
+.regner .antal b { color: var(--blaek); }
+@media (max-width: 699px) {
+  .spoergsmaal summary { font-size: 17px; }
+  .region-hoved p, .gk p, .ts-tekst p, .laes-tekst p, .person .om, .spoergsmaal .svar p { font-size: 16px; }
+  .ingress, .udsagn p { font-size: 17px; }
+}
