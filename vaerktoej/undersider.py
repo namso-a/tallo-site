@@ -279,7 +279,7 @@ FAQ_OM_OS = [
      "afklares, skriver jeg til dig.", "othman"),
     ("Hvem taler jeg med, før jeg siger ja?", "Mig, Mohammed. Den første snak er 30 minutter i telefonen eller på video, "
      "og du binder dig ikke.", "mohammed"),
-    ("Hvad hvis jeg har et spørgsmål?", "Så skriver du det i appen. Jeg svarer normalt samme dag. Haster det, så ring.", "othman"),
+    ("Hvad hvis jeg har et spørgsmål?", "Så skriver du det i appen. Jeg svarer normalt samme dag. Haster det, så skriv til <a data-u='kontakt' data-d='tallo.dk' href='#'>kontakt (at) tallo.dk</a>.", "othman"),
 ]
 SVARER = {"othman": "Othman", "mohammed": "Mohammed"}
 
@@ -306,8 +306,7 @@ def priser():
     Pakkedemoen bruges kun på forsiden, så den ikke gentages her."""
     raekker = "\n".join(f'          <tr><th scope="row">{a}</th><td>{b}</td><td class="valgt">{c}</td></tr>' for a, b, c in SAMMENLIGN)
     top = """<div class="side-top">
-      <h1>Hvad det koster</h1>
-      <p class="ingress pris-ingress"><span>Gør det selv med AI til <b>500 kr.</b></span> eller <span>med bogholder til <b>1.000 kr.</b></span> om måneden. Fast pris, ingen binding, plus moms.</p>
+      <h1>Fast pris, uanset hvor mange bilag du har</h1>
     </div>"""
     regner = """<div class="bilag-baggrund" aria-hidden="true"></div>
     <div class="regner kort-over" data-regner>
@@ -342,12 +341,12 @@ def priser():
           </tbody>
         </table>
       </div>
-      <p class="smaat" style="color:var(--daempet)"><b style="color:var(--blaek)">Tilkøb:</b> løn, årsregnskab, selvangivelse, og årsrapport (ApS). Prisen får du, når vi kender din virksomhed.</p>
+      <p class="smaat" style="color:var(--daempet)"><b style="color:var(--blaek)">Tilkøb:</b> løn, årsregnskab, selvangivelse, og årsrapport (ApS). Prisen får du, før du siger ja.</p>
     </div>"""
     spoerg = faq(FAQ_PRISER)
     slut = """<div class="indre udsagn" data-afslor>
-      <h2>Fast pris. Ingen binding.</h2>
-      <p>Skriv dig op nu. Du betaler først, når vi åbner.</p>
+      <h2>Ingen binding.</h2>
+      <p>Skriv dig op nu. Du betaler først, når vi åbner, og du kan skifte pakke fra måned til måned.</p>
       <div class="knapper">
         <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
@@ -387,7 +386,7 @@ def appen():
     top = """<div class="side-top delt">
       <div>
         <h1>Alt om forretningen i lommen.</h1>
-        <p class="ingress">Overskud, bank, bilag, fakturaer og moms ét sted. På telefonen og på computeren.</p>
+        <p class="ingress">Se overskud, bank og moms, når du vil. Regninger og bilag kommer selv ind, så du ikke skal taste noget.</p>
         <div class="knapper">
           <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
           <a class="pille hvid" href="/#kom" data-book>Hellere en snak?</a>
@@ -431,7 +430,7 @@ def appen():
     </div>"""
     # Uden foto og kort, kun overskrift og én knap (Othman 18. okt 2026)
     udsagn = """<div class="indre udsagn" data-afslor>
-      <h2>Se dine egne tal i appen.</h2>
+      <h2>Se dine egne tal, den dag vi åbner.</h2>
       <div class="knapper">
         <a class="pille farve stor" href="/#kom">Skriv dig op</a>
       </div>
@@ -445,8 +444,8 @@ def ai():
     """Ét levende øjeblik: kvitteringen bliver læst, mens man ruller (følger rullet frem og tilbage). Felternes placering
     på kvitteringen er målt på et gitter (ai-kvittering.webp, 540 × 950)."""
     top = """<div class="side-top">
-      <h1>Sådan bruger vi AI</h1>
-      <p class="ingress">AI'en bærer det tunge læs. En bogholder kvalitetssikrer det.</p>
+      <h1>AI'en bærer det tunge læs. En bogholder kvalitetssikrer det.</h1>
+      <p class="ingress">Se, hvordan den læser dine bilag, hvem der holder øje med den, og hvad din egen AI må.</p>
     </div>"""
     # (felt, venstre, top, bredde, højde, linjens udløser) i procent af arket
     FELTER = [("fra", 10, 7.9, 45, 4.4, 10), ("varer", 11, 18, 57, 15.6, 22), ("beloeb", 13.5, 35.8, 56, 4.8, 38),
@@ -480,7 +479,7 @@ def ai():
     # Bogholder og moms i ét afsnit med et menneske i stedet for en liste (Othman 17. okt 2026)
     bogholder = """<div class="indre bogholder-blok" data-afslor>
       <div class="bb-tekst">
-        <h2>En bogholder kvalitetssikrer</h2>
+        <h2>Din bogholder hedder Othman</h2>
         <p class="ingress">AI'en er hurtig og god til det, den har set før, men den kan tage fejl. Derfor kvalitetssikrer en bogholder den, også momsen, før den indberettes. Gør du det selv med AI, godkender du selv hvert forslag.</p>
         <div class="knapper">
           <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
@@ -533,8 +532,8 @@ def skift():
     17. okt: flyttekasserne subtilt i baggrunden af toppen, så de tre trin, og til sidst spillet med en tydelig opfordring.
     Programnavne må stå på /skift (beslutning 7. okt 2026)."""
     top = """<div class="side-top">
-      <h1>Skift til Tallo</h1>
-      <p class="ingress">Kommer du fra Dinero, e-conomic eller Billy? Din historik kommer med, og vi flytter dig gratis.</p>
+      <h1>Skift til Tallo. Vi flytter dig gratis.</h1>
+      <p class="ingress">Kommer du fra Dinero, e-conomic eller Billy? Din historik kommer med, så tallene fortsætter, hvor de slap.</p>
     </div>"""
     baggrund = """<div class="top-baggrund" aria-hidden="true"><img src="/billeder/foto-skift-1600.webp" srcset="/billeder/foto-skift-1200.webp 1200w, /billeder/foto-skift-1600.webp 1600w, /billeder/foto-skift.webp 2400w" sizes="100vw" alt="" width="2400" height="1600"></div>"""
     flyt = """<div class="region-hoved midt" data-afslor>
@@ -576,8 +575,8 @@ def skift():
       </ol>
     </div>"""
     slut = """<div class="indre udsagn" data-afslor>
-      <h2>Vi flytter dig gratis.</h2>
-      <p>Indtil vi er registreret, kan du blive i dit gamle program. Vi flytter dig, den dag vi åbner.</p>
+      <h2>Bliv i dit gamle program, indtil vi åbner.</h2>
+      <p>Skriv dig op nu. Den dag vi åbner, flytter vi din historik for dig.</p>
       <div class="knapper">
         <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
