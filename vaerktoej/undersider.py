@@ -240,13 +240,15 @@ def side(sti, titel, beskrivelse, krop, ekstra_hoved=""):
 
 # ---------------------------------------------------------------------------------------------------- /priser
 JA, NEJ = '<span class="ja" aria-label="Med"></span>', '<span class="nej" aria-label="Ikke med">–</span>'
-# Syv rækker (Othman 24. okt 2026: "kan godt forenkles, så der ikke er så mange rækker")
+# Kun flueben, undtagen tilkøb (Othman 24. okt 2026: færre rækker, og "Du bogfører selv"/"Vi bogfører for dig" som rækker)
 SAMMENLIGN = [
     ("Regninger og fakturaer kommer ind af sig selv", JA, JA),
     ("Ubegrænset antal bilag", JA, JA),
-    ("Bogføringen", "Du godkender AI'ens forslag", "Vi bogfører, en bogholder kvalitetssikrer"),
-    ("Momsen", "Regnes ud, du indberetter", "Vi indberetter"),
-    ("Salg, udgifter og overskud hver måned", "I appen", "I appen og på mail"),
+    ("Du bogfører selv", JA, NEJ),
+    ("Vi bogfører for dig", NEJ, JA),
+    ("En bogholder kvalitetssikrer", NEJ, JA),
+    ("Vi indberetter momsen", NEJ, JA),
+    ("Overblik over salg, udgifter og overskud", JA, JA),
     ("Spørg din egen Claude eller ChatGPT", JA, JA),
     ("Løn, årsregnskab og selvangivelse", "Tilkøb", "Tilkøb"),
 ]
