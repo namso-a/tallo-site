@@ -106,78 +106,37 @@ def fod():
 
 
 def pakkeblok(overskrift=True, taet=False):
+    """Begge pakker side om side, så man får overblik uden at klikke (Othman 24. okt 2026; vælgeren og demoen udgik).
+    Med bogholder er markeret som det anbefalede kort."""
     h2 = '\n      <h2>To pakker. Fast pris.</h2>' if overskrift else ""
     return f"""<section class="pakker{' taet' if taet else ''}" id="pakker">
     <div class="felt">{h2}
-      <div class="vaelger" id="vaelger" role="group" aria-label="Vælg pakke" data-valgt="bogholder">
-        <button type="button" data-pakke="selv" aria-pressed="false">Gør det selv med AI</button>
-        <button type="button" data-pakke="bogholder" aria-pressed="true">Med bogholder</button>
-        <span class="glider" aria-hidden="true"></span>
+      <div class="pakke-par">
+        <article class="pakke-kort">
+          <h3>Gør det selv med AI</h3>
+          <p class="pris"><b>500 kr.</b><span>om måneden plus moms</span></p>
+          <ul>
+            <li>Regninger og fakturaer kommer ind af sig selv</li>
+            <li>AI'en foreslår, du godkender med ét tryk</li>
+            <li>Momsen regnes ud, og du sender den selv</li>
+            <li>Spørg din egen Claude eller ChatGPT om dine tal</li>
+          </ul>
+        </article>
+        <article class="pakke-kort anbefalet">
+          <h3>Med bogholder</h3>
+          <p class="pris"><b>1.000 kr.</b><span>om måneden plus moms</span></p>
+          <ul>
+            <li>Alt fra Gør det selv med AI</li>
+            <li>Vi bogfører, uanset hvor mange bilag</li>
+            <li>Vi indberetter momsen for dig</li>
+            <li>En bogholder kvalitetssikrer bogføringen</li>
+          </ul>
+        </article>
       </div>
-
-      <div class="kort">
-        <div class="demo" id="demo" data-pakke="bogholder" data-trin="venter">
-          <p class="demo-top">Ny regning · i dag kl. 07.12</p>
-          <div class="regning">
-            <div class="raekke">
-              <span class="ava" aria-hidden="true">DB</span>
-              <div class="hvad"><b>Mejeriet Nord</b><small>Bank · Driftskonto</small></div>
-              <span class="beloeb">−2.210,00 kr.</span>
-            </div>
-            <dl class="detaljer">
-              <dt>Konto</dt><dd><span class="app-pille kat">Varer og råvarer</span></dd>
-              <dt>Moms</dt><dd>25 % · 442,00 kr.</dd>
-            </dl>
-            <div class="handling" aria-live="polite">
-              <div class="tilstand" data-vis="selv venter">
-                <p class="tekst"><b>✦ Forslag</b>Mejeriet Nord er bogført som varekøb i alle tidligere bilag.</p>
-                <button type="button" class="godkend" id="godkend">Godkend</button>
-              </div>
-              <div class="tilstand" data-vis="selv bogfoert">
-                <span class="app-pille ok">✓ Bogført</span>
-                <p class="tekst">Bilag 225. Godkendt af dig, lige nu.</p>
-                <button type="button" class="fortryd" id="fortryd">Fortryd</button>
-              </div>
-              <div class="tilstand" data-vis="bogholder venter">
-                <span class="app-pille graa"><i class="snurre" aria-hidden="true"></i>Tallo behandler</span>
-                <p class="tekst">Vi læser regningen og bogfører den.</p>
-              </div>
-              <div class="tilstand" data-vis="bogholder bogfoert">
-                <span class="app-pille ok">✓ Bogført</span>
-                <p class="tekst">Bilag 225. Bogført for dig; du skulle ikke gøre noget.</p>
-              </div>
-            </div>
-          </div>
-          <p class="demo-hint" id="demoHint"></p>
-        </div>
-
-        <div class="pakke">
-          <h3 id="pNavn">Med bogholder</h3>
-          <p class="pris"><b><span id="pPris">1.000</span> kr.</b><span>om måneden plus moms</span></p>
-          <div class="lister">
-            <ul data-pakke="selv" hidden>
-              <li>Regninger og fakturaer kommer ind af sig selv</li>
-              <li>AI'en foreslår, hvor de skal hen</li>
-              <li>Du godkender med ét tryk</li>
-              <li>Momsen regnes ud, og du sender den selv</li>
-              <li>Skift til bogholder når som helst</li>
-              <li>Spørg din egen Claude eller ChatGPT om dine tal</li>
-            </ul>
-            <ul data-pakke="bogholder">
-              <li>Alt fra Gør det selv med AI</li>
-              <li>Vi bogfører alt, uanset hvor mange bilag</li>
-              <li>En bogholder kvalitetssikrer bogføringen</li>
-              <li>Vi indberetter momsen for dig</li>
-              <li>Overblik over salg, udgifter og overskud hver måned</li>
-            </ul>
-          </div>
-          <div class="bund">
-            <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
-            <a href="/priser/">Se hvad der er med</a>
-          </div>
-        </div>
+      <div class="knapper">
+        <a class="pille farve stor" href="/#kom">Skriv dig op</a>
+        <a class="pille hvid stor" href="/priser/">Se hvad der er med</a>
       </div>
-
     </div>
   </section>"""
 
@@ -353,7 +312,7 @@ def priser():
 
 # ---------------------------------------------------------------------------------------------------- /appen
 # Ingen grøn og ingen blå (Othman 17. okt 2026): salvie og himmel er taget ud; orange (fersken) er den friske tone
-TONER = {"papir": "#f6f6f3", "hvid": "#ffffff", "lilla": "#cdc3ff", "fersken": "#f8d9c4"}
+TONER = {"papir": "#ffffff", "hvid": "#ffffff", "lilla": "#cdc3ff", "fersken": "#f8d9c4"}
 
 
 def region(farve, indhold, ekstra=""):
@@ -547,7 +506,7 @@ def om_os():
   </div>
   </section>
 
-  <section class="region papir" data-tone="#f6f6f3">
+  <section class="region papir" data-tone="#ffffff">
     """ + faq(FAQ_OM_OS) + """
   </section>
 
