@@ -118,10 +118,10 @@ def pakkeblok(overskrift=True, taet=False):
           <p class="stortal-saet">{saet}</p>
           <div class="stortal-detaljer"><ul>{li}</ul></div>
         </div>"""
-    venstre = side("Gør det selv med AI", 500, "500", "Du godkender.", ["Regninger og fakturaer kommer ind af sig selv",
+    venstre = side("Gør det selv med AI", 500, "500", "AI'en hjælper. Du bogfører.", ["Regninger og fakturaer kommer ind af sig selv",
                    "AI'en foreslår, du godkender med ét tryk", "Momsen regnes ud, og du sender den selv",
                    "Spørg din egen Claude eller ChatGPT"])
-    hoejre = side("Med bogholder", 1000, "1.000", "Vi bogfører.", ["Alt fra Gør det selv med AI",
+    hoejre = side("Med bogholder", 1000, "1.000", "AI'en hjælper. Vi bogfører.", ["Alt fra Gør det selv med AI",
                   "Vi bogfører, uanset hvor mange bilag", "Vi indberetter momsen for dig",
                   "En bogholder kvalitetssikrer bogføringen"], " anb")
     return f"""<section class="pakker{' taet' if taet else ''}" id="pakker">
@@ -743,7 +743,7 @@ def forside():
     fil = ROD / "index.html"
     s = fil.read_text(encoding="utf-8")
     s = erstat(s, "hoved", hoved("Tallo: aldrig mere bogføring",
-                                 "Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du godkender dem med ét tryk. Fra 500 kr. om måneden.", "/"))
+                                 "Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du gør det selv med AI's hjælp. Fra 500 kr. om måneden.", "/"))
     s = erstat(s, "menu", menu("/"))
     s = erstat(s, "pakker", "  " + pakkeblok())
     s = erstat(s, "faq", '  <section class="faq-forside" id="faq">\n    ' + faq(FAQ_FORSIDE) + "\n  </section>")
