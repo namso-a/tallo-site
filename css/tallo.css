@@ -8,7 +8,7 @@
   --lineal: #e2e2dd;
   --blaa: #4b3aa6;
   --blaa-svag: #f0eef8;
-  --flade: #f6f6f3;
+  --flade: #ffffff;  /* hvid i stedet for papir #f6f6f3 (Othman 24. okt 2026) */
   --nav: 72px;
 }
 *, *::before, *::after { box-sizing: border-box; }
@@ -65,9 +65,23 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 .snurre { width: 11px; height: 11px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: snurre .8s linear infinite; }
 @keyframes snurre { to { transform: rotate(360deg); } }
 
-/* Pakkeblokken: ét stort felt i én kraftig, lys farve med et hvidt kort indeni, som hos Wise */
+/* Pakkeblokken: ét stort felt i én kraftig, lys farve med begge pakker side om side (Othman 24. okt 2026) */
+.pakke-par { display: grid; grid-template-columns: repeat(2, minmax(0, 440px)); justify-content: center; gap: 20px; width: calc(100% - 64px); margin: 40px auto 0; text-align: left; }
+.pakke-kort { padding: 34px 32px 30px; border-radius: 22px; background: #fff; }
+.pakke-kort h3 { font-size: var(--t-h3, 20px); font-weight: 560; letter-spacing: -.01em; }
+.pakke-kort .pris { margin-top: 14px; }
+.pakke-kort .pris b { font-size: 48px; }
+.pakke-kort ul { list-style: none; margin: 24px 0 0; padding: 0; border-top: 1px solid var(--lineal); }
+.pakke-kort li { position: relative; padding: 11px 0 11px 28px; border-bottom: 1px solid var(--lineal); font-size: 16px; line-height: 1.4; text-wrap: pretty; }
+.pakke-kort li::before { content: ""; position: absolute; left: 2px; top: 16px; width: 12px; height: 7px; border-left: 2px solid var(--blaa); border-bottom: 2px solid var(--blaa); transform: rotate(-45deg); }
+.felt .knapper { margin-top: 32px; }
+@media (max-width: 760px) {
+  .pakke-par { grid-template-columns: minmax(0, 1fr); width: calc(100% - 24px); }
+  .pakke-kort { padding: 26px 20px 22px; }
+  .pakke-kort .pris b { font-size: 42px; }
+}
 .pakker { padding: 120px 0 0; }
-.felt { width: min(1240px, calc(100% - 64px)); margin: 0 auto; padding: 88px 0 64px; border-radius: 28px; background: #cdc3ff; color: #1d1442; text-align: center; }
+.felt { width: min(1240px, calc(100% - 64px)); margin: 0 auto; padding: 0; text-align: center; }  /* ingen lilla flade (Othman 24. okt 2026) */
 .felt h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; }
 .felt .ingress { color: #2e2563; max-width: 600px; padding: 0 20px; text-wrap: balance; }
 .vaelger { position: relative; display: inline-grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 100%; margin-top: 32px; padding: 5px; border-radius: 999px; background: rgba(255,255,255,.45); }
@@ -76,37 +90,16 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 .vaelger .glider { position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc(50% - 5px); border-radius: 999px; background: #fff; box-shadow: 0 2px 10px -4px rgba(29,20,66,.35); transition: transform .45s cubic-bezier(.3,.7,.2,1); }
 .vaelger[data-valgt="bogholder"] .glider { transform: translateX(100%); }
 .kort { display: grid; grid-template-columns: 1.08fr 1fr; gap: 8px; width: min(1088px, calc(100% - 64px)); margin: 40px auto 0; padding: 8px; border-radius: 28px; background: #fff; text-align: left; box-shadow: 0 30px 60px -40px rgba(29,20,66,.45); }
-.demo { display: flex; flex-direction: column; justify-content: center; padding: 36px 32px; border-radius: 22px; background: #f1f0ea; }
-.demo-top { font-size: 14px; font-weight: 500; color: var(--daempet); }
 .regning { margin-top: 12px; padding: 26px 26px 24px; border-radius: 14px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal); text-align: left; }
-.raekke { display: flex; align-items: center; gap: 14px; }
-.ava { flex: none; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 11px; background: #5a5a54; color: #fff; font-size: 14px; font-weight: 600; }
-.hvad { flex: 1; min-width: 0; }
-.hvad b { display: block; font-size: 19px; font-weight: 560; }
-.hvad small { display: block; font-size: 15px; color: var(--daempet); }
 .beloeb { font-size: 19px; font-weight: 560; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.detaljer { display: grid; grid-template-columns: auto 1fr; gap: 10px 18px; align-items: center; margin-top: 20px; padding-top: 18px; border-top: 1px solid #efeee9; font-size: 15px; }
-.detaljer dt { color: var(--daempet); }
-.detaljer dd { margin: 0; font-variant-numeric: tabular-nums; }
-.handling { position: relative; margin-top: 20px; padding-top: 18px; border-top: 1px solid #efeee9; min-height: 112px; }
-.tilstand { position: absolute; inset: 18px 0 0; display: flex; align-items: center; gap: 16px; opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .3s ease-out, transform .35s cubic-bezier(.2,.7,.2,1), visibility 0s .35s; }
-.tilstand.vist { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
-.tilstand .tekst { flex: 1; font-size: 15px; line-height: 1.45; color: var(--daempet); text-wrap: pretty; }
-.tilstand .tekst b, .forslag b { display: block; margin-bottom: 2px; font-size: 13px; font-weight: 600; color: var(--blaa); }
-.godkend { position: relative; flex: none; height: 44px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--blaa); color: #fff; font: inherit; font-size: 15px; font-weight: 560; cursor: pointer; transition: transform .15s ease-out, background .15s; }
-.godkend:hover { background: #3a2c88; }
-.godkend:active { transform: scale(.95); }
-.godkend::after { content: ""; position: absolute; inset: -5px; border-radius: 999px; box-shadow: 0 0 0 2px rgba(75,58,166,.35); animation: kald 1.8s ease-out infinite; pointer-events: none; }
-@keyframes kald { 0% { opacity: 0; transform: scale(.92); } 30% { opacity: 1; } 100% { opacity: 0; transform: scale(1.12); } }
+.forslag b { display: block; margin-bottom: 2px; font-size: 13px; font-weight: 600; color: var(--blaa); }
 .fortryd { flex: none; min-height: 44px; padding: 0 4px; border: 0; background: none; font: inherit; font-size: 14px; color: var(--daempet); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-.demo-hint { margin-top: 14px; min-height: 20px; font-size: 14px; color: var(--daempet); }
 .pakke { display: flex; flex-direction: column; padding: 40px 36px 36px; }
 .pakke h3 { margin: 0; font-size: 20px; font-weight: 560; letter-spacing: -.01em; }
 .pakke .hvem { margin-top: 4px; font-size: 15px; color: var(--daempet); }
 .pris { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 8px; margin-top: 22px; }
 .pris b { white-space: nowrap; font-size: 60px; font-weight: 500; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
 .pris > span { font-size: 16px; color: var(--daempet); }
-.lister { position: relative; margin-top: 26px; }
 .pakke ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--lineal); transition: opacity .3s ease-out; }
 .pakke ul[hidden] { display: block !important; position: absolute; inset: 0 0 auto; opacity: 0; pointer-events: none; }
 .pakke li { position: relative; padding: 11px 0 11px 28px; border-bottom: 1px solid var(--lineal); font-size: 16px; line-height: 1.4; text-wrap: pretty; }
@@ -447,7 +440,7 @@ html.glid .region { background: transparent; }
 .skyder::-moz-range-thumb { width: 36px; height: 36px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px var(--blaa), 0 8px 18px -6px rgba(29,20,66,.5); cursor: grab; }
 .skyder:focus-visible { outline: 2px solid #1d1442; outline-offset: 6px; }
 .regner .fast { margin-top: 22px; font-size: 17px; line-height: 1.5; color: #2e2563; text-wrap: pretty; }
-.regner-region { position: relative; overflow: hidden; isolation: isolate; }
+.regner-region { position: relative; isolation: isolate; }  /* papirerne må flyde med over kanten til næste afsnit */
 .regner-region .regner { position: relative; z-index: 1; }
 .regner-region .side-top ~ .regner { margin-top: 64px; }
 .region.top.regner-region { padding-bottom: 104px; }
@@ -464,8 +457,6 @@ html.glid .region { background: transparent; }
 .regner-pris .fast-linje { margin-top: 8px; font-size: 14px; color: var(--daempet); }
 .regner-pris.nik { animation: nik .55s cubic-bezier(.3,1.5,.5,1); }
 @keyframes nik { 35% { transform: scale(1.045) rotate(-1deg); } }
-@keyframes blink { 30% { transform: scale(1.12); } }
-
 /* Flytningen (/skift): spiller af sig selv i syne; filen glider ind, linjen fyldes, fire ting får flueben */
 
 /* Træk filen ind (/skift): man trækker selv filen fra det gamle program over i Tallo, så flytter historikken */
@@ -535,10 +526,6 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 
 /* Tekst til mus og til touch */
 /* Spillet: en stiplet pil viser vejen fra filen over i Tallo, og filen giver et lille skub, indtil man rører den */
-@keyframes pil-flyd { to { background-position: 28px 0; } }
-@keyframes skub { 0%, 100% { transform: none; } 30% { transform: translateX(16px) rotate(2deg); } 55% { transform: translateX(4px); } 75% { transform: translateX(10px) rotate(1deg); } }
-
-
 /* Afsløring ved scroll (ikke ved reduceret bevægelse) */
 .js-afslor [data-afslor] { opacity: 0; transform: translateY(24px); transition: opacity .7s ease-out, transform .8s cubic-bezier(.2,.7,.2,1); }
 .js-afslor [data-afslor].inde { opacity: 1; transform: none; }
@@ -636,14 +623,8 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
   .vaelger { margin-top: 26px; }
   .vaelger button { min-height: 44px; padding: 5px 14px; font-size: 14px; }
   .regner-pris .vaelger button { padding: 4px; font-size: 12.5px; letter-spacing: -.01em; }
-  .demo { padding: 22px 14px; border-radius: 18px; }
   .regning { padding: 16px 14px; }
-  .raekke { gap: 10px; }
-  .ava { width: 36px; height: 36px; border-radius: 9px; font-size: 12px; }
-  .hvad b, .beloeb { font-size: 15px; }
-  .hvad small { font-size: 13px; }
-  .handling { min-height: 128px; }
-  .tilstand { gap: 12px; }
+  .beloeb { font-size: 15px; }
   .pakke .bund { flex-wrap: wrap; gap: 6px 14px; }
   .smaat { font-size: 14px; }
   .person:nth-child(1) .app-kort { left: -12px; bottom: 20px; }
@@ -694,6 +675,10 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 }
 /* Reduceret bevægelse: kun det, der kører af sig selv (afsnit der glider ind, listen der skifter selv), dæmpes i
    js/tallo.js. Det, man selv starter (træk, tryk, rul), spiller altid (Othman 15.-16. okt 2026). */
+
+/* Hvide kort på hvid baggrund får en tynd kant, så de stadig kan ses (Othman 24. okt 2026: hvid i stedet for papir) */
+.pakke-kort, .tabel-ramme, .laes-kort, .ai-chat, .tilmeld, .spoergsmaal summary::after { box-shadow: inset 0 0 0 1px var(--lineal); }
+.pakke-kort.anbefalet { box-shadow: inset 0 0 0 2px var(--blaa); }
 
 /* ---------------------------------------------------------------------------------------------------------------
    Én skala for skrift og farve (Othman 24. okt 2026: "for mange variationer ... tænk som Apple").

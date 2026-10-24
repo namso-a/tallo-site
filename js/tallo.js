@@ -92,7 +92,7 @@
   const afsnit = [...document.querySelectorAll("main > section")];
   if (afsnit.some((a) => a.dataset.tone)) {
     const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
-    const toner = afsnit.map((a) => rgb(a.dataset.tone || "#f6f6f3"));
+    const toner = afsnit.map((a) => rgb(a.dataset.tone || "#ffffff"));
     const bland = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
     const glat = (t) => t * t * (3 - 2 * t);
     let sidst = "", venter = false;
@@ -283,7 +283,7 @@
       const bag = (x, y) => iBoks(k, x, y, ind) || iBoks(tekst, x, y, -40);
       pladser = [];
       for (let j = 0; pladser.length < 90 && j < 4000; j++) {
-        const x = tal(j * 3 + 1) * f.width, y = tal(j * 3 + 2) * f.height;
+        const x = tal(j * 3 + 1) * f.width, y = tal(j * 3 + 2) * (f.height - 60);
         if (!bag(x, y)) pladser.push({ x: (x / f.width) * 100, y: (y / f.height) * 100, r: (tal(j * 3 + 3) - .5) * 40, s: 56 + tal(j + 7) * 28 });
       }
     };
@@ -366,59 +366,4 @@
     vis(0);
     if (auto) { clearTimeout(timer); li[0].classList.remove("koerer"); iSyne(lp, () => vis(0), "-20%"); }
   });
-
-  // Pakkeblokken: vælgeren skifter pakke, regningen viser forskellen, og prisen ruller
-  const vaelger = document.getElementById("vaelger");
-  if (!vaelger) return;
-  const pakker = document.getElementById("pakker");
-  const demo = document.getElementById("demo");
-  const hint = document.getElementById("demoHint");
-  const pPris = document.getElementById("pPris");
-  const PAKKER = {
-    selv: { navn: "Gør det selv med AI", hvem: "Du trykker godkend. Appen gør resten.", pris: 500 },
-    bogholder: { navn: "Med bogholder", hvem: "Vi bogfører. Du bogfører aldrig selv.", pris: 1000 },
-  };
-  let pakke = "bogholder", demoTimer = 0, prisNu = 1000, prisRaf = 0;
-  function visTilstand(trin) {
-    demo.dataset.trin = trin;
-    const noegle = `${pakke} ${trin}`;
-    demo.querySelectorAll(".tilstand").forEach((t) => t.classList.toggle("vist", t.dataset.vis === noegle));
-    hint.textContent = pakke === "selv" && trin === "venter" ? "Prøv selv: tryk Godkend." : "";
-  }
-  function rulPris(til) {
-    cancelAnimationFrame(prisRaf);
-    const fra = prisNu, t0 = performance.now();
-    const trin = (nu) => {
-      const t = Math.min(1, (nu - t0) / 520), e = 1 - Math.pow(1 - t, 3);
-      prisNu = Math.round(fra + (til - fra) * e);
-      pPris.textContent = prisNu.toLocaleString("da-DK");
-      if (t < 1) prisRaf = requestAnimationFrame(trin);
-    };
-    prisRaf = requestAnimationFrame(trin);
-  }
-  function vaelgPakke(navn) {
-    pakke = navn;
-    const P = PAKKER[navn];
-    vaelger.dataset.valgt = navn;
-    vaelger.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.pakke === navn)));
-    demo.dataset.pakke = navn;
-    document.getElementById("pNavn").textContent = P.navn;
-    const hvem = document.getElementById("pHvem"); if (hvem) hvem.textContent = P.hvem;  // undertitlen er slettet (Othman 17. okt)
-    pakker.querySelectorAll(".lister ul").forEach((ul) => { ul.hidden = ul.dataset.pakke !== navn; });
-    rulPris(P.pris);
-    // Tilmeldingen på forsiden følger med
-    const radio = document.querySelector(`#tilmeld input[data-pakke="${navn}"]`);
-    if (radio) { radio.checked = true; radio.dispatchEvent(new Event("change", { bubbles: true })); }
-    clearTimeout(demoTimer);
-    visTilstand("venter");
-    // Med bogholder bogfører regningen sig selv; gør du det selv, venter den på dit tryk
-    if (navn === "bogholder") demoTimer = setTimeout(() => visTilstand("bogfoert"), 1600);
-  }
-  vaelger.addEventListener("click", (e) => { const b = e.target.closest("button"); if (b && b.dataset.pakke !== pakke) vaelgPakke(b.dataset.pakke); });
-  document.getElementById("godkend").addEventListener("click", () => visTilstand("bogfoert"));
-  document.getElementById("fortryd").addEventListener("click", () => visTilstand("venter"));
-  visTilstand("venter");
-  // Feltet glider ind, når det kommer i syne, og først da starter regningen
-  if (!roligt) pakker.classList.add("js-vis");
-  iSyne(pakker, () => { pakker.classList.add("inde"); vaelgPakke(pakke); }, "-25%");
 })();
