@@ -743,17 +743,11 @@ h1, .side-top h1, .udsagn h2 { font-size: var(--t-h1); font-weight: 500; line-he
 .stortal-side.anb .stortal-tal { color: var(--blaa); }
 .stortal-md { margin-top: 4px; font-size: 15px; color: var(--daempet); }
 .stortal-saet { margin-top: 16px; font-size: 22px; font-weight: 500; letter-spacing: -.015em; }
-.stortal-detaljer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s var(--let, ease-out); }
-.stortal-detaljer > ul { overflow: hidden; visibility: hidden; list-style: none; margin: 0; padding: 0; transition: visibility 0s linear .45s; }
-.stortal-side:focus-within .stortal-detaljer { grid-template-rows: 1fr; }
-.stortal-side:focus-within .stortal-detaljer > ul { visibility: visible; transition-delay: 0s; }
-.stortal-side:focus-visible { outline: 2px solid var(--blaa); outline-offset: 8px; border-radius: 12px; }
-.stortal-detaljer li { padding: 6px 0; font-size: 16px; color: var(--daempet); }
+.stortal-detaljer > ul { list-style: none; max-width: 400px; margin: 0 auto; padding: 0; }
+.stortal-detaljer li { padding: 7px 0; font-size: 16px; line-height: 1.45; color: var(--daempet); text-wrap: balance; }
+.stortal-detaljer b { font-weight: 600; color: var(--blaek); }
 .stortal-detaljer li:first-child { padding-top: 16px; }
 @media (hover: hover) and (pointer: fine) {
   .stortal:hover .stortal-side:not(:hover) { opacity: .42; }
-  .stortal-side:hover .stortal-detaljer { grid-template-rows: 1fr; }
-  .stortal-side:hover .stortal-detaljer > ul { visibility: visible; transition-delay: 0s; }
 }
-@media (hover: none), (pointer: coarse) { .stortal-detaljer { grid-template-rows: 1fr; } .stortal-detaljer > ul { visibility: visible; } }
 @media (max-width: 760px) { .stortal { grid-template-columns: 1fr; gap: 44px; } .stortal-skille { display: none; } .stortal-side { padding: 0; } }
