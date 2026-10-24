@@ -106,32 +106,30 @@ def fod():
 
 
 def pakkeblok(overskrift=True, taet=False):
-    """Begge pakker side om side, så man får overblik uden at klikke (Othman 24. okt 2026; vælgeren og demoen udgik).
-    Med bogholder er markeret som det anbefalede kort."""
+    """De to pakker som to store tal side om side (Othman 24. okt 2026, "Ét stort tal"). Tallene tæller op, når de kommer
+    frem (js/tallo.js, [data-tael]); detaljerne glider frem ved hover og står fremme på touch."""
     h2 = '\n      <h2>To pakker. Fast pris.</h2>' if overskrift else ""
+    def side(navn, tal, vist, saet, punkter, anb=""):
+        li = "".join(f"<li>{p}</li>" for p in punkter)
+        return f"""<div class="stortal-side{anb}" tabindex="0">
+          <p class="stortal-navn">{navn}</p>
+          <p class="stortal-tal" data-tael="{tal}">{vist}</p>
+          <p class="stortal-md">kr. om måneden plus moms</p>
+          <p class="stortal-saet">{saet}</p>
+          <div class="stortal-detaljer"><ul>{li}</ul></div>
+        </div>"""
+    venstre = side("Gør det selv med AI", 500, "500", "Du godkender.", ["Regninger og fakturaer kommer ind af sig selv",
+                   "AI'en foreslår, du godkender med ét tryk", "Momsen regnes ud, og du sender den selv",
+                   "Spørg din egen Claude eller ChatGPT"])
+    hoejre = side("Med bogholder", 1000, "1.000", "Vi bogfører.", ["Alt fra Gør det selv med AI",
+                  "Vi bogfører, uanset hvor mange bilag", "Vi indberetter momsen for dig",
+                  "En bogholder kvalitetssikrer bogføringen"], " anb")
     return f"""<section class="pakker{' taet' if taet else ''}" id="pakker">
     <div class="felt">{h2}
-      <div class="pakke-par">
-        <article class="pakke-kort">
-          <h3>Gør det selv med AI</h3>
-          <p class="pris"><b>500 kr.</b><span>om måneden plus moms</span></p>
-          <ul>
-            <li>Regninger og fakturaer kommer ind af sig selv</li>
-            <li>AI'en foreslår, du godkender med ét tryk</li>
-            <li>Momsen regnes ud, og du sender den selv</li>
-            <li>Spørg din egen Claude eller ChatGPT om dine tal</li>
-          </ul>
-        </article>
-        <article class="pakke-kort anbefalet">
-          <h3>Med bogholder</h3>
-          <p class="pris"><b>1.000 kr.</b><span>om måneden plus moms</span></p>
-          <ul>
-            <li>Alt fra Gør det selv med AI</li>
-            <li>Vi bogfører, uanset hvor mange bilag</li>
-            <li>Vi indberetter momsen for dig</li>
-            <li>En bogholder kvalitetssikrer bogføringen</li>
-          </ul>
-        </article>
+      <div class="stortal">
+        {venstre}
+        <div class="stortal-skille" aria-hidden="true"></div>
+        {hoejre}
       </div>
       <div class="knapper">
         <a class="pille farve stor" href="/#kom">Skriv dig op</a>

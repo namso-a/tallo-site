@@ -117,11 +117,11 @@
   .moms-total > span { font-size: 15px; color: var(--daempet); }
   .moms-total b { font-size: 30px; font-weight: 500; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 
-  .os { padding: 140px 0 40px; text-align: center; }
+  .os { padding: 180px 0 40px; text-align: center; }
   .os h2 { font-size: var(--t-h2); font-weight: 500; line-height: 1.1; letter-spacing: -.02em; }
   .os .ingress { margin-top: 12px; }
   /* Tilmeldingen: tre trin i et kort i appens stil; hvert trin får et flueben, og stregen mellem dem fyldes */
-  .kom { padding: 140px 0 120px; }
+  .kom { padding: 180px 0 120px; }
   .kom-hoved { text-align: center; padding: 0 24px; }
   .kom-hoved h2 { font-size: var(--t-h2); font-weight: 500; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
   .kom-hoved .ingress { margin-top: 12px; max-width: 560px; text-wrap: balance; }
@@ -157,7 +157,7 @@
   .pakkevalg input:checked + span { background: #f3f0ff; box-shadow: inset 0 0 0 2px #4b3aa6; }
   .pakkevalg input:focus-visible + span { outline: 2px solid #4b3aa6; outline-offset: 2px; }
   .send { display: flex; align-items: center; gap: 16px; margin-top: 34px; padding-left: 54px; }
-  .send .pille { height: 48px; padding: 0 26px; font-size: 16px; border: 0; cursor: pointer; font-family: inherit; }
+  .send .pille { flex: none; height: 48px; padding: 0 26px; font-size: 16px; border: 0; cursor: pointer; font-family: inherit; }
   .send .pille:disabled { opacity: .6; cursor: default; }
   .formular-status { min-height: 1.4em; font-size: 14px; }
   .formular-note { margin-top: 6px; font-size: 13px; line-height: 1.5; color: var(--daempet); }
@@ -196,9 +196,9 @@
     .fk.lille { left: 12px; width: auto; }
     .fk-tal { font-size: 36px; }
     .soejler { height: 64px; margin-top: 14px; }
-    .os { padding-top: 96px; }
+    .os { padding-top: 120px; }
     .os h2 { padding: 0 20px; }
-    .kom { padding: 96px 0 80px; }
+    .kom { padding: 120px 0 80px; }
     .kom-gitter { grid-template-columns: minmax(0, 1fr); margin-top: 36px; padding: 0 12px; }
     .tilmeld { padding: 26px 18px 24px; }
     .trin { gap: 14px; grid-template-columns: 32px 1fr; }
@@ -349,27 +349,22 @@
   <section class="pakker" id="pakker">
     <div class="felt">
       <h2>To pakker. Fast pris.</h2>
-      <div class="pakke-par">
-        <article class="pakke-kort">
-          <h3>Gør det selv med AI</h3>
-          <p class="pris"><b>500 kr.</b><span>om måneden plus moms</span></p>
-          <ul>
-            <li>Regninger og fakturaer kommer ind af sig selv</li>
-            <li>AI'en foreslår, du godkender med ét tryk</li>
-            <li>Momsen regnes ud, og du sender den selv</li>
-            <li>Spørg din egen Claude eller ChatGPT om dine tal</li>
-          </ul>
-        </article>
-        <article class="pakke-kort anbefalet">
-          <h3>Med bogholder</h3>
-          <p class="pris"><b>1.000 kr.</b><span>om måneden plus moms</span></p>
-          <ul>
-            <li>Alt fra Gør det selv med AI</li>
-            <li>Vi bogfører, uanset hvor mange bilag</li>
-            <li>Vi indberetter momsen for dig</li>
-            <li>En bogholder kvalitetssikrer bogføringen</li>
-          </ul>
-        </article>
+      <div class="stortal">
+        <div class="stortal-side" tabindex="0">
+          <p class="stortal-navn">Gør det selv med AI</p>
+          <p class="stortal-tal" data-tael="500">500</p>
+          <p class="stortal-md">kr. om måneden plus moms</p>
+          <p class="stortal-saet">Du godkender.</p>
+          <div class="stortal-detaljer"><ul><li>Regninger og fakturaer kommer ind af sig selv</li><li>AI'en foreslår, du godkender med ét tryk</li><li>Momsen regnes ud, og du sender den selv</li><li>Spørg din egen Claude eller ChatGPT</li></ul></div>
+        </div>
+        <div class="stortal-skille" aria-hidden="true"></div>
+        <div class="stortal-side anb" tabindex="0">
+          <p class="stortal-navn">Med bogholder</p>
+          <p class="stortal-tal" data-tael="1000">1.000</p>
+          <p class="stortal-md">kr. om måneden plus moms</p>
+          <p class="stortal-saet">Vi bogfører.</p>
+          <div class="stortal-detaljer"><ul><li>Alt fra Gør det selv med AI</li><li>Vi bogfører, uanset hvor mange bilag</li><li>Vi indberetter momsen for dig</li><li>En bogholder kvalitetssikrer bogføringen</li></ul></div>
+        </div>
       </div>
       <div class="knapper">
         <a class="pille farve stor" href="/#kom">Skriv dig op</a>

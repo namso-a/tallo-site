@@ -66,21 +66,10 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 @keyframes snurre { to { transform: rotate(360deg); } }
 
 /* Pakkeblokken: ét stort felt i én kraftig, lys farve med begge pakker side om side (Othman 24. okt 2026) */
-.pakke-par { display: grid; grid-template-columns: repeat(2, minmax(0, 440px)); justify-content: center; gap: 20px; width: calc(100% - 64px); margin: 40px auto 0; text-align: left; }
-.pakke-kort { padding: 34px 32px 30px; border-radius: 22px; background: #fff; }
-.pakke-kort h3 { font-size: var(--t-h3, 20px); font-weight: 560; letter-spacing: -.01em; }
-.pakke-kort .pris { margin-top: 14px; }
-.pakke-kort .pris b { font-size: 48px; }
-.pakke-kort ul { list-style: none; margin: 24px 0 0; padding: 0; border-top: 1px solid var(--lineal); }
-.pakke-kort li { position: relative; padding: 11px 0 11px 28px; border-bottom: 1px solid var(--lineal); font-size: 16px; line-height: 1.4; text-wrap: pretty; }
-.pakke-kort li::before { content: ""; position: absolute; left: 2px; top: 16px; width: 12px; height: 7px; border-left: 2px solid var(--blaa); border-bottom: 2px solid var(--blaa); transform: rotate(-45deg); }
 .felt .knapper { margin-top: 32px; }
 @media (max-width: 760px) {
-  .pakke-par { grid-template-columns: minmax(0, 1fr); width: calc(100% - 24px); }
-  .pakke-kort { padding: 26px 20px 22px; }
-  .pakke-kort .pris b { font-size: 42px; }
 }
-.pakker { padding: 120px 0 0; }
+.pakker { padding: 160px 0 40px; }
 .felt { width: min(1240px, calc(100% - 64px)); margin: 0 auto; padding: 0; text-align: center; }  /* ingen lilla flade (Othman 24. okt 2026) */
 .felt h2 { font-size: 42px; font-weight: 480; line-height: 1.1; letter-spacing: -.02em; }
 .felt .ingress { color: #2e2563; max-width: 600px; padding: 0 20px; text-wrap: balance; }
@@ -217,7 +206,7 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 .svar:has(.svarer) { display: flex; align-items: flex-start; gap: 14px; }
 .spoergsmaal details p.svarer { flex: none; margin: 0; padding: 0; }
 .svarer img { display: block; width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
-.faq-forside { padding: 120px 0 0; }
+.faq-forside { padding: 160px 0 0; }
 .spoergsmaal .svar { overflow: hidden; }
 .spoergsmaal details p { padding: 0 48px 22px 0; font-size: 17px; line-height: 1.55; color: var(--daempet); }
 .spoergsmaal details p a { color: var(--blaa); text-decoration: underline; text-underline-offset: 3px; }
@@ -401,8 +390,8 @@ html.glid .region { background: transparent; }
 
 /* Læse-scenen (/ai): følger rullet; linjen glider ned over kvitteringen, felterne markeres, app-kortet fyldes ud */
 .region.laes-region { padding: 0; }
-.laes { position: relative; height: 280vh; }
-.laes-scene { position: sticky; top: var(--nav); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); gap: 28px 64px; align-items: center; align-content: start; padding-top: 24px; box-sizing: border-box; height: calc(100vh - var(--nav)); width: min(1080px, calc(100% - 64px)); margin: 0 auto; }
+.laes { position: relative; padding: 24px 0 56px; }
+.laes-scene { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); gap: 28px 64px; align-items: center; padding-top: 24px; box-sizing: border-box; width: min(1080px, calc(100% - 64px)); margin: 0 auto; }
 .laes-papir { position: relative; overflow: hidden; width: min(380px, 100%); aspect-ratio: 540 / 600; margin-left: auto; border-radius: 22px; box-shadow: 0 40px 80px -40px rgba(20,20,20,.55); }
 .laes-papir .ark { position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: 540 / 950; }
 .laes-papir .ark img { display: block; width: 100%; height: 100%; }
@@ -449,7 +438,7 @@ html.glid .region { background: transparent; }
 @keyframes lander-bag { from { opacity: 0; transform: translate(-50%, calc(-50% - 44px)) rotate(var(--r)); } to { opacity: 1; transform: translate(-50%, -50%) rotate(var(--r)); } }
 .regner-scene { display: grid; place-items: center; }
 @keyframes lander { from { opacity: 0; transform: translateY(-36px) rotate(var(--r)); } to { opacity: 1; transform: rotate(var(--r)); } }
-.regner-pris { position: relative; width: min(330px, 100%); padding: 22px 22px 24px; border-radius: 22px; background: #fff; box-shadow: 0 30px 60px -30px rgba(29,20,66,.55); }
+.regner-pris { position: relative; width: min(330px, 100%); }  /* står direkte i kortet, ingen boks i boksen (Othman 24. okt 2026) */
 .regner-pris .vaelger { margin: 0; width: 100%; background: #f1eefc; }
 .regner-pris .vaelger button { min-height: 40px; padding: 4px 8px; font-size: 13px; }
 .regner-pris .belob { margin-top: 20px; font-size: 64px; font-weight: 500; line-height: 1; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
@@ -542,7 +531,7 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
   @keyframes pil-flyd-ned { to { background-position: 0 28px; } }
   @keyframes skub { 0%, 100% { transform: none; } 30% { transform: translateY(10px); } 55% { transform: translateY(2px); } 75% { transform: translateY(6px); } }
   .faq h2 { font-size: 30px; }
-  .faq-forside { padding-top: 88px; }
+  .faq-forside { padding-top: 104px; }
   .bogholder-blok { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .bb-tekst h2 { font-size: 30px; }
   .bb-person { width: min(280px, 80%); }
@@ -555,8 +544,7 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
   .regner-pris { width: min(340px, 100%); }
   .bilag-baggrund i { width: calc(var(--s, 64px) * .72); }
   .regner-pris.nik { animation: none; }
-  .laes { height: 260vh; }
-  .laes-scene { grid-template-columns: minmax(0, 1fr); gap: 14px; align-content: start; padding-top: 12px; width: calc(100% - 32px); }
+  .laes-scene { grid-template-columns: minmax(0, 1fr); gap: 14px; padding-top: 12px; width: calc(100% - 32px); }
   .laes-papir { width: min(230px, 60vw); margin: 0 auto; }
   .laes-tekst { display: none; }
   .laes-kort { padding: 4px 16px 14px; }
@@ -613,7 +601,7 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
   .knapper { gap: 8px; margin-top: 22px; }
   .pille { padding: 0 16px; font-size: 15px; }
   .knapper .pille { height: 44px; }
-  .pakker { padding-top: 72px; }
+  .pakker { padding: 112px 0 24px; }
   .felt { width: calc(100% - 24px); padding: 56px 0 40px; border-radius: 24px; }
   .felt h2, .afsnit-hoved h2, .baand h2 { font-size: 32px; }
   .felt h2 { padding: 0 20px; }
@@ -677,8 +665,7 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
    js/tallo.js. Det, man selv starter (træk, tryk, rul), spiller altid (Othman 15.-16. okt 2026). */
 
 /* Hvide kort på hvid baggrund får en tynd kant, så de stadig kan ses (Othman 24. okt 2026: hvid i stedet for papir) */
-.pakke-kort, .tabel-ramme, .laes-kort, .ai-chat, .tilmeld, .spoergsmaal summary::after { box-shadow: inset 0 0 0 1px var(--lineal); }
-.pakke-kort.anbefalet { box-shadow: inset 0 0 0 2px var(--blaa); }
+.tabel-ramme, .laes-kort, .ai-chat, .tilmeld, .spoergsmaal summary::after { box-shadow: inset 0 0 0 1px var(--lineal); }
 
 /* ---------------------------------------------------------------------------------------------------------------
    Én skala for skrift og farve (Othman 24. okt 2026: "for mange variationer ... tænk som Apple").
@@ -709,3 +696,64 @@ h1, .side-top h1, .udsagn h2 { font-size: var(--t-h1); font-weight: 500; line-he
   .region-hoved p, .gk p, .ts-tekst p, .laes-tekst p, .person .om, .spoergsmaal .svar p { font-size: 16px; }
   .ingress, .udsagn p { font-size: 17px; }
 }
+
+/* ---------------------------------------------------------------------------------------------------------------
+   Hover (Othman 24. okt 2026: "lækker og blæret hover-effekt" på pakkerne og på tværs af siden). Kun ved rigtig mus,
+   kun transform, skygge, farve og opacitet; ved reduceret bevægelse bliver kun farveskiftene. */
+:root { --let: cubic-bezier(.2, .7, .2, 1); }
+.pille { transition: background .2s ease-out, box-shadow .25s var(--let), transform .25s var(--let); }
+.pille.farve { position: relative; overflow: hidden; isolation: isolate; }
+.pille.farve::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; transform: translateX(-120%) skewX(-18deg);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent); }
+.nav-links a { position: relative; }
+.nav-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 2px; border-radius: 2px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .3s var(--let); }
+.nav-links a[aria-current="page"]::after { transform: scaleX(1); }
+.fod-indre li a { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .3s var(--let); }
+.spoergsmaal summary { margin: 0 -14px; padding-left: 14px; padding-right: 14px; border-radius: 14px; transition: background .2s ease-out; }
+.sammenlign tbody th, .sammenlign tbody td { transition: background .2s ease-out; }
+.laes-kort, .ai-chat, .foto-kort { transition: transform .35s var(--let), box-shadow .35s var(--let); }
+@media (hover: hover) and (pointer: fine) {
+  .pille:hover { transform: translateY(-1px); box-shadow: 0 10px 22px -12px rgba(29,20,66,.45); }
+  .pille.farve:hover::after { transform: translateX(120%) skewX(-18deg); transition: transform .7s var(--let); }
+  .pille.hvid:hover { box-shadow: inset 0 0 0 1.5px var(--blaa), 0 10px 22px -14px rgba(29,20,66,.35); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .fod-indre li a:hover { text-decoration: none; background-size: 100% 1px; }
+  .se-appen:hover, .svar a:hover, .juridisk a:hover { color: var(--blaa); text-decoration-thickness: 2px; }
+  .spoergsmaal summary:hover { background: #f7f6fc; }
+  .spoergsmaal summary:hover::after { background: var(--blaa-svag); color: var(--blaa); }
+  .spoergsmaal details:not([open]) > summary:hover::after { transform: rotate(90deg); }
+  .sammenlign tbody tr:hover th, .sammenlign tbody tr:hover td { background: #f7f6fc; }
+  .sammenlign tbody tr:hover td.valgt { background: #eeeafe; }
+  .pakkevalg span { transition: box-shadow .2s, background .2s, transform .25s var(--let); }
+  .pakkevalg label:hover span { transform: translateY(-2px); box-shadow: inset 0 0 0 1.5px var(--blaa); }
+  .laes-kort:hover, .ai-chat:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 1px var(--lineal), 0 30px 60px -36px rgba(29,20,66,.4); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pille:hover, .pakkevalg label:hover span, .laes-kort:hover, .ai-chat:hover { transform: none; }
+  .pille.farve::after { display: none; }
+  .spoergsmaal details:not([open]) > summary:hover::after { transform: none; }
+}
+
+/* Forsidens pakker: to store tal side om side (Othman 24. okt 2026, "Ét stort tal", lidt mindre end i mockuppen) */
+.stortal { display: grid; grid-template-columns: 1fr 1px 1fr; width: min(1040px, calc(100% - 40px)); margin: 52px auto 0; }
+.stortal-skille { background: var(--lineal); }
+.stortal-side { padding: 8px 32px 0; transition: opacity .35s var(--let, ease-out); }
+.stortal-navn { font-size: 15px; font-weight: 600; color: var(--daempet); }
+.stortal-tal { margin-top: 2px; font-size: clamp(72px, 9vw, 128px); font-weight: 500; line-height: 1.25; letter-spacing: -.05em; font-variant-numeric: tabular-nums; color: var(--blaek); }
+.stortal-side.anb .stortal-tal { color: var(--blaa); }
+.stortal-md { margin-top: 4px; font-size: 15px; color: var(--daempet); }
+.stortal-saet { margin-top: 16px; font-size: 22px; font-weight: 500; letter-spacing: -.015em; }
+.stortal-detaljer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s var(--let, ease-out); }
+.stortal-detaljer > ul { overflow: hidden; visibility: hidden; list-style: none; margin: 0; padding: 0; transition: visibility 0s linear .45s; }
+.stortal-side:focus-within .stortal-detaljer { grid-template-rows: 1fr; }
+.stortal-side:focus-within .stortal-detaljer > ul { visibility: visible; transition-delay: 0s; }
+.stortal-side:focus-visible { outline: 2px solid var(--blaa); outline-offset: 8px; border-radius: 12px; }
+.stortal-detaljer li { padding: 6px 0; font-size: 16px; color: var(--daempet); }
+.stortal-detaljer li:first-child { padding-top: 16px; }
+@media (hover: hover) and (pointer: fine) {
+  .stortal:hover .stortal-side:not(:hover) { opacity: .42; }
+  .stortal-side:hover .stortal-detaljer { grid-template-rows: 1fr; }
+  .stortal-side:hover .stortal-detaljer > ul { visibility: visible; transition-delay: 0s; }
+}
+@media (hover: none), (pointer: coarse) { .stortal-detaljer { grid-template-rows: 1fr; } .stortal-detaljer > ul { visibility: visible; } }
+@media (max-width: 760px) { .stortal { grid-template-columns: 1fr; gap: 44px; } .stortal-skille { display: none; } .stortal-side { padding: 0; } }

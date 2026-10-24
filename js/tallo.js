@@ -232,7 +232,8 @@
     tekster.forEach((t) => io.observe(t));
   });
 
-  // Læse-scenen: følger rullet frem og tilbage; linjen glider ned, og hvert felt bliver læst, når linjen passerer det
+  // Læse-scenen: spiller af sig selv én gang, når den kommer frem (Othman 24. okt 2026: ikke længere klistret fast, mens
+  // man ruller); linjen glider ned, og hvert felt bliver læst, når linjen passerer det
   document.querySelectorAll("[data-laes]").forEach((laes) => {
     const linje = laes.querySelector(".laes-linje");
     const felter = [...laes.querySelectorAll(".laes-felt")];
@@ -240,10 +241,7 @@
     const beloeb = laes.querySelector("[data-beloeb]");
     const forslag = laes.querySelector(".laes-forslag"), status = laes.querySelector(".laes-status");
     const kr = (v) => v.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    let maal = 0;
-    const tegn = () => {
-      const r = laes.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight)));
+    const tegn = (p) => {
       const y = 4 + Math.min(1, p / .7) * 50;                       // linjen: 4 % til 54 % af arket
       linje.style.top = y + "%";
       linje.style.opacity = p < .74 ? 1 : 0;
@@ -259,10 +257,13 @@
       forslag.classList.toggle("vist", p > .78);
       status.classList.toggle("ok", p > .9);
     };
-    const paa = () => { cancelAnimationFrame(maal); maal = requestAnimationFrame(tegn); };
-    addEventListener("scroll", paa, { passive: true });
-    addEventListener("resize", paa);
-    tegn();
+    if (roligt) return tegn(1);  // ved reduceret bevægelse står den færdig
+    tegn(0);
+    iSyne(laes, () => {
+      const t0 = performance.now(), varighed = 4200;
+      const trin = (nu) => { const p = Math.min(1, (nu - t0) / varighed); tegn(p); if (p < 1) requestAnimationFrame(trin); };
+      requestAnimationFrame(trin);
+    }, "-25%");
   });
 
   // Skyderen: kvitteringerne lander i hele afsnittets baggrund rundt om kortet, mens man trækker; prisen står stille og
@@ -365,5 +366,16 @@
     knapper.forEach((k, j) => k.addEventListener("click", () => { auto = false; vis(j); }));
     vis(0);
     if (auto) { clearTimeout(timer); li[0].classList.remove("koerer"); iSyne(lp, () => vis(0), "-20%"); }
+  });
+  // Pakkerne: de store tal tæller op fra 0, når de kommer frem (står færdige uden JS og ved reduceret bevægelse)
+  document.querySelectorAll("[data-tael]").forEach((el) => {
+    if (roligt || !("IntersectionObserver" in window)) return;
+    const til = +el.dataset.tael, kr = (n) => n.toLocaleString("da-DK");
+    el.textContent = "0";
+    iSyne(el, () => {
+      const t0 = performance.now();
+      const trin = (nu) => { const t = Math.min(1, (nu - t0) / 1300), e = 1 - Math.pow(1 - t, 3); el.textContent = kr(Math.round(til * e)); if (t < 1) requestAnimationFrame(trin); };
+      requestAnimationFrame(trin);
+    }, "-20%");
   });
 })();
