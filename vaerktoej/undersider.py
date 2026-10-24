@@ -107,23 +107,25 @@ def fod():
 
 def pakkeblok(overskrift=True, taet=False):
     """De to pakker som to store tal side om side (Othman 24. okt 2026, "Ét stort tal"). Tallene tæller op, når de kommer
-    frem (js/tallo.js, [data-tael]); detaljerne glider frem ved hover og står fremme på touch."""
+    frem (js/tallo.js, [data-tael]). De fire linjer under hvert tal rammer et smertepunkt hver og står altid fremme
+    (Othman 24. okt 2026); hover dæmper den anden side."""
     h2 = '\n      <h2>To pakker. Fast pris.</h2>' if overskrift else ""
     def side(navn, tal, vist, saet, punkter, anb=""):
         li = "".join(f"<li>{p}</li>" for p in punkter)
-        return f"""<div class="stortal-side{anb}" tabindex="0">
+        return f"""<div class="stortal-side{anb}">
           <p class="stortal-navn">{navn}</p>
           <p class="stortal-tal" data-tael="{tal}">{vist}</p>
           <p class="stortal-md">kr. om måneden plus moms</p>
           <p class="stortal-saet">{saet}</p>
           <div class="stortal-detaljer"><ul>{li}</ul></div>
         </div>"""
-    venstre = side("Gør det selv med AI", 500, "500", "AI'en hjælper. Du bogfører.", ["Regninger og fakturaer kommer ind af sig selv",
-                   "AI'en foreslår, du godkender med ét tryk", "Momsen regnes ud, og du sender den selv",
-                   "Spørg din egen Claude eller ChatGPT"])
-    hoejre = side("Med bogholder", 1000, "1.000", "AI'en hjælper. Vi bogfører.", ["Alt fra Gør det selv med AI",
-                  "Vi bogfører, uanset hvor mange bilag", "Vi indberetter momsen for dig",
-                  "En bogholder kvalitetssikrer bogføringen"], " anb")
+    venstre = side("Gør det selv med AI", 500, "500", "AI'en hjælper. Du bogfører.", ["Slut med at taste: bank, mail og e‑faktura kommer ind af sig selv",
+                   "AI'en finder kontoen og momsen, så du ikke skal kunne regnskab", "Du ser momsen og fristen længe før",
+                   "Bliver det for meget, skifter du til bogholder fra måned til måned"])
+    hoejre = side("Med bogholder", 1000, "1.000", "AI'en hjælper. Vi bogfører.", ["<b>Du rører ikke bogføringen, uanset hvor mange bilag du har</b>",
+                  "Vi indberetter momsen for dig, før fristen",
+                  "Din egen bogholder, som du kan skrive til og normalt får svar fra samme dag",
+                  "Du ved, hvordan det går: salg, udgifter og overskud hver måned"], " anb")
     return f"""<section class="pakker{' taet' if taet else ''}" id="pakker">
     <div class="felt">{h2}
       <div class="stortal">
