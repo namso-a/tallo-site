@@ -246,7 +246,6 @@ SAMMENLIGN = [
     ("Ubegrænset antal bilag", JA, JA),
     ("Du bogfører selv", JA, NEJ),
     ("Vi bogfører for dig", NEJ, JA),
-    ("En bogholder kvalitetssikrer", NEJ, JA),
     ("Vi indberetter momsen", NEJ, JA),
     ("Overblik over salg, udgifter og overskud", JA, JA),
     ("Spørg din egen Claude eller ChatGPT", JA, JA),
