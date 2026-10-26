@@ -743,11 +743,16 @@ h1, .side-top h1, .udsagn h2 { font-size: var(--t-h1); font-weight: 500; line-he
 .stortal-side.anb .stortal-tal { color: var(--blaa); }
 .stortal-md { margin-top: 4px; font-size: 15px; color: var(--daempet); }
 .stortal-saet { margin-top: 16px; font-size: 22px; font-weight: 500; letter-spacing: -.015em; }
-.stortal-detaljer > ul { list-style: none; max-width: 400px; margin: 0 auto; padding: 0; }
-.stortal-detaljer li { padding: 7px 0; font-size: 16px; line-height: 1.45; color: var(--daempet); text-wrap: balance; }
-.stortal-detaljer b { font-weight: 600; color: var(--blaek); }
-.stortal-detaljer li:first-child { padding-top: 16px; }
+.stortal-detaljer > ul { list-style: none; width: fit-content; max-width: 100%; margin: 18px auto 0; padding: 0; text-align: left; }
+.stortal-detaljer li { position: relative; padding: 6px 0 6px 28px; font-size: 16px; line-height: 1.45; color: var(--blaek); }
+.stortal-detaljer li::before { content: ""; position: absolute; left: 3px; top: 13px; width: 11px; height: 6px; border-left: 2px solid var(--blaa); border-bottom: 2px solid var(--blaa); transform: rotate(-45deg); }
 @media (hover: hover) and (pointer: fine) {
   .stortal:hover .stortal-side:not(:hover) { opacity: .42; }
+  /* Linjerne står dæmpede og bliver tydelige, når musen er ved dem (Othman 26. okt 2026) */
+  .stortal-detaljer li { opacity: .35; transition: opacity .3s var(--let, ease-out); }
+  .stortal-detaljer ul:hover li { opacity: 1; }
+  .stortal-detaljer ul:hover li:nth-child(2) { transition-delay: .04s; }
+  .stortal-detaljer ul:hover li:nth-child(3) { transition-delay: .08s; }
+  .stortal-detaljer ul:hover li:nth-child(4) { transition-delay: .12s; }
 }
 @media (max-width: 760px) { .stortal { grid-template-columns: 1fr; gap: 44px; } .stortal-skille { display: none; } .stortal-side { padding: 0; } }
