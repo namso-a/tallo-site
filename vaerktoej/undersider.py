@@ -107,8 +107,8 @@ def fod():
 
 def pakkeblok(overskrift=True, taet=False):
     """De to pakker som to store tal side om side (Othman 24. okt 2026, "Ét stort tal"). Tallene tæller op, når de kommer
-    frem (js/tallo.js, [data-tael]). De fire linjer under hvert tal rammer et smertepunkt hver og står altid fremme
-    (Othman 24. okt 2026); hover dæmper den anden side."""
+    frem (js/tallo.js, [data-tael]). De fire korte linjer står i en lige kolonne med flueben,
+    dæmpede, indtil musen er ved dem (Othman 26. okt 2026); på touch står de tydelige."""
     h2 = '\n      <h2>To pakker. Fast pris.</h2>' if overskrift else ""
     def side(navn, tal, vist, saet, punkter, anb=""):
         li = "".join(f"<li>{p}</li>" for p in punkter)
@@ -119,13 +119,10 @@ def pakkeblok(overskrift=True, taet=False):
           <p class="stortal-saet">{saet}</p>
           <div class="stortal-detaljer"><ul>{li}</ul></div>
         </div>"""
-    venstre = side("Gør det selv med AI", 500, "500", "AI'en hjælper. Du bogfører.", ["Slut med at taste: bank, mail og e‑faktura kommer ind af sig selv",
-                   "AI'en finder kontoen og momsen, så du ikke skal kunne regnskab", "Du ser momsen og fristen længe før",
-                   "Bliver det for meget, skifter du til bogholder fra måned til måned"])
-    hoejre = side("Med bogholder", 1000, "1.000", "AI'en hjælper. Vi bogfører.", ["<b>Du rører ikke bogføringen, uanset hvor mange bilag du har</b>",
-                  "Vi indberetter momsen for dig, før fristen",
-                  "Din egen bogholder, som du kan skrive til og normalt får svar fra samme dag",
-                  "Du ved, hvordan det går: salg, udgifter og overskud hver måned"], " anb")
+    venstre = side("Gør det selv med AI", 500, "500", "AI'en hjælper. Du bogfører.", ["Ingen tastning. Bilagene kommer selv", "AI'en finder konto og moms",
+                   "Momsen og fristen i god tid", "Skift til bogholder når som helst"])
+    hoejre = side("Med bogholder", 1000, "1.000", "AI'en hjælper. Vi bogfører.", ["Du rører ikke bogføringen", "Vi indberetter momsen",
+                  "Din egen bogholder at skrive til", "Salg, udgifter og overskud hver måned"], " anb")
     return f"""<section class="pakker{' taet' if taet else ''}" id="pakker">
     <div class="felt">{h2}
       <div class="stortal">
