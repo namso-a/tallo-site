@@ -107,16 +107,16 @@ def fod():
 
 def pakkeblok(overskrift=True, taet=False):
     """De to pakker som to store tal side om side (Othman 24. okt 2026, "Ét stort tal"). Tallene tæller op, når de kommer
-    frem (js/tallo.js, [data-tael]). De fire korte linjer står i en lige kolonne med flueben,
-    dæmpede, indtil musen er ved dem (Othman 26. okt 2026); på touch står de tydelige."""
+    frem (js/tallo.js, [data-tael]). Sætningen står øverst i stedet for pakkenavnet (navnet er kun for
+    skærmlæsere); de fire linjer står i en lige kolonne med flueben, dæmpede, indtil musen er på siden (Othman 26. okt 2026)."""
     h2 = '\n      <h2>To pakker. Fast pris.</h2>' if overskrift else ""
     def side(navn, tal, vist, saet, punkter, anb=""):
         li = "".join(f"<li>{p}</li>" for p in punkter)
         return f"""<div class="stortal-side{anb}">
-          <p class="stortal-navn">{navn}</p>
+          <p class="sr">{navn}</p>
+          <p class="stortal-saet">{saet}</p>
           <p class="stortal-tal" data-tael="{tal}">{vist}</p>
           <p class="stortal-md">kr. om måneden plus moms</p>
-          <p class="stortal-saet">{saet}</p>
           <div class="stortal-detaljer"><ul>{li}</ul></div>
         </div>"""
     venstre = side("Gør det selv med AI", 500, "500", "AI'en hjælper. Du bogfører.", ["Ingen tastning. Bilagene kommer selv", "AI'en finder konto og moms",
