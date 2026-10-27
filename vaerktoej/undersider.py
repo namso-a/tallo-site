@@ -105,6 +105,17 @@ def fod():
 </footer>"""
 
 
+# Claude- og ChatGPT-logoerne som klistermærker på /ai og ved pakkerne (Othman 27. okt 2026, mockup 1). Anthropic og
+# OpenAI er spurgt om lov samme dag; siger én af dem nej, sættes LOGOER til False, og navnene står kun som tekst.
+LOGOER = True
+CLAUDE_LOGO = '<img src="/billeder/claude.svg" alt="" width="38" height="38">'
+GPT_LOGO = '<img src="/billeder/chatgpt.svg" alt="" width="40" height="40">'
+
+
+def klister(gpt, drej):
+    return f'<span class="klister{" gpt" if gpt else ""}" style="--drej:{drej}">{GPT_LOGO if gpt else CLAUDE_LOGO}</span>'
+
+
 def pakkeblok(overskrift=True, taet=False):
     """De to pakker som to store tal side om side (Othman 24. okt 2026, "Ét stort tal"). Tallene tæller op, når de kommer
     frem (js/tallo.js, [data-tael]). Sætningen står øverst i stedet for pakkenavnet (navnet er kun for
@@ -123,13 +134,15 @@ def pakkeblok(overskrift=True, taet=False):
                    "Momsen og fristen i god tid", "Skift til bogholder når som helst"])
     hoejre = side("Med bogholder", 1000, "1.000", "AI'en hjælper. Vi bogfører.", ["Du rører ikke bogføringen", "Vi indberetter momsen",
                   "Din egen bogholder at skrive til", "Salg, udgifter og overskud hver måned"], " anb")
+    klisterlinje = f"""
+      <div class="klister-linje"><span class="klister-par" aria-hidden="true">{klister(0, "-8deg")}{klister(1, "9deg")}</span><p>Spørg din egen Claude eller ChatGPT om dine tal<small>Med i begge pakker</small></p></div>""" if LOGOER else ""
     return f"""<section class="pakker{' taet' if taet else ''}" id="pakker">
     <div class="felt">{h2}
       <div class="stortal">
         {venstre}
         <div class="stortal-skille" aria-hidden="true"></div>
         {hoejre}
-      </div>
+      </div>{klisterlinje}
       <div class="knapper">
         <a class="pille farve stor" href="/#kom">Skriv dig op</a>
         <a class="pille hvid stor" href="/priser/">Se hvad der er med</a>
@@ -441,25 +454,32 @@ def ai():
       </figure>
     </div>"""
     # Samtalen ligner en rigtig AI-chat; den kommer frem én gang, når den ses (js/tallo.js, [data-ai-chat]).
-    # Ingen Claude- eller ChatGPT-logoer: begge kræver godkendelse på forhånd; navnene må stå som tekst (19. okt 2026)
-    chat = """<div class="indre">
+    # Med LOGOER sidder Claude og ChatGPT som klistermærker på samtalens hjørne og svarer hver sin gang
+    if LOGOER:
+        hjoerne = f'\n        <div class="klister-hjoerne" aria-hidden="true">{klister(0, "-10deg")}{klister(1, "12deg")}</div>'
+        top_ikon = f'<span class="ac-par" aria-hidden="true"><span class="ac-ikon logo">{CLAUDE_LOGO}</span><span class="ac-ikon logo gpt">{GPT_LOGO}</span></span>'
+        svar_ikon = [f'<span class="ac-ikon logo" aria-hidden="true">{CLAUDE_LOGO}</span>', f'<span class="ac-ikon logo gpt" aria-hidden="true">{GPT_LOGO}</span>']
+    else:
+        hjoerne, top_ikon = "", '<span class="ac-ikon" aria-hidden="true">✦</span>'
+        svar_ikon = ['<span class="ac-ikon" aria-hidden="true">✦</span>'] * 2
+    chat = f"""<div class="indre">
       <div class="region-hoved midt" data-afslor>
         <h2>Spørg din egen Claude eller ChatGPT</h2>
         <p>Forbind din egen AI i appen under Indstillinger, Din AI. Den kan læse dine tal og lave fakturaudkast, men aldrig bogføre, indberette moms eller slette noget.</p>
       </div>
-      <div class="ai-chat" data-ai-chat>
+      <div class="ai-chat{' har-klister' if LOGOER else ''}" data-ai-chat>{hjoerne}
         <div class="ac-top">
-          <span class="ac-ikon" aria-hidden="true">✦</span>
+          {top_ikon}
           <span><b>Din egen AI</b><small>Forbundet til Tallo · kan læse dine tal</small></span>
         </div>
         <div class="ac-traad">
           <div class="ac-besked du"><p>Hvad er mit overskud i år?</p></div>
-          <div class="ac-besked ai"><span class="ac-ikon" aria-hidden="true">✦</span><div>
+          <div class="ac-besked ai">{svar_ikon[0]}<div>
             <p class="ac-vaerktoej"><i class="snurre" aria-hidden="true"></i><span class="ok" aria-hidden="true">✓</span>Læser dine tal i Tallo</p>
             <div class="ac-svar"><p>Dit overskud i år er <b>376.368 kr.</b> Det er 8 % mere end på samme tid sidste år.</p></div>
           </div></div>
           <div class="ac-besked du"><p>Lav en faktura til Café Rosengården på 12 kager.</p></div>
-          <div class="ac-besked ai"><span class="ac-ikon" aria-hidden="true">✦</span><div>
+          <div class="ac-besked ai">{svar_ikon[1]}<div>
             <p class="ac-vaerktoej"><i class="snurre" aria-hidden="true"></i><span class="ok" aria-hidden="true">✓</span>Laver et udkast i Tallo</p>
             <div class="ac-svar"><p>Udkastet ligger klar. Du sender det selv, når du har set det.</p>
               <div class="ac-kort"><span class="app-pille graa">Udkast</span><b>Faktura til Café Rosengården</b><small>12 kager · 1.440,00 kr. plus moms</small><span class="ac-aabn">Åbn i Tallo →</span></div>
