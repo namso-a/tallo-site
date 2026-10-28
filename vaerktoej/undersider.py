@@ -650,7 +650,7 @@ def handelsbetingelser():
 DATABEHANDLERAFTALE = """
   <p class="mono">Databehandleraftale</p>
   <h1>Databehandler&shy;aftale</h1>
-  <p class="ind">Version 1.1, 20. oktober 2026. Skabelon; parterne og eventuelle tilkøb udfyldes pr. kunde ved tilmeldingen.</p>
+  <p class="ind">Version 1.2, 28. oktober 2026. Skabelon; parterne og eventuelle tilkøb udfyldes pr. kunde ved tilmeldingen.</p>
   <p>Aftale efter databeskyttelsesforordningens artikel 28 mellem kunden som dataansvarlig og Tallo som databehandler. Den er en del af aftalen om at være kunde hos Tallo (handelsbetingelserne) og følger Datatilsynets standardstruktur.</p>
 
   <h2>1. Parterne</h2>
@@ -717,6 +717,7 @@ DATABEHANDLERAFTALE = """
     <thead><tr><th>Navn</th><th>Behandling</th><th>Land og overførselsgrundlag</th></tr></thead>
     <tbody>
       <tr><td>Supabase Pte. Ltd. (Singapore; Supabase-koncernen)</td><td>Drift af regnskabsprogrammets database, login og bilagsarkiv</td><td>Data i EU (Irland eller Tyskland). Selskab uden for EU; EU's standardkontraktbestemmelser (Supabases DPA og overførselsvurdering)</td></tr>
+      <tr><td>Idura (tidligere Criipto), dansk MitID-mægler</td><td>Bekræftelse med MitID af, at brugeren må handle for virksomheden (bogføringsbekendtgørelsens § 5 a og b). Idura slår personen op hos MitID; Tallo får kun navn, rolle og CVR-nummer, aldrig CPR-nummer</td><td>Danmark</td></tr>
       <tr><td>Hetzner Online GmbH</td><td>Driftsserver til automatiske kørsler: bank, e-faktura, sikkerhedskopi, tilsyn</td><td>Tyskland</td></tr>
       <tr><td>Scaleway SAS</td><td>Opbevaring af krypteret sikkerhedskopi (leverandøren kan ikke læse indholdet) og afsendelse af fakturaer og påmindelser på mail</td><td>Frankrig</td></tr>
       <tr><td>Amazon Web Services EMEA SARL</td><td>AI-bogføring (Claude via Amazon Bedrock): vurderer bilag og banklinjer og foreslår eller udfører bogføring efter programmets regler</td><td>Tyskland (Frankfurt). Amerikansk koncern; EU-US Data Privacy Framework og EU's standardkontraktbestemmelser</td></tr>
@@ -741,7 +742,7 @@ DATABEHANDLERAFTALE = """
     <li>Ingen personoplysninger overføres til andre systemer end dem i bilag B, medmindre den dataansvarlige selv har bedt om det.</li>
   </ul>
 
-  <div class="bund"><span>Version 1.1 · 20. oktober 2026</span><span>Tallo · CVR 46440986</span></div>
+  <div class="bund"><span>Version 1.2 · 28. oktober 2026</span><span>Tallo · CVR 46440986</span></div>
 """
 
 
