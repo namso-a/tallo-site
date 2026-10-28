@@ -105,9 +105,10 @@ def fod():
 </footer>"""
 
 
-# Claude- og ChatGPT-logoerne som klistermærker på /ai og ved pakkerne (Othman 27. okt 2026, mockup 1). Anthropic og
-# OpenAI er spurgt om lov samme dag; siger én af dem nej, sættes LOGOER til False, og navnene står kun som tekst.
-LOGOER = True
+# Claude- og ChatGPT-logoerne som klistermærker på /ai og ved pakkerne (Othman 27. okt 2026, mockup 1). Anthropic sagde
+# nej 28. okt 2026 (logoet må ikke stå på siden, heller ikke som avatar); navnet må stå som tekst, uden at antyde
+# samarbejde. Logofilerne er slettet. Slå ikke til igen uden skriftlig tilladelse fra både Anthropic og OpenAI.
+LOGOER = False
 CLAUDE_LOGO = '<img src="/billeder/claude.svg" alt="" width="38" height="38">'
 GPT_LOGO = '<img src="/billeder/chatgpt.svg" alt="" width="40" height="40">'
 
