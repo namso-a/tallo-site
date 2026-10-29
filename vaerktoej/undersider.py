@@ -113,6 +113,21 @@ CLAUDE_LOGO = '<img src="/billeder/claude.svg" alt="" width="38" height="38">'
 GPT_LOGO = '<img src="/billeder/chatgpt.svg" alt="" width="40" height="40">'
 
 
+# Tillidslinjen over FAQ'en på forsiden og under samtalen på /ai (Othman 30. okt 2026, mockup "Linjen"). Kun tekst,
+# ingen certifikatmærker: Tallo er ikke selv certificeret. ISO 27001 gælder driften: Supabase, Hetzner, Scaleway og AWS
+# er certificeret (tjekket 30. okt 2026). MitID-mægleren er Idura.
+TILLID = [
+    ('<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>', "Data i EU"),
+    ('<path d="M12 3l7 3v5.5c0 4.4-3 8-7 9.5-4-1.5-7-5.1-7-9.5V6z"/><path d="M9 12l2.2 2.2L15.5 10"/>', "ISO 27001-certificeret drift"),
+    ('<rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10"/><circle cx="12" cy="15.5" r="1.4"/>', "Adgang med MitID"),
+]
+
+
+def tillidslinje():
+    punkter = "".join(f'<li><svg viewBox="0 0 24 24" aria-hidden="true">{ikon}</svg>{tekst}</li>' for ikon, tekst in TILLID)
+    return f'<ul class="tillid" aria-label="Sikkerhed">{punkter}</ul>'
+
+
 def klister(gpt, drej):
     return f'<span class="klister{" gpt" if gpt else ""}" style="--drej:{drej}">{GPT_LOGO if gpt else CLAUDE_LOGO}</span>'
 
@@ -309,7 +324,7 @@ def priser():
           </tbody>
         </table>
       </div>
-      <p class="smaat" style="color:var(--daempet)"><b style="color:var(--blaek)">Tilkøb:</b> årsrapport (ApS). Prisen får du, før du siger ja.</p>
+      <p class="smaat" style="color:var(--daempet);text-align:center"><b style="color:var(--blaek)">Tilkøb:</b> årsrapport (ApS). Prisen får du, før du siger ja.</p>
     </div>"""
     spoerg = faq(FAQ_PRISER)
     slut = """<div class="indre udsagn" data-afslor>
@@ -493,6 +508,7 @@ def ai():
         </div>
         <div class="ac-felt" aria-hidden="true"><span>Spørg om dine tal …</span><i>↑</i></div>
       </div>
+      {tillidslinje()}
     </div>"""
     return side("/ai/", "Sådan bruger vi AI: Tallo", "AI'en læser dine bilag i EU og bogfører det, der ligner det, den har set før. Alt usædvanligt ser et menneske på.",
                 "\n\n  ".join([region("lilla top", top, ''), region("papir laes-region", scene), region("papir", bogholder),
@@ -771,7 +787,7 @@ def forside():
                                  "Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du gør det selv med AI's hjælp. Fra 500 kr. om måneden.", "/"))
     s = erstat(s, "menu", menu("/"))
     s = erstat(s, "pakker", "  " + pakkeblok())
-    s = erstat(s, "faq", '  <section class="faq-forside" id="faq">\n    ' + faq(FAQ_FORSIDE) + "\n  </section>")
+    s = erstat(s, "faq", '  <section class="faq-forside" id="faq">\n    ' + tillidslinje() + "\n    " + faq(FAQ_FORSIDE) + "\n  </section>")
     s = erstat(s, "fod", fod())
     fil.write_text(s, encoding="utf-8")
 
