@@ -233,7 +233,11 @@ FAQ_FORSIDE = [
     ("Er der binding?", "Nej. Du opsiger fra måned til måned."),
     ("Hvad skal jeg selv gøre?", "Koble din bank til med dit eget MitID, én gang. Derefter kommer regninger og fakturaer ind af sig "
      "selv. Har du betalt noget med egne penge, tager du et billede af kvitteringen i appen."),
-    ("Hvor ligger mine data?", "I EU. Dine bilag bliver læst i EU og forlader ikke EU."),
+    # Ikke "forlader ikke EU": Cloudflare (bilagsadressen) er EU og USA, og kundens egen AI kan ligge uden for EU (30. okt 2026)
+    ("Bliver mine data i EU?", "Dine data ligger i EU, og dine bilag bliver læst i EU. Forbinder du din egen Claude eller "
+     "ChatGPT, sender vi det, du spørger om, til den tjeneste, og den kan ligge uden for EU. Det vælger du selv, og du kan "
+     "afbryde forbindelsen igen. Den kan kun læse dine tal og lave fakturaudkast. Alle vores leverandører, og hvor de har "
+     "data, står i <a href='/databehandleraftale/'>databehandleraftalen</a>."),
 ]
 FAQ_PRISER = [
     ("Kan jeg skifte pakke?", "Ja, fra måned til måned, begge veje."),
