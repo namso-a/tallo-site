@@ -512,6 +512,14 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 .ai-chat.spil .ac-besked.klar .ac-svar { animation: ac-ind .45s ease-out both; }
 @media (max-width: 420px) { .ac-top .snart { display: none; } }  /* står allerede i overskriften lige over */
 
+/* Tillidslinjen (Othman 30. okt 2026): tre korte punkter mellem to tynde streger, over FAQ'en og under samtalen på /ai */
+.tillid { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 40px; width: min(1040px, calc(100% - 40px)); margin: 0 auto; padding: 26px 0; list-style: none; border-block: 1px solid var(--lineal); }
+.tillid li { display: inline-flex; align-items: center; gap: 10px; font-size: 15.5px; font-weight: 500; color: var(--blaek); }
+.tillid svg { flex: none; width: 22px; height: 22px; fill: none; stroke: var(--blaa); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.faq-forside .tillid { margin-bottom: 120px; }
+.ai-chat + .tillid { margin-top: 96px; }
+@media (max-width: 520px) { .tillid { flex-direction: column; align-items: center; gap: 12px; } .faq-forside .tillid { margin-bottom: 88px; } }
+
 /* Claude- og ChatGPT-logoerne som klistermærker (Othman 27. okt 2026): skæve, runde mærker, der retter sig op og
    løfter sig under musen. Slås fra med LOGOER i vaerktoej/undersider.py, hvis Anthropic eller OpenAI siger nej. */
 .klister { position: relative; display: inline-grid; place-items: center; flex: none; width: 64px; height: 64px; padding: 13px; border-radius: 50%; background: #fff;
