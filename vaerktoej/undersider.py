@@ -763,7 +763,7 @@ def erstat(s, navn, nyt):
 def forside():
     fil = ROD / "index.html"
     s = fil.read_text(encoding="utf-8")
-    s = erstat(s, "hoved", hoved("Tallo: aldrig mere bogføring",
+    s = erstat(s, "hoved", hoved("Tallo: en ny slags bogholderi",
                                  "Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du gør det selv med AI's hjælp. Fra 500 kr. om måneden.", "/"))
     s = erstat(s, "menu", menu("/"))
     s = erstat(s, "pakker", "  " + pakkeblok())
