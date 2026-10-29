@@ -46,7 +46,6 @@
 
   .top-tekst { position: absolute; left: 0; right: 0; top: calc(var(--nav) + 70px); padding: 0 24px; text-align: center; }
 
-  .bjaelke { position: absolute; left: 50%; bottom: 32px; transform: translateX(-50%); padding: 10px 20px; border-radius: 10px; background: rgba(255,255,255,.7); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font-size: 13px; font-weight: 500; white-space: nowrap; }
 
   /* Skærmen: app-billedet lagt på laptoppen med matrix3d, så det følger fotoets vinkel.
      Et lag pr. format (desktop, mobil); lagene flyttes og skaleres, billederne i dem skifter. */
@@ -186,7 +185,6 @@
   }
   @media (max-width: 699px) {
     .top-tekst { top: calc(var(--nav) + 24px); }
-    .bjaelke { bottom: 16px; width: calc(100% - 32px); white-space: normal; text-align: center; font-size: 12px; }
     .punkter { margin-top: 18px; }
     .punkter button { padding: 11px 0; font-size: 15px; }
     .punkter p { font-size: 15px; padding-bottom: 12px; }
@@ -272,8 +270,6 @@
             <a class="pille glas" href="#kom">Hellere en snak?</a>
           </div>
         </div>
-
-        <p class="bjaelke" id="bjaelke">Vi åbner, når programmet er registreret hos Erhvervsstyrelsen. Du betaler først, når vi åbner.</p>
 
         <div class="skaerm" id="skaerm" aria-hidden="true">
           <div class="lag d" id="lagD">
@@ -585,7 +581,6 @@
   const hent = (lag) => { if (lag.dataset.hentet) return; lag.dataset.hentet = "1"; lag.querySelectorAll("img[data-src]").forEach((i) => { i.src = i.dataset.src; }); };
   const tekst = document.getElementById("tekst");
   const sloer = document.getElementById("sloer");
-  const bjaelke = document.getElementById("bjaelke");
   const produkt = document.getElementById("produkt");
   const punkter = [...document.querySelectorAll("#punkter li")];
   const statiskBillede = document.getElementById("statiskBillede");
@@ -736,9 +731,9 @@
 
     // Teksten over fotoet forsvinder; punkterne kommer ind, mens appen glider ud i panelet
     const ud = glid(0, .3, p);
-    tekst.style.opacity = sloer.style.opacity = bjaelke.style.opacity = 1 - ud;
+    tekst.style.opacity = sloer.style.opacity = 1 - ud;
     tekst.style.transform = `translateY(${-24 * ud}px)`;
-    tekst.style.visibility = bjaelke.style.visibility = ud >= 1 ? "hidden" : "visible";
+    tekst.style.visibility = ud >= 1 ? "hidden" : "visible";
     const ind = glid(mobil ? .8 : .6, 1, q); // på mobil glider panelet hen under teksten, så den venter længere
     produkt.style.opacity = ind;
     produkt.style.transform = `translateY(${16 * (1 - ind)}px)`;
