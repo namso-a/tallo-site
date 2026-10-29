@@ -251,7 +251,7 @@ FAQ_FORSIDE = [
     # Ikke "forlader ikke EU": Cloudflare (bilagsadressen) er EU og USA, og kundens egen AI kan ligge uden for EU (30. okt 2026)
     ("Bliver mine data i EU?", "Dine data ligger i EU, og dine bilag bliver læst i EU. Forbinder du din egen Claude eller "
      "ChatGPT, sender vi det, du spørger om, til den tjeneste, og den kan ligge uden for EU. Det vælger du selv, og du kan "
-     "afbryde forbindelsen igen. Den kan kun læse dine tal og lave fakturaudkast. Alle vores leverandører, og hvor de har "
+     "afbryde forbindelsen igen. Alle vores leverandører, og hvor de har "
      "data, står i <a href='/databehandleraftale/'>databehandleraftalen</a>."),
 ]
 FAQ_PRISER = [
