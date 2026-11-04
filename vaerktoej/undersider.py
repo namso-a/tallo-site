@@ -784,7 +784,7 @@ def forside():
     fil = ROD / "index.html"
     s = fil.read_text(encoding="utf-8")
     s = erstat(s, "hoved", hoved("Tallo: du skal ikke kunne regnskab",
-                                 "Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du gør det selv med AI's hjælp. Fra 500 kr. om måneden.", "/"))
+                                 "Vi bogfører for dig. Eller AI'en finder konto og moms, og du godkender. Fra 500 kr. om måneden.", "/"))
     s = erstat(s, "menu", menu("/"))
     s = erstat(s, "pakker", "  " + pakkeblok())
     s = erstat(s, "faq", '  <section class="faq-forside" id="faq">\n    ' + tillidslinje() + "\n    " + faq(FAQ_FORSIDE) + "\n  </section>")
