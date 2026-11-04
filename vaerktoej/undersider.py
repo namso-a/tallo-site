@@ -671,7 +671,7 @@ def handelsbetingelser():
 DATABEHANDLERAFTALE = """
   <p class="mono">Databehandleraftale</p>
   <h1>Databehandler&shy;aftale</h1>
-  <p class="ind">Version 1.2, 28. oktober 2026. Skabelon; parterne og eventuelle tilkøb udfyldes pr. kunde ved tilmeldingen.</p>
+  <p class="ind">Version 1.3, 4. november 2026. Skabelon; parterne og eventuelle tilkøb udfyldes pr. kunde ved tilmeldingen.</p>
   <p>Aftale efter databeskyttelsesforordningens artikel 28 mellem kunden som dataansvarlig og Tallo som databehandler. Den er en del af aftalen om at være kunde hos Tallo (handelsbetingelserne) og følger Datatilsynets standardstruktur.</p>
 
   <h2>1. Parterne</h2>
