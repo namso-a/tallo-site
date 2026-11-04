@@ -149,7 +149,7 @@ def pakkeblok(overskrift=True, taet=False):
     venstre = side("Gør det selv med AI", 500, "500", "AI'en hjælper. Du bogfører.", ["Ingen tastning. Bilagene kommer selv", "AI'en finder konto og moms",
                    "Momsen og fristen i god tid", "Skift til revisor når som helst"])
     hoejre = side("Med revisor", 1000, "1.000", "AI'en hjælper. Vi bogfører.", ["Du rører ikke bogføringen", "Vi indberetter momsen",
-                  "Din egen revisor at skrive til", "Salg, udgifter og overskud hver måned"], " anb")
+                  "Din egen revisor at skrive til", "Overblik over salg, udgifter og overskud"], " anb")
     klisterlinje = f"""
       <div class="klister-linje"><span class="klister-par" aria-hidden="true">{klister(0, "-8deg")}{klister(1, "9deg")}</span><p>Spørg din egen Claude eller ChatGPT om dine tal<small>Med i begge pakker</small></p></div>""" if LOGOER else ""
     return f"""<section class="pakker{' taet' if taet else ''}" id="pakker">
