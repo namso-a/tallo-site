@@ -146,8 +146,8 @@ def pakkeblok(overskrift=True, taet=False):
           <p class="stortal-md">kr. om måneden plus moms</p>
           <div class="stortal-detaljer"><ul>{li}</ul></div>
         </div>"""
-    venstre = side("Gør det selv med AI", 500, "500", "AI'en hjælper. Du bogfører.", ["Ingen tastning. Bilagene kommer selv", "AI'en finder konto og moms",
-                   "Momsen og fristen i god tid", "Skift til revisor når som helst"])
+    venstre = side("Gør det selv med AI", 500, "500", "AI'en hjælper. Du bogfører.", ["Du godkender med ét tryk", "AI'en finder konto og moms",
+                   "Momsen og fristen i god tid", "Skift til revisor fra måned til måned"])
     hoejre = side("Med revisor", 1000, "1.000", "AI'en hjælper. Vi bogfører.", ["Du rører ikke bogføringen", "Vi indberetter momsen",
                   "Din egen revisor at skrive til", "Overblik over salg, udgifter og overskud"], " anb")
     klisterlinje = f"""
@@ -242,8 +242,8 @@ FAQ_FORSIDE = [
     ("Kan jeg stole på, at AI'en bogfører rigtigt?",
      "AI'en er god til det, den har set før, men den kan tage fejl. Derfor bærer den det tunge læs, og en revisor "
      "kvalitetssikrer den. Også momsen, før den indberettes. Vælger du Gør det selv med AI, godkender du selv hvert "
-     "forslag, og du kan opgradere når som helst."),
-    ("Hvornår åbner I?", "Når vores program er registreret hos Erhvervsstyrelsen. Det kræver loven for de fleste virksomheder. "
+     "forslag, og du kan skifte fra måned til måned."),
+    ("Hvornår åbner I?", "Når vores program er registreret hos Erhvervsstyrelsen. Det kræver loven for mange virksomheder. "
      "Du kan skrive dig op nu, og vi skriver til dig, den dag vi åbner."),
     ("Er der binding?", "Nej. Du opsiger fra måned til måned."),
     ("Hvad skal jeg selv gøre?", "Koble din bank til med dit eget MitID, én gang. Derefter kommer regninger og fakturaer ind af sig "
@@ -530,14 +530,14 @@ def om_os():
         </div>
         <h3>Mohammed Chahrour</h3>
         <p class="rolle">Kunder og aftaler</p>
-        <p class="om">Mohammed er ved at afslutte sin kandidatgrad i jura. Han tager den første snak med dig, sørger for aftalerne og at alt er som det skal være.</p>
+        <p class="om">Mohammed er ved at afslutte sin kandidatgrad i jura. Han tager den første snak med dig, sørger for aftalerne, og for at alt er, som det skal være.</p>
       </div>
       <div class="person">
         <div class="ramme">
           <div class="foto-kort"><img src="/billeder/othman.webp" alt="Othman Ajjawi" width="400" height="400"></div>
         </div>
         <h3>Othman Ajjawi</h3>
-        <p class="rolle">Bogføring og teknik</p>
+        <p class="rolle">Revisor og teknik</p>
         <p class="om">Othman har en kandidatgrad i erhvervsøkonomi og arbejder til daglig med økonomi, data og AI. Han holder øje med dine tal og skriver til dig, hvis noget skal afklares.</p>
       </div>
     </div>
