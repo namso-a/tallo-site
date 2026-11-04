@@ -147,9 +147,9 @@ def pakkeblok(overskrift=True, taet=False):
           <div class="stortal-detaljer"><ul>{li}</ul></div>
         </div>"""
     venstre = side("Gør det selv med AI", 500, "500", "AI'en hjælper. Du bogfører.", ["Ingen tastning. Bilagene kommer selv", "AI'en finder konto og moms",
-                   "Momsen og fristen i god tid", "Skift til bogholder når som helst"])
-    hoejre = side("Med bogholder", 1000, "1.000", "AI'en hjælper. Vi bogfører.", ["Du rører ikke bogføringen", "Vi indberetter momsen",
-                  "Din egen bogholder at skrive til", "Salg, udgifter og overskud hver måned"], " anb")
+                   "Momsen og fristen i god tid", "Skift til revisor når som helst"])
+    hoejre = side("Med revisor", 1000, "1.000", "AI'en hjælper. Vi bogfører.", ["Du rører ikke bogføringen", "Vi indberetter momsen",
+                  "Din egen revisor at skrive til", "Salg, udgifter og overskud hver måned"], " anb")
     klisterlinje = f"""
       <div class="klister-linje"><span class="klister-par" aria-hidden="true">{klister(0, "-8deg")}{klister(1, "9deg")}</span><p>Spørg din egen Claude eller ChatGPT om dine tal<small>Med i begge pakker</small></p></div>""" if LOGOER else ""
     return f"""<section class="pakker{' taet' if taet else ''}" id="pakker">
@@ -240,7 +240,7 @@ SAMMENLIGN = [
 # vigtigste lige før tilmeldingen; /priser pris og vilkår; /om-os jer to. Tredje felt: hvem der svarer (portræt).
 FAQ_FORSIDE = [
     ("Kan jeg stole på, at AI'en bogfører rigtigt?",
-     "AI'en er god til det, den har set før, men den kan tage fejl. Derfor bærer den det tunge læs, og en bogholder "
+     "AI'en er god til det, den har set før, men den kan tage fejl. Derfor bærer den det tunge læs, og en revisor "
      "kvalitetssikrer den. Også momsen, før den indberettes. Vælger du Gør det selv med AI, godkender du selv hvert "
      "forslag, og du kan opgradere når som helst."),
     ("Hvornår åbner I?", "Når vores program er registreret hos Erhvervsstyrelsen. Det kræver loven for de fleste virksomheder. "
@@ -260,7 +260,7 @@ FAQ_PRISER = [
     ("Kommer jeg fra et andet program?", "Så flytter vi dig gratis. Din historik kommer med."),
 ]
 FAQ_OM_OS = [
-    ("Hvem er min bogholder?", "Det er mig, Othman. AI'en bærer det tunge læs, og jeg kvalitetssikrer den. Skal noget "
+    ("Hvem er min revisor?", "Det er mig, Othman. AI'en bærer det tunge læs, og jeg kvalitetssikrer den. Skal noget "
      "afklares, skriver jeg til dig.", "othman"),
     ("Hvem taler jeg med, før jeg siger ja?", "Mig, Mohammed. Den første snak er 30 minutter i telefonen eller på video, "
      "og du binder dig ikke.", "mohammed"),
@@ -304,7 +304,7 @@ def priser():
         <div class="regner-pris">
           <div class="vaelger" data-valgt="bogholder">
             <button type="button" data-pakke="selv" aria-pressed="false" tabindex="-1">Gør det selv med AI</button>
-            <button type="button" data-pakke="bogholder" aria-pressed="true" tabindex="-1">Med bogholder</button>
+            <button type="button" data-pakke="bogholder" aria-pressed="true" tabindex="-1">Med revisor</button>
             <span class="glider"></span>
           </div>
           <p class="belob"><span data-pris>1.000</span><small>kr.</small></p>
@@ -317,7 +317,7 @@ def priser():
       <div class="tabel-ramme" data-afslor>
         <table class="sammenlign">
           <thead>
-            <tr><th scope="col"><span class="sr">Hvad er med</span></th><th scope="col">Gør det selv med AI<small>500 kr. om måneden</small></th><th scope="col" class="valgt">Med bogholder<small>1.000 kr. om måneden</small></th></tr>
+            <tr><th scope="col"><span class="sr">Hvad er med</span></th><th scope="col">Gør det selv med AI<small>500 kr. om måneden</small></th><th scope="col" class="valgt">Med revisor<small>1.000 kr. om måneden</small></th></tr>
           </thead>
           <tbody>
 {raekker}
@@ -335,7 +335,7 @@ def priser():
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
       </div>
     </div>"""
-    return side("/priser/", "Priser: Tallo", "To pakker, fast pris, ingen binding: Gør det selv med AI til 500 kr. eller Med bogholder til 1.000 kr. om måneden.",
+    return side("/priser/", "Priser: Tallo", "To pakker, fast pris, ingen binding: Gør det selv med AI til 500 kr. eller Med revisor til 1.000 kr. om måneden.",
                 "\n\n  ".join([region("lilla top regner-region", top + "\n    " + regner), region("papir", tabel),
                                 region("papir", spoerg), region("papir", slut)]))
 
@@ -380,9 +380,9 @@ def appen():
     TRIN = [
         ("overblik", "Du ved, hvor du står", "Overskud i år, hvad du har på kontoen, og hvad kunderne skylder dig. Det er det første, du ser, når du åbner appen."),
         ("foer", "Regningen kommer selv", "En regning på mail eller en betaling i banken lander i appen af sig selv. Du skal ikke taste noget ind."),
-        ("efter", "Og bliver bogført", "AI'en bogfører den, og med bogholder kvalitetssikrer vi. Gør du det selv, trykker du godkend."),
+        ("efter", "Og bliver bogført", "AI'en bogfører den, og med revisor kvalitetssikrer vi. Gør du det selv, trykker du godkend."),
         ("scan", "En kvittering tager et øjeblik", "Tag et billede, så er den med. Har du betalt med egne penge, siger du det, når du scanner."),
-        ("moms", "Momsen kommer ikke bag på dig", "Du ser beløbet og fristen længe før, og hvordan tallet er regnet. Med bogholder indberetter vi den for dig."),
+        ("moms", "Momsen kommer ikke bag på dig", "Du ser beløbet og fristen længe før, og hvordan tallet er regnet. Med revisor indberetter vi den for dig."),
     ]
     tekster = "\n".join(f"""        <div class="ts-tekst" data-skaerm="{s_}"><span class="nr" aria-hidden="true">{i + 1}</span><h2>{t}</h2><p>{b}</p></div>""" for i, (s_, t, b) in enumerate(TRIN))
     CHIPS = [
@@ -427,7 +427,7 @@ def ai():
     """Ét levende øjeblik: kvitteringen bliver læst, mens man ruller (følger rullet frem og tilbage). Felternes placering
     på kvitteringen er målt på et gitter (ai-kvittering.webp, 540 × 950)."""
     top = """<div class="side-top">
-      <h1>AI'en bærer det tunge læs.<br>En bogholder kvalitetssikrer.</h1>
+      <h1>AI'en bærer det tunge læs.<br>En revisor kvalitetssikrer.</h1>
     </div>"""
     # (felt, venstre, top, bredde, højde, linjens udløser) i procent af arket
     FELTER = [("fra", 10, 7.9, 45, 4.4, 10), ("varer", 11, 18, 57, 15.6, 22), ("beloeb", 13.5, 35.8, 56, 4.8, 38),
@@ -458,11 +458,11 @@ def ai():
         </div>
       </div>
     </div>"""
-    # Bogholder og moms i ét afsnit med et menneske i stedet for en liste (Othman 17. okt 2026)
+    # Revisor og moms i ét afsnit med et menneske i stedet for en liste (Othman 17. okt 2026)
     bogholder = """<div class="indre bogholder-blok" data-afslor>
       <div class="bb-tekst">
-        <h2>Din bogholder hedder Othman</h2>
-        <p class="ingress">AI'en er hurtig og god til det, den har set før, men den kan tage fejl. Derfor kvalitetssikrer en bogholder den, også momsen, før den indberettes. Gør du det selv med AI, godkender du selv hvert forslag.</p>
+        <h2>Din revisor hedder Othman</h2>
+        <p class="ingress">AI'en er hurtig og god til det, den har set før, men den kan tage fejl. Derfor kvalitetssikrer en revisor den, også momsen, før den indberettes. Gør du det selv med AI, godkender du selv hvert forslag.</p>
         <div class="knapper">
           <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
           <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
@@ -470,7 +470,7 @@ def ai():
       </div>
       <figure class="bb-person">
         <img src="/billeder/othman.webp" alt="Othman Ajjawi" width="400" height="400" loading="lazy">
-        <figcaption><b>Othman Ajjawi</b><span>Din bogholder</span></figcaption>
+        <figcaption><b>Othman Ajjawi</b><span>Din revisor</span></figcaption>
       </figure>
     </div>"""
     # Samtalen ligner en rigtig AI-chat; den kommer frem én gang, når den ses (js/tallo.js, [data-ai-chat]).
@@ -517,7 +517,7 @@ def ai():
 
 # ---------------------------------------------------------------------------------------------------- /om-os
 def om_os():
-    return side("/om-os/", "Om os: Tallo", "Tallo er Othman og Mohammed. AI'en bærer det tunge læs, og en bogholder kvalitetssikrer det.", """<section class="region fersken top" data-tone="#f8d9c4" data-detalje="linje">
+    return side("/om-os/", "Om os: Tallo", "Tallo er Othman og Mohammed. AI'en bærer det tunge læs, og en revisor kvalitetssikrer det.", """<section class="region fersken top" data-tone="#f8d9c4" data-detalje="linje">
   <div class="side-top">
     <h1>Tallo er Othman og Mohammed.</h1>
   </div>
@@ -615,7 +615,7 @@ HANDELSBETINGELSER = """
   <h2>Pakkerne</h2>
   <ul>
     <li><b>Gør det selv med AI, 500 kr. om måneden:</b> regnskabsprogrammet og appen. Regninger og fakturaer kommer ind af sig selv, AI'en foreslår, hvor de skal hen, og du godkender selv. Momsen regnes ud, og du indberetter den selv.</li>
-    <li><b>Med bogholder, 1.000 kr. om måneden:</b> alt fra Gør det selv med AI, og vi bogfører for dig, uanset hvor mange bilag du har. AI'en bærer det tunge læs, og en bogholder kvalitetssikrer bogføringen. Vi indberetter momsen for dig, og et menneske godkender den hver gang. Du får overblik over salg, udgifter og overskud hver måned.</li>
+    <li><b>Med revisor, 1.000 kr. om måneden:</b> alt fra Gør det selv med AI, og vi bogfører for dig, uanset hvor mange bilag du har. AI'en bærer det tunge læs, og en revisor kvalitetssikrer bogføringen. Vi indberetter momsen for dig, og et menneske godkender den hver gang. Du får overblik over salg, udgifter og overskud hver måned.</li>
     <li><b>Tilkøb:</b> løn, årsregnskab, selvangivelse og årsrapport (ApS). Prisen får du, før du siger ja.</li>
   </ul>
   <p>Alle priser er plus moms og faste. De afhænger ikke af, hvor mange bilag du har. Du kan skifte pakke fra måned til måned.</p>
@@ -629,12 +629,12 @@ HANDELSBETINGELSER = """
     <li>Sende de bilag, der ikke kommer ind af sig selv, senest den 5. i måneden efter.</li>
     <li>Svare på vores spørgsmål om bilag, vi ikke kan placere, inden for rimelig tid.</li>
     <li>Oplyse hvem der ejer og tegner virksomheden, og hvad virksomheden laver, så vi ved, hvem vi indgår aftale med, og hvem der må handle på virksomhedens vegne.</li>
-    <li>Med bogholder: give os adgang til Skattestyrelsens TastSelv, så vi kan indberette momsen.</li>
+    <li>Med revisor: give os adgang til Skattestyrelsens TastSelv, så vi kan indberette momsen.</li>
   </ul>
 
   <h2>Det, der ikke er med</h2>
   <ul>
-    <li>Revision og erklæringer. Vi er bogholdere, ikke godkendte revisorer. Har din virksomhed pligt til revision, skal du selv vælge og betale en godkendt revisor. Vi leverer gerne grundlaget.</li>
+    <li>Revision og erklæringer. Vi er ikke godkendte revisorer og afgiver ikke erklæringer. Har din virksomhed pligt til revision, skal du selv vælge og betale en godkendt revisor. Vi leverer gerne grundlaget.</li>
     <li>Juridisk rådgivning og skatterådgivning ud over det, bogføringen kræver.</li>
     <li>Oprydning i bogføring fra før aftalen. Det kan vi tilbyde for sig.</li>
   </ul>
@@ -653,7 +653,7 @@ HANDELSBETINGELSER = """
   <h2>Ændringer og tvister</h2>
   <p>Vi kan ændre betingelserne med 30 dages varsel på mail. Er du uenig, kan du opsige aftalen til den dag, ændringen træder i kraft. Aftalen følger dansk ret. Kan vi ikke løse en uenighed ved at tale sammen, afgøres den ved Retten i Aarhus.</p>
 
-  <div class="bund"><span>Version 1.1 · senest opdateret 20. oktober 2026</span><span>Tallo · CVR 46440986</span></div>
+  <div class="bund"><span>Version 1.2 · senest opdateret 4. november 2026</span><span>Tallo · CVR 46440986</span></div>
 """
 
 
@@ -678,7 +678,7 @@ DATABEHANDLERAFTALE = """
   <p>Den dataansvarlige: kunden, som angivet ved tilmeldingen. Databehandleren: Tallo v/ Othman Ajjawi (enkeltmandsvirksomhed), CVR 46440986, Damagervej 1E, 2. tv, 8260 Viby J, <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a>.</p>
 
   <h2>2. Baggrund og formål</h2>
-  <p>Databehandleren stiller sit regnskabsprogram og sin app til rådighed for den dataansvarlige. Med pakken Med bogholder bogfører og afstemmer databehandleren også, indberetter moms og udarbejder tal for den dataansvarlige, og ved tilkøb kører løn og udarbejder årsregnskab. I den forbindelse behandler databehandleren personoplysninger på den dataansvarliges vegne. Aftalen skal sikre, at behandlingen sker i overensstemmelse med databeskyttelsesforordningen og databeskyttelsesloven.</p>
+  <p>Databehandleren stiller sit regnskabsprogram og sin app til rådighed for den dataansvarlige. Med pakken Med revisor bogfører og afstemmer databehandleren også, indberetter moms og udarbejder tal for den dataansvarlige, og ved tilkøb kører løn og udarbejder årsregnskab. I den forbindelse behandler databehandleren personoplysninger på den dataansvarliges vegne. Aftalen skal sikre, at behandlingen sker i overensstemmelse med databeskyttelsesforordningen og databeskyttelsesloven.</p>
 
   <h2>3. Den dataansvarliges rettigheder og forpligtelser</h2>
   <p>Den dataansvarlige har ansvaret for, at behandlingen har et lovligt grundlag, og for at give databehandleren en dokumenteret instruks. Instruksen er denne aftale med bilag A til C og handelsbetingelserne. Den dataansvarlige kan til enhver tid give yderligere skriftlig instruks.</p>
@@ -694,7 +694,7 @@ DATABEHANDLERAFTALE = """
   <ul>
     <li>Data ligger i EU, krypteret under overførsel og opbevaring, og hver kundes data er adskilt fra andres. Der tages dagligt krypteret sikkerhedskopi hos en anden leverandør i EU, låst mod sletning, og gendannelse afprøves.</li>
     <li>Databehandlerens medarbejdere logger ind med to-faktor-godkendelse. Hvert opslag og hver ændring logges i en log, der ikke kan slettes eller ændres.</li>
-    <li>Med Gør det selv med AI godkender den dataansvarlige selv AI'ens forslag, før de bogføres. Med bogholder bogfører AI'en efter faste regler i programmet. Poster, der rammer en undtagelse (fx ny leverandør, beløb over en grænse, moms der ikke passer, eller lav sikkerhed), ses af en bogholder, og der tages stikprøver. Hver postering logges med tidspunkt, hvem eller hvad der bogførte den, og begrundelse.</li>
+    <li>Med Gør det selv med AI godkender den dataansvarlige selv AI'ens forslag, før de bogføres. Med revisor bogfører AI'en efter faste regler i programmet. Poster, der rammer en undtagelse (fx ny leverandør, beløb over en grænse, moms der ikke passer, eller lav sikkerhed), ses af en revisor, og der tages stikprøver. Hver postering logges med tidspunkt, hvem eller hvad der bogførte den, og begrundelse.</li>
     <li>Bankforbindelsen etablerer den dataansvarlige selv med sit eget MitID hos banken. Forbindelsen kan kun læse og kan ikke flytte penge. Databehandleren bruger aldrig den dataansvarliges MitID.</li>
     <li>Hvor den dataansvarlige fortsat bruger sit eget regnskabsprogram, sker adgangen kun via brugere, som den dataansvarlige selv har inviteret, og med to-faktor-godkendelse.</li>
     <li>Lønoplysninger ligger i databehandlerens lønsystem (Salary) under den dataansvarliges CVR, når løn er tilkøbt, og overdrages til den dataansvarlige ved aftalens ophør.</li>
@@ -754,16 +754,16 @@ DATABEHANDLERAFTALE = """
 
   <h2>Bilag C: Instruks om behandlingen</h2>
   <ul>
-    <li>Bilag modtages via appen, den dataansvarliges bilagsadresse eller som e-faktura, læses automatisk i EU og bogføres i regnskabsprogrammet. Med Gør det selv med AI godkender den dataansvarlige selv. Med bogholder bogfører AI'en efter faste regler, og en bogholder ser undtagelserne (punkt 6).</li>
+    <li>Bilag modtages via appen, den dataansvarliges bilagsadresse eller som e-faktura, læses automatisk i EU og bogføres i regnskabsprogrammet. Med Gør det selv med AI godkender den dataansvarlige selv. Med revisor bogfører AI'en efter faste regler, og en revisor ser undtagelserne (punkt 6).</li>
     <li>Bankposteringer hentes via bankforbindelsen, som den dataansvarlige selv har etableret med sit eget MitID. Samtykket fornyes af den dataansvarlige, når banken beder om det.</li>
     <li>Elektroniske fakturaer sendes og modtages via Nemhandel og Peppol i den dataansvarliges navn, når den dataansvarlige har accepteret tilmeldingen. Fakturaer og påmindelser på mail sendes kun, når den dataansvarlige har bedt om det.</li>
     <li>Løn køres i databehandlerens lønsystem (Salary) i den dataansvarliges CVR, når løn er tilkøbt. Timer og ændringer modtages fra den dataansvarlige; lønsedler sendes til de ansattes e-Boks.</li>
-    <li>Moms og oplysningsskema indberettes aldrig uden forudgående afstemning og aldrig automatisk. Med bogholder opretter programmet et udkast hos Skattestyrelsen, og en person godkender det i TastSelv med rådgiveradgang fra den dataansvarlige. Med Gør det selv med AI indberetter den dataansvarlige selv.</li>
+    <li>Moms og oplysningsskema indberettes aldrig uden forudgående afstemning og aldrig automatisk. Med revisor opretter programmet et udkast hos Skattestyrelsen, og en person godkender det i TastSelv med rådgiveradgang fra den dataansvarlige. Med Gør det selv med AI indberetter den dataansvarlige selv.</li>
     <li>Forbinder den dataansvarlige sin egen AI-tjeneste til programmet, sendes de oplysninger, den dataansvarlige beder om, til den tjeneste. Forbindelsen kan kun læse tal og lave fakturaudkast; den kan ikke bogføre, indberette eller slette.</li>
     <li>Ingen personoplysninger overføres til andre systemer end dem i bilag B, medmindre den dataansvarlige selv har bedt om det.</li>
   </ul>
 
-  <div class="bund"><span>Version 1.2 · 28. oktober 2026</span><span>Tallo · CVR 46440986</span></div>
+  <div class="bund"><span>Version 1.3 · 4. november 2026</span><span>Tallo · CVR 46440986</span></div>
 """
 
 
@@ -783,7 +783,7 @@ def erstat(s, navn, nyt):
 def forside():
     fil = ROD / "index.html"
     s = fil.read_text(encoding="utf-8")
-    s = erstat(s, "hoved", hoved("Tallo: en ny slags bogholderi",
+    s = erstat(s, "hoved", hoved("Tallo: en ny slags revisor",
                                  "Dine regninger og fakturaer kommer ind af sig selv. Vi bogfører dem for dig, eller du gør det selv med AI's hjælp. Fra 500 kr. om måneden.", "/"))
     s = erstat(s, "menu", menu("/"))
     s = erstat(s, "pakker", "  " + pakkeblok())
