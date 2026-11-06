@@ -4,7 +4,7 @@
 @font-face { font-family: "Geist"; src: url("/fonts/geist.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 :root {
   --blaek: #141414;
-  --daempet: #5f5f5b;
+  --daempet: #555551;  /* 4,5:1 også på den lilla flade (før #5f5f5b, 3,99:1) */
   --lineal: #e2e2dd;
   --blaa: #4b3aa6;
   --blaa-svag: #f0eef8;
@@ -520,6 +520,47 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 .some a:active { transform: scale(.94); }
 @media (hover: hover) { .some a:hover { background: var(--blaa); color: #fff; box-shadow: inset 0 0 0 1px var(--blaa); transform: translateY(-2px); } }
 @media (prefers-reduced-motion: reduce) { .some a, .some a:hover, .some a:active { transition: none; transform: none; } }
+/* Søgesiderne (6. nov 2026): svaret i ro, tre tal, året som én linje, og hvem der svarer */
+.soege-svar { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: start; }
+.soege-svar h2 { font-size: clamp(30px, 3.4vw, 42px); font-weight: 480; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
+.soege-svar-tekst p { font-size: 19px; line-height: 1.55; color: var(--daempet); text-wrap: pretty; }
+.soege-svar-tekst p + p { margin-top: 18px; }
+.soege-svar-tekst p:first-child { font-size: 22px; line-height: 1.4; letter-spacing: -.01em; color: var(--blaek); }
+.fakta.tre { grid-template-columns: repeat(3, 1fr); }
+.fakta-note { max-width: 720px; margin: 40px auto 0; font-size: 16px; line-height: 1.55; color: var(--daempet); text-align: center; text-wrap: pretty; }
+.fakta-note a, .bag a { color: var(--blaa); text-decoration: underline; text-underline-offset: 3px; }
+.aar { display: flex; list-style: none; margin: 0; padding: 0; }
+.aar li { position: relative; flex: 1 1 0; min-width: 0; padding: 18px 14px 0 0; border-top: 2px solid var(--lineal); }
+.aar .aar-md { font-size: 14px; color: var(--daempet); }
+.aar .frist { flex-grow: 2.6; border-top-color: var(--blaa); }
+.aar .frist::before { content: ""; position: absolute; left: 0; top: -7px; width: 12px; height: 12px; border-radius: 50%; background: var(--blaa); }
+.aar-dato { font-size: 21px; font-weight: 500; line-height: 1.2; letter-spacing: -.015em; color: var(--blaek); }
+.aar-hvad { margin-top: 6px; font-size: 15px; line-height: 1.4; color: var(--blaek); }
+.aar-hvem { margin-top: 6px; font-size: 13.5px; font-weight: 560; }
+.aar-hvem.vi { color: var(--blaa); }
+.aar-hvem.tilkoeb { color: var(--daempet); }
+.aar-hvem + .aar-dato { margin-top: 18px; }
+.bag { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; padding-top: 40px; border-top: 1px solid var(--lineal); font-size: 16px; line-height: 1.55; color: var(--daempet); }
+.bag h2 { font-size: 22px; font-weight: 500; letter-spacing: -.01em; color: var(--blaek); }
+.bag p { margin-top: 12px; text-wrap: pretty; }
+.bag b { font-weight: 560; color: var(--blaek); }
+.bag ul { list-style: none; margin: 8px 0 0; padding: 0; }
+.bag li a { display: inline-flex; align-items: center; min-height: 36px; }
+.region .pakker.taet { padding: 0; }
+@media (max-width: 900px) {
+  .soege-svar, .bag { grid-template-columns: 1fr; gap: 24px; }
+  .bag { gap: 40px; }
+  .soege-svar-tekst p { font-size: 18px; }
+  .soege-svar-tekst p:first-child { font-size: 20px; }
+  .aar { display: block; }
+  .aar li { padding: 0 0 26px 26px; border-top: 0; border-left: 2px solid var(--blaa); }
+  .aar li:not(.frist) { display: none; }
+  .aar .frist::before { left: -7px; top: 6px; }
+  .aar .frist:last-child { padding-bottom: 0; }
+  .fakta-note { margin-top: 28px; text-align: left; }
+  .bag li a { min-height: 44px; }
+}
+@media (max-width: 700px) { .fakta.tre { grid-template-columns: 1fr; } }
 /* Søgesiderne (6. nov 2026): fire tal med én sætning hver, og en lige liste med flueben som ved pakkerne */
 .fakta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; }
 .fakta-felt { padding-top: 20px; border-top: 1px solid var(--lineal); }

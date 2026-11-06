@@ -89,6 +89,8 @@ def hoved(titel, beskrivelse, sti):
 <meta property="og:locale" content="da_DK">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/geist.woff2" crossorigin>
 <link rel="stylesheet" href="/css/tallo.css">
 <script>document.documentElement.classList.add("zoom"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("stille");</script>{ld}"""
@@ -129,7 +131,7 @@ def fod():
   <div class="fod-indre">
     <div>
       <a class="logo" href="/">tallo</a>
-      <p>Bogføring for små virksomheder.</p>
+      <p>Revisor og bogføring til fast pris.</p>
       <div class="some">
 {some}
       </div>
@@ -856,15 +858,42 @@ def forside():
 
 
 # ---------------------------------------------------------------------------------------------------- søgesider
-FAQ_MOMS = ("Hvor tit skal jeg indberette moms?", "Er virksomheden ny, hvert kvartal i starten. Sælger du for under 5 mio. kr. om "
-            "året og har indberettet og betalt til tiden, er det normalt hvert halve år.")
+FAQ_MOMS = ("Hvor tit skal jeg indberette moms?", "Er virksomheden ny, hvert kvartal. Sælger du for under 5 mio. kr. om "
+            "året og har indberettet og betalt til tiden, er det hvert halve år.")
 FAQ_PRIS = "Når vi åbner, koster det 500 kr. eller 1.000 kr. om måneden plus moms, til fast pris. Se <a href='/priser/'>pakkerne</a>. Indtil da bogfører vi i dit eget regnskabsprogram, og du får prisen, før du siger ja."
 GODKENDT = "Nej. Vi afgiver ikke erklæringer."
+SKAT_FRISTER = "https://skat.dk/en-us/businesses/vat/deadlines-filing-vat-returns-and-paying-vat"
+KILDER_MOMS = [("Skattestyrelsen: frister for moms", SKAT_FRISTER)]
+KILDE_RESULTAT = ("Skattestyrelsen: oplys årets resultat", "https://skat.dk/erhverv/oplys-aarets-resultat")
+KILDE_BOGFOERING = ("Erhvervsstyrelsen: bogføringsloven", "https://erhvervsstyrelsen.dk/vejledning-bogfoeringsloven")
+MOMS_FRISTER = {3: ("1. marts", "4. kvartal"), 6: ("1. juni", "1. kvartal"), 9: ("1. september", "2. kvartal"), 12: ("1. december", "3. kvartal")}
+MAANEDER = ["jan", "feb", "mar", "apr", "maj", "jun", "jul", "aug", "sep", "okt", "nov", "dec"]
 
 
-def soegeside(sti, titel, beskrivelse, h1, ingress, fakta_h2, fakta, gor, tilkoeb, spoergsmaal):
-    """Sider til det, folk søger på (Othman 6. nov 2026). Hver sætning skal kunne slås op: tallene er tjekket hos
-    Erhvervsstyrelsen og Skattestyrelsen 6. nov 2026. Ny side: læg den også i INDEKSERET og FOD_LINKS."""
+def aarstrimmel(ekstra):
+    """Året som én lang linje: måneder med en frist fylder mere end de tomme. Alt er almindelig tekst, så Google kan læse
+    det; på mobil står kun månederne med en frist, som en lodret linje. ekstra = {måned: [(dato, hvad, hvem)]}."""
+    def frist(dato, hvad, hvem, klasse):
+        return f'<p class="aar-dato">{dato}</p><p class="aar-hvad">{hvad}</p><p class="aar-hvem {klasse}">{hvem}</p>'
+    celler = []
+    for nr, navn in enumerate(MAANEDER, 1):
+        indhold = []
+        if nr in MOMS_FRISTER:
+            dato, periode = MOMS_FRISTER[nr]
+            indhold.append(frist(dato, f"Moms for {periode}", "Vi indberetter", "vi"))
+        for dato, hvad, hvem in ekstra.get(nr, []):
+            indhold.append(frist(dato, hvad, hvem, "tilkoeb" if hvem == "Tilkøb" else "vi"))
+        if indhold:
+            celler.append(f'<li class="frist">{"".join(indhold)}</li>')
+        else:
+            celler.append(f'<li aria-hidden="true"><span class="aar-md">{navn}</span></li>')
+    return '<ol class="aar" data-afslor>' + "".join(celler) + "</ol>"
+
+
+def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fakta, fakta_note, aar_h2, aar, aar_note, tilkoeb, spoergsmaal, kilder):
+    """Sider til det, folk søger på (Othman 6. nov 2026). Siden svarer på spørgsmålet, før den sælger noget, og de to sider
+    er ikke den samme side med nyt navn. Hver sætning skal kunne slås op: kilderne står nederst på siden og er tjekket
+    6. nov 2026; tal ændrer sig, så tjek dem igen en gang om året. Ny side: læg den også i INDEKSERET og FOD_LINKS."""
     top = f"""<div class="side-top">
       <h1>{h1}</h1>
       <p class="ingress">{ingress}</p>
@@ -873,22 +902,45 @@ def soegeside(sti, titel, beskrivelse, h1, ingress, fakta_h2, fakta, gor, tilkoe
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
       </div>
     </div>"""
+    afsnit = "\n        ".join(f"<p>{p}</p>" for p in svar)
+    laes = f"""<div class="indre soege-svar" data-afslor>
+      <h2>{svar_h2}</h2>
+      <div class="soege-svar-tekst">
+        {afsnit}
+      </div>
+    </div>"""
     def felt(tal, enhed, tekst, taeller=None):
         vist = f'<span data-tael="{taeller}">{tal}</span>' if taeller else tal
         enh = f' <span class="fakta-enhed">{enhed}</span>' if enhed else ""
         return f'<div class="fakta-felt"><p class="fakta-tal">{vist}{enh}</p><p>{tekst}</p></div>'
     felter = "\n        ".join(felt(*f) for f in fakta)
-    punkter = "".join(f"<li>{g}</li>" for g in gor)
+    note = f'\n      <p class="fakta-note">{fakta_note}</p>' if fakta_note else ""
     midt = f"""<div class="indre">
       <div class="region-hoved midt" data-afslor><h2>{fakta_h2}</h2></div>
-      <div class="fakta" data-afslor>
+      <div class="fakta tre" data-afslor>
         {felter}
-      </div>
+      </div>{note}
     </div>"""
-    vi = f"""<div class="indre">
-      <div class="region-hoved midt" data-afslor><h2>Det gør vi</h2></div>
-      <ul class="tjek" data-afslor>{punkter}</ul>
-      <p class="smaat" style="color:var(--daempet);text-align:center"><b style="color:var(--blaek)">Tilkøb:</b> {tilkoeb} Prisen får du, før du siger ja.</p>
+    aaret = f"""<div class="indre">
+      <div class="region-hoved midt" data-afslor><h2>{aar_h2}</h2></div>
+      {aarstrimmel(aar)}
+      <p class="fakta-note">{aar_note}</p>
+    </div>"""
+    pakker = f"""{pakkeblok(taet=True)}
+    <p class="smaat" style="color:var(--daempet);text-align:center"><b style="color:var(--blaek)">Tilkøb:</b> {tilkoeb} Prisen får du, før du siger ja.</p>"""
+    kildeliste = "".join(f'<li><a href="{url}" target="_blank" rel="noopener">{navn}</a></li>' for navn, url in kilder)
+    bag = f"""<div class="indre bag" data-afslor>
+      <div>
+        <h2>Hvem svarer dig?</h2>
+        <p><b>Mohammed Chahrour</b> tager den første snak og sørger for aftalerne. Han er ved at afslutte sin kandidatgrad i jura.</p>
+        <p><b>Othman Ajjawi</b> har en kandidatgrad i erhvervsøkonomi og arbejder til daglig med økonomi, data og AI. Han holder øje med dine tal.</p>
+        <p><a href="/om-os/">Mere om os</a></p>
+      </div>
+      <div>
+        <h2>Hvor reglerne kommer fra</h2>
+        <p>Tjekket 6. november 2026. Regler og tal kan ændre sig, så se altid efter hos myndighederne, før du beslutter noget.</p>
+        <ul>{kildeliste}</ul>
+      </div>
     </div>"""
     slut = """<div class="indre udsagn rolig" data-afslor>
       <h2>Du kan starte nu, i dit eget program.</h2>
@@ -898,41 +950,55 @@ def soegeside(sti, titel, beskrivelse, h1, ingress, fakta_h2, fakta, gor, tilkoe
         <a class="pille hvid stor" href="/#kom">Skriv dig op</a>
       </div>
     </div>"""
-    return side(sti, titel, beskrivelse, "\n\n  ".join([region("lilla top", top), region("papir", midt), region("papir", vi),
-                                                        region("papir", faq(spoergsmaal)), region("papir", slut)]))
+    return side(sti, titel, beskrivelse, "\n\n  ".join([region("lilla top", top), region("papir", laes), region("papir", midt), region("papir", aaret),
+                                                        region("papir", pakker), region("papir", faq(spoergsmaal)), region("papir", bag), region("papir", slut)]))
 
 
 def revisor_enkeltmand():
-    return soegeside("/revisor-enkeltmandsvirksomhed/", "Revisor til enkeltmandsvirksomhed: Tallo",
-                     "Vi bogfører og indberetter momsen for din enkeltmandsvirksomhed. Fast pris, ingen binding, og du skal ikke kunne regnskab.",
+    return soegeside("/revisor-enkeltmandsvirksomhed/", "Revisor til enkeltmandsvirksomhed med fast pris: Tallo",
+                     "Skal en enkeltmandsvirksomhed have en revisor? Se reglerne for moms og digital bogføring, årets frister og vores faste pris. Vi bogfører og indberetter momsen.",
                      "Revisor til din enkeltmands&shy;virksomhed.", "Vi bogfører og indberetter momsen. Du skal ikke kunne regnskab.",
+                     "Skal en enkeltmands&shy;virksomhed have en revisor?",
+                     ["Nej, det er ikke et krav, og du må gerne gøre det selv. Men bogføringen og momsen skal være rigtige og komme ind til tiden, uanset hvem der laver dem.",
+                      "I en enkeltmandsvirksomhed er du og virksomheden den samme. Overskuddet beskattes hos dig, og du hæfter selv for virksomhedens gæld. En fejl i bogføringen kan derfor blive en fejl i din egen skat.",
+                      "Det giver mening at få os ind, når bogføringen tager tid fra det, du tjener penge på, eller når du ikke er sikker på, at den er rigtig. Vi bogfører og indberetter momsen, og du bruger tiden på din forretning."],
                      "Det skal du have styr på",
-                     [("50.000", "kr.", "Sælger du for mere på 12 måneder, skal du som udgangspunkt momsregistreres.", 50000),
+                     [("50.000", "kr.", "Sælger du for mere på 12 måneder, skal du som udgangspunkt momsregistreres. Ved du det fra start, skal du registreres fra start.", 50000),
                       ("300.000", "kr.", "Har du solgt for mere i to år i træk, skal du bogføre digitalt.", 300000),
-                      ("1. juli", "", "Frist for at oplyse årets resultat til Skattestyrelsen."),
-                      ("5", "år", "Så længe skal du gemme bilag og bogføring.", 5)],
-                     ["Vi bogfører dine regninger og fakturaer", "Vi indberetter momsen", "Din egen revisor at skrive til"],
+                      ("5", "år", "Så længe skal du gemme bilag og bogføring, regnet fra regnskabsårets slutning.", 5)],
+                     "",
+                     "Sådan ser dit år ud",
+                     {7: [("1. juli", "Årets resultat til Skattestyrelsen", "Tilkøb")]},
+                     f"Her er det en ny virksomhed, der indberetter moms hvert kvartal. Sælger du for under 5 mio. kr. om året og har indberettet og betalt til tiden, er det hvert halve år, 1. marts og 1. september. Vælger du Gør det selv med AI, indberetter du selv momsen. Datoerne kan rykke sig lidt fra år til år, og den præcise frist står hos <a href=\"{SKAT_FRISTER}\" target=\"_blank\" rel=\"noopener\">Skattestyrelsen</a>.",
                      "løn, årsregnskab og selvangivelse.",
-                     [("Skal en enkeltmandsvirksomhed have en revisor?", "Nej, det er ikke et krav, og du må gerne gøre det selv. Men bogføring og moms skal være rigtig og komme ind til tiden. Vil du ikke selv stå for det, gør vi det."),
-                      ("Hvad koster det?", FAQ_PRIS), FAQ_MOMS,
-                      ("Er I godkendte revisorer?", GODKENDT + " Kræver din bank eller andre en erklæring, skal du bruge en godkendt revisor. Vi leverer gerne grundlaget.")])
+                     [("Hvad koster det?", FAQ_PRIS), FAQ_MOMS,
+                      ("Er I godkendte revisorer?", GODKENDT + " Kræver din bank eller andre en erklæring, skal du bruge en godkendt revisor. Vi leverer gerne grundlaget."),
+                      ("Hvad hvis jeg laver virksomheden om til et ApS?", "Så gælder reglerne for selskaber, blandt andet årsrapport og fravalg af revision. Læs om <a href='/revisor-aps/'>revisor til ApS</a>.")],
+                     KILDER_MOMS + [("Skattestyrelsen: registrering for moms", "https://skat.dk/erhverv/moms/moms-saadan-goer-du/saadan-registrerer-du-din-virksomhed-for-moms"), KILDE_RESULTAT, KILDE_BOGFOERING])
 
 
 def revisor_aps():
-    return soegeside("/revisor-aps/", "Revisor til ApS: Tallo",
-                     "Vi bogfører og indberetter momsen for dit ApS til fast pris, og årsrapporten kan købes med. Ingen binding, og du skal ikke kunne regnskab.",
+    return soegeside("/revisor-aps/", "Revisor til ApS og fravalg af revision: Tallo",
+                     "Skal et ApS have en revisor? Se grænserne for at fravælge revision, årets frister og vores faste pris. Vi bogfører og indberetter momsen, og årsrapporten kan købes med.",
                      "Revisor til dit ApS.", "Vi bogfører og indberetter momsen. Årsrapporten kan købes med. Du skal ikke kunne regnskab.",
-                     "Det skal dit ApS have styr på",
-                     [("6", "måneder", "Så længe har du efter regnskabsårets slutning til at indberette årsrapporten.", 6),
-                      ("8", "mio. kr.", "Omsætning er én af tre grænser for at fravælge revision. De andre er 4 mio. kr. i balance og 12 ansatte.", 8),
-                      ("Digitalt", "", "Et ApS skal bogføre i et digitalt bogføringssystem."),
-                      ("5", "år", "Så længe skal I gemme bilag og bogføring.", 5)],
-                     ["Vi bogfører regninger og fakturaer", "Vi indberetter momsen", "Din egen revisor at skrive til"],
+                     "Skal et ApS have en revisor?",
+                     ["Ikke altid. Et ApS kan fravælge revision, hvis det i to regnskabsår i træk ikke overskrider to af de tre grænser herunder. Årsrapporten skal indberettes uanset hvad.",
+                      "Fravalget besluttes på generalforsamlingen og gælder fremad. Årsrapporten skal ind til Erhvervsstyrelsen senest 6 måneder efter regnskabsårets slutning, og den bliver som hovedregel offentlig med det samme. Derfor skal bogføringen bag den være i orden hele året.",
+                      "Vi er ikke godkendte revisorer og afgiver ikke erklæringer. Det passer til et ApS, der har fravalgt revision: vi bogfører og indberetter momsen, og årsrapporten kan købes med. Har I pligt til revision, eller skal banken have en erklæring, skal I bruge en godkendt revisor, og vi leverer grundlaget."],
+                     "Grænserne for at fravælge revision",
+                     [("4", "mio. kr.", "i balance: det, selskabet ejer, samlet.", 4),
+                      ("8", "mio. kr.", "i omsætning: det, selskabet sælger for på et år.", 8),
+                      ("12", "ansatte", "i gennemsnit, målt i fuldtidsstillinger.", 12)],
+                     "Overskrider I to af grænserne allerede i det første regnskabsår, har I pligt til revision fra start. Har I et holdingselskab, tæller koncernen samlet, og i enkelte brancher gælder særlige krav, også under grænserne.",
+                     "Sådan ser jeres år ud",
+                     {6: [("30. juni", "Årsrapport til Erhvervsstyrelsen og resultat til Skattestyrelsen", "Tilkøb")]},
+                     f"Her følger regnskabsåret kalenderåret, og selskabet er nyt, så momsen indberettes hvert kvartal. Sælger I for under 5 mio. kr. om året og har indberettet og betalt til tiden, er det hvert halve år, 1. marts og 1. september. Vælger I Gør det selv med AI, indberetter I selv momsen. Datoerne kan rykke sig lidt fra år til år, og den præcise frist står hos <a href=\"{SKAT_FRISTER}\" target=\"_blank\" rel=\"noopener\">Skattestyrelsen</a>.<br><br>Hele året skal selskabet bogføre digitalt, og bilag og bogføring skal gemmes i 5 år, regnet fra regnskabsårets slutning.",
                      "årsrapport, løn og selvangivelse.",
-                     [("Skal et ApS have en revisor?", "Ikke altid. I kan fravælge revision, hvis selskabet i to regnskabsår i træk ikke overskrider to af tre grænser: 4 mio. kr. i balance, 8 mio. kr. i omsætning og 12 ansatte. Årsrapporten skal indberettes uanset hvad. Har I et holdingselskab, tæller koncernen samlet."),
-                      ("Kan I tage os, hvis vi har pligt til revision?", "Ja, til bogføringen. Årsrapporten skal en godkendt revisor stå for, og vi leverer grundlaget. I enkelte brancher gælder særlige krav, også under grænserne, så det tjekker vi, før vi begynder."),
+                     [("Kan I tage os, hvis vi har pligt til revision?", "Ja, til bogføringen. Årsrapporten skal en godkendt revisor stå for, og vi leverer grundlaget. I enkelte brancher gælder særlige krav, også under grænserne, så det tjekker vi, før vi begynder."),
                       ("Hvad koster det?", FAQ_PRIS), FAQ_MOMS,
-                      ("Er I godkendte revisorer?", GODKENDT + " Skal I bruge en erklæring, fx til banken, skal I bruge en godkendt revisor. Vi leverer gerne grundlaget.")])
+                      ("Er I godkendte revisorer?", GODKENDT + " Skal I bruge en erklæring, fx til banken, skal I bruge en godkendt revisor. Vi leverer gerne grundlaget."),
+                      ("Hvad hvis jeg har en enkeltmandsvirksomhed?", "Så er reglerne anderledes, og der er ikke noget krav om revisor. Læs om <a href='/revisor-enkeltmandsvirksomhed/'>revisor til enkeltmandsvirksomhed</a>.")],
+                     [("Erhvervsstyrelsen: årsrapporter og fravalg af revision", "https://erhvervsstyrelsen.dk/vejledning-aarsrapporter")] + KILDER_MOMS + [KILDE_RESULTAT, KILDE_BOGFOERING])
 
 
 # ---------------------------------------------------------------------------------------------------- 404
