@@ -11,6 +11,9 @@ Teksten bygger på den, Othman godkendte 7. okt 2026 (Tallo/.docs/design/tekst_2
 pakken hedder "Gør det selv med AI", Claude/ChatGPT står som "kommer senere", og AI-bogholderen ser kun undtagelserne.
 Sprogregler i Tallo/CLAUDE.md: kundens sprog, ingen fagord, "fast pris", aldrig "vi hjælper".
 """
+import json
+import subprocess
+from datetime import date
 import re
 from pathlib import Path
 
@@ -26,15 +29,45 @@ MENU = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "AI"), ("/om-os/"
 FOD_LINKS = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "Sådan bruger vi AI"), ("/om-os/", "Om os")]
 
 
+# Siderne, Google må vise. Mødesider, kundesider og betalingslinks står ikke her og beholder deres egen noindex.
+INDEKSERET = ["/", "/priser/", "/appen/", "/ai/", "/om-os/", "/privatliv/", "/handelsbetingelser/", "/databehandleraftale/"]
+
+
+def strukturerede_data():
+    """Hvem Tallo er, til Google (kun forsiden). Tilbuddene står som PreOrder, fordi vi åbner ved registreringen; ret til
+    InStock den dag. Ingen mailadresse (den er skjult for robotter på siden) og ingen bedømmelser, vi ikke har."""
+    def tilbud(navn, pris):
+        return {"@type": "Offer", "name": navn, "availability": "https://schema.org/PreOrder", "url": f"{DOMAENE}/priser/",
+                "priceSpecification": {"@type": "UnitPriceSpecification", "price": pris, "priceCurrency": "DKK",
+                                       "unitText": "MON", "valueAddedTaxIncluded": False}}
+    data = {"@context": "https://schema.org", "@graph": [
+        {"@type": "AccountingService", "@id": f"{DOMAENE}/#tallo", "name": "Tallo", "url": f"{DOMAENE}/",
+         "image": f"{DOMAENE}/og.png", "logo": f"{DOMAENE}/favicon.svg", "vatID": "DK46440986",
+         "description": "Revisor og bogføring til fast pris for enkeltmandsvirksomheder og ApS.",
+         "address": {"@type": "PostalAddress", "streetAddress": "Damagervej 1E, 2. tv", "postalCode": "8260",
+                     "addressLocality": "Viby J", "addressCountry": "DK"},
+         "areaServed": {"@type": "Country", "name": "Danmark"},
+         "makesOffer": [tilbud("Gør det selv med AI", 500), tilbud("Med revisor", 1000)]},
+        {"@type": "WebSite", "@id": f"{DOMAENE}/#side", "url": f"{DOMAENE}/", "name": "Tallo", "inLanguage": "da",
+         "publisher": {"@id": f"{DOMAENE}/#tallo"}},
+    ]}
+    return f'\n<script type="application/ld+json">{json.dumps(data, ensure_ascii=False)}</script>'
+
+
 def hoved(titel, beskrivelse, sti):
+    # Indekseret fra 6. nov 2026 (Othman); 404-siden aldrig
+    robots = "index, follow, max-image-preview:large" if sti in INDEKSERET else "noindex, nofollow"
+    canonical = f'\n<link rel="canonical" href="{DOMAENE}{sti}">' if sti in INDEKSERET else ""
+    ld = strukturerede_data() if sti == "/" else ""
     return f"""<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="{CSP}">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="{robots}">
 <title>{titel}</title>
-<meta name="description" content="{beskrivelse}">
+<meta name="description" content="{beskrivelse}">{canonical}
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Tallo">
 <meta property="og:url" content="{DOMAENE}{sti}">
 <meta property="og:title" content="{titel}">
 <meta property="og:description" content="{beskrivelse}">
@@ -46,7 +79,7 @@ def hoved(titel, beskrivelse, sti):
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/geist.woff2" crossorigin>
 <link rel="stylesheet" href="/css/tallo.css">
-<script>document.documentElement.classList.add("zoom"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("stille");</script>"""
+<script>document.documentElement.classList.add("zoom"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("stille");</script>{ld}"""
 
 
 def menu(aktiv=None):
@@ -224,7 +257,7 @@ def side(sti, titel, beskrivelse, krop, ekstra_hoved=""):
 
 
 # ---------------------------------------------------------------------------------------------------- /priser
-JA, NEJ = '<span class="ja" aria-label="Med"></span>', '<span class="nej" aria-label="Ikke med">–</span>'
+JA, NEJ = '<span class="ja" role="img" aria-label="Med"></span>', '<span class="nej" role="img" aria-label="Ikke med">–</span>'
 # Kun flueben, undtagen tilkøb (Othman 24. okt 2026: færre rækker, og "Du bogfører selv"/"Vi bogfører for dig" som rækker)
 SAMMENLIGN = [
     ("Regninger og fakturaer kommer ind af sig selv", JA, JA),
@@ -335,7 +368,7 @@ def priser():
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
       </div>
     </div>"""
-    return side("/priser/", "Priser: Tallo", "To pakker, fast pris, ingen binding: Gør det selv med AI til 500 kr. eller Med revisor til 1.000 kr. om måneden.",
+    return side("/priser/", "Priser på revisor og bogføring: Tallo", "To pakker til fast pris uden binding og med ubegrænset antal bilag: Gør det selv med AI til 500 kr. eller Med revisor til 1.000 kr. om måneden plus moms.",
                 "\n\n  ".join([region("lilla top regner-region", top + "\n    " + regner), region("papir", tabel),
                                 region("papir", spoerg), region("papir", slut)]))
 
@@ -510,7 +543,7 @@ def ai():
       </div>
       {tillidslinje()}
     </div>"""
-    return side("/ai/", "Sådan bruger vi AI: Tallo", "AI'en læser dine bilag i EU og bogfører det, der ligner det, den har set før. Alt usædvanligt ser et menneske på.",
+    return side("/ai/", "Sådan bruger vi AI i bogføringen: Tallo", "AI'en læser dine bilag i EU og bogfører det, der ligner det, den har set før. Alt usædvanligt ser et menneske på.",
                 "\n\n  ".join([region("lilla top", top, ''), region("papir laes-region", scene), region("papir", bogholder),
                                 region("papir", chat)]))
 
@@ -783,8 +816,8 @@ def erstat(s, navn, nyt):
 def forside():
     fil = ROD / "index.html"
     s = fil.read_text(encoding="utf-8")
-    s = erstat(s, "hoved", hoved("Tallo: du skal ikke kunne regnskab",
-                                 "Vi bogfører for dig. Eller AI'en finder konto og moms, og du godkender. Fra 500 kr. om måneden.", "/"))
+    s = erstat(s, "hoved", hoved("Revisor og bogføring til fast pris: Tallo",
+                                 "Vi bogfører for dig, eller AI'en finder konto og moms, og du godkender. For enkeltmandsvirksomheder og ApS. Fast pris fra 500 kr. om måneden plus moms.", "/"))
     s = erstat(s, "menu", menu("/"))
     s = erstat(s, "pakker", "  " + pakkeblok())
     s = erstat(s, "faq", '  <section class="faq-forside" id="faq">\n    ' + tillidslinje() + "\n    " + faq(FAQ_FORSIDE) + "\n  </section>")
@@ -793,6 +826,31 @@ def forside():
 
 
 # ---------------------------------------------------------------------------------------------------- 404
+def sidst_aendret(sti):
+    """Datoen i sitemap: i dag, hvis filen er ændret, ellers dens seneste commit."""
+    fil = (ROD / sti.strip("/") / "index.html").relative_to(ROD).as_posix()
+    git = lambda *a: subprocess.run(["git", *a], cwd=ROD, capture_output=True, text=True).stdout.strip()
+    return date.today().isoformat() if git("status", "--porcelain", "--", fil) else (git("log", "-1", "--format=%cs", "--", fil) or date.today().isoformat())
+
+
+def sitemap():
+    linjer = "\n".join(f"  <url><loc>{DOMAENE}{sti}</loc><lastmod>{sidst_aendret(sti)}</lastmod></url>" for sti in INDEKSERET)
+    return f'''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{linjer}
+</urlset>
+'''
+
+
+# Mødesider og kundesider blokeres ikke her: Google skal kunne se deres noindex, og listen ville afsløre adresserne.
+ROBOTS = f"""User-agent: *
+Disallow: /vaerktoej/
+Disallow: /README.md
+
+Sitemap: {DOMAENE}/sitemap.xml
+"""
+
+
 def ikke_fundet():
     """Siden, GitHub Pages viser ved en adresse, der ikke findes (/404.html)."""
     top = """<div class="side-top">
@@ -815,3 +873,6 @@ if __name__ == "__main__":
         print("skrevet", navn)
     forside()
     print("forsiden opdateret")
+    (ROD / "robots.txt").write_text(ROBOTS, encoding="utf-8")
+    (ROD / "sitemap.xml").write_text(sitemap(), encoding="utf-8")
+    print("skrevet robots.txt og sitemap.xml")

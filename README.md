@@ -9,4 +9,4 @@ på GitHub Pages. Ingen byggetrin: ret filen, commit, push.
   tredjepart, når man selv klikker på "Hellere en snak?" (Cal.com)
 - `vaerktoej/og.html`: skabelon til delingsbilledet `og.png` (1200 x 630)
 
-Alle sider har noindex, indtil CVR og de juridiske tekster er godkendt.
+Siderne i `INDEKSERET` (vaerktoej/undersider.py) er åbne for Google siden 6. nov 2026 og står i `sitemap.xml`. Møde-, kunde- og betalingssider og 404 har noindex og må ikke komme på listen.

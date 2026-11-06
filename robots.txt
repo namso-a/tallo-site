@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /vaerktoej/
+Disallow: /README.md
+
+Sitemap: https://tallo.dk/sitemap.xml
