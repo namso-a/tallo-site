@@ -512,6 +512,20 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 .ai-chat.spil .ac-besked.klar .ac-svar { animation: ac-ind .45s ease-out both; }
 @media (max-width: 420px) { .ac-top .snart { display: none; } }  /* står allerede i overskriften lige over */
 
+.fod-indre > div { min-width: 0; }
+.fod-indre a { overflow-wrap: break-word; }
+/* Søgesiderne (6. nov 2026): fire tal med én sætning hver, og en lige liste med flueben som ved pakkerne */
+.fakta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; }
+.fakta-felt { padding-top: 20px; border-top: 1px solid var(--lineal); }
+.fakta-tal { font-size: clamp(38px, 4.2vw, 56px); font-weight: 500; line-height: 1.2; letter-spacing: -.035em; font-variant-numeric: tabular-nums; color: var(--blaek); }
+.fakta-enhed { font-size: 18px; letter-spacing: -.01em; color: var(--daempet); }
+.fakta-felt > p:last-child { margin-top: 10px; font-size: 16px; line-height: 1.5; color: var(--daempet); text-wrap: pretty; }
+.tjek { width: fit-content; max-width: 100%; margin: 0 auto 28px; padding: 0; list-style: none; text-align: left; }
+.tjek li { position: relative; padding: 7px 0 7px 30px; font-size: 18px; line-height: 1.45; color: var(--blaek); }
+.tjek li::before { content: ""; position: absolute; left: 3px; top: 15px; width: 12px; height: 6px; border-left: 2px solid var(--blaa); border-bottom: 2px solid var(--blaa); transform: rotate(-45deg); }
+@media (max-width: 900px) { .fakta { grid-template-columns: 1fr 1fr; gap: 28px 24px; } }
+@media (max-width: 480px) { .fakta { grid-template-columns: 1fr; gap: 24px; } }
+
 /* Tillidslinjen (Othman 30. okt 2026): tre korte punkter mellem to tynde streger, over FAQ'en og under samtalen på /ai */
 .tillid { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 40px; width: min(1040px, calc(100% - 40px)); margin: 0 auto; padding: 26px 0; list-style: none; border-block: 1px solid var(--lineal); }
 .tillid li { display: inline-flex; align-items: center; gap: 10px; font-size: 15.5px; font-weight: 500; color: var(--blaek); }

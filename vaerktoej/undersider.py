@@ -26,11 +26,12 @@ CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.co
        "object-src 'none'; base-uri 'self'; form-action https://nznqjlrknpbnfzizxnkr.supabase.co mailto:")
 
 MENU = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "AI"), ("/om-os/", "Om os")]
-FOD_LINKS = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "Sådan bruger vi AI"), ("/om-os/", "Om os")]
+FOD_LINKS = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "Sådan bruger vi AI"), ("/om-os/", "Om os"),
+             ("/revisor-enkeltmandsvirksomhed/", "Revisor til enkeltmands&shy;virksomhed"), ("/revisor-aps/", "Revisor til ApS")]
 
 
 # Siderne, Google må vise. Mødesider, kundesider og betalingslinks står ikke her og beholder deres egen noindex.
-INDEKSERET = ["/", "/priser/", "/appen/", "/ai/", "/om-os/", "/privatliv/", "/handelsbetingelser/", "/databehandleraftale/"]
+INDEKSERET = ["/", "/priser/", "/appen/", "/ai/", "/om-os/", "/revisor-enkeltmandsvirksomhed/", "/revisor-aps/", "/privatliv/", "/handelsbetingelser/", "/databehandleraftale/"]
 
 
 def strukturerede_data():
@@ -271,13 +272,22 @@ SAMMENLIGN = [
 ]
 # Spørgsmål og svar: samme komponent tre steder, intet spørgsmål går igen (Othman 17. okt 2026). Forsiden har de
 # vigtigste lige før tilmeldingen; /priser pris og vilkår; /om-os jer to. Tredje felt: hvem der svarer (portræt).
+# Programmet er ikke åbent, men vi kan tage kunder i deres eget regnskabsprogram nu (Othman 6. nov 2026). Sådan en aftale laves
+# for sig; handelsbetingelserne gælder pakkerne, når vi åbner. Ingen programnavne på siden.
+NU_SVAR = ("Ja, i dit eget regnskabsprogram. Pakkerne åbner, når vores program er registreret hos Erhvervsstyrelsen. Indtil da "
+           "bogfører vi i det program, du allerede bruger, og du får prisen, før du siger ja.")
 FAQ_FORSIDE = [
     ("Kan jeg stole på, at AI'en bogfører rigtigt?",
      "AI'en er god til det, den har set før, men den kan tage fejl. Derfor bærer den det tunge læs, og en revisor "
      "kvalitetssikrer den. Også momsen, før den indberettes. Vælger du Gør det selv med AI, godkender du selv hvert "
      "forslag, og du kan skifte fra måned til måned."),
     ("Hvornår åbner I?", "Når vores program er registreret hos Erhvervsstyrelsen. Det kræver loven for mange virksomheder. "
-     "Du kan skrive dig op nu, og vi skriver til dig, den dag vi åbner."),
+     "Du kan skrive dig op nu, og vi skriver til dig, den dag vi åbner. Skal du bruge en revisor nu, bogfører vi i dit eget "
+     "regnskabsprogram, indtil vi åbner."),
+    # Her står "bogholder" med vilje, så folk, der søger på ordet, kan finde os; vi kalder os ikke bogholder (Othman 6. nov 2026)
+    ("Er I revisor eller bogholder?", "Vi kalder os revisor, fordi vi både bogfører, indberetter momsen og laver økonomiske "
+     "beregninger. Søger du en bogholder, er du også det rigtige sted. Vi er ikke godkendte revisorer og afgiver ikke "
+     "erklæringer. Har din virksomhed pligt til revision, skal du også bruge en godkendt revisor."),
     ("Er der binding?", "Nej. Du opsiger fra måned til måned."),
     ("Hvad skal jeg selv gøre?", "Koble din bank til med dit eget MitID, én gang. Derefter kommer regninger og fakturaer ind af sig "
      "selv. Har du betalt noget med egne penge, tager du et billede af kvitteringen i appen."),
@@ -288,6 +298,9 @@ FAQ_FORSIDE = [
      "data, står i <a href='/databehandleraftale/'>databehandleraftalen</a>."),
 ]
 FAQ_PRISER = [
+    ("Kan jeg starte nu?", NU_SVAR),
+    ("Gælder det både enkeltmandsvirksomheder og ApS?", "Ja. Læs mere om <a href='/revisor-enkeltmandsvirksomhed/'>revisor til "
+     "enkeltmandsvirksomhed</a> og <a href='/revisor-aps/'>revisor til ApS</a>."),
     ("Kan jeg skifte pakke?", "Ja, fra måned til måned, begge veje."),
     ("Hvad koster tilkøbene?", "Det afhænger af din virksomhed. Du får prisen, før du siger ja."),
     ("Kommer jeg fra et andet program?", "Så flytter vi dig gratis. Din historik kommer med."),
@@ -825,6 +838,86 @@ def forside():
     fil.write_text(s, encoding="utf-8")
 
 
+# ---------------------------------------------------------------------------------------------------- søgesider
+FAQ_MOMS = ("Hvor tit skal jeg indberette moms?", "Er virksomheden ny, hvert kvartal i starten. Sælger du for under 5 mio. kr. om "
+            "året og har indberettet og betalt til tiden, er det normalt hvert halve år.")
+FAQ_PRIS = "Når vi åbner, koster det 500 kr. eller 1.000 kr. om måneden plus moms, til fast pris. Se <a href='/priser/'>pakkerne</a>. Indtil da bogfører vi i dit eget regnskabsprogram, og du får prisen, før du siger ja."
+GODKENDT = "Nej. Vi afgiver ikke erklæringer."
+
+
+def soegeside(sti, titel, beskrivelse, h1, ingress, fakta_h2, fakta, gor, tilkoeb, spoergsmaal):
+    """Sider til det, folk søger på (Othman 6. nov 2026). Hver sætning skal kunne slås op: tallene er tjekket hos
+    Erhvervsstyrelsen og Skattestyrelsen 6. nov 2026. Ny side: læg den også i INDEKSERET og FOD_LINKS."""
+    top = f"""<div class="side-top">
+      <h1>{h1}</h1>
+      <p class="ingress">{ingress}</p>
+      <div class="knapper">
+        <a class="pille farve stor" href="/#kom">Skriv dig op</a>
+        <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
+      </div>
+    </div>"""
+    def felt(tal, enhed, tekst, taeller=None):
+        vist = f'<span data-tael="{taeller}">{tal}</span>' if taeller else tal
+        enh = f' <span class="fakta-enhed">{enhed}</span>' if enhed else ""
+        return f'<div class="fakta-felt"><p class="fakta-tal">{vist}{enh}</p><p>{tekst}</p></div>'
+    felter = "\n        ".join(felt(*f) for f in fakta)
+    punkter = "".join(f"<li>{g}</li>" for g in gor)
+    midt = f"""<div class="indre">
+      <div class="region-hoved midt" data-afslor><h2>{fakta_h2}</h2></div>
+      <div class="fakta" data-afslor>
+        {felter}
+      </div>
+    </div>"""
+    vi = f"""<div class="indre">
+      <div class="region-hoved midt" data-afslor><h2>Det gør vi</h2></div>
+      <ul class="tjek" data-afslor>{punkter}</ul>
+      <p class="smaat" style="color:var(--daempet);text-align:center"><b style="color:var(--blaek)">Tilkøb:</b> {tilkoeb} Prisen får du, før du siger ja.</p>
+    </div>"""
+    slut = """<div class="indre udsagn rolig" data-afslor>
+      <h2>Du kan starte nu, i dit eget program.</h2>
+      <p>Vores eget program åbner, når det er registreret hos Erhvervsstyrelsen. Indtil da bogfører vi i det regnskabsprogram, du allerede bruger.</p>
+      <div class="knapper">
+        <a class="pille farve stor" href="/#kom" data-book>Hellere en snak?</a>
+        <a class="pille hvid stor" href="/#kom">Skriv dig op</a>
+      </div>
+    </div>"""
+    return side(sti, titel, beskrivelse, "\n\n  ".join([region("lilla top", top), region("papir", midt), region("papir", vi),
+                                                        region("papir", faq(spoergsmaal)), region("papir", slut)]))
+
+
+def revisor_enkeltmand():
+    return soegeside("/revisor-enkeltmandsvirksomhed/", "Revisor til enkeltmandsvirksomhed: Tallo",
+                     "Vi bogfører og indberetter momsen for din enkeltmandsvirksomhed. Fast pris, ingen binding, og du skal ikke kunne regnskab.",
+                     "Revisor til din enkeltmands&shy;virksomhed.", "Vi bogfører og indberetter momsen. Du skal ikke kunne regnskab.",
+                     "Det skal du have styr på",
+                     [("50.000", "kr.", "Sælger du for mere på 12 måneder, skal du som udgangspunkt momsregistreres.", 50000),
+                      ("300.000", "kr.", "Har du solgt for mere i to år i træk, skal du bogføre digitalt.", 300000),
+                      ("1. juli", "", "Frist for at oplyse årets resultat til Skattestyrelsen."),
+                      ("5", "år", "Så længe skal du gemme bilag og bogføring.", 5)],
+                     ["Vi bogfører dine regninger og fakturaer", "Vi indberetter momsen", "Din egen revisor at skrive til"],
+                     "løn, årsregnskab og selvangivelse.",
+                     [("Skal en enkeltmandsvirksomhed have en revisor?", "Nej, det er ikke et krav, og du må gerne gøre det selv. Men bogføring og moms skal være rigtig og komme ind til tiden. Vil du ikke selv stå for det, gør vi det."),
+                      ("Hvad koster det?", FAQ_PRIS), FAQ_MOMS,
+                      ("Er I godkendte revisorer?", GODKENDT + " Kræver din bank eller andre en erklæring, skal du bruge en godkendt revisor. Vi leverer gerne grundlaget.")])
+
+
+def revisor_aps():
+    return soegeside("/revisor-aps/", "Revisor til ApS: Tallo",
+                     "Vi bogfører og indberetter momsen for dit ApS til fast pris, og årsrapporten kan købes med. Ingen binding, og du skal ikke kunne regnskab.",
+                     "Revisor til dit ApS.", "Vi bogfører og indberetter momsen. Årsrapporten kan købes med. Du skal ikke kunne regnskab.",
+                     "Det skal dit ApS have styr på",
+                     [("6", "måneder", "Så længe har du efter regnskabsårets slutning til at indberette årsrapporten.", 6),
+                      ("8", "mio. kr.", "Omsætning er én af tre grænser for at fravælge revision. De andre er 4 mio. kr. i balance og 12 ansatte.", 8),
+                      ("Digitalt", "", "Et ApS skal bogføre i et digitalt bogføringssystem."),
+                      ("5", "år", "Så længe skal I gemme bilag og bogføring.", 5)],
+                     ["Vi bogfører regninger og fakturaer", "Vi indberetter momsen", "Din egen revisor at skrive til"],
+                     "årsrapport, løn og selvangivelse.",
+                     [("Skal et ApS have en revisor?", "Ikke altid. I kan fravælge revision, hvis selskabet i to regnskabsår i træk ikke overskrider to af tre grænser: 4 mio. kr. i balance, 8 mio. kr. i omsætning og 12 ansatte. Årsrapporten skal indberettes uanset hvad. Har I et holdingselskab, tæller koncernen samlet."),
+                      ("Kan I tage os, hvis vi har pligt til revision?", "Ja, til bogføringen. Årsrapporten skal en godkendt revisor stå for, og vi leverer grundlaget. I enkelte brancher gælder særlige krav, også under grænserne, så det tjekker vi, før vi begynder."),
+                      ("Hvad koster det?", FAQ_PRIS), FAQ_MOMS,
+                      ("Er I godkendte revisorer?", GODKENDT + " Skal I bruge en erklæring, fx til banken, skal I bruge en godkendt revisor. Vi leverer gerne grundlaget.")])
+
+
 # ---------------------------------------------------------------------------------------------------- 404
 def sidst_aendret(sti):
     """Datoen i sitemap: i dag, hvis filen er ændret, ellers dens seneste commit."""
@@ -867,7 +960,8 @@ def ikke_fundet():
 if __name__ == "__main__":
     (ROD / "404.html").write_text(ikke_fundet(), encoding="utf-8")
     print("skrevet 404")
-    for navn, html in [("priser", priser()), ("appen", appen()), ("ai", ai()), ("om-os", om_os()), ("privatliv", privatliv()), ("handelsbetingelser", handelsbetingelser()), ("databehandleraftale", databehandleraftale())]:
+    for navn, html in [("priser", priser()), ("appen", appen()), ("ai", ai()), ("om-os", om_os()), ("privatliv", privatliv()), ("handelsbetingelser", handelsbetingelser()), ("databehandleraftale", databehandleraftale()),
+                       ("revisor-enkeltmandsvirksomhed", revisor_enkeltmand()), ("revisor-aps", revisor_aps())]:
         (ROD / navn).mkdir(exist_ok=True)
         (ROD / navn / "index.html").write_text(html, encoding="utf-8")
         print("skrevet", navn)
