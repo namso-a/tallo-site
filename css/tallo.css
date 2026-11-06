@@ -561,15 +561,12 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
   .bag li a { min-height: 44px; }
 }
 @media (max-width: 700px) { .fakta.tre { grid-template-columns: 1fr; } }
-/* Søgesiderne (6. nov 2026): fire tal med én sætning hver, og en lige liste med flueben som ved pakkerne */
+/* Tal med én sætning hver (søgesiderne) */
 .fakta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; }
 .fakta-felt { padding-top: 20px; border-top: 1px solid var(--lineal); }
 .fakta-tal { font-size: clamp(38px, 4.2vw, 56px); font-weight: 500; line-height: 1.2; letter-spacing: -.035em; font-variant-numeric: tabular-nums; color: var(--blaek); }
 .fakta-enhed { font-size: 18px; letter-spacing: -.01em; color: var(--daempet); }
 .fakta-felt > p:last-child { margin-top: 10px; font-size: 16px; line-height: 1.5; color: var(--daempet); text-wrap: pretty; }
-.tjek { width: fit-content; max-width: 100%; margin: 0 auto 28px; padding: 0; list-style: none; text-align: left; }
-.tjek li { position: relative; padding: 7px 0 7px 30px; font-size: 18px; line-height: 1.45; color: var(--blaek); }
-.tjek li::before { content: ""; position: absolute; left: 3px; top: 15px; width: 12px; height: 6px; border-left: 2px solid var(--blaa); border-bottom: 2px solid var(--blaa); transform: rotate(-45deg); }
 @media (max-width: 900px) { .fakta { grid-template-columns: 1fr 1fr; gap: 28px 24px; } }
 @media (max-width: 480px) { .fakta { grid-template-columns: 1fr; gap: 24px; } }
 
