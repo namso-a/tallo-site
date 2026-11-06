@@ -28,6 +28,16 @@ CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.co
 MENU = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "AI"), ("/om-os/", "Om os")]
 FOD_LINKS = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "Sådan bruger vi AI"), ("/om-os/", "Om os"),
              ("/revisor-enkeltmandsvirksomhed/", "Revisor til enkeltmands&shy;virksomhed"), ("/revisor-aps/", "Revisor til ApS")]
+# Vores egne profiler (Othman 6. nov 2026): ikoner i footeren og sameAs i de strukturerede data. Ikonerne er fra Feather (MIT).
+SOME = [
+    ("Instagram", "https://www.instagram.com/tallo_dk/",
+     '<rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/>'
+     '<circle cx="12" cy="12" r="4.25" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3"/>'),
+    ("Facebook", "https://www.facebook.com/tallo.dk/",
+     '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>'),
+    ("LinkedIn", "https://www.linkedin.com/company/tallo.dk/",
+     '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>'),
+]
 
 
 # Siderne, Google må vise. Mødesider, kundesider og betalingslinks står ikke her og beholder deres egen noindex.
@@ -48,6 +58,7 @@ def strukturerede_data():
          "address": {"@type": "PostalAddress", "streetAddress": "Damagervej 1E, 2. tv", "postalCode": "8260",
                      "addressLocality": "Viby J", "addressCountry": "DK"},
          "areaServed": {"@type": "Country", "name": "Danmark"},
+         "sameAs": [url for _, url, _ in SOME],
          "makesOffer": [tilbud("Gør det selv med AI", 500), tilbud("Med revisor", 1000)]},
         {"@type": "WebSite", "@id": f"{DOMAENE}/#side", "url": f"{DOMAENE}/", "name": "Tallo", "inLanguage": "da",
          "publisher": {"@id": f"{DOMAENE}/#tallo"}},
@@ -111,11 +122,17 @@ def menu(aktiv=None):
 
 def fod():
     links = "\n".join(f'        <li><a href="{h}">{t}</a></li>' for h, t in FOD_LINKS)
+    some = "\n".join(f'        <a href="{url}" target="_blank" rel="noopener" aria-label="Tallo på {navn}" title="{navn}">'
+                     f'<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">{ikon}</svg></a>'
+                     for navn, url, ikon in SOME)
     return f"""<footer class="fod">
   <div class="fod-indre">
     <div>
       <a class="logo" href="/">tallo</a>
       <p>Bogføring for små virksomheder.</p>
+      <div class="some">
+{some}
+      </div>
     </div>
     <div>
       <span class="titel">Tallo</span>
