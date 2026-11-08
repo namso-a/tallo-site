@@ -56,7 +56,7 @@ def strukturerede_data():
         {"@type": "AccountingService", "@id": f"{DOMAENE}/#tallo", "name": "Tallo", "url": f"{DOMAENE}/",
          "image": f"{DOMAENE}/og.png", "logo": f"{DOMAENE}/favicon-192.png", "vatID": "DK46440986", "telephone": TELEFON_LD,
          "description": "Revisor og bogføring til fast pris for enkeltmandsvirksomheder og ApS.",
-         "address": {"@type": "PostalAddress", "streetAddress": "Damagervej 1E, 2. tv", "postalCode": "8260",
+         "address": {"@type": "PostalAddress", "postalCode": "8260",
                      "addressLocality": "Viby J", "addressCountry": "DK"},
          "areaServed": {"@type": "Country", "name": "Danmark"},
          "sameAs": [url for _, url, _ in SOME],
@@ -159,7 +159,8 @@ def fod():
       <ul>
         <li>{RING}</li>
         <li><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></li>
-        <li><span>Damagervej 1E, 2. tv<br>8260 Viby J</span></li>
+        <!-- Gadeadressen står kun i handelsbetingelser, privatlivspolitik og databehandleraftale (Othman 8. nov 2026; e-handelsloven § 7) -->
+        <li><span>Viby J</span></li>
         <li><span>CVR 46440986</span></li>
         <li><a href="/privatliv/">Privatlivspolitik</a></li>
         <li><a href="/handelsbetingelser/">Handelsbetingelser</a></li>
