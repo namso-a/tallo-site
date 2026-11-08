@@ -67,6 +67,12 @@ def strukturerede_data():
     return f'\n<script type="application/ld+json">{json.dumps(data, ensure_ascii=False)}</script>'
 
 
+# Forsidens største billeder hentes før skrifttypen og CSS'en: fotoet ses først overalt, app-billedet er det største på computer (LCP, 8. nov 2026)
+FORRANG_FORSIDE = """
+<link rel="preload" as="image" href="/billeder/top-foto.webp" fetchpriority="high">
+<link rel="preload" as="image" href="/billeder/app-overblik-2x.webp" fetchpriority="high" media="(min-width: 768px)">"""
+
+
 def hoved(titel, beskrivelse, sti):
     # Indekseret fra 6. nov 2026 (Othman); 404-siden aldrig
     robots = "index, follow, max-image-preview:large" if sti in INDEKSERET else "noindex, nofollow"
@@ -91,7 +97,7 @@ def hoved(titel, beskrivelse, sti):
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">{FORRANG_FORSIDE if sti == "/" else ""}
 <link rel="preload" as="font" type="font/woff2" href="/fonts/geist.woff2" crossorigin>
 <link rel="stylesheet" href="/css/tallo.css">
 <script>document.documentElement.classList.add("zoom"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("stille");</script>{ld}"""

@@ -23,14 +23,14 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" as="image" href="/billeder/top-foto.webp" fetchpriority="high">
+<link rel="preload" as="image" href="/billeder/app-overblik-2x.webp" fetchpriority="high" media="(min-width: 768px)">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/geist.woff2" crossorigin>
 <link rel="stylesheet" href="/css/tallo.css">
 <script>document.documentElement.classList.add("zoom"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("stille");</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "AccountingService", "@id": "https://tallo.dk/#tallo", "name": "Tallo", "url": "https://tallo.dk/", "image": "https://tallo.dk/og.png", "logo": "https://tallo.dk/favicon-192.png", "vatID": "DK46440986", "description": "Revisor og bogføring til fast pris for enkeltmandsvirksomheder og ApS.", "address": {"@type": "PostalAddress", "streetAddress": "Damagervej 1E, 2. tv", "postalCode": "8260", "addressLocality": "Viby J", "addressCountry": "DK"}, "areaServed": {"@type": "Country", "name": "Danmark"}, "sameAs": ["https://www.instagram.com/tallo_dk/", "https://www.facebook.com/tallo.dk/", "https://www.linkedin.com/company/tallo.dk/"], "makesOffer": [{"@type": "Offer", "name": "Gør det selv med AI", "availability": "https://schema.org/PreOrder", "url": "https://tallo.dk/priser/", "priceSpecification": {"@type": "UnitPriceSpecification", "price": 500, "priceCurrency": "DKK", "unitText": "MON", "valueAddedTaxIncluded": false}}, {"@type": "Offer", "name": "Med revisor", "availability": "https://schema.org/PreOrder", "url": "https://tallo.dk/priser/", "priceSpecification": {"@type": "UnitPriceSpecification", "price": 1000, "priceCurrency": "DKK", "unitText": "MON", "valueAddedTaxIncluded": false}}]}, {"@type": "WebSite", "@id": "https://tallo.dk/#side", "url": "https://tallo.dk/", "name": "Tallo", "inLanguage": "da", "publisher": {"@id": "https://tallo.dk/#tallo"}}]}</script>
 <!-- hoved:slut -->
-<!-- Forrang pr. skærm (8. nov 2026): fotoet er det største på mobil, app-billedet på computer -->
-<link rel="preload" as="image" href="/billeder/top-foto.webp" fetchpriority="high">
-<link rel="preload" as="image" href="/billeder/app-overblik-2x.webp" fetchpriority="high" media="(min-width: 768px)">
+<!-- Forrang for det største billede pr. skærm står i hoved() i vaerktoej/undersider.py -->
 <!--
   Toppen efter .docs/design/brief.md (8. okt 2026): ét foto, og scroll fører ind i skærmen, hvor appen er.
   Derefter glider appen ud til højre som et panel, og fire punkter til venstre skifter skærm (Mercury ved 1350-1700).
@@ -47,6 +47,10 @@
   .topflade { position: absolute; inset: 0; }
   .foto { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform, opacity; }
   .foto img { display: block; width: 100%; height: 100%; }
+  /* Fotoets startstørrelse og -plads i CSS (samme regning som maal(): dækker scenen, centreret om laptoppen),
+     så det kan tegnes, før scriptet nederst har kørt. Scriptet retter det bagefter. 3857/2411 = 1,5998; laptoppens midte 0,4406. */
+  html.zoom .foto { --fw: max(100vw, 159.98vh); --fh: max(62.51vw, 100vh); width: var(--fw); height: var(--fh);
+    transform: translate(clamp(calc(100vw - var(--fw)), calc(50vw - .4406 * var(--fw)), 0px), calc((100vh - var(--fh)) / 2)); }
   /* Flyttes fotoet ned på korte skærme, fylder fotoets egen lyse farve over det (og følger zoomen) */
   .foto::before { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 100vh; background: #d1e2d2; }
   .sloer { position: absolute; inset: 0 0 auto; height: 55%; background: linear-gradient(to bottom, rgba(255,255,255,.5), rgba(255,255,255,0)); pointer-events: none; }
@@ -277,7 +281,7 @@
 
         <div class="skaerm" id="skaerm" aria-hidden="true">
           <div class="lag d" id="lagD">
-            <img data-s="overblik" class="vist" src="/billeder/app-overblik-2x.webp" alt="" width="2880" height="1800">
+            <img data-s="overblik" class="vist" src="/billeder/app-overblik-2x.webp" srcset="/billeder/app-overblik-1200.webp 1200w, /billeder/app-overblik-2x.webp 2880w" sizes="(max-width: 767px) 400px, 1440px" alt="" width="2880" height="1800">
             <img data-s="foer" data-src="/billeder/app-transaktioner-2x.webp" alt="" width="2880" height="1800">
             <img data-s="efter" data-src="/billeder/app-transaktioner-bogfoert-2x.webp" alt="" width="2880" height="1800">
             <img data-s="moms" data-src="/billeder/app-moms-2x.webp" alt="" width="2880" height="1800">
@@ -590,7 +594,27 @@
   const skaerm = document.getElementById("skaerm");
   const lagD = document.getElementById("lagD"), lagM = document.getElementById("lagM");
   // Kun laget, der bruges i den aktuelle bredde, henter sine billeder (mobil sparer desktopskærmene og omvendt)
-  const hent = (lag) => { if (lag.dataset.hentet) return; lag.dataset.hentet = "1"; lag.querySelectorAll("img[data-src]").forEach((i) => { i.src = i.dataset.src; }); };
+  // De ses først, når man ruller, så de hentes efter sidens load (eller ved første rul) og tager ikke båndbredde fra fotoet (LCP, 8. nov 2026)
+  let maaHente = document.readyState === "complete";
+  const venter = new Set();
+  const hent = (lag) => {
+    if (lag.dataset.hentet) return;
+    if (!maaHente) { venter.add(lag); return; }
+    lag.dataset.hentet = "1";
+    lag.querySelectorAll("img[data-src]").forEach((i) => { i.src = i.dataset.src; });
+  };
+  // Laptopskærmen på mobil starter med det lille app-billede (srcset); det skarpe hentes bagefter, så zoomen er lige skarp
+  const opgrader = () => {
+    const o = lagD.querySelector('img[data-s="overblik"]');
+    if (!o.srcset || o.currentSrc.endsWith(o.getAttribute("src"))) return;
+    const stor = new Image();
+    stor.onload = () => { o.removeAttribute("srcset"); o.removeAttribute("sizes"); };
+    stor.src = o.getAttribute("src");
+  };
+  const aabn = () => { if (maaHente) return; maaHente = true; venter.forEach(hent); venter.clear(); opgrader(); };
+  addEventListener("load", aabn, { once: true });
+  addEventListener("scroll", aabn, { once: true, passive: true });
+  if (maaHente) opgrader();
   const tekst = document.getElementById("tekst");
   const sloer = document.getElementById("sloer");
   const produkt = document.getElementById("produkt");
