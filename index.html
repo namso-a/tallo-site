@@ -597,19 +597,19 @@
   // De ses først, når man ruller, så de hentes efter sidens load (eller ved første rul) og tager ikke båndbredde fra fotoet (LCP, 8. nov 2026)
   let maaHente = document.readyState === "complete";
   const venter = new Set();
+  const klargoer = (url) => { const b = new Image(); b.src = url; return (b.decode ? b.decode() : new Promise((r) => { b.onload = r; })).catch(() => {}); };
   const hent = (lag) => {
     if (lag.dataset.hentet) return;
     if (!maaHente) { venter.add(lag); return; }
     lag.dataset.hentet = "1";
-    lag.querySelectorAll("img[data-src]").forEach((i) => { i.src = i.dataset.src; });
+    // Ét ad gangen og pakket ud i baggrunden (decode), før det sættes ind, så det ikke giver en lang opgave på hovedtråden
+    [...lag.querySelectorAll("img[data-src]")].reduce((kaede, i) => kaede.then(() => klargoer(i.dataset.src).then(() => { i.src = i.dataset.src; })), Promise.resolve());
   };
   // Laptopskærmen på mobil starter med det lille app-billede (srcset); det skarpe hentes bagefter, så zoomen er lige skarp
   const opgrader = () => {
     const o = lagD.querySelector('img[data-s="overblik"]');
     if (!o.srcset || o.currentSrc.endsWith(o.getAttribute("src"))) return;
-    const stor = new Image();
-    stor.onload = () => { o.removeAttribute("srcset"); o.removeAttribute("sizes"); };
-    stor.src = o.getAttribute("src");
+    klargoer(o.getAttribute("src")).then(() => { o.removeAttribute("srcset"); o.removeAttribute("sizes"); });
   };
   const aabn = () => { if (maaHente) return; maaHente = true; venter.forEach(hent); venter.clear(); opgrader(); };
   // Efter load og først når fotoet er afkodet og tegnet (to frames), ellers kan de nå at konkurrere med den første visning
