@@ -54,7 +54,7 @@ def strukturerede_data():
                                        "unitText": "MON", "valueAddedTaxIncluded": False}}
     data = {"@context": "https://schema.org", "@graph": [
         {"@type": "AccountingService", "@id": f"{DOMAENE}/#tallo", "name": "Tallo", "url": f"{DOMAENE}/",
-         "image": f"{DOMAENE}/og.png", "logo": f"{DOMAENE}/favicon-192.png", "vatID": "DK46440986",
+         "image": f"{DOMAENE}/og.png", "logo": f"{DOMAENE}/favicon-192.png", "vatID": "DK46440986", "telephone": TELEFON_LD,
          "description": "Revisor og bogføring til fast pris for enkeltmandsvirksomheder og ApS.",
          "address": {"@type": "PostalAddress", "streetAddress": "Damagervej 1E, 2. tv", "postalCode": "8260",
                      "addressLocality": "Viby J", "addressCountry": "DK"},
@@ -71,6 +71,11 @@ def strukturerede_data():
 FORRANG_FORSIDE = """
 <link rel="preload" as="image" href="/billeder/top-foto.webp" fetchpriority="high">
 <link rel="preload" as="image" href="/billeder/app-overblik-2x.webp" fetchpriority="high" media="(min-width: 768px)">"""
+
+
+# Mohammeds nummer (Othman 8. nov 2026): han tager den første snak
+TELEFON, TELEFON_LD = "42 16 05 09", "+4542160509"
+RING = f'<a href="tel:{TELEFON_LD}">{TELEFON.replace(" ", "&nbsp;")}</a>'
 
 
 def hoved(titel, beskrivelse, sti):
@@ -125,7 +130,7 @@ def menu(aktiv=None):
 {store}
   </ul>
   <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
-  <p class="lille">Eller skriv til os: <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
+  <p class="lille">Eller ring på {RING} eller skriv til <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
 </div>"""
 
 
@@ -152,6 +157,7 @@ def fod():
     <div>
       <span class="titel">Kontakt</span>
       <ul>
+        <li>{RING}</li>
         <li><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></li>
         <li><span>Damagervej 1E, 2. tv<br>8260 Viby J</span></li>
         <li><span>CVR 46440986</span></li>
@@ -602,7 +608,7 @@ def om_os():
         </div>
         <h3>Mohammed Chahrour</h3>
         <p class="rolle">Kunder og aftaler</p>
-        <p class="om">Mohammed er ved at afslutte sin kandidatgrad i jura. Han tager den første snak med dig, sørger for aftalerne, og for at alt er, som det skal være.</p>
+        <p class="om">Mohammed er ved at afslutte sin kandidatgrad i jura. Han tager den første snak med dig, sørger for aftalerne, og for at alt er, som det skal være. Ring til ham på """ + RING + """.</p>
       </div>
       <div class="person">
         <div class="ramme">
