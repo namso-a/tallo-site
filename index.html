@@ -26,10 +26,11 @@
 <link rel="preload" as="font" type="font/woff2" href="/fonts/geist.woff2" crossorigin>
 <link rel="stylesheet" href="/css/tallo.css">
 <script>document.documentElement.classList.add("zoom"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("stille");</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "AccountingService", "@id": "https://tallo.dk/#tallo", "name": "Tallo", "url": "https://tallo.dk/", "image": "https://tallo.dk/og.png", "logo": "https://tallo.dk/favicon.svg", "vatID": "DK46440986", "description": "Revisor og bogføring til fast pris for enkeltmandsvirksomheder og ApS.", "address": {"@type": "PostalAddress", "streetAddress": "Damagervej 1E, 2. tv", "postalCode": "8260", "addressLocality": "Viby J", "addressCountry": "DK"}, "areaServed": {"@type": "Country", "name": "Danmark"}, "sameAs": ["https://www.instagram.com/tallo_dk/", "https://www.facebook.com/tallo.dk/", "https://www.linkedin.com/company/tallo.dk/"], "makesOffer": [{"@type": "Offer", "name": "Gør det selv med AI", "availability": "https://schema.org/PreOrder", "url": "https://tallo.dk/priser/", "priceSpecification": {"@type": "UnitPriceSpecification", "price": 500, "priceCurrency": "DKK", "unitText": "MON", "valueAddedTaxIncluded": false}}, {"@type": "Offer", "name": "Med revisor", "availability": "https://schema.org/PreOrder", "url": "https://tallo.dk/priser/", "priceSpecification": {"@type": "UnitPriceSpecification", "price": 1000, "priceCurrency": "DKK", "unitText": "MON", "valueAddedTaxIncluded": false}}]}, {"@type": "WebSite", "@id": "https://tallo.dk/#side", "url": "https://tallo.dk/", "name": "Tallo", "inLanguage": "da", "publisher": {"@id": "https://tallo.dk/#tallo"}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "AccountingService", "@id": "https://tallo.dk/#tallo", "name": "Tallo", "url": "https://tallo.dk/", "image": "https://tallo.dk/og.png", "logo": "https://tallo.dk/favicon-192.png", "vatID": "DK46440986", "description": "Revisor og bogføring til fast pris for enkeltmandsvirksomheder og ApS.", "address": {"@type": "PostalAddress", "streetAddress": "Damagervej 1E, 2. tv", "postalCode": "8260", "addressLocality": "Viby J", "addressCountry": "DK"}, "areaServed": {"@type": "Country", "name": "Danmark"}, "sameAs": ["https://www.instagram.com/tallo_dk/", "https://www.facebook.com/tallo.dk/", "https://www.linkedin.com/company/tallo.dk/"], "makesOffer": [{"@type": "Offer", "name": "Gør det selv med AI", "availability": "https://schema.org/PreOrder", "url": "https://tallo.dk/priser/", "priceSpecification": {"@type": "UnitPriceSpecification", "price": 500, "priceCurrency": "DKK", "unitText": "MON", "valueAddedTaxIncluded": false}}, {"@type": "Offer", "name": "Med revisor", "availability": "https://schema.org/PreOrder", "url": "https://tallo.dk/priser/", "priceSpecification": {"@type": "UnitPriceSpecification", "price": 1000, "priceCurrency": "DKK", "unitText": "MON", "valueAddedTaxIncluded": false}}]}, {"@type": "WebSite", "@id": "https://tallo.dk/#side", "url": "https://tallo.dk/", "name": "Tallo", "inLanguage": "da", "publisher": {"@id": "https://tallo.dk/#tallo"}}]}</script>
 <!-- hoved:slut -->
-<link rel="preload" as="image" href="/billeder/top-foto.webp">
-<link rel="preload" as="image" href="/billeder/app-overblik-2x.webp" fetchpriority="high">
+<!-- Forrang pr. skærm (8. nov 2026): fotoet er det største på mobil, app-billedet på computer -->
+<link rel="preload" as="image" href="/billeder/top-foto.webp" fetchpriority="high">
+<link rel="preload" as="image" href="/billeder/app-overblik-2x.webp" fetchpriority="high" media="(min-width: 768px)">
 <!--
   Toppen efter .docs/design/brief.md (8. okt 2026): ét foto, og scroll fører ind i skærmen, hvor appen er.
   Derefter glider appen ud til højre som et panel, og fire punkter til venstre skifter skærm (Mercury ved 1350-1700).
@@ -262,7 +263,7 @@
   <section class="rejse" id="rejse">
     <div class="scene" id="scene">
       <div class="topflade">
-        <div class="foto" id="foto"><img src="/billeder/top-foto.webp" alt="En bærbar computer på et marmorbord i en lys café om morgenen" width="3200" height="2000"></div>
+        <div class="foto" id="foto"><img src="/billeder/top-foto.webp" fetchpriority="high" alt="En bærbar computer på et marmorbord i en lys café om morgenen" width="3200" height="2000"></div>
         <div class="sloer" id="sloer"></div>
 
         <div class="top-tekst" id="tekst">
@@ -276,7 +277,7 @@
 
         <div class="skaerm" id="skaerm" aria-hidden="true">
           <div class="lag d" id="lagD">
-            <img data-s="overblik" class="vist" src="/billeder/app-overblik-2x.webp" fetchpriority="high" alt="" width="2880" height="1800">
+            <img data-s="overblik" class="vist" src="/billeder/app-overblik-2x.webp" alt="" width="2880" height="1800">
             <img data-s="foer" data-src="/billeder/app-transaktioner-2x.webp" alt="" width="2880" height="1800">
             <img data-s="efter" data-src="/billeder/app-transaktioner-bogfoert-2x.webp" alt="" width="2880" height="1800">
             <img data-s="moms" data-src="/billeder/app-moms-2x.webp" alt="" width="2880" height="1800">
@@ -498,6 +499,8 @@
         <li><a href="/om-os/">Om os</a></li>
         <li><a href="/revisor-enkeltmandsvirksomhed/">Revisor til enkeltmands&shy;virksomhed</a></li>
         <li><a href="/revisor-aps/">Revisor til ApS</a></li>
+        <li><a href="/digital-bogfoering/">Digital bogføring</a></li>
+        <li><a href="/moms-frister/">Momsfrister</a></li>
       </ul>
     </div>
     <div>

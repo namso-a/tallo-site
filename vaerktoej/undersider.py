@@ -27,7 +27,8 @@ CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.co
 
 MENU = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "AI"), ("/om-os/", "Om os")]
 FOD_LINKS = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "Sådan bruger vi AI"), ("/om-os/", "Om os"),
-             ("/revisor-enkeltmandsvirksomhed/", "Revisor til enkeltmands&shy;virksomhed"), ("/revisor-aps/", "Revisor til ApS")]
+             ("/revisor-enkeltmandsvirksomhed/", "Revisor til enkeltmands&shy;virksomhed"), ("/revisor-aps/", "Revisor til ApS"),
+             ("/digital-bogfoering/", "Digital bogføring"), ("/moms-frister/", "Momsfrister")]
 # Vores egne profiler (Othman 6. nov 2026): ikoner i footeren og sameAs i de strukturerede data. Ikonerne er fra Feather (MIT).
 SOME = [
     ("Instagram", "https://www.instagram.com/tallo_dk/",
@@ -41,7 +42,7 @@ SOME = [
 
 
 # Siderne, Google må vise. Mødesider, kundesider og betalingslinks står ikke her og beholder deres egen noindex.
-INDEKSERET = ["/", "/priser/", "/appen/", "/ai/", "/om-os/", "/revisor-enkeltmandsvirksomhed/", "/revisor-aps/", "/privatliv/", "/handelsbetingelser/", "/databehandleraftale/"]
+INDEKSERET = ["/", "/priser/", "/appen/", "/ai/", "/om-os/", "/revisor-enkeltmandsvirksomhed/", "/revisor-aps/", "/digital-bogfoering/", "/moms-frister/", "/privatliv/", "/handelsbetingelser/", "/databehandleraftale/"]
 
 
 def strukturerede_data():
@@ -53,7 +54,7 @@ def strukturerede_data():
                                        "unitText": "MON", "valueAddedTaxIncluded": False}}
     data = {"@context": "https://schema.org", "@graph": [
         {"@type": "AccountingService", "@id": f"{DOMAENE}/#tallo", "name": "Tallo", "url": f"{DOMAENE}/",
-         "image": f"{DOMAENE}/og.png", "logo": f"{DOMAENE}/favicon.svg", "vatID": "DK46440986",
+         "image": f"{DOMAENE}/og.png", "logo": f"{DOMAENE}/favicon-192.png", "vatID": "DK46440986",
          "description": "Revisor og bogføring til fast pris for enkeltmandsvirksomheder og ApS.",
          "address": {"@type": "PostalAddress", "streetAddress": "Damagervej 1E, 2. tv", "postalCode": "8260",
                      "addressLocality": "Viby J", "addressCountry": "DK"},
@@ -859,7 +860,7 @@ def forside():
 
 # ---------------------------------------------------------------------------------------------------- søgesider
 FAQ_MOMS = ("Hvor tit skal jeg indberette moms?", "Er virksomheden ny, hvert kvartal. Sælger du for under 5 mio. kr. om "
-            "året og har indberettet og betalt til tiden, er det hvert halve år.")
+            "året og har indberettet og betalt til tiden, er det hvert halve år. Se <a href='/moms-frister/'>alle momsfrister</a>.")
 FAQ_PRIS = "Når vi åbner, koster det 500 kr. eller 1.000 kr. om måneden plus moms, til fast pris. Se <a href='/priser/'>pakkerne</a>. Indtil da bogfører vi i dit eget regnskabsprogram, og du får prisen, før du siger ja."
 GODKENDT = "Nej. Vi afgiver ikke erklæringer."
 SKAT_FRISTER = "https://skat.dk/en-us/businesses/vat/deadlines-filing-vat-returns-and-paying-vat"
@@ -870,7 +871,7 @@ MOMS_FRISTER = {3: ("1. marts", "4. kvartal"), 6: ("1. juni", "1. kvartal"), 9: 
 MAANEDER = ["jan", "feb", "mar", "apr", "maj", "jun", "jul", "aug", "sep", "okt", "nov", "dec"]
 
 
-def aarstrimmel(ekstra):
+def aarstrimmel(ekstra, moms=MOMS_FRISTER):
     """Året som én lang linje: måneder med en frist fylder mere end de tomme. Alt er almindelig tekst, så Google kan læse
     det; på mobil står kun månederne med en frist, som en lodret linje. ekstra = {måned: [(dato, hvad, hvem)]}."""
     def frist(dato, hvad, hvem, klasse):
@@ -878,8 +879,8 @@ def aarstrimmel(ekstra):
     celler = []
     for nr, navn in enumerate(MAANEDER, 1):
         indhold = []
-        if nr in MOMS_FRISTER:
-            dato, periode = MOMS_FRISTER[nr]
+        if nr in moms:
+            dato, periode = moms[nr]
             indhold.append(frist(dato, f"Moms for {periode}", "Vi indberetter", "vi"))
         for dato, hvad, hvem in ekstra.get(nr, []):
             indhold.append(frist(dato, hvad, hvem, "tilkoeb" if hvem == "Tilkøb" else "vi"))
@@ -890,7 +891,8 @@ def aarstrimmel(ekstra):
     return '<ol class="aar" data-afslor>' + "".join(celler) + "</ol>"
 
 
-def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fakta, fakta_note, aar_h2, aar, aar_note, tilkoeb, spoergsmaal, kilder):
+def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fakta, fakta_note, aar_h2, aar, aar_note, tilkoeb, spoergsmaal, kilder,
+              tjekket="6. november 2026"):
     """Sider til det, folk søger på (Othman 6. nov 2026). Siden svarer på spørgsmålet, før den sælger noget, og de to sider
     er ikke den samme side med nyt navn. Hver sætning skal kunne slås op: kilderne står nederst på siden og er tjekket
     6. nov 2026; tal ændrer sig, så tjek dem igen en gang om året. Ny side: læg den også i INDEKSERET og FOD_LINKS."""
@@ -925,7 +927,7 @@ def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fak
       <div class="region-hoved midt" data-afslor><h2>{aar_h2}</h2></div>
       {aarstrimmel(aar)}
       <p class="fakta-note">{aar_note}</p>
-    </div>"""
+    </div>""" if aar_h2 else ""
     pakker = f"""{pakkeblok(taet=True)}
     <p class="smaat" style="color:var(--daempet);text-align:center"><b style="color:var(--blaek)">Tilkøb:</b> {tilkoeb} Prisen får du, før du siger ja.</p>"""
     kildeliste = "".join(f'<li><a href="{url}" target="_blank" rel="noopener">{navn}</a></li>' for navn, url in kilder)
@@ -938,7 +940,7 @@ def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fak
       </div>
       <div>
         <h2>Hvor reglerne kommer fra</h2>
-        <p>Tjekket 6. november 2026. Regler og tal kan ændre sig, så se altid efter hos myndighederne, før du beslutter noget.</p>
+        <p>Tjekket {tjekket}. Regler og tal kan ændre sig, så se altid efter hos myndighederne, før du beslutter noget.</p>
         <ul>{kildeliste}</ul>
       </div>
     </div>"""
@@ -950,8 +952,9 @@ def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fak
         <a class="pille hvid stor" href="/#kom">Skriv dig op</a>
       </div>
     </div>"""
-    return side(sti, titel, beskrivelse, "\n\n  ".join([region("lilla top", top), region("papir", laes), region("papir", midt), region("papir", aaret),
-                                                        region("papir", pakker), region("papir", faq(spoergsmaal)), region("papir", bag), region("papir", slut)]))
+    afsnit_liste = [region("lilla top", top), region("papir", laes), region("papir", midt)] + ([region("papir", aaret)] if aaret else []) + [
+        region("papir", pakker), region("papir", faq(spoergsmaal)), region("papir", bag), region("papir", slut)]
+    return side(sti, titel, beskrivelse, "\n\n  ".join(afsnit_liste))
 
 
 def revisor_enkeltmand():
@@ -964,7 +967,7 @@ def revisor_enkeltmand():
                       "Det giver mening at få os ind, når bogføringen tager tid fra det, du tjener penge på, eller når du ikke er sikker på, at den er rigtig. Vi bogfører og indberetter momsen, og du bruger tiden på din forretning."],
                      "Det skal du have styr på",
                      [("50.000", "kr.", "Sælger du for mere på 12 måneder, skal du som udgangspunkt momsregistreres. Ved du det fra start, skal du registreres fra start.", 50000),
-                      ("300.000", "kr.", "Har du solgt for mere i to år i træk, skal du bogføre digitalt.", 300000),
+                      ("300.000", "kr.", "Har du solgt for mere i to år i træk, skal du bogføre digitalt. Læs om <a href='/digital-bogfoering/'>digital bogføring</a>.", 300000),
                       ("5", "år", "Så længe skal du gemme bilag og bogføring, regnet fra regnskabsårets slutning.", 5)],
                      "",
                      "Sådan ser dit år ud",
@@ -999,6 +1002,66 @@ def revisor_aps():
                       ("Er I godkendte revisorer?", GODKENDT + " Skal I bruge en erklæring, fx til banken, skal I bruge en godkendt revisor. Vi leverer gerne grundlaget."),
                       ("Hvad hvis jeg har en enkeltmandsvirksomhed?", "Så er reglerne anderledes, og der er ikke noget krav om revisor. Læs om <a href='/revisor-enkeltmandsvirksomhed/'>revisor til enkeltmandsvirksomhed</a>.")],
                      [("Erhvervsstyrelsen: årsrapporter og fravalg af revision", "https://erhvervsstyrelsen.dk/vejledning-aarsrapporter")] + KILDER_MOMS + [KILDE_RESULTAT, KILDE_BOGFOERING])
+
+
+# Kilderne til de to sider fra 8. nov 2026 (læst samme dag; bøder for manglende digital bogføring stod kun i et resumé og er udeladt)
+KILDE_VIRK_DIGITAL = ("Virk: digital bogføring for personligt ejede virksomheder",
+                      "https://businessindenmark.virk.dk/nye-regler/pligt-til-digital-bogfoering-for-personligt-ejede-virksomheder--foreninger-og-oevrige-virksomheder--som-ikke-er-omfattet-af-aarl---3--stk--1/")
+KILDE_IKKE_REG = ("Erhvervsstyrelsen: ikke-registrerede bogføringssystemer", "https://erhvervsstyrelsen.dk/ikke-registrerede-digitale-bogfoeringssystemer")
+KILDE_NYT_SELSKAB = ("Skattestyrelsen: moms for nystartede selskaber",
+                     "https://skat.dk/erhverv/guides-og-webinarer-til-start-ups/start-up-med-skat/for-selskaber/moms/del-1-bliv-klar")
+KILDE_REG_MOMS = ("Skattestyrelsen: registrering for moms", "https://skat.dk/erhverv/moms/moms-saadan-goer-du/saadan-registrerer-du-din-virksomhed-for-moms")
+
+
+def digital_bogfoering():
+    """Kravet om digital bogføring (Othman 8. nov 2026). Siden må ikke tilbyde vores program til dem, kravet gælder for, før
+    det er registreret: den siger, at vi bogfører i det program, de bruger."""
+    return soegeside("/digital-bogfoering/", "Krav om digital bogføring fra 2026: Tallo",
+                     "Skal du bogføre digitalt? Se hvem kravet gælder for, fra hvornår, og hvad det kræver i praksis. Vi bogfører for dig til fast pris.",
+                     "Krav om digital bogføring.", "Fra 2026 gælder kravet også for mange enkeltmandsvirksomheder. Her er reglerne, og hvad det betyder for dig.",
+                     "Skal du bogføre digitalt?",
+                     ["Ja, hvis du har et ApS eller en anden virksomhed med pligt til årsrapport. Har du en enkeltmandsvirksomhed, gælder kravet fra 1. januar 2026, når du har solgt for mere end 300.000 kr. i hvert af de to foregående år.",
+                      "Digital bogføring betyder, at bogføringen sker i et digitalt bogføringssystem, og at købs- og salgsbilag gemmes digitalt. Det, der er bogført, kan ikke slettes eller ændres bagefter; en fejl rettes med en ny postering. Systemet skal også kunne sende og modtage elektroniske fakturaer, og en pdf tæller ikke som en elektronisk faktura.",
+                      "Det letteste er et bogføringssystem, der er registreret hos Erhvervsstyrelsen. Så er det udbyderen, der står inde for, at systemet opfylder kravene. Bruger du et system, der ikke er registreret, er det dit eget ansvar.",
+                      "Vi bogfører i det program, du allerede bruger, og indberetter momsen, så du ikke selv skal holde styr på reglerne."],
+                     "Det skal du vide",
+                     [("300.000", "kr.", "Har din enkeltmandsvirksomhed solgt for mere i hvert af de to foregående år, skal du bogføre digitalt.", 300000),
+                      ("2026", "", "Fra 1. januar 2026 gælder kravet for enkeltmandsvirksomheder. Et ApS skal allerede bogføre digitalt."),
+                      ("5", "år", "Så længe skal bilag og bogføring gemmes, regnet fra regnskabsårets slutning.", 5)],
+                     "Har du forskudt regnskabsår, gælder kravet først fra starten af dit 2026-regnskab.",
+                     None, None, None,
+                     "løn, årsregnskab, årsrapport og selvangivelse.",
+                     [("Er en pdf en elektronisk faktura?", "Nej. Billedfiler, også pdf, tæller ikke som elektroniske fakturaer. En elektronisk faktura sendes i et fast format, som bogføringssystemerne kan læse."),
+                      ("Skal alle bilag gemmes digitalt?", "Købs- og salgsbilag skal gemmes digitalt. Ikke alle bilag skal, men det letteste er at gemme dem samme sted."),
+                      ("Hvad koster det?", FAQ_PRIS),
+                      ("Har du en enkeltmandsvirksomhed eller et ApS?", "Læs om <a href='/revisor-enkeltmandsvirksomhed/'>revisor til enkeltmandsvirksomhed</a> og <a href='/revisor-aps/'>revisor til ApS</a>.")],
+                     [KILDE_BOGFOERING, KILDE_VIRK_DIGITAL, KILDE_IKKE_REG], tjekket="8. november 2026")
+
+
+def moms_frister():
+    """Momsfristerne (Othman 8. nov 2026). Datoerne er Skattestyrelsens; næste frister står med år og tjekkes igen hvert år."""
+    halvaar = {3: ("1. marts", "2. halvår"), 9: ("1. september", "1. halvår")}  # står i teksten; strimlen viser kvartalerne
+    return soegeside("/moms-frister/", "Momsfrister for kvartal og halvår: Tallo",
+                     "Hvornår skal momsen indberettes? Se fristerne for kvartal og halvår, hvem der har hvilken rytme, og hvad det koster at komme for sent.",
+                     "Momsfrister.", "Hvornår momsen skal ind, og hvad det koster at komme for sent.",
+                     "Hvornår skal momsen indberettes?",
+                     ["Det afhænger af, hvor meget du sælger for. Nye virksomheder indberetter hvert kvartal. Sælger du for under 5 mio. kr. om året og har indberettet og betalt til tiden, er det hvert halve år. Over 50 mio. kr. er det hver måned.",
+                      "Når et kvartal er slut, har du 2 måneder og 1 dag til at indberette og betale. Momsen for 1. kvartal skal altså ind senest 1. juni. Du kan også selv bede om at indberette hvert kvartal.",
+                      "Kommer momsen ikke ind til tiden, fastsætter Skattestyrelsen et foreløbigt beløb, og du betaler et gebyr på 1.400 kr. for hver periode. Renter kommer oveni.",
+                      "Vælger du Med revisor, indberetter vi momsen for dig. Vælger du Gør det selv med AI, indberetter du selv, og du ser fristen i god tid."],
+                     "Det skal du vide",
+                     [("1.400", "kr.", "Gebyr for hver periode, momsen ikke er indberettet til tiden. Renter kommer oveni.", 1400),
+                      ("5", "mio. kr.", "Sælger du for under og har indberettet og betalt til tiden, indberetter du hvert halve år.", 5),
+                      ("50", "mio. kr.", "Sælger du for mere, indberetter du hver måned.", 50)],
+                     "De næste frister: 1. december 2026 for 3. kvartal og 1. marts 2027 for 4. kvartal og 2. halvår 2026.",
+                     "Momsens år, kvartal for kvartal", {},
+                     f"Indberetter du hvert halve år, er fristerne {halvaar[3][0]} for {halvaar[3][1]} og {halvaar[9][0]} for {halvaar[9][1]}. Datoerne kan rykke sig lidt fra år til år, og den præcise frist står hos <a href=\"{SKAT_FRISTER}\" target=\"_blank\" rel=\"noopener\">Skattestyrelsen</a>.",
+                     "løn, årsregnskab og selvangivelse.",
+                     [("Skal jeg overhovedet være momsregistreret?", "Som udgangspunkt, når du sælger for mere end 50.000 kr. på 12 måneder. Læs mere om <a href='/revisor-enkeltmandsvirksomhed/'>revisor til enkeltmandsvirksomhed</a>."),
+                      ("Kan jeg selv vælge at indberette hvert kvartal?", "Ja. Du kan bede Skattestyrelsen om det, også selv om du sælger for under 5 mio. kr."),
+                      ("Hvad koster det?", FAQ_PRIS),
+                      ("Har du et ApS?", "Så gælder de samme momsfrister. Læs om <a href='/revisor-aps/'>revisor til ApS</a>, årsrapporten og fravalg af revision.")],
+                     KILDER_MOMS + [KILDE_NYT_SELSKAB, KILDE_REG_MOMS], tjekket="8. november 2026")
 
 
 # ---------------------------------------------------------------------------------------------------- 404
@@ -1044,7 +1107,8 @@ if __name__ == "__main__":
     (ROD / "404.html").write_text(ikke_fundet(), encoding="utf-8")
     print("skrevet 404")
     for navn, html in [("priser", priser()), ("appen", appen()), ("ai", ai()), ("om-os", om_os()), ("privatliv", privatliv()), ("handelsbetingelser", handelsbetingelser()), ("databehandleraftale", databehandleraftale()),
-                       ("revisor-enkeltmandsvirksomhed", revisor_enkeltmand()), ("revisor-aps", revisor_aps())]:
+                       ("revisor-enkeltmandsvirksomhed", revisor_enkeltmand()), ("revisor-aps", revisor_aps()),
+                       ("digital-bogfoering", digital_bogfoering()), ("moms-frister", moms_frister())]:
         (ROD / navn).mkdir(exist_ok=True)
         (ROD / navn / "index.html").write_text(html, encoding="utf-8")
         print("skrevet", navn)

@@ -528,7 +528,7 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 .soege-svar-tekst p:first-child { font-size: 22px; line-height: 1.4; letter-spacing: -.01em; color: var(--blaek); }
 .fakta.tre { grid-template-columns: repeat(3, 1fr); }
 .fakta-note { max-width: 720px; margin: 40px auto 0; font-size: 16px; line-height: 1.55; color: var(--daempet); text-align: center; text-wrap: pretty; }
-.fakta-note a, .bag a { color: var(--blaa); text-decoration: underline; text-underline-offset: 3px; }
+.fakta-note a, .bag a, .fakta-felt a { color: var(--blaa); text-decoration: underline; text-underline-offset: 3px; }
 .aar { display: flex; list-style: none; margin: 0; padding: 0; }
 .aar li { position: relative; flex: 1 1 0; min-width: 0; padding: 18px 14px 0 0; border-top: 2px solid var(--lineal); }
 .aar .aar-md { font-size: 14px; color: var(--daempet); }
