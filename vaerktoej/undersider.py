@@ -175,9 +175,14 @@ def fod():
 # Claude- og ChatGPT-logoerne som klistermærker på /ai og ved pakkerne (Othman 27. okt 2026, mockup 1). Anthropic sagde
 # nej 28. okt 2026 (logoet må ikke stå på siden, heller ikke som avatar); navnet må stå som tekst, uden at antyde
 # samarbejde. Logofilerne er slettet. Slå ikke til igen uden skriftlig tilladelse fra både Anthropic og OpenAI.
-LOGOER = False
-CLAUDE_LOGO = '<img src="/billeder/claude.svg" alt="" width="38" height="38">'
-GPT_LOGO = '<img src="/billeder/chatgpt.svg" alt="" width="40" height="40">'
+# I stedet én fælles avatar for "din egen AI", uanset om kunden bruger Claude eller ChatGPT: Tallos t med briller,
+# "revisoren" (Othman 8. nov 2026, bud B3 blandt fire typer og fire t-varianter i .tmp/avatar). Den står alene, uden
+# hvid ramme eller cirkel om (Othman: "det ser grimt ud"): t'et selv er figuren, som Numina har sin klat (princippet, ikke formen). Øjnene blinker (css .av).
+AVATAR = ('<svg class="av" viewBox="0 0 64 64" aria-hidden="true">'
+          '<path fill="#4b3aa6" d="M25 15.5 39 9v35c0 2.6 1.3 3.8 3.8 3.8h4.4v9.2h-6.1C31.4 57 25 53.2 25 45z"/>'
+          '<rect x="10" y="23.5" width="44" height="9" rx="4.5" fill="#4b3aa6"/>'
+          '<g fill="#fff" stroke="#4b3aa6" stroke-width="2.6"><circle cx="21.5" cy="28" r="7.2"/><circle cx="42.5" cy="28" r="7.2"/></g>'
+          '<g class="oejne"><circle cx="22.3" cy="28.6" r="2.6" fill="#16141d"/><circle cx="43.3" cy="28.6" r="2.6" fill="#16141d"/></g></svg>')
 
 
 # Tillidslinjen over FAQ'en på forsiden og under samtalen på /ai (Othman 30. okt 2026, mockup "Linjen"). Kun tekst,
@@ -195,8 +200,8 @@ def tillidslinje():
     return f'<ul class="tillid" aria-label="Sikkerhed">{punkter}</ul>'
 
 
-def klister(gpt, drej):
-    return f'<span class="klister{" gpt" if gpt else ""}" style="--drej:{drej}">{GPT_LOGO if gpt else CLAUDE_LOGO}</span>'
+def klister(drej):
+    return f'<span class="klister" style="--drej:{drej}">{AVATAR}</span>'
 
 
 def pakkeblok(overskrift=True, taet=False):
@@ -218,7 +223,7 @@ def pakkeblok(overskrift=True, taet=False):
     hoejre = side("Med revisor", 1000, "1.000", "AI'en hjælper. Vi bogfører.", ["Du rører ikke bogføringen", "Vi indberetter momsen",
                   "Din egen revisor at skrive til", "Overblik over salg, udgifter og overskud"], " anb")
     klisterlinje = f"""
-      <div class="klister-linje"><span class="klister-par" aria-hidden="true">{klister(0, "-8deg")}{klister(1, "9deg")}</span><p>Spørg din egen Claude eller ChatGPT om dine tal<small>Med i begge pakker</small></p></div>""" if LOGOER else ""
+      <div class="klister-linje"><span class="klister-par" aria-hidden="true">{klister("-8deg")}</span><p>Spørg din egen Claude eller ChatGPT om dine tal<small>Med i begge pakker</small></p></div>"""
     return f"""<section class="pakker{' taet' if taet else ''}" id="pakker">
     <div class="felt">{h2}
       <div class="stortal">
@@ -553,20 +558,16 @@ def ai():
       </figure>
     </div>"""
     # Samtalen ligner en rigtig AI-chat; den kommer frem én gang, når den ses (js/tallo.js, [data-ai-chat]).
-    # Med LOGOER sidder Claude og ChatGPT som klistermærker på samtalens hjørne og svarer hver sin gang
-    if LOGOER:
-        hjoerne = f'\n        <div class="klister-hjoerne" aria-hidden="true">{klister(0, "-10deg")}{klister(1, "12deg")}</div>'
-        top_ikon = f'<span class="ac-par" aria-hidden="true"><span class="ac-ikon logo">{CLAUDE_LOGO}</span><span class="ac-ikon logo gpt">{GPT_LOGO}</span></span>'
-        svar_ikon = [f'<span class="ac-ikon logo" aria-hidden="true">{CLAUDE_LOGO}</span>', f'<span class="ac-ikon logo gpt" aria-hidden="true">{GPT_LOGO}</span>']
-    else:
-        hjoerne, top_ikon = "", '<span class="ac-ikon" aria-hidden="true">✦</span>'
-        svar_ikon = ['<span class="ac-ikon" aria-hidden="true">✦</span>'] * 2
+    # Avataren sidder på samtalens hjørne og svarer i samtalen
+    hjoerne = f'\n        <div class="klister-hjoerne" aria-hidden="true">{klister("-10deg")}</div>'
+    top_ikon = f'<span class="ac-ikon logo" aria-hidden="true">{AVATAR}</span>'
+    svar_ikon = [top_ikon] * 2
     chat = f"""<div class="indre">
       <div class="region-hoved midt" data-afslor>
         <h2>Spørg din egen Claude eller ChatGPT</h2>
         <p>Forbind din egen AI i appen under Indstillinger, Din AI. Den kan læse dine tal og lave fakturaudkast, men aldrig bogføre, indberette moms eller slette noget.</p>
       </div>
-      <div class="ai-chat{' har-klister' if LOGOER else ''}" data-ai-chat>{hjoerne}
+      <div class="ai-chat har-klister" data-ai-chat>{hjoerne}
         <div class="ac-top">
           {top_ikon}
           <span><b>Din egen AI</b><small>Forbundet til Tallo · kan læse dine tal</small></span>
