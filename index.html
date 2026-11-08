@@ -56,7 +56,7 @@
 
   /* Skærmen: app-billedet lagt på laptoppen med matrix3d, så det følger fotoets vinkel.
      Et lag pr. format (desktop, mobil); lagene flyttes og skaleres, billederne i dem skifter. */
-  .skaerm { position: absolute; left: 0; top: 0; transform-origin: 0 0; overflow: hidden; background: #f7f6f2; will-change: transform; }
+  .skaerm { position: absolute; left: 0; top: 0; transform-origin: 0 0; overflow: hidden; background: #f5f4f8; will-change: transform; }
   .lag { position: absolute; left: 0; top: 0; }
   .lag img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .45s ease-out; }
   .lag img.vist { opacity: 1; }
@@ -84,7 +84,7 @@
   .skaerm.daempet .daemp { background: rgba(241,240,234,.55); }
   .fokus { position: absolute; left: 0; top: 0; pointer-events: none; opacity: 0; transition: opacity .3s ease-out; }
   .fokus.synlig { opacity: 1; }
-  .fk { position: absolute; left: 40px; bottom: 40px; width: min(380px, calc(100% - 80px)); padding: 22px 24px; border-radius: 16px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 30px 60px -28px rgba(20,20,20,.38); opacity: 0; visibility: hidden; transform: translateY(18px) scale(.98); transition: opacity .35s ease-out, transform .5s cubic-bezier(.2,.7,.2,1), visibility 0s .5s; }
+  .fk { position: absolute; left: 40px; bottom: 40px; width: min(380px, calc(100% - 80px)); padding: 22px 24px; border-radius: 16px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 30px 60px -28px rgba(22,20,29,.38); opacity: 0; visibility: hidden; transform: translateY(18px) scale(.98); transition: opacity .35s ease-out, transform .5s cubic-bezier(.2,.7,.2,1), visibility 0s .5s; }
   .fk.vist { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
   .fk-lbl { font-size: 14px; font-weight: 500; color: var(--daempet); }
   .fk-tal { margin-top: 2px; font-size: 44px; font-weight: 500; letter-spacing: -.03em; line-height: 1.05; font-variant-numeric: tabular-nums; }
@@ -93,11 +93,11 @@
   .soejler { display: flex; align-items: flex-end; gap: 7px; height: 96px; margin-top: 20px; border-bottom: 1px solid var(--lineal); }
   .soejler i { flex: 1; display: flex; align-items: flex-end; gap: 2px; height: 100%; }
   .soejler b { flex: 1; border-radius: 3px 3px 0 0; background: #4b3aa6; transform: scaleY(0); transform-origin: bottom; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
-  .soejler b + b { background: #d9d4f1; }
+  .soejler b + b { background: #d8d2f2; }
   .fk.spil .soejler b { transform: scaleY(1); }
   .soejle-akse { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--daempet); }
   .ind { list-style: none; margin: 10px 0 0; padding: 0; }
-  .ind li { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid #efeee9; font-size: 15px; opacity: 0; transform: translateY(-10px); transition: opacity .35s ease-out, transform .45s cubic-bezier(.2,.7,.2,1); }
+  .ind li { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid #eeedf3; font-size: 15px; opacity: 0; transform: translateY(-10px); transition: opacity .35s ease-out, transform .45s cubic-bezier(.2,.7,.2,1); }
   .ind li:first-child { border-top: 0; }
   .fk.spil .ind li { opacity: 1; transform: none; transition-delay: .15s; }
   .fk.spil .ind li:nth-child(2) { transition-delay: .7s; }
@@ -106,7 +106,7 @@
   .kr { font-variant-numeric: tabular-nums; white-space: nowrap; }
   .kr.plus { color: var(--blaa); }
   .kilde { flex: none; width: 72px; padding: 3px 0; border-radius: 6px; font-size: 12px; font-weight: 600; text-align: center; color: #fff; }
-  .kilde.mail { background: #c98a3b; } .kilde.faktura { background: #4b3aa6; } .kilde.bank { background: #5a5a54; }
+  .kilde.mail { background: #c98a3b; } .kilde.faktura { background: #4b3aa6; } .kilde.bank { background: #53515e; }
   .fk-fod { margin-top: 12px; font-size: 14px; color: var(--daempet); opacity: 0; transition: opacity .4s ease-out; }
   .fk.spil .fk-fod { opacity: 1; transition-delay: 1.8s; }
   .fk.lille { bottom: auto; width: auto; display: flex; align-items: center; gap: 10px; padding: 8px 16px 8px 8px; border-radius: 999px; font-size: 15px; font-weight: 500; white-space: nowrap; }
@@ -132,9 +132,9 @@
   .kom-hoved h2 { font-size: var(--t-h2); font-weight: 500; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
   .kom-hoved .ingress { margin-top: 12px; max-width: 560px; text-wrap: balance; }
   .kom-gitter { display: grid; grid-template-columns: minmax(0, 620px); justify-content: center; gap: 14px; margin-top: 56px; padding: 0 32px; }
-  .tilmeld { padding: 40px 40px 36px; border-radius: 24px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 30px 60px -40px rgba(20,20,20,.35); }
+  .tilmeld { padding: 40px 40px 36px; border-radius: 24px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 30px 60px -40px rgba(22,20,29,.35); }
   .trinliste { position: relative; list-style: none; margin: 0; padding: 0; }
-  .trinliste::before, .trinliste::after { content: ""; position: absolute; left: 17px; top: 20px; bottom: 40px; width: 2px; border-radius: 2px; background: #efeee9; }
+  .trinliste::before, .trinliste::after { content: ""; position: absolute; left: 17px; top: 20px; bottom: 40px; width: 2px; border-radius: 2px; background: #eeedf3; }
   .trinliste::after { background: var(--blaa); transform: scaleY(var(--fyld, 0)); transform-origin: top; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
   .trin { position: relative; display: grid; grid-template-columns: 36px 1fr; gap: 18px; padding-bottom: 30px; }
   .trin:last-child { padding-bottom: 0; }
@@ -142,7 +142,7 @@
   .nr::after { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; border-radius: 50%; background: var(--blaa); color: #fff; font-size: 16px; transform: scale(0); transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
   .trin.klar .nr::after { transform: scale(1); }
   .trin label, .trin .lbl { display: block; padding-top: 6px; font-size: 17px; font-weight: 560; }
-  .trin input[type="text"], .trin input[type="email"] { display: block; width: 100%; height: 50px; margin-top: 10px; padding: 0 16px; border: 0; border-radius: 12px; background: #f6f6f3; box-shadow: inset 0 0 0 1px var(--lineal); font: inherit; font-size: 17px; color: var(--blaek); transition: box-shadow .2s, background .2s; }
+  .trin input[type="text"], .trin input[type="email"] { display: block; width: 100%; height: 50px; margin-top: 10px; padding: 0 16px; border: 0; border-radius: 12px; background: #f5f4f8; box-shadow: inset 0 0 0 1px var(--lineal); font: inherit; font-size: 17px; color: var(--blaek); transition: box-shadow .2s, background .2s; }
   .trin input:focus { outline: none; background: #fff; box-shadow: inset 0 0 0 2px #4b3aa6; }
   .hjaelp { margin-top: 8px; font-size: 14px; color: var(--daempet); }
   .manuel { margin-top: 12px; font-size: 15px !important; font-weight: 500 !important; }
@@ -158,7 +158,7 @@
   .pakkevalg input { position: absolute; opacity: 0; }
   .pakkevalg span { display: block; padding: 14px 16px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--lineal); font-size: 16px; font-weight: 560; transition: box-shadow .2s, background .2s; }
   .pakkevalg small { display: block; font-size: 14px; font-weight: 400; color: var(--daempet); }
-  .pakkevalg input:checked + span { background: #f3f0ff; box-shadow: inset 0 0 0 2px #4b3aa6; }
+  .pakkevalg input:checked + span { background: #efedfb; box-shadow: inset 0 0 0 2px #4b3aa6; }
   .pakkevalg input:focus-visible + span { outline: 2px solid #4b3aa6; outline-offset: 2px; }
   .send { display: flex; align-items: center; gap: 16px; margin-top: 34px; padding-left: 54px; }
   .send .pille { flex: none; height: 48px; padding: 0 26px; font-size: 16px; border: 0; cursor: pointer; font-family: inherit; }
@@ -170,7 +170,7 @@
   .formular-status.fejl { color: #c4321c; }
   .faelde { position: absolute; left: -9999px; }
   .statisk { display: none; }
-  .statisk img { display: block; width: 100%; height: auto; border-radius: 14px; box-shadow: 0 0 0 1px rgba(20,20,20,.06), 0 30px 80px -30px rgba(20,20,20,.35); }
+  .statisk img { display: block; width: 100%; height: auto; border-radius: 14px; box-shadow: 0 0 0 1px rgba(22,20,29,.06), 0 30px 80px -30px rgba(22,20,29,.35); }
   /* Uden zoom (reduceret bevægelse eller intet JS): fotoet øverst, produktet stille nedenunder.
      Med reduceret bevægelse ligger appen stadig på laptopskærmen; uden JS står skærmen sort. */
   html:not(.zoom) .rejse { height: auto !important; }
@@ -724,7 +724,7 @@
     skaerm.style.height = bh + "px";
     skaerm.style.transform = matrix3d(kvad, bw, bh);
     skaerm.style.borderRadius = lerp(3, mobil ? 14 : 16, f) + "px";
-    skaerm.style.boxShadow = `0 0 0 1px rgba(20,20,20,${.06 * f}), 0 30px 80px -30px rgba(20,20,20,${.35 * f})`;
+    skaerm.style.boxShadow = `0 0 0 1px rgba(22,20,29,${.06 * f}), 0 30px 80px -30px rgba(22,20,29,${.35 * f})`;
 
     // Lagene: dækker skærmen under zoomen; i panelet vises appen i skala sc, og sidebjælken glider ud til venstre
     const daek = (fmt) => Math.max(bw, bh * fmt);

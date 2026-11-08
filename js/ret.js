@@ -17,15 +17,15 @@
     [data-ret-orig]:focus { outline: 2px solid #4b3aa6; }
     .ret-aendret { background: rgba(248,170,110,.18); box-shadow: inset 0 -2px 0 #f0a46b; }
     .ret-slettet { text-decoration: line-through; text-decoration-color: #c0392b; opacity: .38; }
-    .ret-vaerktoej { position: fixed; z-index: 1000; display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: #141414; box-shadow: 0 12px 30px -10px rgba(0,0,0,.5); }
+    .ret-vaerktoej { position: fixed; z-index: 1000; display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: #16141d; box-shadow: 0 12px 30px -10px rgba(0,0,0,.5); }
     .ret-vaerktoej button, .ret-panel button { min-height: 36px; padding: 0 12px; border: 0; border-radius: 9px; background: transparent; color: #fff; font: 500 14px/1 "Geist", system-ui, sans-serif; cursor: pointer; }
     .ret-vaerktoej button:hover, .ret-panel button:hover { background: rgba(255,255,255,.14); }
     .ret-vaerktoej .slet { color: #ffb4a8; }
-    .ret-panel { position: fixed; z-index: 1000; left: 16px; bottom: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; max-width: calc(100% - 32px); padding: 6px 6px 6px 14px; border-radius: 16px; background: #141414; color: #fff; font: 500 14px/1.3 "Geist", system-ui, sans-serif; box-shadow: 0 20px 40px -16px rgba(0,0,0,.5); }
+    .ret-panel { position: fixed; z-index: 1000; left: 16px; bottom: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; max-width: calc(100% - 32px); padding: 6px 6px 6px 14px; border-radius: 16px; background: #16141d; color: #fff; font: 500 14px/1.3 "Geist", system-ui, sans-serif; box-shadow: 0 20px 40px -16px rgba(0,0,0,.5); }
     .ret-panel .tal { margin-right: 6px; opacity: .85; }
     .ret-panel .kopier { background: #4b3aa6; }
     .ret-panel .kopier:hover { background: #5a48c0; }
-    .ret-boks { position: fixed; z-index: 1001; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(20,20,20,.5); }
+    .ret-boks { position: fixed; z-index: 1001; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(22,20,29,.5); }
     .ret-boks div { width: min(640px, 100%); padding: 20px; border-radius: 18px; background: #fff; font: 15px/1.5 "Geist", system-ui, sans-serif; }
     .ret-boks textarea { width: 100%; height: 50vh; margin: 12px 0; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font: 13px/1.5 ui-monospace, Consolas, monospace; }
     .ret-boks button { min-height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: #4b3aa6; color: #fff; font: inherit; font-weight: 500; cursor: pointer; }
