@@ -612,7 +612,12 @@
     stor.src = o.getAttribute("src");
   };
   const aabn = () => { if (maaHente) return; maaHente = true; venter.forEach(hent); venter.clear(); opgrader(); };
-  addEventListener("load", aabn, { once: true });
+  // Efter load og først når fotoet er afkodet og tegnet (to frames), ellers kan de nå at konkurrere med den første visning
+  const fotoImg = foto.querySelector("img");
+  addEventListener("load", () => {
+    (fotoImg.decode ? fotoImg.decode().catch(() => {}) : Promise.resolve())
+      .then(() => requestAnimationFrame(() => requestAnimationFrame(aabn)));
+  }, { once: true });
   addEventListener("scroll", aabn, { once: true, passive: true });
   if (maaHente) opgrader();
   const tekst = document.getElementById("tekst");
@@ -878,7 +883,8 @@
   addEventListener("scroll", vaek, { passive: true });
 })();
 </script>
-<script src="/js/tallo.js"></script>
-<script src="/js/mail.js"></script>
+<!-- defer: blokerer ikke første visning af fotoet (LCP); rækkefølgen efter scriptet ovenfor er den samme -->
+<script src="/js/tallo.js" defer></script>
+<script src="/js/mail.js" defer></script>
 </body>
 </html>
