@@ -107,8 +107,6 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 .snak img { display: block; width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
 .snak h3 { margin: 0; font-size: 16px; font-weight: 600; }
 .snak p { margin-top: 2px; font-size: 14px; line-height: 1.45; color: #2e2563; }
-.snak-mail { margin-top: 4px; font-size: 14px; color: var(--daempet); text-align: center; }
-.snak-mail a { display: inline-block; padding: 10px 0; text-decoration: underline; text-underline-offset: 3px; }
 
 /* Fotokort: står skævt, falder på plads i syne og retter sig op ved hover; et lige app-kort på hvert */
 .par.bred { gap: 140px; }

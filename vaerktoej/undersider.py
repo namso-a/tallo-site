@@ -325,7 +325,7 @@ FAQ_FORSIDE = [
     ("Kan jeg stole på, at AI'en bogfører rigtigt?",
      "AI'en er god til det, den har set før, men den kan tage fejl. Derfor bærer den det tunge læs, og en revisor "
      "kvalitetssikrer den. Også momsen, før den indberettes. Vælger du Gør det selv med AI, godkender du selv hvert "
-     "forslag, og du kan skifte fra måned til måned."),
+     "forslag."),
     ("Hvornår åbner Gør det selv med AI?", "Når vores program er registreret hos Erhvervsstyrelsen. Det kræver loven for "
      "mange virksomheder. Skriv dig op, så skriver vi til dig den dag. Med revisor kan du starte i dag, i dit eget "
      "regnskabsprogram."),
@@ -351,10 +351,6 @@ FAQ_PRISER = [
     ("Kommer jeg fra et andet program?", "Så flytter vi dig gratis. Din historik kommer med."),
 ]
 FAQ_OM_OS = [
-    ("Hvem er min revisor?", "Det er mig, Othman. AI'en bærer det tunge læs, og jeg kvalitetssikrer den. Skal noget "
-     "afklares, skriver jeg til dig.", "othman"),
-    ("Hvem taler jeg med, før jeg siger ja?", "Mig, Mohammed. Den første snak er 30 minutter i telefonen eller på video, "
-     "og du binder dig ikke.", "mohammed"),
     ("Hvad hvis jeg har et spørgsmål?", "Så skriver du det i appen. Jeg svarer normalt samme dag. Haster det, så skriv til <a data-u='kontakt' data-d='tallo.dk' href='#'>kontakt (at) tallo.dk</a>.", "othman"),
 ]
 SVARER = {"othman": "Othman", "mohammed": "Mohammed"}
@@ -415,12 +411,11 @@ def priser():
           </tbody>
         </table>
       </div>
-      <p class="smaat" style="color:var(--daempet);text-align:center"><b style="color:var(--blaek)">Tilkøb:</b> årsrapport (ApS). Prisen får du, før du siger ja.</p>
     </div>"""
     spoerg = faq(FAQ_PRISER)
     slut = """<div class="indre udsagn" data-afslor>
       <h2>Ingen binding.</h2>
-      <p>Du opsiger fra måned til måned. Med revisor kan du starte i dag, i dit eget regnskabsprogram.</p>
+      <p>Med revisor kan du starte i dag.</p>
       <div class="knapper">
         <a class="pille farve stor" href="/#kom">Bliv kunde på 2 minutter</a>
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
@@ -460,7 +455,7 @@ def appen():
     top = """<div class="side-top delt">
       <div>
         <h1>Alt om forretningen i lommen.</h1>
-        <p class="ingress">Se overskud, bank og moms, når du vil. Regninger og bilag kommer selv ind, så du ikke skal taste noget.</p>
+        <p class="ingress">Se overskud, bank og moms, når du vil.</p>
         <div class="knapper">
           <a class="pille farve" href="/#kom">Bliv kunde på 2 minutter</a>
           <a class="pille hvid" href="/#kom" data-book>Hellere en snak?</a>
@@ -469,7 +464,7 @@ def appen():
       <figure class="top-foto"><img src="/billeder/appen-top.webp" srcset="/billeder/appen-top-1000.webp 1000w, /billeder/appen-top-1400.webp 1400w, /billeder/appen-top.webp 2000w" sizes="(max-width: 899px) 100vw, 640px" alt="En hånd, der holder en telefon med Tallos app, i en lille forretning" width="2000" height="1334"></figure>
     </div>"""
     TRIN = [
-        ("overblik", "Du ved, hvor du står", "Overskud i år, hvad du har på kontoen, og hvad kunderne skylder dig. Det er det første, du ser, når du åbner appen."),
+        ("overblik", "Du ved, hvor du står", "Overskud i år, hvad du har på kontoen, og hvad kunderne skylder dig."),
         ("foer", "Regningen kommer selv", "En regning på mail eller en betaling i banken lander i appen af sig selv. Du skal ikke taste noget ind."),
         ("efter", "Og bliver bogført", "AI'en bogfører den, og med revisor kvalitetssikrer vi. Gør du det selv, trykker du godkend."),
         ("scan", "En kvittering tager et øjeblik", "Tag et billede, så er den med. Har du betalt med egne penge, siger du det, når du scanner."),
@@ -531,7 +526,7 @@ def ai():
       <div class="laes-scene">
         <div class="region-hoved midt laes-hoved">
           <h2>Den læser dine bilag</h2>
-          <p>Afsender, beløb, moms og dato. Alt i EU.</p>
+          <p>Alt i EU.</p>
         </div>
         <div class="laes-papir">
           <div class="ark">
@@ -571,7 +566,7 @@ def ai():
     chat = f"""<div class="indre">
       <div class="region-hoved midt" data-afslor>
         <h2>Spørg din egen Claude eller ChatGPT</h2>
-        <p>Forbind din egen AI i appen under Indstillinger, Din AI. Den kan læse dine tal og lave fakturaudkast, men aldrig bogføre, indberette moms eller slette noget.</p>
+        <p>Forbind din egen AI. Den kan læse dine tal og lave fakturaudkast, men aldrig bogføre, indberette moms eller slette noget.</p>
       </div>
       <div class="ai-chat" data-ai-chat>{hjoerne}
         <div class="ac-top">
