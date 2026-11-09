@@ -158,9 +158,9 @@
   .firma small { display: block; font-size: 14px; color: var(--daempet); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   @keyframes ind { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
   .pakkevalg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-  .pakkevalg label { position: relative; padding: 0; cursor: pointer; }
+  .pakkevalg label { position: relative; display: flex; padding: 0; cursor: pointer; }  /* kasserne lige høje */
   .pakkevalg input { position: absolute; opacity: 0; }
-  .pakkevalg span { display: block; padding: 14px 16px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--lineal); font-size: 16px; font-weight: 560; transition: box-shadow .2s, background .2s; }
+  .pakkevalg span { flex: 1; display: block; padding: 14px 16px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--lineal); font-size: 16px; font-weight: 560; transition: box-shadow .2s, background .2s; }
   .pakkevalg small { display: block; font-size: 14px; font-weight: 400; color: var(--daempet); }
   .pakkevalg input:checked + span { background: #efedfb; box-shadow: inset 0 0 0 2px #4b3aa6; }
   .pakkevalg input:focus-visible + span { outline: 2px solid #4b3aa6; outline-offset: 2px; }
@@ -457,10 +457,9 @@
             <div>
               <span class="lbl" id="pakkeLbl">Vælg pakke</span>
               <div class="pakkevalg" role="radiogroup" aria-labelledby="pakkeLbl">
-                <label><input type="radio" name="pakke" value="selv" data-pakke="selv"><span>Gør det selv med AI<small>500 kr. om måneden · åbner senere</small></span></label>
+                <label><input type="radio" name="pakke" value="selv" data-pakke="selv"><span>Gør det selv med AI<small>500 kr. om måneden</small></span></label>
                 <label><input type="radio" name="pakke" value="bogholder" data-pakke="bogholder" checked><span>Med revisor<small>1.000 kr. om måneden</small></span></label>
               </div>
-              <p class="hjaelp">Vælger du Gør det selv med AI, skriver vi dig op og skriver til dig, den dag den åbner.</p>
             </div>
           </li>
         </ol>
