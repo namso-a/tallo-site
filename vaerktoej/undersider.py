@@ -144,7 +144,7 @@ def fod():
     return f"""<footer class="fod">
   <div class="fod-indre">
     <div>
-      <a class="logo" href="/">tallo</a>
+      <div class="fod-logo"><a class="logo" href="/">tallo</a>{figur("i-fod", "8deg")}</div>
       <p>Revisor og bogføring til fast pris.</p>
       <div class="some">
 {some}
@@ -191,7 +191,7 @@ AVATAR = ('<svg class="av" viewBox="0 0 64 64" aria-hidden="true">'
 
 def figur(klasse, drej="0deg"):
     """Tallos maskot ét sted på siden. Den er Tallos figur, ikke en AI, og taler ikke på Tallos vegne ("Tallo er Othman og
-    Mohammed"). Godkendt på 404-siden (Othman 10. nov 2026)."""
+    Mohammed"). Står på 404-siden, ved logoet i footeren og ved "Bogført" i appen på forsiden (Othman 10. nov 2026)."""
     return f'<span class="figur {klasse}" style="--drej:{drej}" aria-hidden="true">{AVATAR}</span>'
 
 
