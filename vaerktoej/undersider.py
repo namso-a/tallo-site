@@ -46,10 +46,12 @@ INDEKSERET = ["/", "/priser/", "/appen/", "/ai/", "/om-os/", "/revisor-enkeltman
 
 
 def strukturerede_data():
-    """Hvem Tallo er, til Google (kun forsiden). Tilbuddene står som PreOrder, fordi vi åbner ved registreringen; ret til
-    InStock den dag. Ingen mailadresse (den er skjult for robotter på siden) og ingen bedømmelser, vi ikke har."""
+    """Hvem Tallo er, til Google (kun forsiden). Med revisor er åben (InStock) fra 9. nov 2026, i kundens eget program;
+    Gør det selv med AI er PreOrder, til vores program er registreret; ret den til InStock den dag. Ingen mailadresse (den er
+    skjult for robotter på siden) og ingen bedømmelser, vi ikke har."""
     def tilbud(navn, pris):
-        return {"@type": "Offer", "name": navn, "availability": "https://schema.org/PreOrder", "url": f"{DOMAENE}/priser/",
+        nu = navn == "Med revisor"
+        return {"@type": "Offer", "name": navn, "availability": "https://schema.org/" + ("InStock" if nu else "PreOrder"), "url": f"{DOMAENE}/priser/",
                 "priceSpecification": {"@type": "UnitPriceSpecification", "price": pris, "priceCurrency": "DKK",
                                        "unitText": "MON", "valueAddedTaxIncluded": False}}
     data = {"@context": "https://schema.org", "@graph": [
@@ -120,7 +122,7 @@ def menu(aktiv=None):
 {smaa}
   </ul>
   <div class="nav-hoejre">
-    <a class="pille farve" href="/#kom">Skriv dig op</a>
+    <a class="pille farve" href="/#kom">Bliv kunde</a>
     <button class="menu-knap" id="menuKnap" type="button" aria-expanded="false" aria-controls="menuArk">Menu</button>
   </div>
 </nav>
@@ -129,7 +131,7 @@ def menu(aktiv=None):
   <ul>
 {store}
   </ul>
-  <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
+  <a class="pille farve" href="/#kom">Bliv kunde på 2 minutter</a>
   <p class="lille">Eller ring på {RING} eller skriv til <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
 </div>"""
 
@@ -210,19 +212,22 @@ def pakkeblok(overskrift=True, taet=False):
     frem (js/tallo.js, [data-tael]). Sætningen står øverst i stedet for pakkenavnet (navnet er kun for
     skærmlæsere); de fire linjer står i en lige kolonne med flueben, dæmpede, indtil musen er på siden (Othman 26. okt 2026)."""
     h2 = '\n      <h2>To pakker. Fast pris.</h2>' if overskrift else ""
-    def side(navn, tal, vist, saet, punkter, anb=""):
+    def side(navn, tal, vist, saet, punkter, anb="", status=""):
         li = "".join(f"<li>{p}</li>" for p in punkter)
         return f"""<div class="stortal-side{anb}">
           <p class="sr">{navn}</p>
+          <p class="stortal-status">{status}</p>
           <p class="stortal-saet">{saet}</p>
           <p class="stortal-tal" data-tael="{tal}">{vist}</p>
           <p class="stortal-md">kr. om måneden plus moms</p>
           <div class="stortal-detaljer"><ul>{li}</ul></div>
         </div>"""
     venstre = side("Gør det selv med AI", 500, "500", "AI'en hjælper. Du bogfører.", ["Du godkender med ét tryk", "AI'en finder konto og moms",
-                   "Momsen og fristen i god tid", "Skift til revisor fra måned til måned"])
+                   "Momsen og fristen i god tid", "Skift til revisor fra måned til måned"],
+                   status='<a class="status-link" href="/?pakke=selv#kom"><span class="app-pille graa">Åbner senere · skriv dig op</span></a>')
     hoejre = side("Med revisor", 1000, "1.000", "AI'en hjælper. Vi bogfører.", ["Du rører ikke bogføringen", "Vi indberetter momsen",
-                  "Din egen revisor at skrive til", "Overblik over salg, udgifter og overskud"], " anb")
+                  "Din egen revisor at skrive til", "Overblik over salg, udgifter og overskud"], " anb",
+                  status='<span class="app-pille ok">Start i dag</span>')
     klisterlinje = ""  # linjen om kundens egen Claude/ChatGPT udgik med logoerne; Tallos figur hører ikke til der
     return f"""<section class="pakker{' taet' if taet else ''}" id="pakker">
     <div class="felt">{h2}
@@ -232,21 +237,21 @@ def pakkeblok(overskrift=True, taet=False):
         {hoejre}
       </div>{klisterlinje}
       <div class="knapper">
-        <a class="pille farve stor" href="/#kom">Skriv dig op</a>
+        <a class="pille farve stor" href="/#kom">Bliv kunde</a>
         <a class="pille hvid stor" href="/priser/">Se hvad der er med</a>
       </div>
     </div>
   </section>"""
 
 
-def baand(titel="Skriv dig op på 2 minutter.",
-          tekst="Vi åbner, når programmet er registreret hos Erhvervsstyrelsen. Indtil da betaler du intet.",
+def baand(titel="Bliv kunde på 2 minutter.",
+          tekst="Med revisor starter i dag, i det regnskabsprogram, du allerede bruger.",
           anden='<a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>'):
     return f"""<section class="baand" data-afslor>
     <h2>{titel}</h2>
     <p class="ingress">{tekst}</p>
     <div class="knapper">
-      <a class="pille farve stor" href="/#kom">Skriv dig op</a>
+      <a class="pille farve stor" href="/#kom">Bliv kunde</a>
       {anden}
     </div>
   </section>"""
@@ -310,18 +315,20 @@ SAMMENLIGN = [
 ]
 # Spørgsmål og svar: samme komponent tre steder, intet spørgsmål går igen (Othman 17. okt 2026). Forsiden har de
 # vigtigste lige før tilmeldingen; /priser pris og vilkår; /om-os jer to. Tredje felt: hvem der svarer (portræt).
-# Programmet er ikke åbent, men vi kan tage kunder i deres eget regnskabsprogram nu (Othman 6. nov 2026). Sådan en aftale laves
-# for sig; handelsbetingelserne gælder pakkerne, når vi åbner. Ingen programnavne på siden.
-NU_SVAR = ("Ja, i dit eget regnskabsprogram. Pakkerne åbner, når vores program er registreret hos Erhvervsstyrelsen. Indtil da "
-           "bogfører vi i det program, du allerede bruger, og du får prisen, før du siger ja.")
+# Åben fra 9. nov 2026 (Othman): Med revisor i kundens eget regnskabsprogram til 1.000 kr., indtil vores program er live.
+# Den aftale laves for sig; handelsbetingelserne gælder pakkerne i vores program. Gør det selv med AI er vores program og
+# har venteliste, til det er registreret. Ingen programnavne på siden.
+NU_SVAR = ("Ja. Med revisor kan du starte i dag. Vi bogfører i det regnskabsprogram, du allerede bruger, til 1.000 kr. om "
+           "måneden plus moms. Dit program betaler du selv, indtil vi flytter dig over i vores. Gør det selv med AI åbner, "
+           "når vores program er registreret hos Erhvervsstyrelsen.")
 FAQ_FORSIDE = [
     ("Kan jeg stole på, at AI'en bogfører rigtigt?",
      "AI'en er god til det, den har set før, men den kan tage fejl. Derfor bærer den det tunge læs, og en revisor "
      "kvalitetssikrer den. Også momsen, før den indberettes. Vælger du Gør det selv med AI, godkender du selv hvert "
      "forslag, og du kan skifte fra måned til måned."),
-    ("Hvornår åbner I?", "Når vores program er registreret hos Erhvervsstyrelsen. Det kræver loven for mange virksomheder. "
-     "Du kan skrive dig op nu, og vi skriver til dig, den dag vi åbner. Skal du bruge en revisor nu, bogfører vi i dit eget "
-     "regnskabsprogram, indtil vi åbner."),
+    ("Hvornår åbner Gør det selv med AI?", "Når vores program er registreret hos Erhvervsstyrelsen. Det kræver loven for "
+     "mange virksomheder. Skriv dig op, så skriver vi til dig den dag. Med revisor kan du starte i dag, i dit eget "
+     "regnskabsprogram."),
     # Her står "bogholder" med vilje, så folk, der søger på ordet, kan finde os; vi kalder os ikke bogholder (Othman 6. nov 2026)
     ("Er I revisor eller bogholder?", "Vi kalder os revisor, fordi vi både bogfører, indberetter momsen og laver økonomiske "
      "beregninger. Søger du en bogholder, er du også det rigtige sted. Vi er ikke godkendte revisorer og afgiver ikke "
@@ -413,9 +420,9 @@ def priser():
     spoerg = faq(FAQ_PRISER)
     slut = """<div class="indre udsagn" data-afslor>
       <h2>Ingen binding.</h2>
-      <p>Skriv dig op nu. Du betaler først, når vi åbner, og du kan skifte pakke fra måned til måned.</p>
+      <p>Du opsiger fra måned til måned. Med revisor kan du starte i dag, i dit eget regnskabsprogram.</p>
       <div class="knapper">
-        <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
+        <a class="pille farve stor" href="/#kom">Bliv kunde på 2 minutter</a>
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
       </div>
     </div>"""
@@ -455,7 +462,7 @@ def appen():
         <h1>Alt om forretningen i lommen.</h1>
         <p class="ingress">Se overskud, bank og moms, når du vil. Regninger og bilag kommer selv ind, så du ikke skal taste noget.</p>
         <div class="knapper">
-          <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
+          <a class="pille farve" href="/#kom">Bliv kunde på 2 minutter</a>
           <a class="pille hvid" href="/#kom" data-book>Hellere en snak?</a>
         </div>
       </div>
@@ -497,9 +504,9 @@ def appen():
     </div>"""
     # Uden foto og kort, kun overskrift og én knap (Othman 18. okt 2026)
     udsagn = """<div class="indre udsagn" data-afslor>
-      <h2>Se dine egne tal, den dag vi åbner.</h2>
+      <h2>Se dine egne tal, den dag appen åbner.</h2>
       <div class="knapper">
-        <a class="pille farve stor" href="/#kom">Skriv dig op</a>
+        <a class="pille farve stor" href="/?pakke=selv#kom">Skriv dig op</a>
       </div>
     </div>"""
     return side("/appen/", "Appen: Tallo", "Overskud, bank, bilag, fakturaer og moms ét sted. På telefonen og på computeren.",
@@ -548,7 +555,7 @@ def ai():
         <h2>Din revisor hedder Othman</h2>
         <p class="ingress">AI'en er hurtig og god til det, den har set før, men den kan tage fejl. Derfor kvalitetssikrer en revisor den, også momsen, før den indberettes. Gør du det selv med AI, godkender du selv hvert forslag.</p>
         <div class="knapper">
-          <a class="pille farve stor" href="/#kom">Skriv dig op på 2 minutter</a>
+          <a class="pille farve stor" href="/#kom">Bliv kunde på 2 minutter</a>
           <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
         </div>
       </div>
@@ -874,7 +881,7 @@ def forside():
 # ---------------------------------------------------------------------------------------------------- søgesider
 FAQ_MOMS = ("Hvor tit skal jeg indberette moms?", "Er virksomheden ny, hvert kvartal. Sælger du for under 5 mio. kr. om "
             "året og har indberettet og betalt til tiden, er det hvert halve år. Se <a href='/moms-frister/'>alle momsfrister</a>.")
-FAQ_PRIS = "Når vi åbner, koster det 500 kr. eller 1.000 kr. om måneden plus moms, til fast pris. Se <a href='/priser/'>pakkerne</a>. Indtil da bogfører vi i dit eget regnskabsprogram, og du får prisen, før du siger ja."
+FAQ_PRIS = "Med revisor koster 1.000 kr. om måneden plus moms, til fast pris, og du kan starte i dag i dit eget regnskabsprogram. Gør det selv med AI koster 500 kr. og åbner, når vores program er registreret. Se <a href='/priser/'>pakkerne</a>."
 GODKENDT = "Nej. Vi afgiver ikke erklæringer."
 SKAT_FRISTER = "https://skat.dk/en-us/businesses/vat/deadlines-filing-vat-returns-and-paying-vat"
 KILDER_MOMS = [("Skattestyrelsen: frister for moms", SKAT_FRISTER)]
@@ -913,7 +920,7 @@ def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fak
       <h1>{h1}</h1>
       <p class="ingress">{ingress}</p>
       <div class="knapper">
-        <a class="pille farve stor" href="/#kom">Skriv dig op</a>
+        <a class="pille farve stor" href="/#kom">Bliv kunde</a>
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
       </div>
     </div>"""
@@ -962,7 +969,7 @@ def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fak
       <p>Vores eget program åbner, når det er registreret hos Erhvervsstyrelsen. Indtil da bogfører vi i det regnskabsprogram, du allerede bruger.</p>
       <div class="knapper">
         <a class="pille farve stor" href="/#kom" data-book>Hellere en snak?</a>
-        <a class="pille hvid stor" href="/#kom">Skriv dig op</a>
+        <a class="pille hvid stor" href="/#kom">Bliv kunde</a>
       </div>
     </div>"""
     afsnit_liste = [region("lilla top", top), region("papir", laes), region("papir", midt)] + ([region("papir", aaret)] if aaret else []) + [

@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" href="/fonts/geist.woff2" crossorigin>
 <link rel="stylesheet" href="/css/tallo.css">
 <script>document.documentElement.classList.add("zoom"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("stille");</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "AccountingService", "@id": "https://tallo.dk/#tallo", "name": "Tallo", "url": "https://tallo.dk/", "image": "https://tallo.dk/og.png", "logo": "https://tallo.dk/favicon-192.png", "vatID": "DK46440986", "telephone": "+4542160509", "description": "Revisor og bogføring til fast pris for enkeltmandsvirksomheder og ApS.", "address": {"@type": "PostalAddress", "postalCode": "8260", "addressLocality": "Viby J", "addressCountry": "DK"}, "areaServed": {"@type": "Country", "name": "Danmark"}, "sameAs": ["https://www.instagram.com/tallo_dk/", "https://www.facebook.com/tallo.dk/", "https://www.linkedin.com/company/tallo.dk/"], "makesOffer": [{"@type": "Offer", "name": "Gør det selv med AI", "availability": "https://schema.org/PreOrder", "url": "https://tallo.dk/priser/", "priceSpecification": {"@type": "UnitPriceSpecification", "price": 500, "priceCurrency": "DKK", "unitText": "MON", "valueAddedTaxIncluded": false}}, {"@type": "Offer", "name": "Med revisor", "availability": "https://schema.org/PreOrder", "url": "https://tallo.dk/priser/", "priceSpecification": {"@type": "UnitPriceSpecification", "price": 1000, "priceCurrency": "DKK", "unitText": "MON", "valueAddedTaxIncluded": false}}]}, {"@type": "WebSite", "@id": "https://tallo.dk/#side", "url": "https://tallo.dk/", "name": "Tallo", "inLanguage": "da", "publisher": {"@id": "https://tallo.dk/#tallo"}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "AccountingService", "@id": "https://tallo.dk/#tallo", "name": "Tallo", "url": "https://tallo.dk/", "image": "https://tallo.dk/og.png", "logo": "https://tallo.dk/favicon-192.png", "vatID": "DK46440986", "telephone": "+4542160509", "description": "Revisor og bogføring til fast pris for enkeltmandsvirksomheder og ApS.", "address": {"@type": "PostalAddress", "postalCode": "8260", "addressLocality": "Viby J", "addressCountry": "DK"}, "areaServed": {"@type": "Country", "name": "Danmark"}, "sameAs": ["https://www.instagram.com/tallo_dk/", "https://www.facebook.com/tallo.dk/", "https://www.linkedin.com/company/tallo.dk/"], "makesOffer": [{"@type": "Offer", "name": "Gør det selv med AI", "availability": "https://schema.org/PreOrder", "url": "https://tallo.dk/priser/", "priceSpecification": {"@type": "UnitPriceSpecification", "price": 500, "priceCurrency": "DKK", "unitText": "MON", "valueAddedTaxIncluded": false}}, {"@type": "Offer", "name": "Med revisor", "availability": "https://schema.org/InStock", "url": "https://tallo.dk/priser/", "priceSpecification": {"@type": "UnitPriceSpecification", "price": 1000, "priceCurrency": "DKK", "unitText": "MON", "valueAddedTaxIncluded": false}}]}, {"@type": "WebSite", "@id": "https://tallo.dk/#side", "url": "https://tallo.dk/", "name": "Tallo", "inLanguage": "da", "publisher": {"@id": "https://tallo.dk/#tallo"}}]}</script>
 <!-- hoved:slut -->
 <!-- Forrang for det største billede pr. skærm står i hoved() i vaerktoej/undersider.py -->
 <!--
@@ -245,7 +245,7 @@
     <li><a href="/om-os/">Om os</a></li>
   </ul>
   <div class="nav-hoejre">
-    <a class="pille farve" href="/#kom">Skriv dig op</a>
+    <a class="pille farve" href="/#kom">Bliv kunde</a>
     <button class="menu-knap" id="menuKnap" type="button" aria-expanded="false" aria-controls="menuArk">Menu</button>
   </div>
 </nav>
@@ -258,7 +258,7 @@
     <li><a href="/ai/">AI</a></li>
     <li><a href="/om-os/">Om os</a></li>
   </ul>
-  <a class="pille farve" href="/#kom">Skriv dig op på 2 minutter</a>
+  <a class="pille farve" href="/#kom">Bliv kunde på 2 minutter</a>
   <p class="lille">Eller ring på <a href="tel:+4542160509">42&nbsp;16&nbsp;05&nbsp;09</a> eller skriv til <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
 </div>
 <!-- menu:slut -->
@@ -274,7 +274,7 @@
           <h1>Du skal ikke kunne regnskab.</h1>
           <p class="ingress">Vi bogfører for dig. Eller AI'en finder konto og moms, og du godkender. Fra 500 kr. om måneden.</p>
           <div class="knapper">
-            <a class="pille farve" href="#kom">Skriv dig op på 2 minutter</a>
+            <a class="pille farve" href="#kom">Bliv kunde på 2 minutter</a>
             <a class="pille glas" href="#kom">Hellere en snak?</a>
           </div>
         </div>
@@ -356,6 +356,7 @@
       <div class="stortal">
         <div class="stortal-side">
           <p class="sr">Gør det selv med AI</p>
+          <p class="stortal-status"><a class="status-link" href="/?pakke=selv#kom"><span class="app-pille graa">Åbner senere · skriv dig op</span></a></p>
           <p class="stortal-saet">AI'en hjælper. Du bogfører.</p>
           <p class="stortal-tal" data-tael="500">500</p>
           <p class="stortal-md">kr. om måneden plus moms</p>
@@ -364,6 +365,7 @@
         <div class="stortal-skille" aria-hidden="true"></div>
         <div class="stortal-side anb">
           <p class="sr">Med revisor</p>
+          <p class="stortal-status"><span class="app-pille ok">Start i dag</span></p>
           <p class="stortal-saet">AI'en hjælper. Vi bogfører.</p>
           <p class="stortal-tal" data-tael="1000">1.000</p>
           <p class="stortal-md">kr. om måneden plus moms</p>
@@ -371,7 +373,7 @@
         </div>
       </div>
       <div class="knapper">
-        <a class="pille farve stor" href="/#kom">Skriv dig op</a>
+        <a class="pille farve stor" href="/#kom">Bliv kunde</a>
         <a class="pille hvid stor" href="/priser/">Se hvad der er med</a>
       </div>
     </div>
@@ -416,7 +418,7 @@
       <h2>Spørgsmål og svar</h2>
       <div class="spoergsmaal" data-faq>
         <details><summary>Kan jeg stole på, at AI'en bogfører rigtigt?</summary><div class="svar"><p>AI'en er god til det, den har set før, men den kan tage fejl. Derfor bærer den det tunge læs, og en revisor kvalitetssikrer den. Også momsen, før den indberettes. Vælger du Gør det selv med AI, godkender du selv hvert forslag, og du kan skifte fra måned til måned.</p></div></details>
-        <details><summary>Hvornår åbner I?</summary><div class="svar"><p>Når vores program er registreret hos Erhvervsstyrelsen. Det kræver loven for mange virksomheder. Du kan skrive dig op nu, og vi skriver til dig, den dag vi åbner. Skal du bruge en revisor nu, bogfører vi i dit eget regnskabsprogram, indtil vi åbner.</p></div></details>
+        <details><summary>Hvornår åbner Gør det selv med AI?</summary><div class="svar"><p>Når vores program er registreret hos Erhvervsstyrelsen. Det kræver loven for mange virksomheder. Skriv dig op, så skriver vi til dig den dag. Med revisor kan du starte i dag, i dit eget regnskabsprogram.</p></div></details>
         <details><summary>Er I revisor eller bogholder?</summary><div class="svar"><p>Vi kalder os revisor, fordi vi både bogfører, indberetter momsen og laver økonomiske beregninger. Søger du en bogholder, er du også det rigtige sted. Vi er ikke godkendte revisorer og afgiver ikke erklæringer. Har din virksomhed pligt til revision, skal du også bruge en godkendt revisor.</p></div></details>
         <details><summary>Er der binding?</summary><div class="svar"><p>Nej. Du opsiger fra måned til måned.</p></div></details>
         <details><summary>Hvad skal jeg selv gøre?</summary><div class="svar"><p>Koble din bank til med dit eget MitID, én gang. Derefter kommer regninger og fakturaer ind af sig selv. Har du betalt noget med egne penge, tager du et billede af kvitteringen i appen.</p></div></details>
@@ -428,11 +430,11 @@
 
   <section class="kom" id="kom">
     <div class="kom-hoved">
-      <h2>Skriv dig op på 2 minutter.</h2>
-      <p class="ingress">Du betaler intet, før vi åbner.</p>
+      <h2>Bliv kunde på 2 minutter.</h2>
+      <p class="ingress">Med revisor starter i dag, i det regnskabsprogram, du allerede bruger.</p>
     </div>
     <div class="kom-gitter">
-      <form class="tilmeld" id="tilmeld" data-ok="Tak. Du er skrevet op, og vi skriver til dig, den dag vi åbner." action="https://nznqjlrknpbnfzizxnkr.supabase.co/functions/v1/tilmelding" method="post">
+      <form class="tilmeld" id="tilmeld" data-ok-bogholder="Tak. Mohammed skriver til dig inden for en hverdag." data-ok-selv="Tak. Du er skrevet op, og vi skriver til dig, den dag Gør det selv med AI åbner." action="https://nznqjlrknpbnfzizxnkr.supabase.co/functions/v1/tilmelding" method="post">
         <input type="checkbox" name="botcheck" class="faelde" tabindex="-1" autocomplete="off" aria-hidden="true">
         <ol class="trinliste" id="trinliste">
           <li class="trin" data-trin="virksomhed">
@@ -447,7 +449,7 @@
             <div>
               <label for="mail">Din mail</label>
               <input id="mail" enterkeyhint="send" name="email" type="email" autocomplete="email" placeholder="dig@firma.dk" required>
-              <p class="hjaelp">Vi skriver til dig, den dag vi åbner.</p>
+              <p class="hjaelp">Her skriver vi til dig.</p>
             </div>
           </li>
           <li class="trin" data-trin="pakke">
@@ -455,17 +457,17 @@
             <div>
               <span class="lbl" id="pakkeLbl">Vælg pakke</span>
               <div class="pakkevalg" role="radiogroup" aria-labelledby="pakkeLbl">
-                <label><input type="radio" name="pakke" value="selv" data-pakke="selv"><span>Gør det selv med AI<small>500 kr. om måneden</small></span></label>
+                <label><input type="radio" name="pakke" value="selv" data-pakke="selv"><span>Gør det selv med AI<small>500 kr. om måneden · åbner senere</small></span></label>
                 <label><input type="radio" name="pakke" value="bogholder" data-pakke="bogholder" checked><span>Med revisor<small>1.000 kr. om måneden</small></span></label>
               </div>
-              <p class="hjaelp">Du kan skifte, når du vil.</p>
+              <p class="hjaelp">Vælger du Gør det selv med AI, skriver vi dig op og skriver til dig, den dag den åbner.</p>
             </div>
           </li>
         </ol>
         <div class="send">
-          <button class="pille farve" type="submit">Skriv mig op</button>
+          <button class="pille farve" type="submit" data-bogholder="Bliv kunde" data-selv="Skriv mig op">Bliv kunde</button>
           <p class="formular-status" role="status" aria-live="polite"></p>
-          <p class="formular-note">Vi skriver kun til dig om åbningen, og du kan altid bede os slette dig. Vi bruger dine oplysninger som beskrevet i <a href="/privatliv/">privatlivspolitikken</a>. Når vi åbner, gælder <a href="/handelsbetingelser/">handelsbetingelserne</a>.</p>
+          <p class="formular-note">Vi skriver kun til dig om det, du har bedt om, og du kan altid bede os slette dig. Vi bruger dine oplysninger som beskrevet i <a href="/privatliv/">privatlivspolitikken</a>. Aftalen får du, før du siger ja.</p>
         </div>
       </form>
 
@@ -543,7 +545,15 @@
   }
   tilmeld.addEventListener("input", opdaterTrin);
   tilmeld.addEventListener("change", opdaterTrin);
-  opdaterTrin();
+  // Knappen følger pakken: Med revisor er åben ("Bliv kunde"), Gør det selv med AI er venteliste ("Skriv mig op").
+  // /?pakke=selv#kom (fra 500-pakken og /appen) vælger ventelisten på forhånd.
+  const sendKnap = tilmeld.querySelector('button[type="submit"]');
+  const pakkeNu = () => (tilmeld.querySelector('input[name="pakke"]:checked') || {}).value || "bogholder";
+  const opdaterKnap = () => { sendKnap.textContent = sendKnap.dataset[pakkeNu()]; };
+  const forvalgt = new URLSearchParams(location.search).get("pakke");
+  if (forvalgt === "selv" || forvalgt === "bogholder") tilmeld.querySelector(`input[name="pakke"][value="${forvalgt}"]`).checked = true;
+  tilmeld.addEventListener("change", opdaterKnap);
+  opdaterTrin(); opdaterKnap();
 
   // Tilmeldingen gemmes i vores egen database i EU (funktionen tilmelding i system/supabase/functions).
   // Spam: en usynlig fælde (botcheck) og et tidstjek her; funktionen tjekker desuden afsender, fælde og et loft.
@@ -564,9 +574,10 @@
       const svar = await fetch(tilmeld.action, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
       const json = await svar.json();
       if (!json.ok) throw new Error(json.fejl || "fejl");
-      tilmeld.reset(); opdaterTrin();
+      const ok = pakkeNu() === "selv" ? tilmeld.dataset.okSelv : tilmeld.dataset.okBogholder;
+      tilmeld.reset(); opdaterTrin(); opdaterKnap();
       status.className = "formular-status ok";
-      status.textContent = tilmeld.dataset.ok;
+      status.textContent = ok;
     } catch {
       status.className = "formular-status fejl";
       status.textContent = "Det kom ikke igennem. Skriv til " + adr + " i stedet.";
