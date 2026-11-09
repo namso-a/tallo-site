@@ -350,9 +350,7 @@ FAQ_PRISER = [
     ("Hvad koster tilkøbene?", "Det afhænger af din virksomhed. Du får prisen, før du siger ja."),
     ("Kommer jeg fra et andet program?", "Så flytter vi dig gratis. Din historik kommer med."),
 ]
-FAQ_OM_OS = [
-    ("Hvad hvis jeg har et spørgsmål?", "Så skriver du det i appen. Jeg svarer normalt samme dag. Haster det, så skriv til <a data-u='kontakt' data-d='tallo.dk' href='#'>kontakt (at) tallo.dk</a>.", "othman"),
-]
+# /om-os har ingen spørgsmål og svar: de gentog kortene med Othman og Mohammed (Othman 9. nov 2026)
 SVARER = {"othman": "Othman", "mohammed": "Mohammed"}
 
 
@@ -623,10 +621,6 @@ def om_os():
       </div>
     </div>
   </div>
-  </section>
-
-  <section class="region papir" data-tone="#ffffff">
-    """ + faq(FAQ_OM_OS) + """
   </section>
 
   """ + baand())
