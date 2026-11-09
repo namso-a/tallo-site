@@ -572,6 +572,8 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 .av { display: block; width: 100%; height: 100%; overflow: visible; }
 .av .oejne { transform-box: fill-box; transform-origin: center; animation: blink 6s 1.4s infinite; }
 @keyframes blink { 0%, 94%, 100% { transform: none; } 97% { transform: scaleY(.12); } }
+.figur { display: inline-block; flex: none; transform: rotate(var(--drej, 0deg)); }
+.figur.forvirret { width: 110px; height: 110px; margin-bottom: 18px; }  /* 404-siden */
 .klister { display: inline-block; flex: none; width: 72px; height: 72px; transform: rotate(var(--drej, -8deg)); transition: transform .4s cubic-bezier(.3,1.6,.5,1); }
 .ai-chat.har-klister { position: relative; overflow: visible; }
 .klister-hjoerne { position: absolute; top: -40px; right: -26px; z-index: 2; display: flex; }

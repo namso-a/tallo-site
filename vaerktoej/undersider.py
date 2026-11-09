@@ -188,6 +188,13 @@ AVATAR = ('<svg class="av" viewBox="0 0 64 64" aria-hidden="true">'
           '<g class="oejne"><circle cx="22.3" cy="28.6" r="2.6" fill="#16141d"/><circle cx="43.3" cy="28.6" r="2.6" fill="#16141d"/></g></svg>')
 
 
+
+def figur(klasse, drej="0deg"):
+    """Tallos maskot ét sted på siden. Den er Tallos figur, ikke en AI, og taler ikke på Tallos vegne ("Tallo er Othman og
+    Mohammed"). Godkendt på 404-siden (Othman 10. nov 2026)."""
+    return f'<span class="figur {klasse}" style="--drej:{drej}" aria-hidden="true">{AVATAR}</span>'
+
+
 # Tillidslinjen over FAQ'en på forsiden og under samtalen på /ai (Othman 30. okt 2026, mockup "Linjen"). Kun tekst,
 # ingen certifikatmærker: Tallo er ikke selv certificeret. ISO 27001 gælder driften: Supabase, Hetzner, Scaleway og AWS
 # er certificeret (tjekket 30. okt 2026). MitID-mægleren er Idura.
@@ -1101,7 +1108,8 @@ Sitemap: {DOMAENE}/sitemap.xml
 
 def ikke_fundet():
     """Siden, GitHub Pages viser ved en adresse, der ikke findes (/404.html)."""
-    top = """<div class="side-top">
+    top = f"""<div class="side-top">
+      {figur("forvirret", "-14deg")}
       <h1>Siden findes ikke</h1>
       <p class="ingress">Måske er adressen skrevet forkert, eller også er siden flyttet.</p>
       <div class="knapper">
