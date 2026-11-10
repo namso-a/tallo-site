@@ -251,7 +251,7 @@ def pakkeblok(overskrift=True, taet=False):
   </section>"""
 
 
-def baand(titel="Bliv kunde på 2 minutter.",
+def baand(titel="Bliv fri for regnskab på 2 minutter.",
           tekst="Med revisor starter i dag, i det regnskabsprogram, du allerede bruger.",
           anden='<a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>'):
     return f"""<section class="baand" data-afslor>
@@ -616,7 +616,7 @@ def om_os():
         </div>
         <h3>Mohammed Chahrour</h3>
         <p class="rolle">Kunder og aftaler</p>
-        <p class="om">Mohammed er ved at afslutte sin kandidatgrad i jura. Han tager den første snak med dig, sørger for aftalerne, og for at alt er, som det skal være. Ring til ham på """ + RING + """.</p>
+        <p class="om">Mohammed er ved at afslutte sin kandidatgrad i jura. Han tager den første snak med dig, sørger for aftalerne, og for at alt er, som det skal være.</p>
       </div>
       <div class="person">
         <div class="ramme">
@@ -624,7 +624,7 @@ def om_os():
         </div>
         <h3>Othman Ajjawi</h3>
         <p class="rolle">Revisor og teknik</p>
-        <p class="om">Othman har en kandidatgrad i erhvervsøkonomi og arbejder til daglig med økonomi, data og AI. Han holder øje med dine tal og skriver til dig, hvis noget skal afklares.</p>
+        <p class="om">Othman har en kandidatgrad i erhvervsøkonomi og arbejder til daglig med økonomi, data og AI.</p>
       </div>
     </div>
   </div>
@@ -951,7 +951,7 @@ def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fak
       <div>
         <h2>Hvem svarer dig?</h2>
         <p><b>Mohammed Chahrour</b> tager den første snak og sørger for aftalerne. Han er ved at afslutte sin kandidatgrad i jura.</p>
-        <p><b>Othman Ajjawi</b> har en kandidatgrad i erhvervsøkonomi og arbejder til daglig med økonomi, data og AI. Han holder øje med dine tal.</p>
+        <p><b>Othman Ajjawi</b> har en kandidatgrad i erhvervsøkonomi og arbejder til daglig med økonomi, data og AI.</p>
         <p><a href="/om-os/">Mere om os</a></p>
       </div>
       <div>

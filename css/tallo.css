@@ -108,7 +108,7 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 .snak h3 { margin: 0; font-size: 16px; font-weight: 600; }
 .snak p { margin-top: 2px; font-size: 14px; line-height: 1.45; color: #2e2563; }
 
-/* Fotokort: står skævt, falder på plads i syne og retter sig op ved hover; et lige app-kort på hvert */
+/* Fotokort: står skævt, falder på plads i syne og retter sig op ved hover; */
 .par.bred { gap: 140px; }
 .par { display: grid; grid-template-columns: repeat(2, minmax(0, 400px)); justify-content: center; gap: 72px; margin-top: 64px; padding: 0 32px; text-align: left; }
 .person, .ramme { position: relative; }
@@ -117,26 +117,13 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 .person:nth-child(2) .foto-kort { --skaev: 2deg; }
 .foto-kort img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 22px; }
 .person:hover .foto-kort { transform: rotate(0deg) translateY(-6px); box-shadow: 0 40px 70px -34px rgba(22,20,29,.45); }
-.app-kort { position: absolute; display: flex; align-items: center; gap: 12px; padding: 12px 16px 12px 12px; border-radius: 14px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 24px 50px -24px rgba(22,20,29,.4); font-size: 14px; line-height: 1.35; white-space: nowrap; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
-.person:nth-child(1) .app-kort { left: -44px; bottom: 40px; }
-.person:nth-child(2) .app-kort { right: -44px; bottom: 56px; }
-.person:hover .app-kort { transform: translateY(-10px); }
-.app-kort b { display: block; font-size: 14px; font-weight: 600; }
-.app-kort small { display: block; font-size: 13px; color: var(--daempet); }
-.app-kort .rund { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--blaa); color: #fff; font-size: 12.5px; font-weight: 600; }
-.app-kort .rund.kal { border-radius: 10px; background: var(--blaa-svag); color: var(--blaa); font-size: 11px; line-height: 1.05; text-align: center; }
-.app-kort a { margin-left: 6px; padding: 6px 12px; border-radius: 9px; background: var(--blaa-svag); color: var(--blaa); font-size: 13px; font-weight: 550; }
 .person h3 { margin: 40px 0 0; font-size: 22px; font-weight: 560; letter-spacing: -.01em; }
 .person .rolle { margin-top: 2px; font-size: 15px; font-weight: 500; color: var(--blaa); }
 .person p.om { margin-top: 10px; font-size: 16px; line-height: 1.5; color: var(--daempet); text-wrap: pretty; }
 .js-vis .person .foto-kort { opacity: 0; transform: rotate(calc(var(--skaev) * 3)) translateY(40px); }
-.js-vis .person .app-kort { opacity: 0; transform: translateY(14px) scale(.96); }
 .js-vis.inde .person .foto-kort { opacity: 1; transform: rotate(var(--skaev)); transition: opacity .6s ease-out, transform .9s cubic-bezier(.2,.7,.2,1), box-shadow .5s; }
 .js-vis.inde .person:nth-child(2) .foto-kort { transition-delay: .12s; }
-.js-vis.inde .person .app-kort { opacity: 1; transform: none; transition: opacity .4s ease-out .7s, transform .6s cubic-bezier(.2,.7,.2,1) .7s; }
-.js-vis.inde .person:nth-child(2) .app-kort { transition-delay: .85s; }
 .js-vis.inde .person:hover .foto-kort { transform: rotate(0deg) translateY(-6px); transition-delay: 0s; }
-.js-vis.inde .person:hover .app-kort { transform: translateY(-10px); transition-delay: 0s; }
 
 /* Footeren: rolig, med det store navn nederst */
 .fod { overflow: hidden; padding-top: 72px; border-top: 1px solid var(--lineal); background: var(--flade); }
@@ -203,7 +190,7 @@ html.glid .nav.fast { background: var(--bund, var(--flade)); box-shadow: 0 1px 0
 .svar:has(.svarer) { display: flex; align-items: flex-start; gap: 14px; }
 .spoergsmaal details p.svarer { flex: none; margin: 0; padding: 0; }
 .svarer img { display: block; width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
-.faq-forside { padding: 160px 0 0; }
+.faq-forside { padding: 24px 0 140px; }  /* under formularen fra 10. nov 2026; .kom har allerede luft under sig */
 .spoergsmaal .svar { overflow: hidden; }
 .spoergsmaal details p { padding: 0 48px 22px 0; font-size: 17px; line-height: 1.55; color: var(--daempet); }
 .spoergsmaal details p a { color: var(--blaa); text-decoration: underline; text-underline-offset: 3px; }
@@ -613,7 +600,7 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
   @keyframes pil-flyd-ned { to { background-position: 0 28px; } }
   @keyframes skub { 0%, 100% { transform: none; } 30% { transform: translateY(10px); } 55% { transform: translateY(2px); } 75% { transform: translateY(6px); } }
   .faq h2 { font-size: 30px; }
-  .faq-forside { padding-top: 104px; }
+  .faq-forside { padding: 8px 0 96px; }
   .bogholder-blok { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .bb-tekst h2 { font-size: 30px; }
   .bb-person { width: min(280px, 80%); }
@@ -697,9 +684,6 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
   .beloeb { font-size: 15px; }
   .pakke .bund { flex-wrap: wrap; gap: 6px 14px; }
   .smaat { font-size: 14px; }
-  .person:nth-child(1) .app-kort { left: -12px; bottom: 20px; }
-  .person:nth-child(2) .app-kort { right: -12px; bottom: 20px; }
-  .app-kort a { display: none; }
   .fod-indre { width: calc(100% - 40px); }
   .fod-indre li a, .fod-indre li span { min-height: 44px; }
   .side-top { padding-top: calc(var(--nav) + 56px); }
