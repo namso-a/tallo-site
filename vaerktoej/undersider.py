@@ -122,7 +122,7 @@ def menu(aktiv=None):
 {smaa}
   </ul>
   <div class="nav-hoejre">
-    <a class="pille farve" href="/#kom">Bliv kunde</a>
+    <a class="pille farve" href="/#kom">Bliv fri</a>
     <button class="menu-knap" id="menuKnap" type="button" aria-expanded="false" aria-controls="menuArk">Menu</button>
   </div>
 </nav>
@@ -131,7 +131,7 @@ def menu(aktiv=None):
   <ul>
 {store}
   </ul>
-  <a class="pille farve" href="/#kom">Bliv kunde på 2 minutter</a>
+  <a class="pille farve" href="/#kom">Bliv fri på 2 minutter</a>
   <p class="lille">Eller ring på {RING} eller skriv til <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
 </div>"""
 
@@ -244,7 +244,7 @@ def pakkeblok(overskrift=True, taet=False):
         {hoejre}
       </div>{klisterlinje}
       <div class="knapper">
-        <a class="pille farve stor" href="/#kom">Bliv kunde</a>
+        <a class="pille farve stor" href="/#kom">Bliv fri</a>
         <a class="pille hvid stor" href="/priser/">Se hvad der er med</a>
       </div>
     </div>
@@ -257,7 +257,7 @@ def baand(titel="Bliv fri for regnskab på 2 minutter.",
     return f"""<section class="baand" data-afslor>
     <h2>{titel}</h2>{f'{chr(10)}    <p class="ingress">{tekst}</p>' if tekst else ""}
     <div class="knapper">
-      <a class="pille farve stor" href="/#kom">Bliv kunde</a>
+      <a class="pille farve stor" href="/#kom">Bliv fri</a>
       {anden}
     </div>
   </section>"""
@@ -421,7 +421,7 @@ def priser():
       <h2>Ingen binding.</h2>
       <p>Med revisor kan du starte i dag.</p>
       <div class="knapper">
-        <a class="pille farve stor" href="/#kom">Bliv kunde på 2 minutter</a>
+        <a class="pille farve stor" href="/#kom">Bliv fri på 2 minutter</a>
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
       </div>
     </div>"""
@@ -461,7 +461,7 @@ def appen():
         <h1>Alt om forretningen i lommen.</h1>
         <p class="ingress">Se overskud, bank og moms, når du vil.</p>
         <div class="knapper">
-          <a class="pille farve" href="/#kom">Bliv kunde på 2 minutter</a>
+          <a class="pille farve" href="/#kom">Bliv fri på 2 minutter</a>
           <a class="pille hvid" href="/#kom" data-book>Hellere en snak?</a>
         </div>
       </div>
@@ -554,7 +554,7 @@ def ai():
         <h2>Din revisor hedder Othman</h2>
         <p class="ingress">AI'en er hurtig og god til det, den har set før, men den kan tage fejl. Derfor kvalitetssikrer en revisor den, også momsen, før den indberettes. Gør du det selv med AI, godkender du selv hvert forslag.</p>
         <div class="knapper">
-          <a class="pille farve stor" href="/#kom">Bliv kunde på 2 minutter</a>
+          <a class="pille farve stor" href="/#kom">Bliv fri på 2 minutter</a>
           <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
         </div>
       </div>
@@ -915,7 +915,7 @@ def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fak
       <h1>{h1}</h1>
       <p class="ingress">{ingress}</p>
       <div class="knapper">
-        <a class="pille farve stor" href="/#kom">Bliv kunde</a>
+        <a class="pille farve stor" href="/#kom">Bliv fri</a>
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
       </div>
     </div>"""
@@ -964,7 +964,7 @@ def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fak
       <p>Vores eget program åbner, når det er registreret hos Erhvervsstyrelsen. Indtil da bogfører vi i det regnskabsprogram, du allerede bruger.</p>
       <div class="knapper">
         <a class="pille farve stor" href="/#kom" data-book>Hellere en snak?</a>
-        <a class="pille hvid stor" href="/#kom">Bliv kunde</a>
+        <a class="pille hvid stor" href="/#kom">Bliv fri</a>
       </div>
     </div>"""
     afsnit_liste = [region("lilla top", top), region("papir", laes), region("papir", midt)] + ([region("papir", aaret)] if aaret else []) + [
