@@ -252,11 +252,10 @@ def pakkeblok(overskrift=True, taet=False):
 
 
 def baand(titel="Bliv fri for regnskab på 2 minutter.",
-          tekst="Med revisor starter i dag, i det regnskabsprogram, du allerede bruger.",
+          tekst="",
           anden='<a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>'):
     return f"""<section class="baand" data-afslor>
-    <h2>{titel}</h2>
-    <p class="ingress">{tekst}</p>
+    <h2>{titel}</h2>{f'{chr(10)}    <p class="ingress">{tekst}</p>' if tekst else ""}
     <div class="knapper">
       <a class="pille farve stor" href="/#kom">Bliv kunde</a>
       {anden}
