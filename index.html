@@ -245,7 +245,7 @@
     <li><a href="/om-os/">Om os</a></li>
   </ul>
   <div class="nav-hoejre">
-    <a class="pille farve" href="/#kom">Bliv fri</a>
+    <a class="pille farve" href="/#kom">Bliv fri for regnskab</a>
     <button class="menu-knap" id="menuKnap" type="button" aria-expanded="false" aria-controls="menuArk">Menu</button>
   </div>
 </nav>
@@ -258,7 +258,7 @@
     <li><a href="/ai/">AI</a></li>
     <li><a href="/om-os/">Om os</a></li>
   </ul>
-  <a class="pille farve" href="/#kom">Bliv fri på 2 minutter</a>
+  <a class="pille farve" href="/#kom">Bliv fri for regnskab</a>
   <p class="lille">Eller ring på <a href="tel:+4542160509">42&nbsp;16&nbsp;05&nbsp;09</a> eller skriv til <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></p>
 </div>
 <!-- menu:slut -->
@@ -274,7 +274,7 @@
           <h1>Du skal ikke kunne regnskab.</h1>
           <p class="ingress">Du startede ikke virksomheden for at bogføre. Det gør vi, og vi indberetter momsen. 1.000 kr. om måneden, fast pris.</p>
           <div class="knapper">
-            <a class="pille farve" href="#kom">Bliv fri på 2 minutter</a>
+            <a class="pille farve" href="#kom">Bliv fri for regnskab</a>
             <a class="pille glas" href="#kom">Hellere en snak?</a>
           </div>
         </div>
@@ -373,7 +373,7 @@
         </div>
       </div>
       <div class="knapper">
-        <a class="pille farve stor" href="/#kom">Bliv fri</a>
+        <a class="pille farve stor" href="/#kom">Bliv fri for regnskab</a>
         <a class="pille hvid stor" href="/priser/">Se hvad der er med</a>
       </div>
     </div>
@@ -437,7 +437,7 @@
           </li>
         </ol>
         <div class="send">
-          <button class="pille farve" type="submit" data-bogholder="Bliv fri" data-selv="Skriv mig op">Bliv fri</button>
+          <button class="pille farve" type="submit" data-bogholder="Bliv fri for regnskab" data-selv="Skriv mig op">Bliv fri for regnskab</button>
           <p class="formular-status" role="status" aria-live="polite"></p>
           <p class="formular-note">Sådan bruger vi dine oplysninger: <a href="/privatliv/">privatlivspolitikken</a>.</p>
         </div>
@@ -533,7 +533,7 @@
   }
   tilmeld.addEventListener("input", opdaterTrin);
   tilmeld.addEventListener("change", opdaterTrin);
-  // Knappen følger pakken: Med revisor er åben ("Bliv fri"), Gør det selv med AI er venteliste ("Skriv mig op").
+  // Knappen følger pakken: Med revisor er åben ("Bliv fri for regnskab"), Gør det selv med AI er venteliste ("Skriv mig op").
   // /?pakke=selv#kom (fra 500-pakken og /appen) vælger ventelisten på forhånd.
   const sendKnap = tilmeld.querySelector('button[type="submit"]');
   const pakkeNu = () => (tilmeld.querySelector('input[name="pakke"]:checked') || {}).value || "bogholder";
