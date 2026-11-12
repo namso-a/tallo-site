@@ -552,9 +552,11 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 .tillid { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 40px; width: min(1040px, calc(100% - 40px)); margin: 0 auto; padding: 26px 0; list-style: none; border-block: 1px solid var(--lineal); }
 .tillid li { display: inline-flex; align-items: center; gap: 10px; font-size: 15.5px; font-weight: 500; color: var(--blaek); }
 .tillid svg { flex: none; width: 22px; height: 22px; fill: none; stroke: var(--blaa); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.faq-forside .tillid { margin-bottom: 120px; }
+/* I svaret om data i EU: kompakt og venstrestillet, uden streger */
+.svar .tillid { justify-content: flex-start; gap: 10px 28px; width: auto; margin: 14px 0 4px; padding: 0; border: 0; }
+.svar .tillid li { font-size: 15px; }
 .ai-chat + .tillid { margin-top: 96px; }
-@media (max-width: 520px) { .tillid { flex-direction: column; align-items: center; gap: 12px; } .faq-forside .tillid { margin-bottom: 88px; } }
+@media (max-width: 520px) { .tillid { flex-direction: column; align-items: center; gap: 12px; } .svar .tillid { align-items: flex-start; gap: 10px; } }
 
 /* Tallos figur for "din egen AI" (Othman 8. nov 2026): t'et med briller, frit stående i violet, uden ramme eller
    cirkel om. Står skævt, retter sig op og løfter sig under musen; øjnene blinker roligt. AVATAR i vaerktoej/undersider.py. */

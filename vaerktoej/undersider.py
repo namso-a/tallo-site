@@ -195,7 +195,8 @@ def figur(klasse, drej="0deg"):
     return f'<span class="figur {klasse}" style="--drej:{drej}" aria-hidden="true">{AVATAR}</span>'
 
 
-# Tillidslinjen over FAQ'en på forsiden og under samtalen på /ai (Othman 30. okt 2026, mockup "Linjen"). Kun tekst,
+# Tillidslinjen under svaret "Bliver mine data i EU?" (Othman 12. nov 2026; før over FAQ'en på forsiden) og under
+# samtalen på /ai (Othman 30. okt 2026, mockup "Linjen"). Kun tekst,
 # ingen certifikatmærker: Tallo er ikke selv certificeret. ISO 27001 gælder driften: Supabase, Hetzner, Scaleway og AWS
 # er certificeret (tjekket 30. okt 2026). MitID-mægleren er Idura.
 TILLID = [
@@ -360,13 +361,17 @@ FAQ_PRISER = [
 SVARER = {"othman": "Othman", "mohammed": "Mohammed"}
 
 
+EFTER_TILLID = {"Bliver mine data i EU?"}  # svar, der får tillidslinjen under sig
+
+
 def faq(spoergsmaal, overskrift="Spørgsmål og svar"):
     """Spørgsmål og svar med overskriften over listen; js/tallo.js åbner og lukker svarene blødt ([data-faq])."""
     def et(sp):
         q, a, *hvem = sp
         svarer = (f'<p class="svarer"><img src="/billeder/{hvem[0]}.webp" alt="" width="400" height="400" loading="lazy">'
                   '</p>') if hvem else ""
-        return f'        <details><summary>{q}</summary><div class="svar">{svarer}<p>{a}</p></div></details>'
+        efter = tillidslinje() if q in EFTER_TILLID else ""
+        return f'        <details><summary>{q}</summary><div class="svar">{svarer}<p>{a}</p>{efter}</div></details>'
     punkter = "\n".join(et(sp) for sp in spoergsmaal)
     return f"""<div class="faq">
       <h2>{overskrift}</h2>
@@ -615,7 +620,7 @@ def om_os():
         </div>
         <h3>Mohammed Chahrour</h3>
         <p class="rolle">Kunder og aftaler</p>
-        <p class="om">Mohammed er ved at afslutte sin kandidatgrad i jura. Han tager den første snak med dig, sørger for aftalerne, og for at alt er, som det skal være.</p>
+        <p class="om">Mohammed er ved at afslutte sin kandidatgrad i jura. Han tager den første snak med dig og sørger for aftalerne.</p>
       </div>
       <div class="person">
         <div class="ramme">
@@ -868,7 +873,7 @@ def forside():
                                  "Vi bogfører for dig, eller AI'en finder konto og moms, og du godkender. For enkeltmandsvirksomheder og ApS. Fast pris fra 500 kr. om måneden plus moms.", "/"))
     s = erstat(s, "menu", menu("/"))
     s = erstat(s, "pakker", "  " + pakkeblok())
-    s = erstat(s, "faq", '  <section class="faq-forside" id="faq">\n    ' + tillidslinje() + "\n    " + faq(FAQ_FORSIDE) + "\n  </section>")
+    s = erstat(s, "faq", '  <section class="faq-forside" id="faq">\n    ' + faq(FAQ_FORSIDE) + "\n  </section>")
     s = erstat(s, "fod", fod())
     fil.write_text(s, encoding="utf-8")
 
