@@ -195,8 +195,8 @@ def figur(klasse, drej="0deg"):
     return f'<span class="figur {klasse}" style="--drej:{drej}" aria-hidden="true">{AVATAR}</span>'
 
 
-# Tillidslinjen under svaret "Bliver mine data i EU?" (Othman 12. nov 2026; før over FAQ'en på forsiden) og under
-# samtalen på /ai (Othman 30. okt 2026, mockup "Linjen"). Kun tekst,
+# Tillidslinjen under samtalen på /ai (Othman 30. okt 2026, mockup "Linjen"). På forsiden står det som tekst i svaret
+# "Bliver mine data i EU?" (Othman 12. nov 2026). Kun tekst,
 # ingen certifikatmærker: Tallo er ikke selv certificeret. ISO 27001 gælder driften: Supabase, Hetzner, Scaleway og AWS
 # er certificeret (tjekket 30. okt 2026). MitID-mægleren er Idura.
 TILLID = [
@@ -344,7 +344,9 @@ FAQ_FORSIDE = [
     ("Hvad skal jeg selv gøre?", "Koble din bank til med dit eget MitID, én gang. Derefter kommer regninger og fakturaer ind af sig "
      "selv. Har du betalt noget med egne penge, tager du et billede af kvitteringen i appen."),
     # Ikke "forlader ikke EU": Cloudflare (bilagsadressen) er EU og USA, og kundens egen AI kan ligge uden for EU (30. okt 2026)
-    ("Bliver mine data i EU?", "Dine data ligger i EU, og dine bilag bliver læst i EU. Forbinder du din egen Claude eller "
+    # ISO 27001: leverandørerne er certificeret, ikke Tallo (tjekket 30. okt 2026); MitID via Idura (Othman 12. nov: flet ind i teksten)
+    ("Bliver mine data i EU?", "Dine data ligger i EU, og dine bilag bliver læst i EU. Programmet kører hos leverandører, der "
+     "er ISO 27001-certificeret, og du logger ind med MitID. Forbinder du din egen Claude eller "
      "ChatGPT, sender vi det, du spørger om, til den tjeneste, og den kan ligge uden for EU. Det vælger du selv, og du kan "
      "afbryde forbindelsen igen. Alle vores leverandører, og hvor de har "
      "data, står i <a href='/databehandleraftale/'>databehandleraftalen</a>."),
@@ -361,17 +363,13 @@ FAQ_PRISER = [
 SVARER = {"othman": "Othman", "mohammed": "Mohammed"}
 
 
-EFTER_TILLID = {"Bliver mine data i EU?"}  # svar, der får tillidslinjen under sig
-
-
 def faq(spoergsmaal, overskrift="Spørgsmål og svar"):
     """Spørgsmål og svar med overskriften over listen; js/tallo.js åbner og lukker svarene blødt ([data-faq])."""
     def et(sp):
         q, a, *hvem = sp
         svarer = (f'<p class="svarer"><img src="/billeder/{hvem[0]}.webp" alt="" width="400" height="400" loading="lazy">'
                   '</p>') if hvem else ""
-        efter = tillidslinje() if q in EFTER_TILLID else ""
-        return f'        <details><summary>{q}</summary><div class="svar">{svarer}<p>{a}</p>{efter}</div></details>'
+        return f'        <details><summary>{q}</summary><div class="svar">{svarer}<p>{a}</p></div></details>'
     punkter = "\n".join(et(sp) for sp in spoergsmaal)
     return f"""<div class="faq">
       <h2>{overskrift}</h2>
