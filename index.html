@@ -964,7 +964,7 @@
 </script>
 <!-- defer: blokerer ikke første visning af fotoet (LCP); rækkefølgen efter scriptet ovenfor er den samme -->
 <script>
-/* Det siger kunderne: sporet. Kortet nærmest midten står skarpt; naboerne skaleres og falmer efter afstanden.
+/* Det siger kunderne: sporet. Kortet ved snap-linjen står skarpt; naboerne skaleres og falmer efter afstanden.
    Pile og træk med musen; på telefonen swipes der. Første gang et kort kommer frem, spiller det (.set). */
 (() => {
   const sek = document.getElementById("kunder"), spor = document.getElementById("spor");
@@ -984,36 +984,53 @@
   kort.forEach((k) => se.observe(k));
 
   if (kort.length < 2) return;
+  let traek = false;
+
+  // Uendeligt spor (Othman 12. nov 2026): kopier af kortene før og efter de rigtige. Man ruller helt almindeligt videre
+  // ind på en kopi, og når rulningen er slut, springes der usynligt et helt sæt tilbage, så man står på det rigtige
+  // kort med de samme naboer. → fra det sidste kort fører derfor Kim ind fra højre i én bevægelse.
+  const n = kort.length;
+  const trin = () => kort[0].offsetWidth + parseFloat(getComputedStyle(spor).columnGap || 0);
+  const K = Math.max(1, Math.ceil(innerWidth / (n * trin())));          // sæt kopier på hver side, så skærmen er fyldt
+  const kopi = (k) => { const c = k.cloneNode(true); c.setAttribute("aria-hidden", "true"); c.inert = true; c.classList.add("kopi", "set"); return c; };
+  for (let j = 0; j < K; j++) {
+    kort.slice().reverse().forEach((k) => spor.prepend(kopi(k)));
+    kort.forEach((k) => spor.append(kopi(k)));
+  }
+  const alle = [...spor.querySelectorAll(".udtalelse")];
+  const forste = K * n;                                                  // indeks for det første rigtige kort
+  let nu = forste;
+  spor.scrollTo({ left: forste * trin(), behavior: "instant" });
+
+  // Kortet ved snap-linjen står skarpt; naboerne skaleres og falmer efter afstanden
   function tegn() {
-    const max = spor.scrollWidth - spor.clientWidth;
-    const p = max > 0 ? spor.scrollLeft / max * (kort.length - 1) : 0;   // 0 = første kort i fokus, n-1 = sidste
-    kort.forEach((k, i) => {
-      const d = Math.min(1, Math.abs(i - p));
+    const t = trin(), x = spor.scrollLeft;
+    nu = Math.round(x / t);
+    alle.forEach((k, j) => {
+      const d = Math.min(1, Math.abs(j * t - x) / t);
       const ind = k.firstElementChild;
       ind.style.setProperty("--s", stille ? 1 : (1 - .07 * d).toFixed(3));
       ind.style.setProperty("--o", (1 - .45 * d).toFixed(3));
     });
   }
-  let ramme = 0;
-  spor.addEventListener("scroll", () => { cancelAnimationFrame(ramme); ramme = requestAnimationFrame(tegn); }, { passive: true });
-  addEventListener("resize", tegn);
+  // Står man på en kopi, når rulningen er slut, springes der til det rigtige kort med samme naboer
+  function tilRigtig() {
+    if (traek) return;
+    const t = trin(), i = Math.round(spor.scrollLeft / t);
+    const rigtig = forste + (((i - forste) % n) + n) % n;
+    if (rigtig !== i) spor.scrollTo({ left: rigtig * t + (spor.scrollLeft - i * t), behavior: "instant" });
+  }
+  let ramme = 0, hvile = 0;
+  spor.addEventListener("scroll", () => {
+    cancelAnimationFrame(ramme); ramme = requestAnimationFrame(tegn);
+    if (!("onscrollend" in window)) { clearTimeout(hvile); hvile = setTimeout(tilRigtig, 140); }
+  }, { passive: true });
+  spor.addEventListener("scrollend", tilRigtig);
+  addEventListener("resize", () => { const i = nu; spor.scrollTo({ left: i * trin(), behavior: "instant" }); tegn(); });
   tegn();
 
-  const trin = () => kort[0].offsetWidth + parseFloat(getComputedStyle(spor).columnGap || 0);
-  // Pilene går i ring: fra det sidste kort tilbage til det første og omvendt (Othman 12. nov 2026)
-  // Ved enden springer sporet usynligt til den anden ende, og kortene glider ind fra den side, man går imod:
-  // højre fra det sidste kort, og Kim kommer ind fra højre (Othman 12. nov 2026). `translate` lægger sig oven i
-  // kortets scale, og figuren selv flyttes ikke, så snap-punkterne står stille.
   function gaa(retning) {
-    const max = spor.scrollWidth - spor.clientWidth, x = spor.scrollLeft;
-    const rundt = retning > 0 ? x >= max - 8 : x <= 8;
-    if (!rundt) return spor.scrollTo({ left: x + retning * trin(), behavior: stille ? "auto" : "smooth" });
-    spor.scrollTo({ left: retning > 0 ? 0 : max, behavior: "auto" });
-    if (stille) return;
-    const ind = retning * Math.min(innerWidth, spor.clientWidth) * .9;
-    kort.forEach((k, i) => k.firstElementChild.animate(
-      [{ translate: `${ind}px 0`, opacity: 0 }, { translate: "0 0" }],
-      { duration: 750, delay: (retning > 0 ? i : kort.length - 1 - i) * 60, easing: "cubic-bezier(.2,.7,.2,1)", fill: "backwards" }));
+    spor.scrollTo({ left: (Math.round(spor.scrollLeft / trin()) + retning) * trin(), behavior: stille ? "auto" : "smooth" });
   }
   sek.querySelectorAll(".spor-knap").forEach((b) => b.addEventListener("click", () => gaa(+b.dataset.retning)));
   spor.addEventListener("keydown", (e) => {
@@ -1021,7 +1038,7 @@
   });
 
   // Træk med musen (touch og trackpad ruller selv)
-  let x0 = 0, s0 = 0, traek = false, flyttet = 0;
+  let x0 = 0, s0 = 0, flyttet = 0;
   spor.addEventListener("pointerdown", (e) => {
     if (e.pointerType !== "mouse" || e.button !== 0) return;
     traek = true; flyttet = 0; x0 = e.clientX; s0 = spor.scrollLeft; spor.setPointerCapture(e.pointerId);
@@ -1037,7 +1054,7 @@
     traek = false;
     const naermest = Math.round(spor.scrollLeft / trin());
     spor.classList.remove("traekker");
-    spor.scrollTo({ left: naermest * trin(), behavior: "smooth" });
+    spor.scrollTo({ left: naermest * trin(), behavior: "smooth" });   // scrollend fører tilbage til det rigtige kort
   };
   spor.addEventListener("pointerup", slip);
   spor.addEventListener("pointercancel", slip);
