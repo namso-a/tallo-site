@@ -73,10 +73,8 @@
   .punkter li { position: relative; padding-left: 22px; }
   .punkter li::before { content: ""; position: absolute; left: 0; top: 13px; bottom: 13px; width: 2px; border-radius: 2px; background: var(--lineal); }
   .punkter .linje { position: absolute; z-index: 1; left: 0; top: 13px; bottom: 13px; width: 2px; border-radius: 2px; background: var(--blaa); transform: scaleY(0); transform-origin: top; }
-  .punkter button { display: block; width: 100%; padding: 13px 0; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 560; color: var(--daempet); text-align: left; cursor: pointer; transition: color .2s; }
+  .punkter button { display: block; width: 100%; padding: 12px 0; border: 0; background: none; font: inherit; font-size: 22px; font-weight: 500; letter-spacing: -.01em; color: var(--daempet); text-align: left; cursor: pointer; transition: color .2s; }
   .punkter button:hover, .punkter li.aktiv button { color: var(--blaek); }
-  .punkter p { display: none; margin: -6px 0 0; padding-bottom: 18px; font-size: 16px; line-height: 1.45; color: var(--daempet); text-wrap: pretty; }
-  .punkter li.aktiv p { display: block; }
   .se-appen { display: inline-flex; align-items: center; min-height: 44px; margin-top: 22px; font-size: 16px; font-weight: 560; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
   /* Fokus: appen bliver sløret bag et frostet glas, og ét kort pr. punkt står midt foran (Othman 12. nov 2026) */
   .daemp { position: absolute; inset: 0; background: rgba(255,255,255,0); transition: background .45s ease-out, backdrop-filter .45s ease-out, -webkit-backdrop-filter .45s ease-out; pointer-events: none; }
@@ -180,7 +178,6 @@
   html:not(.zoom) .skaerm { display: none; }
   html:not(.zoom) .produkt { position: relative; left: auto !important; top: auto !important; opacity: 1 !important; visibility: visible !important; transform: none !important; display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 0 64px; grid-template-rows: auto auto 1fr; align-items: start; width: min(1240px, calc(100% - 48px)) !important; margin: 96px auto 0; }
   html:not(.zoom) .statisk { display: block; grid-column: 2; grid-row: 1 / span 3; align-self: center; }
-  html:not(.zoom) .punkter p { display: block; }
 
   @media (max-width: 899px) {
     .kom-gitter { grid-template-columns: minmax(0, 560px); }
@@ -190,8 +187,7 @@
   @media (max-width: 699px) {
     .top-tekst { top: calc(var(--nav) + 24px); }
     .punkter { margin-top: 18px; }
-    .punkter button { padding: 11px 0; font-size: 15px; }
-    .punkter p { font-size: 15px; padding-bottom: 12px; }
+    .punkter button { padding: 10px 0; font-size: 18px; }
     .se-appen { display: none; }
     html:not(.zoom) .se-appen { display: inline-flex; }
     .fk { width: calc(100% - 24px); padding: 20px 22px; }
@@ -215,8 +211,7 @@
     .top-tekst .ingress { margin-top: 10px; font-size: 15px; }
     .top-tekst .knapper { margin-top: 16px; }
     .punkter { margin-top: 10px; }
-    .punkter button { padding: 11px 0; font-size: 15px; }
-    .punkter p { font-size: 14px; padding-bottom: 10px; }
+    .punkter button { padding: 8px 0; font-size: 17px; }
     .fk { padding: 12px 14px; }
     .regning { margin-top: 8px; padding: 10px 12px; }
     .regning .fk-tal { margin-top: 4px; font-size: 28px; }
@@ -395,14 +390,10 @@
       <div class="produkt" id="produkt">
         <h2>Fra regning til moms.<br>Uden at du taster noget.</h2>
         <ol class="punkter" id="punkter">
-          <li class="aktiv"><span class="linje"></span><button type="button" data-trin="0" aria-expanded="true">Regningen kommer ind</button>
-            <p>Fra mail, e-faktura eller banken.</p></li>
-          <li><span class="linje"></span><button type="button" data-trin="1" aria-expanded="false">Den bliver bogført</button>
-            <p>Vi bogfører den, eller du trykker godkend.</p></li>
-          <li><span class="linje"></span><button type="button" data-trin="2" aria-expanded="false">Momsen tæller den med</button>
-            <p>Du ser, hvad du skal betale, og hvornår.</p></li>
-          <li><span class="linje"></span><button type="button" data-trin="3" aria-expanded="false">Du ved, hvordan det går</button>
-            <p>Overskuddet er opdateret med det samme.</p></li>
+          <li class="aktiv"><span class="linje"></span><button type="button" data-trin="0" aria-current="step">Regningen kommer ind</button></li>
+          <li><span class="linje"></span><button type="button" data-trin="1">Vi bogfører den</button></li>
+          <li><span class="linje"></span><button type="button" data-trin="2">Momsen er regnet ud</button></li>
+          <li><span class="linje"></span><button type="button" data-trin="3">Du ser overskuddet</button></li>
         </ol>
         <a class="se-appen" href="/appen/">Se appen</a>
         <figure class="statisk">
@@ -922,7 +913,7 @@
   function saetTrin(i) {
     if (i === aktivt) return;
     aktivt = i;
-    punkter.forEach((li, j) => { li.classList.toggle("aktiv", j === i); li.querySelector("button").setAttribute("aria-expanded", String(j === i)); });
+    punkter.forEach((li, j) => { li.classList.toggle("aktiv", j === i); const b = li.querySelector("button"); if (j === i) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
     if (stille) {
       statiskBillede.src = `/billeder/${STATISK[innerWidth < 900 ? "m" : "d"][i]}.webp`;
       return;
