@@ -42,7 +42,7 @@
 <!-- Menu, pakkeblok og footer skrives af vaerktoej/undersider.py mellem markørerne; ret dem dér. -->
 <style>
   /* Rejsen: scenen står fast, mens man scroller (højden sættes af scriptet) */
-  .rejse { position: relative; height: calc(100vh + 3750px); }
+  .rejse { position: relative; height: calc(100vh + 3300px); }
   .scene { position: sticky; top: 0; height: 100vh; overflow: hidden; }
   .topflade { position: absolute; inset: 0; }
   .foto { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform, opacity; }
@@ -282,21 +282,20 @@
 
 <style>
   /* A: Én sætning ad gangen. Overskriften er en lille etiket; sætningen er det store, og den skifter med kortet. */
-  .produkt h2 { font-size: 17px; font-weight: 560; letter-spacing: 0; color: var(--blaa); }
-  .punkter { margin-top: 14px; }
+  .produkt h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }  /* kun for skærmlæsere */
+  .punkter { margin-top: 0; }
   .punkter li { display: none; padding-left: 0; }
   .punkter li::before, .punkter .linje { display: none; }
   .punkter li.aktiv { display: block; }
   .punkter button, .punkter li.aktiv button { padding: 0; font-size: clamp(40px, 3.6vw, 54px); font-weight: 500; line-height: 1.08; letter-spacing: -.03em; color: var(--blaek); cursor: default; text-wrap: balance; animation: saetning-ind .55s cubic-bezier(.2,.7,.2,1) both; }
   @keyframes saetning-ind { from { opacity: 0; transform: translateY(14px); } }
   .punkter li.aktiv { min-height: 2.16em; font-size: clamp(40px, 3.6vw, 54px); }  /* to linjer, så stregen står fast */
-  .fremdrift { width: 220px; margin-top: 28px; }
+  .fremdrift { width: 170px; margin-top: 28px; }
   @media (max-width: 899px) {
-    .produkt h2 { font-size: 15px; }
-    .punkter { margin-top: 8px; }
+    .punkter { margin-top: 0; }
     .punkter button, .punkter li.aktiv button { font-size: 32px; }
     .punkter li.aktiv { font-size: 32px; }
-    .fremdrift { width: 200px; margin-top: 6px; margin-bottom: -10px; }
+    .fremdrift { width: 156px; margin-top: 6px; margin-bottom: -10px; }
     .fremdrift button { min-height: 44px; }  /* trykflade 44 px, stregen samme sted */
   }
 </style>
@@ -310,7 +309,7 @@
   .fk.spil .tjek li { opacity: 1; transform: none; }
   .fk.spil .tjek li:nth-child(1) { transition-delay: .15s; } .fk.spil .tjek li:nth-child(2) { transition-delay: .45s; }
   .fk.spil .tjek li:nth-child(3) { transition-delay: .75s; } .fk.spil .tjek li:nth-child(4) { transition-delay: 1.05s; }
-  .fk[data-trin="4"] .fk-fod { font-size: 15px; color: var(--blaek); }
+  .fk[data-trin="3"] .fk-fod { font-size: 15px; color: var(--blaek); }
   @media (max-width: 899px) { .tjek li { padding: 8px 0; font-size: 15px; } }
   @media (max-width: 899px) and (max-height: 720px) { .tjek li { padding: 5px 0; } }
 </style>
@@ -397,7 +396,7 @@
             </dl>
             <p class="fk-fod bogf-status"><span class="figur i-bogfoert" style="--drej:-8deg" aria-hidden="true"><svg class="av" viewBox="0 0 64 64" aria-hidden="true"><path fill="#4b3aa6" d="M25 15.5 39 9v35c0 2.6 1.3 3.8 3.8 3.8h4.4v9.2h-6.1C31.4 57 25 53.2 25 45z"/><rect x="10" y="23.5" width="44" height="9" rx="4.5" fill="#4b3aa6"/><g fill="#fff" stroke="#4b3aa6" stroke-width="2.6"><circle cx="21.5" cy="28" r="7.2"/><circle cx="42.5" cy="28" r="7.2"/></g><g class="oejne"><circle cx="22.3" cy="28.6" r="2.6" fill="#16141d"/><circle cx="43.3" cy="28.6" r="2.6" fill="#16141d"/></g></svg></span><span class="app-pille ok">✓ Bogført</span></p>
           </div>
-          <div class="fk" data-trin="3">
+          <div class="fk" data-trin="2">
             <p class="fk-lbl">Moms for 4. kvartal</p>
             <dl class="moms">
               <dt>Moms af salg</dt><dd>24.310,00</dd>
@@ -408,21 +407,11 @@
             <p class="moms-total"><span>At betale</span><b><span data-tael="18189.50" data-dec="2" data-forsink="900">18.189,50</span> kr.</b></p>
             <p class="fk-fod">Vi indberetter den inden 1. marts 2027.</p>
           </div>
-          <div class="fk" data-trin="2">
-            <p class="fk-lbl">Banken · 26. november</p>
-            <div class="regning">
-              <p class="r-fra"><span class="kilde bank">Bank</span>Mejeriet Nord</p>
-              <p class="r-sub">Betalt fra din konto</p>
-              <p class="fk-tal">−2.210,00 <small>kr.</small></p>
-            </div>
-            <p class="fk-fod"><span class="app-pille ok">✓ Passer med faktura 4471</span></p>
-          </div>
-          <div class="fk" data-trin="4">
+          <div class="fk" data-trin="3">
             <p class="fk-lbl">Mejeriet Nord · faktura 4471</p>
             <ul class="tjek">
               <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Kom ind af sig selv</li>
               <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Bogført</li>
-              <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Betalingen passer</li>
               <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Med i momsen</li>
             </ul>
             <p class="fk-fod">Du har ikke rørt den.</p>
@@ -435,11 +424,10 @@
         <ol class="punkter" id="punkter">
           <li class="aktiv"><span class="linje"></span><button type="button" data-trin="0" aria-current="step">Regningen kommer ind.</button></li>
           <li><span class="linje"></span><button type="button" data-trin="1">Vi bogfører den.</button></li>
-          <li><span class="linje"></span><button type="button" data-trin="2">Betalingen passer.</button></li>
-          <li><span class="linje"></span><button type="button" data-trin="3">Vi indberetter momsen.</button></li>
-          <li><span class="linje"></span><button type="button" data-trin="4"><span class="saa">Med andre ord:</span><br>vi har dig.</button></li>
+          <li><span class="linje"></span><button type="button" data-trin="2">Vi indberetter momsen.</button></li>
+          <li><span class="linje"></span><button type="button" data-trin="3"><span class="saa">Med andre ord:</span><br>vi har dig.</button></li>
         </ol>
-        <div class="fremdrift" aria-label="Trin"><button type="button" data-til="0" aria-label="Regningen kommer ind."></button><button type="button" data-til="1" aria-label="Vi bogfører den."></button><button type="button" data-til="2" aria-label="Betalingen passer."></button><button type="button" data-til="3" aria-label="Vi indberetter momsen."></button></div>
+        <div class="fremdrift" aria-label="Trin"><button type="button" data-til="0" aria-label="Regningen kommer ind."></button><button type="button" data-til="1" aria-label="Vi bogfører den."></button><button type="button" data-til="2" aria-label="Vi indberetter momsen."></button></div>
         <figure class="statisk">
           <img id="statiskBillede" src="/billeder/app-overblik-2x.webp" alt="Tallos app: overskud, penge på kontoen, hvad kunderne skylder, momsen, og det du skal tage stilling til" width="2880" height="1800" loading="lazy">
         </figure>
@@ -708,13 +696,13 @@
   const ZOOM = 1000;  // px scroll fra foto til app; Mercury fylder skærmen ved cirka 1000
   const OVER = 400;   // px fra fuld app til panelet med punkterne (Mercury er der ved 1350)
   const TRIN = 450;   // px pr. punkt
-  const PUNKTER = 5;   // fire trin og afslutningen
+  const PUNKTER = 4;   // tre trin og afslutningen
   const START = ZOOM + OVER;
   // Appens skærmbilleder: desktop er 1440 × 900 med en 264 px sidebjælke, mobil 390 × 844
   const APP = { d: { w: 1440, h: 900, side: 264 }, m: { w: 390, h: 844 } };
-  const SKAERME = ["foer", "efter", "efter", "moms", "moms"]; // pr. punkt, sløret bag kortet; afslutningen står foran momsen
-  const STATISK = { d: ["app-transaktioner-2x", "app-transaktioner-bogfoert-2x", "app-transaktioner-bogfoert-2x", "app-moms-2x", "app-moms-2x"],
-                    m: ["app-mobil-transaktioner-2x", "app-mobil-transaktioner-bogfoert-2x", "app-mobil-transaktioner-bogfoert-2x", "app-mobil-moms-2x", "app-mobil-moms-2x"] };
+  const SKAERME = ["foer", "efter", "moms", "moms"]; // pr. punkt, sløret bag kortet; afslutningen står foran momsen
+  const STATISK = { d: ["app-transaktioner-2x", "app-transaktioner-bogfoert-2x", "app-moms-2x", "app-moms-2x"],
+                    m: ["app-mobil-transaktioner-2x", "app-mobil-transaktioner-bogfoert-2x", "app-mobil-moms-2x", "app-mobil-moms-2x"] };
 
   const rejse = document.getElementById("rejse");
   const scene = document.getElementById("scene");
