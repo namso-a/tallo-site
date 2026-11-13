@@ -42,7 +42,7 @@
 <!-- Menu, pakkeblok og footer skrives af vaerktoej/undersider.py mellem markørerne; ret dem dér. -->
 <style>
   /* Rejsen: scenen står fast, mens man scroller (højden sættes af scriptet) */
-  .rejse { position: relative; height: calc(100vh + 3300px); }
+  .rejse { position: relative; height: calc(100vh + 3750px); }
   .scene { position: sticky; top: 0; height: 100vh; overflow: hidden; }
   .topflade { position: absolute; inset: 0; }
   .foto { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform, opacity; }
@@ -75,10 +75,9 @@
   .punkter .linje { position: absolute; z-index: 1; left: 0; top: 13px; bottom: 13px; width: 2px; border-radius: 2px; background: var(--blaa); transform: scaleY(0); transform-origin: top; }
   .punkter button { display: block; width: 100%; padding: 12px 0; border: 0; background: none; font: inherit; font-size: 22px; font-weight: 500; letter-spacing: -.01em; color: var(--daempet); text-align: left; cursor: pointer; transition: color .2s; }
   .punkter button:hover, .punkter li.aktiv button { color: var(--blaek); }
-  .se-appen { display: inline-flex; align-items: center; min-height: 44px; margin-top: 22px; font-size: 16px; font-weight: 560; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
   /* Fokus: appen bliver sløret bag et frostet glas, og ét kort pr. punkt står midt foran (Othman 12. nov 2026) */
   .daemp { position: absolute; inset: 0; background: rgba(255,255,255,0); transition: background .45s ease-out, backdrop-filter .45s ease-out, -webkit-backdrop-filter .45s ease-out; pointer-events: none; }
-  .skaerm.daempet .daemp { background: rgba(255,255,255,.4); -webkit-backdrop-filter: blur(7px) saturate(.9); backdrop-filter: blur(7px) saturate(.9); }
+  .skaerm.daempet .daemp { background: rgba(255,255,255,.5); -webkit-backdrop-filter: blur(14px) saturate(.3); backdrop-filter: blur(14px) saturate(.3); }
   .fokus { position: absolute; left: 0; top: 0; pointer-events: none; opacity: 0; transition: opacity .3s ease-out; }
   .fokus.synlig { opacity: 1; }
   .fk { position: absolute; inset: 0; margin: auto; height: fit-content; width: min(420px, calc(100% - 48px)); padding: 26px 28px; border-radius: 16px; background: #fff; box-shadow: inset 0 0 0 1px var(--lineal), 0 30px 60px -28px rgba(22,20,29,.38); opacity: 0; visibility: hidden; transform: translateY(18px) scale(.98); transition: opacity .35s ease-out, transform .5s cubic-bezier(.2,.7,.2,1), visibility 0s .5s; }
@@ -96,12 +95,6 @@
   dt.heraf, dd.heraf { color: var(--blaa); font-size: 14px; }
   .fk-tal small { font-size: 18px; letter-spacing: 0; color: var(--daempet); }
   .fk .app-pille { margin-top: 10px; }
-  .soejler { display: flex; align-items: flex-end; gap: 7px; height: 96px; margin-top: 20px; border-bottom: 1px solid var(--lineal); }
-  .soejler i { flex: 1; display: flex; align-items: flex-end; gap: 2px; height: 100%; }
-  .soejler b { flex: 1; border-radius: 3px 3px 0 0; background: #4b3aa6; transform: scaleY(0); transform-origin: bottom; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
-  .soejler b + b { background: #d8d2f2; }
-  .fk.spil .soejler b { transform: scaleY(1); }
-  .soejle-akse { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--daempet); }
   .kr { font-variant-numeric: tabular-nums; white-space: nowrap; }
   .kr.plus { color: var(--blaa); }
   .kilde { flex: none; width: 72px; padding: 3px 0; border-radius: 6px; font-size: 12px; font-weight: 600; text-align: center; color: #fff; }
@@ -188,11 +181,8 @@
     .top-tekst { top: calc(var(--nav) + 24px); }
     .punkter { margin-top: 18px; }
     .punkter button { padding: 10px 0; font-size: 18px; }
-    .se-appen { display: none; }
-    html:not(.zoom) .se-appen { display: inline-flex; }
     .fk { width: calc(100% - 24px); padding: 20px 22px; }
     .fk-tal { font-size: 36px; }
-    .soejler { height: 64px; margin-top: 14px; }
     .os { padding-top: 120px; }
     .os h2 { padding: 0 20px; }
     .kom { padding: 120px 0 80px; }
@@ -217,7 +207,6 @@
     .regning .fk-tal { margin-top: 4px; font-size: 28px; }
     .r-sub { font-size: 13px; }
     .fk-tal { font-size: 28px; }
-    .soejler { height: 40px; margin-top: 10px; }
     .fk-fod { margin-top: 6px; }
     .moms { margin-top: 8px; gap: 4px 16px; }
     .moms-total b { font-size: 24px; }
@@ -281,6 +270,49 @@
   @media (prefers-reduced-motion: reduce) {
     .js-u .udtalelse .u-foto, .js-u .u-fremhaev .ord { transition: none; }
   }
+</style>
+
+<style>
+  /* Fra regning til moms: stregen under sætningen (13. nov 2026) */
+  .fremdrift { display: flex; gap: 6px; }
+  .fremdrift button { flex: 1; position: relative; min-height: 24px; padding: 0; border: 0; background: none; cursor: pointer; }
+  .fremdrift button::before, .fremdrift button::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; border-radius: 2px; background: var(--lineal); }
+  .fremdrift button::after { background: #4b3aa6; transform: scaleX(var(--f, 0)); transform-origin: left; }
+</style>
+
+<style>
+  /* A: Én sætning ad gangen. Overskriften er en lille etiket; sætningen er det store, og den skifter med kortet. */
+  .produkt h2 { font-size: 17px; font-weight: 560; letter-spacing: 0; color: var(--blaa); }
+  .punkter { margin-top: 14px; }
+  .punkter li { display: none; padding-left: 0; }
+  .punkter li::before, .punkter .linje { display: none; }
+  .punkter li.aktiv { display: block; }
+  .punkter button, .punkter li.aktiv button { padding: 0; font-size: clamp(40px, 3.6vw, 54px); font-weight: 500; line-height: 1.08; letter-spacing: -.03em; color: var(--blaek); cursor: default; text-wrap: balance; animation: saetning-ind .55s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes saetning-ind { from { opacity: 0; transform: translateY(14px); } }
+  .punkter li.aktiv { min-height: 2.16em; font-size: clamp(40px, 3.6vw, 54px); }  /* to linjer, så stregen står fast */
+  .fremdrift { width: 220px; margin-top: 28px; }
+  @media (max-width: 899px) {
+    .produkt h2 { font-size: 15px; }
+    .punkter { margin-top: 8px; }
+    .punkter button, .punkter li.aktiv button { font-size: 32px; }
+    .punkter li.aktiv { font-size: 32px; }
+    .fremdrift { width: 200px; margin-top: 6px; margin-bottom: -10px; }
+    .fremdrift button { min-height: 44px; }  /* trykflade 44 px, stregen samme sted */
+  }
+</style>
+<style>
+  .punkter .saa { color: #4b3aa6; }
+  /* Afslutningen: fire flueben, ét ad gangen */
+  .tjek { list-style: none; margin: 12px 0 0; padding: 0; }
+  .tjek li { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-top: 1px solid #eeedf3; font-size: 17px; font-weight: 500; opacity: 0; transform: translateX(-8px); transition: opacity .35s ease-out, transform .45s cubic-bezier(.2,.7,.2,1); }
+  .tjek li:first-child { border-top: 0; }
+  .tjek svg { flex: none; width: 24px; height: 24px; padding: 4px; border-radius: 50%; background: #efedfb; fill: none; stroke: #4b3aa6; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .fk.spil .tjek li { opacity: 1; transform: none; }
+  .fk.spil .tjek li:nth-child(1) { transition-delay: .15s; } .fk.spil .tjek li:nth-child(2) { transition-delay: .45s; }
+  .fk.spil .tjek li:nth-child(3) { transition-delay: .75s; } .fk.spil .tjek li:nth-child(4) { transition-delay: 1.05s; }
+  .fk[data-trin="4"] .fk-fod { font-size: 15px; color: var(--blaek); }
+  @media (max-width: 899px) { .tjek li { padding: 8px 0; font-size: 15px; } }
+  @media (max-width: 899px) and (max-height: 720px) { .tjek li { padding: 5px 0; } }
 </style>
 </head>
 <body>
@@ -365,7 +397,7 @@
             </dl>
             <p class="fk-fod bogf-status"><span class="figur i-bogfoert" style="--drej:-8deg" aria-hidden="true"><svg class="av" viewBox="0 0 64 64" aria-hidden="true"><path fill="#4b3aa6" d="M25 15.5 39 9v35c0 2.6 1.3 3.8 3.8 3.8h4.4v9.2h-6.1C31.4 57 25 53.2 25 45z"/><rect x="10" y="23.5" width="44" height="9" rx="4.5" fill="#4b3aa6"/><g fill="#fff" stroke="#4b3aa6" stroke-width="2.6"><circle cx="21.5" cy="28" r="7.2"/><circle cx="42.5" cy="28" r="7.2"/></g><g class="oejne"><circle cx="22.3" cy="28.6" r="2.6" fill="#16141d"/><circle cx="43.3" cy="28.6" r="2.6" fill="#16141d"/></g></svg></span><span class="app-pille ok">✓ Bogført</span></p>
           </div>
-          <div class="fk" data-trin="2">
+          <div class="fk" data-trin="3">
             <p class="fk-lbl">Moms for 4. kvartal</p>
             <dl class="moms">
               <dt>Moms af salg</dt><dd>24.310,00</dd>
@@ -374,28 +406,40 @@
             </dl>
             <div class="moms-streg"></div>
             <p class="moms-total"><span>At betale</span><b><span data-tael="18189.50" data-dec="2" data-forsink="900">18.189,50</span> kr.</b></p>
-            <p class="fk-fod">Frist 1. marts 2027</p>
+            <p class="fk-fod">Vi indberetter den inden 1. marts 2027.</p>
           </div>
-          <div class="fk" data-trin="3">
-            <p class="fk-lbl">Overskud i år</p>
-            <p class="fk-tal"><span data-tael="376368">376.368</span> <small>kr.</small></p>
-            <span class="app-pille ok">+8 % mod sidste år</span>
-            <div class="soejler" id="soejler"></div>
-            <div class="soejle-akse"><span>jan</span><span>nov</span></div>
-            <p class="fk-fod">Opdateret, da Mejeriet Nord blev bogført.</p>
+          <div class="fk" data-trin="2">
+            <p class="fk-lbl">Banken · 26. november</p>
+            <div class="regning">
+              <p class="r-fra"><span class="kilde bank">Bank</span>Mejeriet Nord</p>
+              <p class="r-sub">Betalt fra din konto</p>
+              <p class="fk-tal">−2.210,00 <small>kr.</small></p>
+            </div>
+            <p class="fk-fod"><span class="app-pille ok">✓ Passer med faktura 4471</span></p>
+          </div>
+          <div class="fk" data-trin="4">
+            <p class="fk-lbl">Mejeriet Nord · faktura 4471</p>
+            <ul class="tjek">
+              <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Kom ind af sig selv</li>
+              <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Bogført</li>
+              <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Betalingen passer</li>
+              <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Med i momsen</li>
+            </ul>
+            <p class="fk-fod">Du har ikke rørt den.</p>
           </div>
         </div>
       </div>
 
       <div class="produkt" id="produkt">
-        <h2>Fra regning til moms.<br>Uden at du taster noget.</h2>
+        <h2>Fra regning til moms.</h2>
         <ol class="punkter" id="punkter">
-          <li class="aktiv"><span class="linje"></span><button type="button" data-trin="0" aria-current="step">Regningen kommer ind</button></li>
-          <li><span class="linje"></span><button type="button" data-trin="1">Vi bogfører den</button></li>
-          <li><span class="linje"></span><button type="button" data-trin="2">Momsen er regnet ud</button></li>
-          <li><span class="linje"></span><button type="button" data-trin="3">Du ser overskuddet</button></li>
+          <li class="aktiv"><span class="linje"></span><button type="button" data-trin="0" aria-current="step">Regningen kommer ind.</button></li>
+          <li><span class="linje"></span><button type="button" data-trin="1">Vi bogfører den.</button></li>
+          <li><span class="linje"></span><button type="button" data-trin="2">Betalingen passer.</button></li>
+          <li><span class="linje"></span><button type="button" data-trin="3">Vi indberetter momsen.</button></li>
+          <li><span class="linje"></span><button type="button" data-trin="4"><span class="saa">Med andre ord:</span><br>vi har dig.</button></li>
         </ol>
-        <a class="se-appen" href="/appen/">Se appen</a>
+        <div class="fremdrift" aria-label="Trin"><button type="button" data-til="0" aria-label="Regningen kommer ind."></button><button type="button" data-til="1" aria-label="Vi bogfører den."></button><button type="button" data-til="2" aria-label="Betalingen passer."></button><button type="button" data-til="3" aria-label="Vi indberetter momsen."></button></div>
         <figure class="statisk">
           <img id="statiskBillede" src="/billeder/app-overblik-2x.webp" alt="Tallos app: overskud, penge på kontoen, hvad kunderne skylder, momsen, og det du skal tage stilling til" width="2880" height="1800" loading="lazy">
         </figure>
@@ -664,13 +708,13 @@
   const ZOOM = 1000;  // px scroll fra foto til app; Mercury fylder skærmen ved cirka 1000
   const OVER = 400;   // px fra fuld app til panelet med punkterne (Mercury er der ved 1350)
   const TRIN = 450;   // px pr. punkt
-  const PUNKTER = 4;
+  const PUNKTER = 5;   // fire trin og afslutningen
   const START = ZOOM + OVER;
   // Appens skærmbilleder: desktop er 1440 × 900 med en 264 px sidebjælke, mobil 390 × 844
   const APP = { d: { w: 1440, h: 900, side: 264 }, m: { w: 390, h: 844 } };
-  const SKAERME = ["foer", "efter", "moms", "overblik"]; // pr. punkt, sløret bag kortet
-  const STATISK = { d: ["app-transaktioner-2x", "app-transaktioner-bogfoert-2x", "app-moms-2x", "app-overblik-2x"],
-                    m: ["app-mobil-transaktioner-2x", "app-mobil-transaktioner-bogfoert-2x", "app-mobil-moms-2x", "app-mobil-2x"] };
+  const SKAERME = ["foer", "efter", "efter", "moms", "moms"]; // pr. punkt, sløret bag kortet; afslutningen står foran momsen
+  const STATISK = { d: ["app-transaktioner-2x", "app-transaktioner-bogfoert-2x", "app-transaktioner-bogfoert-2x", "app-moms-2x", "app-moms-2x"],
+                    m: ["app-mobil-transaktioner-2x", "app-mobil-transaktioner-bogfoert-2x", "app-mobil-transaktioner-bogfoert-2x", "app-mobil-moms-2x", "app-mobil-moms-2x"] };
 
   const rejse = document.getElementById("rejse");
   const scene = document.getElementById("scene");
@@ -776,7 +820,7 @@
       // Teksten øverst, panelet under den højeste af de fire tekstblokke; på tablets midtstillet og ikke for bredt
       tekstW = Math.min(vw - 40, 640); tekstX = Math.round((vw - tekstW) / 2); tekstY = navH + 14;
       produkt.style.width = tekstW + "px";
-      const py = Math.max(Math.round(vh * .54), tekstY + hoejesteTekst() + 16);
+      const py = Math.max(Math.round(vh * .26), tekstY + hoejesteTekst() + 24);
       const pw = Math.min(vw - 32, 520);
       panel = { x: Math.round((vw - pw) / 2), y: py, w: pw, h: vh - py + 60 };
       sc = pw / APP.m.w;
@@ -863,6 +907,7 @@
     const trin = Math.min(PUNKTER - 1, Math.floor(t));
     saetTrin(trin);
     punkter.forEach((li, i) => { li.firstElementChild.style.transform = `scaleY(${i === trin ? klem(t - trin) : 0})`; });
+    document.querySelectorAll(".fremdrift [data-til]").forEach((e, i) => { e.style.setProperty("--f", i < trin ? 1 : i === trin ? klem(t - trin) : 0); e.classList.toggle("nu", i === trin); });
 
     // Kortene vises først, når panelet står stille; så spiller det aktive forfra
     const synlig = ind > .97;
@@ -875,9 +920,6 @@
 
   // Det levende kort for punkt i: glider frem, og tal, søjler og rækker spiller forfra
   const kort = [...fokus.querySelectorAll(".fk")];
-  const SOEJLER = [[125, 77], [107, 72], [122, 85], [99, 77], [131, 75], [104, 80], [133, 74], [98, 78], [131, 80], [22, 2]]; // tusinder, som i appens graf
-  document.getElementById("soejler").innerHTML = SOEJLER.map(([a, b], i) =>
-    `<i><b style="height:${a / 1.4}%;transition-delay:${.2 + i * .05}s"></b><b style="height:${b / 1.4}%;transition-delay:${.25 + i * .05}s"></b></i>`).join("");
   let fokusSynlig = false, taelling = 0;
   function taelOp(el, nr) {
     const til = parseFloat(el.dataset.tael), dec = +(el.dataset.dec || 0);
@@ -923,6 +965,7 @@
   }
 
   // Klik på et punkt: scroll derhen (eller skift billedet direkte, når der ikke zoomes)
+  document.querySelectorAll(".fremdrift [data-til]").forEach((e) => e.addEventListener("click", () => punkter[+e.dataset.til].querySelector("button").click()));
   punkter.forEach((li, i) => li.querySelector("button").addEventListener("click", () => {
     if (stille) return saetTrin(i);
     scrollTo({ top: rejse.offsetTop + START + i * TRIN + 2, behavior: "smooth" });
