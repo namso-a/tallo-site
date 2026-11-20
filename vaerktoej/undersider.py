@@ -910,7 +910,7 @@ def aarstrimmel(ekstra, moms=MOMS_FRISTER):
 
 
 def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fakta, fakta_note, aar_h2, aar, aar_note, tilkoeb, spoergsmaal, kilder,
-              tjekket="6. november 2026"):
+              tjekket="6. november 2026", ekstra=""):
     """Sider til det, folk søger på (Othman 6. nov 2026). Siden svarer på spørgsmålet, før den sælger noget, og de to sider
     er ikke den samme side med nyt navn. Hver sætning skal kunne slås op: kilderne står nederst på siden og er tjekket
     6. nov 2026; tal ændrer sig, så tjek dem igen en gang om året. Ny side: læg den også i INDEKSERET og FOD_LINKS."""
@@ -926,7 +926,7 @@ def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fak
     laes = f"""<div class="indre soege-svar" data-afslor>
       <h2>{svar_h2}</h2>
       <div class="soege-svar-tekst">
-        {afsnit}
+        {afsnit}{ekstra}
       </div>
     </div>"""
     def felt(tal, enhed, tekst, taeller=None):
@@ -976,14 +976,14 @@ def soegeside(sti, titel, beskrivelse, h1, ingress, svar_h2, svar, fakta_h2, fak
 
 
 def revisor_enkeltmand():
-    return soegeside("/revisor-enkeltmandsvirksomhed/", "Revisor til enkeltmandsvirksomhed med fast pris: Tallo",
-                     "Skal en enkeltmandsvirksomhed have en revisor? Se reglerne for moms og digital bogføring, årets frister og vores faste pris. Vi bogfører og indberetter momsen.",
-                     "Revisor til din enkeltmands&shy;virksomhed.", "Vi bogfører og indberetter momsen. Du skal ikke kunne regnskab.",
+    return soegeside("/revisor-enkeltmandsvirksomhed/", "Skal en enkeltmandsvirksomhed have revisor? Krav og pris: Tallo",
+                     "Nej, der er ikke krav om revisor i en enkeltmandsvirksomhed. Se kravene til moms, digital bogføring og bilag, årets frister og vores faste pris.",
+                     "Revisor til din enkeltmands&shy;virksomhed.", "Der er ikke krav om revisor. Men momsen og bogføringen skal være rigtige. Vi bogfører og indberetter momsen, så du ikke skal kunne regnskab.",
                      "Skal en enkeltmands&shy;virksomhed have en revisor?",
                      ["Nej, det er ikke et krav, og du må gerne gøre det selv. Men bogføringen og momsen skal være rigtige og komme ind til tiden, uanset hvem der laver dem.",
                       "I en enkeltmandsvirksomhed er du og virksomheden den samme. Overskuddet beskattes hos dig, og du hæfter selv for virksomhedens gæld. En fejl i bogføringen kan derfor blive en fejl i din egen skat.",
                       "Det giver mening at få os ind, når bogføringen tager tid fra det, du tjener penge på, eller når du ikke er sikker på, at den er rigtig. Vi bogfører og indberetter momsen, og du bruger tiden på din forretning."],
-                     "Det skal du have styr på",
+                     "Kravene til en enkeltmands&shy;virksomhed",
                      [("50.000", "kr.", "Sælger du for mere på 12 måneder, skal du som udgangspunkt momsregistreres. Ved du det fra start, skal du registreres fra start.", 50000),
                       ("300.000", "kr.", "Har du solgt for mere i to år i træk, skal du bogføre digitalt. Læs om <a href='/digital-bogfoering/'>digital bogføring</a>.", 300000),
                       ("5", "år", "Så længe skal du gemme bilag og bogføring, regnet fra regnskabsårets slutning.", 5)],
@@ -992,18 +992,19 @@ def revisor_enkeltmand():
                      {7: [("1. juli", "Årets resultat til Skattestyrelsen", "Tilkøb")]},
                      f"Her er det en ny virksomhed, der indberetter moms hvert kvartal. Sælger du for under 5 mio. kr. om året og har indberettet og betalt til tiden, er det hvert halve år, 1. marts og 1. september. Vælger du Gør det selv med AI, indberetter du selv momsen. Datoerne kan rykke sig lidt fra år til år, og den præcise frist står hos <a href=\"{SKAT_FRISTER}\" target=\"_blank\" rel=\"noopener\">Skattestyrelsen</a>.",
                      "løn, årsregnskab og selvangivelse.",
-                     [("Hvad koster det?", FAQ_PRIS), FAQ_MOMS,
+                     [("Hvilke krav er der til en enkeltmandsvirksomhed?", "Du skal momsregistreres, når du sælger for mere end 50.000 kr. på 12 måneder, og <a href='/digital-bogfoering/'>bogføre digitalt</a>, når du har solgt for mere end 300.000 kr. to år i træk. Bilag og bogføring skal gemmes i 5 år, og årets resultat skal oplyses til Skattestyrelsen. Der er ikke krav om revisor."),
+                      ("Hvad koster det?", FAQ_PRIS), FAQ_MOMS,
                       ("Er I godkendte revisorer?", GODKENDT + " Kræver din bank eller andre en erklæring, skal du bruge en godkendt revisor. Vi leverer gerne grundlaget."),
                       ("Hvad hvis jeg laver virksomheden om til et ApS?", "Så gælder reglerne for selskaber, blandt andet årsrapport og fravalg af revision. Læs om <a href='/revisor-aps/'>revisor til ApS</a>.")],
                      KILDER_MOMS + [("Skattestyrelsen: registrering for moms", "https://skat.dk/erhverv/moms/moms-saadan-goer-du/saadan-registrerer-du-din-virksomhed-for-moms"), KILDE_RESULTAT, KILDE_BOGFOERING])
 
 
 def revisor_aps():
-    return soegeside("/revisor-aps/", "Revisor til ApS og fravalg af revision: Tallo",
-                     "Skal et ApS have en revisor? Se grænserne for at fravælge revision, årets frister og vores faste pris. Vi bogfører og indberetter momsen, og årsrapporten kan købes med.",
+    return soegeside("/revisor-aps/", "Revisor til ApS til fast pris, og hvornår I kan fravælge revision: Tallo",
+                     "Kan jeres ApS fravælge revision? Se grænserne, hvordan I gør, årets frister og vores faste pris. Vi bogfører og indberetter momsen, og årsrapporten kan købes med.",
                      "Revisor til dit ApS.", "Vi bogfører og indberetter momsen. Årsrapporten kan købes med. Du skal ikke kunne regnskab.",
-                     "Skal et ApS have en revisor?",
-                     ["Ikke altid. Et ApS kan fravælge revision, hvis det i to regnskabsår i træk ikke overskrider to af de tre grænser herunder. Årsrapporten skal indberettes uanset hvad.",
+                     "Kan et ApS fravælge revision?",
+                     ["Ja, hvis selskabet er lille nok: et ApS kan fravælge revision, hvis det i to regnskabsår i træk ikke overskrider to af de tre grænser herunder. Årsrapporten skal indberettes uanset hvad.",
                       "Fravalget besluttes på generalforsamlingen og gælder fremad. Årsrapporten skal ind til Erhvervsstyrelsen senest 6 måneder efter regnskabsårets slutning, og den bliver som hovedregel offentlig med det samme. Derfor skal bogføringen bag den være i orden hele året.",
                       "Vi er ikke godkendte revisorer og afgiver ikke erklæringer. Det passer til et ApS, der har fravalgt revision: vi bogfører og indberetter momsen, og årsrapporten kan købes med. Har I pligt til revision, eller skal banken have en erklæring, skal I bruge en godkendt revisor, og vi leverer grundlaget."],
                      "Grænserne for at fravælge revision",
@@ -1013,13 +1014,15 @@ def revisor_aps():
                      "Overskrider I to af grænserne allerede i det første regnskabsår, har I pligt til revision fra start. Har I et holdingselskab, tæller koncernen samlet, og i enkelte brancher gælder særlige krav, også under grænserne.",
                      "Sådan ser jeres år ud",
                      {6: [("30. juni", "Årsrapport til Erhvervsstyrelsen og resultat til Skattestyrelsen", "Tilkøb")]},
-                     f"Her følger regnskabsåret kalenderåret, og selskabet er nyt, så momsen indberettes hvert kvartal. Sælger I for under 5 mio. kr. om året og har indberettet og betalt til tiden, er det hvert halve år, 1. marts og 1. september. Vælger I Gør det selv med AI, indberetter I selv momsen. Datoerne kan rykke sig lidt fra år til år, og den præcise frist står hos <a href=\"{SKAT_FRISTER}\" target=\"_blank\" rel=\"noopener\">Skattestyrelsen</a>.<br><br>Hele året skal selskabet bogføre digitalt, og bilag og bogføring skal gemmes i 5 år, regnet fra regnskabsårets slutning.",
+                     f"Her følger regnskabsåret kalenderåret, og selskabet er nyt, så momsen indberettes hvert kvartal. Sælger I for under 5 mio. kr. om året og har indberettet og betalt til tiden, er det hvert halve år, 1. marts og 1. september. Vælger I Gør det selv med AI, indberetter I selv momsen. Datoerne kan rykke sig lidt fra år til år, og den præcise frist står hos <a href=\"{SKAT_FRISTER}\" target=\"_blank\" rel=\"noopener\">Skattestyrelsen</a>.<br><br>Hele året skal selskabet <a href='/digital-bogfoering/'>bogføre digitalt</a>, og bilag og bogføring skal gemmes i 5 år, regnet fra regnskabsårets slutning.",
                      "årsrapport, løn og selvangivelse.",
-                     [("Kan I tage os, hvis vi har pligt til revision?", "Ja, til bogføringen. Årsrapporten skal en godkendt revisor stå for, og vi leverer grundlaget. I enkelte brancher gælder særlige krav, også under grænserne, så det tjekker vi, før vi begynder."),
+                     [("Hvordan fravælger vi revision?", "Det besluttes på den ordinære generalforsamling og gælder fremad. Står der noget om revision eller valg af revisor i vedtægterne, skal generalforsamlingen ændre dem. Ledelsespåtegningen skal sige, at selskabet har fravalgt revision, og at betingelserne er opfyldt. At revisoren fratræder, skal meldes til Erhvervsstyrelsen senest 2 uger efter beslutningen, med referatet fra generalforsamlingen."),
+                      ("Kan I tage os, hvis vi har pligt til revision?", "Ja, til bogføringen. Årsrapporten skal en godkendt revisor stå for, og vi leverer grundlaget. I enkelte brancher gælder særlige krav, også under grænserne, så det tjekker vi, før vi begynder."),
                       ("Hvad koster det?", FAQ_PRIS), FAQ_MOMS,
                       ("Er I godkendte revisorer?", GODKENDT + " Skal I bruge en erklæring, fx til banken, skal I bruge en godkendt revisor. Vi leverer gerne grundlaget."),
                       ("Hvad hvis jeg har en enkeltmandsvirksomhed?", "Så er reglerne anderledes, og der er ikke noget krav om revisor. Læs om <a href='/revisor-enkeltmandsvirksomhed/'>revisor til enkeltmandsvirksomhed</a>.")],
-                     [("Erhvervsstyrelsen: årsrapporter og fravalg af revision", "https://erhvervsstyrelsen.dk/vejledning-aarsrapporter")] + KILDER_MOMS + [KILDE_RESULTAT, KILDE_BOGFOERING])
+                     [("Erhvervsstyrelsen: årsrapporter og fravalg af revision (kapitel 7)", "https://erhvervsstyrelsen.dk/vejledning-aarsrapporter")] + KILDER_MOMS + [KILDE_RESULTAT, KILDE_BOGFOERING],
+                     tjekket="20. november 2026")
 
 
 # Kilderne til de to sider fra 8. nov 2026 (læst samme dag; bøder for manglende digital bogføring stod kun i et resumé og er udeladt)
@@ -1056,16 +1059,42 @@ def digital_bogfoering():
                      [KILDE_BOGFOERING, KILDE_VIRK_DIGITAL, KILDE_IKKE_REG], tjekket="8. november 2026")
 
 
+MOMS_TABEL = [  # (periode, frist, offentliggjort af Skattestyrelsen) tjekket 20. nov 2026 på skat.dk
+    ("4. kvartal 2025 og 2. halvår 2025", "2. marts 2026", True),
+    ("1. kvartal 2026", "1. juni 2026", True),
+    ("2. kvartal 2026 og 1. halvår 2026", "1. september 2026", True),
+    ("3. kvartal 2026", "1. december 2026", True),
+    ("4. kvartal 2026 og 2. halvår 2026", "1. marts 2027", True),
+    ("1. kvartal 2027", "1. juni 2027", False),
+    ("2. kvartal 2027 og 1. halvår 2027", "1. september 2027", False),
+    ("3. kvartal 2027", "1. december 2027", False),
+]
+KILDE_TIL_TIDEN = ("Skattestyrelsen: indberet til tiden og undgå foreløbig fastsættelse",
+                   "https://skat.dk/erhverv/betaling-og-skattekonto/indberet-til-tiden-og-undgaa-foreloebig-fastsaettelser")
+
+
+def momstabel():
+    """Fristerne som rigtig tekst i en tabel, så Google kan læse dem. Ikke offentliggjorte frister står med *."""
+    raekker = "".join(f'<tr><td>{p}</td><td>{f}{"" if ok else " *"}</td></tr>' for p, f, ok in MOMS_TABEL)
+    return f"""
+        <table class="momstabel">
+          <caption>Momsfrister 2026 og 2027 (indberet og betal)</caption>
+          <thead><tr><th scope="col">Periode</th><th scope="col">Frist</th></tr></thead>
+          <tbody>{raekker}</tbody>
+        </table>
+        <p class="momstabel-note">* Efter reglen om 2 måneder og 1 dag. Skattestyrelsen har ikke lagt datoerne ud endnu. 1. marts 2026 var en søndag, og fristen blev 2. marts.</p>"""
+
+
 def moms_frister():
     """Momsfristerne (Othman 8. nov 2026). Datoerne er Skattestyrelsens; næste frister står med år og tjekkes igen hvert år."""
     halvaar = {3: ("1. marts", "2. halvår"), 9: ("1. september", "1. halvår")}  # står i teksten; strimlen viser kvartalerne
-    return soegeside("/moms-frister/", "Momsfrister for kvartal og halvår: Tallo",
-                     "Hvornår skal momsen indberettes? Se fristerne for kvartal og halvår, hvem der har hvilken rytme, og hvad det koster at komme for sent.",
-                     "Momsfrister.", "Hvornår momsen skal ind, og hvad det koster at komme for sent.",
+    return soegeside("/moms-frister/", "Momsfrister 2026 og 2027 for kvartal og halvår: Tallo",
+                     "Alle momsfrister for 2026 og 2027, kvartal og halvår, og hvad det koster at komme for sent: 1.400 kr. i gebyr for hver periode, og renter oveni.",
+                     "Momsfrister 2026 og 2027.", "Hvornår momsen skal ind, og hvad det koster at komme for sent.",
                      "Hvornår skal momsen indberettes?",
                      ["Det afhænger af, hvor meget du sælger for. Nye virksomheder indberetter hvert kvartal. Sælger du for under 5 mio. kr. om året og har indberettet og betalt til tiden, er det hvert halve år. Over 50 mio. kr. er det hver måned.",
                       "Når et kvartal er slut, har du 2 måneder og 1 dag til at indberette og betale. Momsen for 1. kvartal skal altså ind senest 1. juni. Du kan også selv bede om at indberette hvert kvartal.",
-                      "Kommer momsen ikke ind til tiden, fastsætter Skattestyrelsen et foreløbigt beløb, og du betaler et gebyr på 1.400 kr. for hver periode. Renter kommer oveni.",
+                      "Kommer momsen ikke ind til tiden, fastsætter Skattestyrelsen et foreløbigt beløb, og du betaler et gebyr på 1.400 kr. for hver periode. Gebyret skal betales, også selv om du indberetter bagefter, og der regnes renter af beløbet, indtil det er betalt.",
                       "Vælger du Med revisor, indberetter vi momsen for dig. Vælger du Gør det selv med AI, indberetter du selv, og du ser fristen i god tid."],
                      "Det skal du vide",
                      [("1.400", "kr.", "Gebyr for hver periode, momsen ikke er indberettet til tiden. Renter kommer oveni.", 1400),
@@ -1075,11 +1104,13 @@ def moms_frister():
                      "Momsens år, kvartal for kvartal", {},
                      f"Indberetter du hvert halve år, er fristerne {halvaar[3][0]} for {halvaar[3][1]} og {halvaar[9][0]} for {halvaar[9][1]}. Datoerne kan rykke sig lidt fra år til år, og den præcise frist står hos <a href=\"{SKAT_FRISTER}\" target=\"_blank\" rel=\"noopener\">Skattestyrelsen</a>.",
                      "løn, årsregnskab og selvangivelse.",
-                     [("Skal jeg overhovedet være momsregistreret?", "Som udgangspunkt, når du sælger for mere end 50.000 kr. på 12 måneder. Læs mere om <a href='/revisor-enkeltmandsvirksomhed/'>revisor til enkeltmandsvirksomhed</a>."),
+                     [("Hvad koster det at indberette momsen for sent?", "Et gebyr på 1.400 kr. for hver periode, du ikke har indberettet til tiden, og Skattestyrelsen fastsætter et foreløbigt beløb, du skal betale. Gebyret skal betales, også selv om du indberetter bagefter. Der regnes renter af beløbet, indtil det er betalt."),
+                      ("Skal jeg overhovedet være momsregistreret?", "Som udgangspunkt, når du sælger for mere end 50.000 kr. på 12 måneder. Læs mere om <a href='/revisor-enkeltmandsvirksomhed/'>revisor til enkeltmandsvirksomhed</a>."),
                       ("Kan jeg selv vælge at indberette hvert kvartal?", "Ja. Du kan bede Skattestyrelsen om det, også selv om du sælger for under 5 mio. kr."),
                       ("Hvad koster det?", FAQ_PRIS),
-                      ("Har du et ApS?", "Så gælder de samme momsfrister. Læs om <a href='/revisor-aps/'>revisor til ApS</a>, årsrapporten og fravalg af revision.")],
-                     KILDER_MOMS + [KILDE_NYT_SELSKAB, KILDE_REG_MOMS], tjekket="8. november 2026")
+                      ("Har du et ApS?", "Så gælder de samme momsfrister. Læs om <a href='/revisor-aps/'>revisor til ApS</a>, årsrapporten og fravalg af revision."),
+                      ("Skal jeg også bogføre digitalt?", "Har du et ApS, eller har din enkeltmandsvirksomhed solgt for mere end 300.000 kr. i hvert af de to foregående år, ja. Læs om <a href='/digital-bogfoering/'>krav om digital bogføring</a>.")],
+                     KILDER_MOMS + [KILDE_TIL_TIDEN, KILDE_NYT_SELSKAB, KILDE_REG_MOMS], tjekket="20. november 2026", ekstra=momstabel())
 
 
 # ---------------------------------------------------------------------------------------------------- 404

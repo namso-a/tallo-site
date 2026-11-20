@@ -503,6 +503,12 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 .soege-svar h2 { font-size: clamp(30px, 3.4vw, 42px); font-weight: 480; line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
 .soege-svar-tekst p { font-size: 19px; line-height: 1.55; color: var(--daempet); text-wrap: pretty; }
 .soege-svar-tekst p + p { margin-top: 18px; }
+.momstabel { width: 100%; margin-top: 28px; border-collapse: collapse; font-size: 17px; font-variant-numeric: tabular-nums; }
+.momstabel caption { text-align: left; font-weight: 560; color: var(--blaek); padding-bottom: 10px; }
+.momstabel th { text-align: left; font-size: 14px; font-weight: 560; color: var(--daempet); padding: 0 12px 8px 0; }
+.momstabel td { padding: 11px 12px 11px 0; border-top: 1px solid var(--lineal); color: var(--blaek); }
+.momstabel td:last-child { white-space: nowrap; }
+.soege-svar-tekst .momstabel-note { margin-top: 12px; font-size: 14px; line-height: 1.5; }
 .soege-svar-tekst p:first-child { font-size: 22px; line-height: 1.4; letter-spacing: -.01em; color: var(--blaek); }
 .fakta.tre { grid-template-columns: repeat(3, 1fr); }
 .fakta-note { max-width: 720px; margin: 40px auto 0; font-size: 16px; line-height: 1.55; color: var(--daempet); text-align: center; text-wrap: pretty; }
