@@ -432,7 +432,7 @@ def priser():
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
       </div>
     </div>"""
-    return side("/priser/", "Hvad koster en revisor? Fast pris fra 500 kr.: Tallo", "Hvad koster en revisor hos Tallo? To pakker til fast pris uden binding og med ubegrænset antal bilag: Gør det selv med AI til 500 kr. eller Med revisor til 1.000 kr. om måneden plus moms.",
+    return side("/priser/", "Hvad koster en revisor? 1.000 kr. om måneden, fast: Tallo", "Med revisor koster 1.000 kr. om måneden plus moms, fast, uden binding og med ubegrænset antal bilag. Vil du selv bogføre med AI-hjælp, koster det 500 kr.",
                 "\n\n  ".join([region("lilla top regner-region", top + "\n    " + regner), region("papir", tabel),
                                 region("papir", spoerg), region("papir", slut)]))
 
