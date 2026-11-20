@@ -508,6 +508,9 @@ html.stille .d-svg, html.stille .d-maerke { transition: none; }
 .momstabel th { text-align: left; font-size: 14px; font-weight: 560; color: var(--daempet); padding: 0 12px 8px 0; }
 .momstabel td { padding: 11px 12px 11px 0; border-top: 1px solid var(--lineal); color: var(--blaek); }
 .momstabel td:last-child { white-space: nowrap; }
+.skift-trin { margin: 18px 0 0; padding-left: 22px; font-size: 18px; line-height: 1.55; color: var(--daempet); }
+.skift-trin li + li { margin-top: 12px; }
+.skift-trin b { color: var(--blaek); font-weight: 560; }
 .soege-svar-tekst .momstabel-note { margin-top: 12px; font-size: 14px; line-height: 1.5; }
 .soege-svar-tekst p:first-child { font-size: 22px; line-height: 1.4; letter-spacing: -.01em; color: var(--blaek); }
 .fakta.tre { grid-template-columns: repeat(3, 1fr); }

@@ -26,7 +26,7 @@ CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.co
        "object-src 'none'; base-uri 'self'; form-action https://nznqjlrknpbnfzizxnkr.supabase.co mailto:")
 
 MENU = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "AI"), ("/om-os/", "Om os")]
-FOD_LINKS = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "Sådan bruger vi AI"), ("/om-os/", "Om os"),
+FOD_LINKS = [("/appen/", "Appen"), ("/priser/", "Priser"), ("/ai/", "Sådan bruger vi AI"), ("/om-os/", "Om os"), ("/skift-revisor/", "Skift revisor"),
              ("/revisor-enkeltmandsvirksomhed/", "Revisor til enkeltmands&shy;virksomhed"), ("/revisor-aps/", "Revisor til ApS"),
              ("/digital-bogfoering/", "Digital bogføring"), ("/moms-frister/", "Momsfrister")]
 # Vores egne profiler (Othman 6. nov 2026): ikoner i footeren og sameAs i de strukturerede data. Ikonerne er fra Feather (MIT).
@@ -42,7 +42,7 @@ SOME = [
 
 
 # Siderne, Google må vise. Mødesider, kundesider og betalingslinks står ikke her og beholder deres egen noindex.
-INDEKSERET = ["/", "/priser/", "/appen/", "/ai/", "/om-os/", "/revisor-enkeltmandsvirksomhed/", "/revisor-aps/", "/digital-bogfoering/", "/moms-frister/", "/privatliv/", "/handelsbetingelser/", "/databehandleraftale/"]
+INDEKSERET = ["/", "/priser/", "/appen/", "/ai/", "/om-os/", "/revisor-enkeltmandsvirksomhed/", "/revisor-aps/", "/digital-bogfoering/", "/moms-frister/", "/skift-revisor/", "/privatliv/", "/handelsbetingelser/", "/databehandleraftale/"]
 
 
 def strukturerede_data():
@@ -352,12 +352,16 @@ FAQ_FORSIDE = [
      "data, står i <a href='/databehandleraftale/'>databehandleraftalen</a>."),
 ]
 FAQ_PRISER = [
+    ("Hvad koster en revisor hos jer?", "Med revisor koster 1.000 kr. om måneden plus moms, fast, uanset hvor mange bilag du har. "
+     "Det er 12.000 kr. om året. Vi bogfører og indberetter momsen. Årsregnskab, selvangivelse og løn er tilkøb, og du får prisen, før du siger ja."),
+    ("Hvorfor er prisen fast?", "AI'en bærer det tunge læs, og en revisor kvalitetssikrer. Derfor tæller vi hverken bilag eller timer, "
+     "og du ved, hvad regningen bliver, før den kommer."),
     ("Kan jeg starte nu?", NU_SVAR),
     ("Gælder det både enkeltmandsvirksomheder og ApS?", "Ja. Læs mere om <a href='/revisor-enkeltmandsvirksomhed/'>revisor til "
      "enkeltmandsvirksomhed</a> og <a href='/revisor-aps/'>revisor til ApS</a>."),
     ("Kan jeg skifte pakke?", "Ja, fra måned til måned, begge veje."),
     ("Hvad koster tilkøbene?", "Det afhænger af din virksomhed. Du får prisen, før du siger ja."),
-    ("Kommer jeg fra et andet program?", "Så flytter vi dig gratis. Din historik kommer med."),
+    ("Kommer jeg fra et andet program?", "Så flytter vi dig gratis. Din historik kommer med. Læs om at <a href='/skift-revisor/'>skifte revisor</a>."),
 ]
 # /om-os har ingen spørgsmål og svar: de gentog kortene med Othman og Mohammed (Othman 9. nov 2026)
 SVARER = {"othman": "Othman", "mohammed": "Mohammed"}
@@ -428,7 +432,7 @@ def priser():
         <a class="pille hvid stor" href="/#kom" data-book>Hellere en snak?</a>
       </div>
     </div>"""
-    return side("/priser/", "Priser på revisor og bogføring: Tallo", "To pakker til fast pris uden binding og med ubegrænset antal bilag: Gør det selv med AI til 500 kr. eller Med revisor til 1.000 kr. om måneden plus moms.",
+    return side("/priser/", "Hvad koster en revisor? Fast pris fra 500 kr.: Tallo", "Hvad koster en revisor hos Tallo? To pakker til fast pris uden binding og med ubegrænset antal bilag: Gør det selv med AI til 500 kr. eller Med revisor til 1.000 kr. om måneden plus moms.",
                 "\n\n  ".join([region("lilla top regner-region", top + "\n    " + regner), region("papir", tabel),
                                 region("papir", spoerg), region("papir", slut)]))
 
@@ -1113,6 +1117,40 @@ def moms_frister():
                      KILDER_MOMS + [KILDE_TIL_TIDEN, KILDE_NYT_SELSKAB, KILDE_REG_MOMS], tjekket="20. november 2026", ekstra=momstabel())
 
 
+SKIFT_TRIN = [
+    ("Sig op hos den gamle", "Opsigelsen står i jeres aftale. Du behøver ikke vente med at tale med os."),
+    ("Giv os adgang", "Du inviterer os ind i dit regnskabsprogram og giver os rådgiveradgang til moms hos Skattestyrelsen. Det tager et par minutter, og du bruger dit eget MitID."),
+    ("Vi kigger bogføringen igennem", "Vi tjekker, at det, der er bogført, passer med banken. Er der noget at rydde op i, får du en fast pris for det, før vi går i gang."),
+    ("Vi bogfører fra nu af", "Du sender bilag, som du plejer, og vi indberetter momsen ved næste frist."),
+]
+
+
+def skift_revisor():
+    """Til dem, der vil skifte (Othman 20. nov 2026; få danske sider svarer, og den, der søger, er tæt på at købe).
+    Ingen programnavne og ingen regler om at skifte en revisor med erklæring: dem fandt vi ikke hos myndighederne."""
+    trin = "".join(f"<li><b>{t}.</b> {x}</li>" for t, x in SKIFT_TRIN)
+    return soegeside("/skift-revisor/", "Skift revisor: sådan gør du, og hvad det koster: Tallo",
+                     "Vil du skifte revisor eller bogholder? Sådan foregår skiftet i fire trin, du beholder dit regnskabsprogram, og prisen er fast: 1.000 kr. om måneden plus moms.",
+                     "Skift revisor.", "Du beholder dit regnskabsprogram og din historik. Vi tager over fra næste måned, til fast pris.",
+                     "Sådan skifter du revisor",
+                     ["Du skal ikke flytte program og ikke selv flytte bilag. Vi går ind i det program, du allerede bruger.",
+                      "Skiftet sker i fire trin:"],
+                     "Det skal du vide",
+                     [("1.000", "kr.", "om måneden plus moms for Med revisor, fast, uanset hvor mange bilag du har.", 1000),
+                      ("0", "kr.", "for at komme i gang. Er der noget at rydde op i, får du en fast pris, før vi begynder."),
+                      ("5", "år", "skal bilag og bogføring gemmes, også efter skiftet. De bliver i dit program.", 5)],
+                     "",
+                     None, None, None,
+                     "årsregnskab, årsrapport, løn og selvangivelse.",
+                     [("Skal jeg skifte regnskabsprogram?", "Nej. Vi bogfører i det program, du allerede bruger."),
+                      ("Hvornår er det bedst at skifte?", "Når som helst. Det letteste er lige efter en momsfrist, så den nye periode starter hos os. Se <a href='/moms-frister/'>momsfristerne</a>."),
+                      ("Hvad koster det?", FAQ_PRIS),
+                      ("Har mit ApS pligt til revision?", "Så skal revisionen stadig laves af en godkendt revisor. Vi er ikke godkendte revisorer, men vi kan tage bogføringen og levere grundlaget. Læs om <a href='/revisor-aps/'>revisor til ApS</a> og fravalg af revision."),
+                      ("Har du en enkeltmandsvirksomhed?", "Så er der ikke krav om revisor, og du kan skifte, når du vil. Læs om <a href='/revisor-enkeltmandsvirksomhed/'>revisor til enkeltmandsvirksomhed</a>.")],
+                     [KILDE_BOGFOERING, ("Erhvervsstyrelsen: årsrapporter og fravalg af revision", "https://erhvervsstyrelsen.dk/vejledning-aarsrapporter")],
+                     tjekket="20. november 2026", ekstra=f'\n        <ol class="skift-trin">{trin}</ol>')
+
+
 # ---------------------------------------------------------------------------------------------------- 404
 def sidst_aendret(sti):
     """Datoen i sitemap: i dag, hvis filen er ændret, ellers dens seneste commit."""
@@ -1158,7 +1196,7 @@ if __name__ == "__main__":
     print("skrevet 404")
     for navn, html in [("priser", priser()), ("appen", appen()), ("ai", ai()), ("om-os", om_os()), ("privatliv", privatliv()), ("handelsbetingelser", handelsbetingelser()), ("databehandleraftale", databehandleraftale()),
                        ("revisor-enkeltmandsvirksomhed", revisor_enkeltmand()), ("revisor-aps", revisor_aps()),
-                       ("digital-bogfoering", digital_bogfoering()), ("moms-frister", moms_frister())]:
+                       ("digital-bogfoering", digital_bogfoering()), ("moms-frister", moms_frister()), ("skift-revisor", skift_revisor())]:
         (ROD / navn).mkdir(exist_ok=True)
         (ROD / navn / "index.html").write_text(html, encoding="utf-8")
         print("skrevet", navn)
