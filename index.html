@@ -674,6 +674,16 @@
     status.textContent = "Sender";
     try {
       const data = Object.fromEntries(new FormData(tilmeld));
+      // Hvor kom de fra: siden før (kun domæne og sti), knappens ?fra= og utm. Intet gemmes i browseren.
+      const q = new URLSearchParams(location.search);
+      let kom = "", fra = q.get("fra") || "";
+      try {
+        const r = new URL(document.referrer);
+        if (r.host === location.host) { if (!fra && r.pathname !== "/") fra = r.pathname.replace(/^\/|\/$/g, ""); }
+        else kom = (r.host + r.pathname).replace(/\/$/, "");
+      } catch {}
+      Object.assign(data, { kom_fra: q.get("ind") || kom, side: location.pathname, fra,
+        utm: ["utm_source", "utm_medium", "utm_campaign"].map((k) => q.get(k)).filter(Boolean).join(" / ") });
       const svar = await fetch(tilmeld.action, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
       const json = await svar.json();
       if (!json.ok) throw new Error(json.fejl || "fejl");

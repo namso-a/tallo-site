@@ -378,4 +378,18 @@
       requestAnimationFrame(trin);
     }, "-20%");
   });
+  // Hvor kom tilmeldingen fra (20. nov 2026): på en underside får knappen til formularen ?fra=<siden> og, hvis man
+  // kom udefra, ind=<domænet>. Først ved klik, og intet gemmes i browseren.
+  if (location.pathname !== "/") {
+    let ind = "";
+    try { const r = new URL(document.referrer); if (r.host !== location.host) ind = r.host; } catch {}
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest && e.target.closest('a[href^="/#kom"], a[href^="/?pakke"]');
+      if (!a) return;
+      const u = new URL(a.href, location.origin);
+      u.searchParams.set("fra", location.pathname.replace(/^\/|\/$/g, ""));
+      if (ind) u.searchParams.set("ind", ind);
+      a.href = u.pathname + u.search + u.hash;
+    }, true);
+  }
 })();
