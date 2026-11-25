@@ -19,6 +19,12 @@ from pathlib import Path
 
 ROD = Path(__file__).resolve().parents[1]
 DOMAENE = "https://tallo.dk"
+# Udbyderen: ét sted. Skift til Tallo ApS, naar overdragelsen er besluttet (25. nov 2026). ApS: navn "Tallo ApS",
+# lang "Tallo ApS", CVR "46951301", adresse som i CVR-registret (1D eller 1E, Othman bekraefter). Privatlivspolitikken
+# (privatliv/index.html) er haandskrevet og rettes for sig; husk ny version og dato i alle tre juridiske tekster.
+UDBYDER_NAVN, UDBYDER_LANG, UDBYDER_CVR = "Tallo", "Tallo v/ Othman Ajjawi", "46440986"
+UDBYDER_FORM = " (enkeltmandsvirksomhed)"
+UDBYDER_ADRESSE = "Damagervej 1E, 2. tv, 8260 Viby J"
 
 CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.com; style-src 'self' 'unsafe-inline'; "
        "img-src 'self' data: https://app.cal.com; font-src 'self'; connect-src 'self' "
@@ -56,7 +62,7 @@ def strukturerede_data():
                                        "unitText": "MON", "valueAddedTaxIncluded": False}}
     data = {"@context": "https://schema.org", "@graph": [
         {"@type": "AccountingService", "@id": f"{DOMAENE}/#tallo", "name": "Tallo", "url": f"{DOMAENE}/",
-         "image": f"{DOMAENE}/og.png", "logo": f"{DOMAENE}/favicon-192.png", "vatID": "DK46440986", "telephone": TELEFON_LD,
+         "image": f"{DOMAENE}/og.png", "logo": f"{DOMAENE}/favicon-192.png", "vatID": f"DK{UDBYDER_CVR}", "telephone": TELEFON_LD,
          "description": "Revisor og bogføring til fast pris for enkeltmandsvirksomheder og ApS.",
          "address": {"@type": "PostalAddress", "postalCode": "8260",
                      "addressLocality": "Viby J", "addressCountry": "DK"},
@@ -163,7 +169,7 @@ def fod():
         <li><a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a></li>
         <!-- Gadeadressen står kun i handelsbetingelser, privatlivspolitik og databehandleraftale (Othman 8. nov 2026; e-handelsloven § 7) -->
         <li><span>Viby J</span></li>
-        <li><span>CVR 46440986</span></li>
+        <li><span>CVR {UDBYDER_CVR}</span></li>
         <li><a href="/privatliv/">Privatlivspolitik</a></li>
         <li><a href="/handelsbetingelser/">Handelsbetingelser</a></li>
         <li><a href="/databehandleraftale/">Databehandleraftale</a></li>
@@ -640,6 +646,13 @@ def om_os():
 
 
 # ---------------------------------------------------------------------------------------------------- /privatliv
+def udbyder_ind(tekst: str) -> str:
+    for a, b in (("§LANG§", UDBYDER_LANG), ("§FORM§", UDBYDER_FORM), ("§NAVN§", UDBYDER_NAVN), ("§CVR§", UDBYDER_CVR),
+                 ("§ADRESSE§", UDBYDER_ADRESSE)):
+        tekst = tekst.replace(a, b)
+    return tekst
+
+
 JURIDISK_CSS = """
 <style>
   /* Privatlivspolitikken (forenklet 17. okt 2026); indholdet står mellem indhold-markørerne i siden */
@@ -698,7 +711,7 @@ HANDELSBETINGELSER = """
   <p class="ind">Kort fortalt: fast pris om måneden, ingen binding, og du betaler først, når vi åbner. Her står det, du skal vide.</p>
 
   <h2>Parterne og aftalen</h2>
-  <p>Aftalen er mellem din virksomhed og Tallo v/ Othman Ajjawi, Damagervej 1E, 2. tv, 8260 Viby J, CVR 46440986. Tallo er kun for virksomheder, så reglerne for forbrugerkøb, fx fortrydelsesret, gælder ikke. Når du skriver dig op på hjemmesiden, har du ikke købt noget. Vi åbner, når vores regnskabsprogram er registreret hos Erhvervsstyrelsen. Aftalen begynder, når vi har åbnet, og du har bekræftet, at du vil i gang.</p>
+  <p>Aftalen er mellem din virksomhed og §LANG§, §ADRESSE§, CVR §CVR§. Tallo er kun for virksomheder, så reglerne for forbrugerkøb, fx fortrydelsesret, gælder ikke. Når du skriver dig op på hjemmesiden, har du ikke købt noget. Vi åbner, når vores regnskabsprogram er registreret hos Erhvervsstyrelsen. Aftalen begynder, når vi har åbnet, og du har bekræftet, at du vil i gang.</p>
 
   <h2>Pakkerne</h2>
   <ul>
@@ -741,7 +754,7 @@ HANDELSBETINGELSER = """
   <h2>Ændringer og tvister</h2>
   <p>Vi kan ændre betingelserne med 30 dages varsel på mail. Er du uenig, kan du opsige aftalen til den dag, ændringen træder i kraft. Aftalen følger dansk ret. Kan vi ikke løse en uenighed ved at tale sammen, afgøres den ved Retten i Aarhus.</p>
 
-  <div class="bund"><span>Version 1.2 · senest opdateret 4. november 2026</span><span>Tallo · CVR 46440986</span></div>
+  <div class="bund"><span>Version 1.2 · senest opdateret 4. november 2026</span><span>§NAVN§ · CVR §CVR§</span></div>
 """
 
 
@@ -750,7 +763,7 @@ def handelsbetingelser():
     (500 og 1.000 kr.), AI-bogholderen og åbningen ved registreringen."""
     return side("/handelsbetingelser/", "Handelsbetingelser: Tallo",
                 "Fast pris om måneden, ingen binding, og du betaler først, når vi åbner. Betingelserne for at være kunde hos Tallo.",
-                f'<div class="juridisk">{HANDELSBETINGELSER}</div>', JURIDISK_CSS)
+                f'<div class="juridisk">{udbyder_ind(HANDELSBETINGELSER)}</div>', JURIDISK_CSS)
 
 
 # ---------------------------------------------------------------------------------------------------- /databehandleraftale
@@ -763,7 +776,7 @@ DATABEHANDLERAFTALE = """
   <p>Aftale efter databeskyttelsesforordningens artikel 28 mellem kunden som dataansvarlig og Tallo som databehandler. Den er en del af aftalen om at være kunde hos Tallo (handelsbetingelserne) og følger Datatilsynets standardstruktur.</p>
 
   <h2>1. Parterne</h2>
-  <p>Den dataansvarlige: kunden, som angivet ved tilmeldingen. Databehandleren: Tallo v/ Othman Ajjawi (enkeltmandsvirksomhed), CVR 46440986, Damagervej 1E, 2. tv, 8260 Viby J, <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a>.</p>
+  <p>Den dataansvarlige: kunden, som angivet ved tilmeldingen. Databehandleren: §LANG§§FORM§, CVR §CVR§, §ADRESSE§, <a data-u="kontakt" data-d="tallo.dk" href="#">kontakt (at) tallo.dk</a>.</p>
 
   <h2>2. Baggrund og formål</h2>
   <p>Databehandleren stiller sit regnskabsprogram og sin app til rådighed for den dataansvarlige. Med pakken Med revisor bogfører og afstemmer databehandleren også, indberetter moms og udarbejder tal for den dataansvarlige, og ved tilkøb kører løn og udarbejder årsregnskab. I den forbindelse behandler databehandleren personoplysninger på den dataansvarliges vegne. Aftalen skal sikre, at behandlingen sker i overensstemmelse med databeskyttelsesforordningen og databeskyttelsesloven.</p>
@@ -851,14 +864,14 @@ DATABEHANDLERAFTALE = """
     <li>Ingen personoplysninger overføres til andre systemer end dem i bilag B, medmindre den dataansvarlige selv har bedt om det.</li>
   </ul>
 
-  <div class="bund"><span>Version 1.4 · 5. november 2026</span><span>Tallo · CVR 46440986</span></div>
+  <div class="bund"><span>Version 1.4 · 5. november 2026</span><span>§NAVN§ · CVR §CVR§</span></div>
 """
 
 
 def databehandleraftale():
     return side("/databehandleraftale/", "Databehandleraftale: Tallo",
                 "Aftalen om, hvordan Tallo behandler personoplysninger på din virksomheds vegne.",
-                f'<div class="juridisk">{DATABEHANDLERAFTALE}</div>', JURIDISK_CSS)
+                f'<div class="juridisk">{udbyder_ind(DATABEHANDLERAFTALE)}</div>', JURIDISK_CSS)
 
 
 # ---------------------------------------------------------------------------------------------------- forsiden
