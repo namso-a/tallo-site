@@ -25,7 +25,7 @@ DOMAENE = "https://tallo.dk"
 # Skiftet 27. nov 2026 (Othman). Før: "Tallo", "Tallo v/ Othman Ajjawi", "46440986", " (enkeltmandsvirksomhed)", 1E.
 UDBYDER_NAVN, UDBYDER_LANG, UDBYDER_CVR = "Tallo ApS", "Tallo ApS", "46951301"
 UDBYDER_FORM = ""
-UDBYDER_ADRESSE = "Damagervej 1D, 2. tv., 8260 Viby J"
+UDBYDER_ADRESSE = "Damagervej 1E, 2. tv, 8260 Viby J"  # den rigtige adresse (Othman 27. nov); CVR siger 1D og rettes på virk.dk
 
 CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.com; style-src 'self' 'unsafe-inline'; "
        "img-src 'self' data: https://app.cal.com; font-src 'self'; connect-src 'self' "
