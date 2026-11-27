@@ -22,9 +22,10 @@ DOMAENE = "https://tallo.dk"
 # Udbyderen: ét sted. Skift til Tallo ApS, naar overdragelsen er besluttet (25. nov 2026). ApS: navn "Tallo ApS",
 # lang "Tallo ApS", CVR "46951301", adresse som i CVR-registret (1D eller 1E, Othman bekraefter). Privatlivspolitikken
 # (privatliv/index.html) er haandskrevet og rettes for sig; husk ny version og dato i alle tre juridiske tekster.
-UDBYDER_NAVN, UDBYDER_LANG, UDBYDER_CVR = "Tallo", "Tallo v/ Othman Ajjawi", "46440986"
-UDBYDER_FORM = " (enkeltmandsvirksomhed)"
-UDBYDER_ADRESSE = "Damagervej 1E, 2. tv, 8260 Viby J"
+# Skiftet 27. nov 2026 (Othman). Før: "Tallo", "Tallo v/ Othman Ajjawi", "46440986", " (enkeltmandsvirksomhed)", 1E.
+UDBYDER_NAVN, UDBYDER_LANG, UDBYDER_CVR = "Tallo ApS", "Tallo ApS", "46951301"
+UDBYDER_FORM = ""
+UDBYDER_ADRESSE = "Damagervej 1D, 2. tv., 8260 Viby J"
 
 CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline' https://app.cal.com; style-src 'self' 'unsafe-inline'; "
        "img-src 'self' data: https://app.cal.com; font-src 'self'; connect-src 'self' "
@@ -754,7 +755,7 @@ HANDELSBETINGELSER = """
   <h2>Ændringer og tvister</h2>
   <p>Vi kan ændre betingelserne med 30 dages varsel på mail. Er du uenig, kan du opsige aftalen til den dag, ændringen træder i kraft. Aftalen følger dansk ret. Kan vi ikke løse en uenighed ved at tale sammen, afgøres den ved Retten i Aarhus.</p>
 
-  <div class="bund"><span>Version 1.2 · senest opdateret 4. november 2026</span><span>§NAVN§ · CVR §CVR§</span></div>
+  <div class="bund"><span>Version 1.3 · senest opdateret 27. november 2026</span><span>§NAVN§ · CVR §CVR§</span></div>
 """
 
 
@@ -772,7 +773,7 @@ def handelsbetingelser():
 DATABEHANDLERAFTALE = """
   <p class="mono">Databehandleraftale</p>
   <h1>Databehandler&shy;aftale</h1>
-  <p class="ind">Version 1.4, 5. november 2026. Skabelon; parterne og eventuelle tilkøb udfyldes pr. kunde ved tilmeldingen.</p>
+  <p class="ind">Version 1.5, 27. november 2026. Skabelon; parterne og eventuelle tilkøb udfyldes pr. kunde ved tilmeldingen.</p>
   <p>Aftale efter databeskyttelsesforordningens artikel 28 mellem kunden som dataansvarlig og Tallo som databehandler. Den er en del af aftalen om at være kunde hos Tallo (handelsbetingelserne) og følger Datatilsynets standardstruktur.</p>
 
   <h2>1. Parterne</h2>
@@ -864,7 +865,7 @@ DATABEHANDLERAFTALE = """
     <li>Ingen personoplysninger overføres til andre systemer end dem i bilag B, medmindre den dataansvarlige selv har bedt om det.</li>
   </ul>
 
-  <div class="bund"><span>Version 1.4 · 5. november 2026</span><span>§NAVN§ · CVR §CVR§</span></div>
+  <div class="bund"><span>Version 1.5 · 27. november 2026</span><span>§NAVN§ · CVR §CVR§</span></div>
 """
 
 
